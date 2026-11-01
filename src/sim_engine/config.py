@@ -1,0 +1,84 @@
+from __future__ import annotations
+
+import json
+import math
+import os
+from pathlib import Path
+
+from pydantic import BaseModel, ConfigDict, Field
+
+
+class StrictModel(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+
+class Camera(StrictModel):
+    height_m: float = Field(default=1.25, gt=0, allow_inf_nan=False)
+    pitch_down_rad: float = Field(default=math.pi / 6, ge=-math.pi / 2, le=math.pi / 2)
+    view: str = "125cm_30deg"
+    width: int = Field(default=640, ge=32)
+    height: int = Field(default=480, ge=32)
+    hfov: float = Field(default=79, gt=0, lt=180)
+
+    def robot(self) -> dict:
+        result = {
+            "body_type": "simulated_ground_agent",
+            "camera_view": self.view,
+            "camera_height_m": self.height_m,
+        }
+        if self.pitch_down_rad:
+            result["camera_pitch_down_rad"] = self.pitch_down_rad
+        return result
+
+
+class Physics(StrictModel):
+    agent_height_m: float = Field(default=1.5, gt=0, allow_inf_nan=False)
+    agent_radius_m: float = Field(default=0.1, gt=0, allow_inf_nan=False)
+    forward_m: float = Field(default=0.25, gt=0, allow_inf_nan=False)
+    turn_degrees: float = Field(default=15, gt=0, le=90, allow_inf_nan=False)
+    allow_sliding: bool = True
+
+
+class Dataset(StrictModel):
+    episodes: Path
+    language: str | None = None
+    reference_paths: Path | None = None
+    scenes_root: Path | None = None
+    physics: Physics = Field(default_factory=Physics)
+
+
+class Simulation(StrictModel):
+    scenes_root: Path
+    datasets: dict[str, Dataset]
+    gpu: int = Field(default=2, ge=0)
+    workers: int = Field(default=2, ge=1, le=32)
+    max_actions: int = Field(default=500, ge=1, le=2000)
+    rpc_timeout_seconds: float = Field(default=60, gt=0)
+    reward_mode: str = Field(default="none", pattern="^(none|progress_v1)$")
+
+
+class Policy(StrictModel):
+    model: Path
+    sim_url: str = "http://127.0.0.1:18810"
+    gpu_memory_utilization: float = Field(default=0.65, gt=0, lt=1)
+    max_model_len: int = Field(default=8192, ge=1024)
+    max_num_seqs: int = Field(default=4, ge=1)
+    max_num_batched_tokens: int = Field(default=4096, ge=1024)
+    enforce_eager: bool = True
+    max_pixels: int = Field(default=262144, ge=1024)
+    image_cache_entries: int = Field(default=128, ge=8)
+    max_pending_requests: int = Field(default=32, ge=1)
+
+
+class Settings(StrictModel):
+    simulation: Simulation
+    policy: Policy
+    cameras: dict[str, Camera] = Field(default_factory=lambda: {"trained_ce30": Camera()})
+    policy_version: str = "epoch1"
+
+    @classmethod
+    def read(cls, path: Path) -> Settings:
+        text = os.path.expandvars(path.read_text())
+        if "${" in text:
+            raise ValueError("unresolved environment variable in configuration")
+        return cls.model_validate(json.loads(text))

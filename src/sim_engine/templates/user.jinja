@@ -1,0 +1,8 @@
+Task: vln
+Follow the route instruction in order toward its described destination.
+Instruction: {{ instruction | json }}
+Robot and camera configuration: {{ robot | json }}
+Requested output fields: trajectory
+{% for observation in observations %}
+{{ 'Current observation' if loop.last else 'Historical observation' }}, source_event_index={{ observation.event_index }}: <image>
+{% endfor %}

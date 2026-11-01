@@ -1,0 +1,48 @@
+{
+  "simulation": {
+    "scenes_root": "${VLN_ASSET_ROOT}/scene_datasets",
+    "datasets": {
+      "r2r_val_unseen": {
+        "episodes": "${VLN_ASSET_ROOT}/r2r/val_unseen/val_unseen.json.gz"
+      },
+      "rxr_val_unseen_en": {
+        "episodes": "${VLN_ASSET_ROOT}/rxr/val_unseen/val_unseen_guide.json.gz",
+        "language": "en",
+        "reference_paths": "${VLN_ASSET_ROOT}/rxr/val_unseen/val_unseen_guide_gt.json.gz",
+        "scenes_root": "${VLN_RXR_SCENES_ROOT}",
+        "physics": {
+          "agent_height_m": 0.88,
+          "agent_radius_m": 0.18,
+          "forward_m": 0.25,
+          "turn_degrees": 30,
+          "allow_sliding": false
+        }
+      }
+    },
+    "gpu": 2,
+    "workers": 2,
+    "max_actions": 500,
+    "reward_mode": "none"
+  },
+  "policy": {
+    "model": "${VLN_MODEL}",
+    "sim_url": "http://127.0.0.1:18810",
+    "gpu_memory_utilization": 0.65,
+    "max_num_seqs": 4,
+    "max_model_len": 8192,
+    "max_num_batched_tokens": 4096,
+    "max_pixels": 262144,
+    "enforce_eager": true
+  },
+  "cameras": {
+    "trained_ce30": {
+      "view": "125cm_30deg",
+      "pitch_down_rad": 0.5235987755982988
+    },
+    "legacy_level0": {
+      "view": "front",
+      "pitch_down_rad": 0
+    }
+  },
+  "policy_version": "qwen3-vl-4b-epoch1"
+}

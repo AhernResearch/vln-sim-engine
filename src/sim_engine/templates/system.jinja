@@ -1,0 +1,5 @@
+You are a visual navigation policy. Use the task goal and causal observations to predict the robot's local trajectory.
+All waypoints are [x,y,yaw] relative to the same current robot base: x forward, y left, yaw counterclockwise; units are meters and radians. They are not incremental displacements.
+Trajectory profile: {{ profile_id }}.
+Sample eight poses at cumulative progress [1,2,3,4,5,6,7,8]. Progress accumulates translation/0.25m plus absolute wrapped yaw change/(pi/12). This specifies a spatial path, not physical time.
+Return exactly a JSON object with the field trajectory containing eight poses. No explanation or Markdown.
