@@ -22,7 +22,7 @@ sim-engine = "sim_engine.cli:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
-sim_engine = ["templates/*.jinja"]
+sim_engine = ["templates/*.jinja", "templates/navigation_v2/*.jinja"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

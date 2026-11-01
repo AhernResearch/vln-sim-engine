@@ -13,8 +13,8 @@ import httpx
 from PIL import Image
 
 from .data import model_identity, sha256
+from .outputs import parse_prediction
 from .prompt import PromptBuilder, prepare_training_image
-from .protocol import StepRequest
 
 
 class PolicyBusy(RuntimeError):
@@ -24,7 +24,7 @@ class PolicyBusy(RuntimeError):
 class VllmPolicy:
     def __init__(self, settings):
         self.settings = settings
-        self.builder = PromptBuilder()
+        self.builder = PromptBuilder(settings.policy.prompt_profile)
         self.cache = OrderedDict()
         self.requests = OrderedDict()
         self.admission = asyncio.Semaphore(settings.policy.max_pending_requests)
@@ -118,9 +118,11 @@ class VllmPolicy:
 
         return {
             "model_identity": self.model_identity,
+            "prompt_profile": self.builder.profile,
+            "stop_enabled": self.builder.stop_enabled,
             "implementation_sha256": {
                 name: sha256(Path(__file__).parent / name)
-                for name in ("policy.py", "prompt.py", "protocol.py", "config.py")
+                for name in ("policy.py", "prompt.py", "outputs.py", "protocol.py", "config.py")
             },
             "processor_versions": {
                 name: importlib.metadata.version(name)
@@ -134,7 +136,7 @@ class VllmPolicy:
                 "enforce_eager": self.settings.policy.enforce_eager,
             },
             "prompt_hashes": {
-                name: sha256(Path(__file__).parent / "templates" / (name + ".jinja"))
+                name: sha256(self.builder.template_root / (name + ".jinja"))
                 for name in ("system", "user")
             },
         }
@@ -201,14 +203,12 @@ class VllmPolicy:
                     "engine_including_queue": time.monotonic() - prepared,
                 },
                 "valid": False,
+                "stop": False,
                 "trajectory": None,
             }
             try:
-                decoded = json.loads(completion.text)
-                if set(decoded) != {"trajectory"}:
-                    raise ValueError("unexpected model output fields")
-                parsed = StepRequest(request_id="validation", expected_event_index=0, **decoded)
-                result.update(valid=True, trajectory=parsed.trajectory)
+                parsed = parse_prediction(completion.text, self.builder.profile)
+                result.update(valid=True, stop=parsed.stop, trajectory=parsed.trajectory)
             except (ValueError, TypeError):
-                result["output_error"] = "invalid q8 trajectory"
+                result["output_error"] = "invalid output for " + self.builder.profile
             return result

@@ -1,0 +1,7 @@
+Return JSON only with stop (boolean) and trajectory.
+All [x,y,yaw] poses share the current robot base: x forward, y left, yaw counterclockwise; meters and radians.
+Observation groups are oldest to newest; the final group is current. Reference images are labeled separately.
+If the supplied task is complete now: stop=true, trajectory=[]. Otherwise: stop=false and eight poses.
+Temporary waiting does not imply completion. Use up to two decimal places for trajectory values; omit trailing zeros.
+Sample poses at cumulative progress 1..8, where progress=traveled_distance/0.25+accumulated_abs_yaw/(pi/12).
+This is spatial progress, not time. If the goal is reached before a sample, repeat its pose for that and all remaining samples.

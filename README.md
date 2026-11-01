@@ -86,6 +86,15 @@ budget applies. The present q8 policy has no STOP supervision; reaching the budg
 never counts as a successful stop. `policy_stop` is available only for a future
 policy that explicitly emits a stop decision.
 
+For STOP-trained prompt-v2 checkpoints, set `policy.prompt_profile` to
+`navigation_v2` and point `policy.model` at that checkpoint. This selects the
+matching frozen prompt, compact robot metadata and strict
+`{"stop": false, "trajectory": [eight poses]}` / `{"stop": true, "trajectory": []}`
+output contract. The rollout client ends an episode only on an explicit valid
+STOP; stationary predictions, proximity and timeouts do not create a STOP.
+Success still requires the stopped state to be within the metric's goal radius.
+The default `trajectory_v1` profile preserves the original trajectory-only model.
+
 ## Protocol
 
 See [the API contract](docs/api.md). Both services expose `/docs` and `/openapi.json`.

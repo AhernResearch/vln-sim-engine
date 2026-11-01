@@ -36,9 +36,16 @@ def json_value(value):
 
 
 class PromptBuilder:
-    def __init__(self):
+    def __init__(self, profile="trajectory_v1"):
+        if profile not in ("trajectory_v1", "navigation_v2"):
+            raise ValueError("unknown prompt profile")
+        self.profile = profile
+        self.stop_enabled = profile == "navigation_v2"
+        self.template_root = Path(__file__).parent / "templates"
+        if self.stop_enabled:
+            self.template_root /= "navigation_v2"
         self.jinja = Environment(
-            loader=FileSystemLoader(Path(__file__).parent / "templates"),
+            loader=FileSystemLoader(self.template_root),
             undefined=StrictUndefined,
             trim_blocks=True,
             lstrip_blocks=True,
@@ -53,6 +60,16 @@ class PromptBuilder:
             "profile_id": "progress_se2_q8_complete_v1",
             "observations": [{"event_index": i} for i in indices],
         }
+        if self.stop_enabled:
+            robot = {"robot": "ground", "camera_height_m": camera.height_m}
+            if camera.pitch_down_rad:
+                degrees = math.degrees(camera.pitch_down_rad)
+                robot["camera_pitch_deg"] = (
+                    round(degrees) if abs(degrees - round(degrees)) < 1e-8 else degrees
+                )
+            else:
+                robot["camera_view"] = camera.view
+            context["robot_camera"] = robot
         return [
             {"role": role, "content": self.jinja.get_template(name + ".jinja").render(**context).strip()}
             for role, name in [("system", "system"), ("user", "user")]

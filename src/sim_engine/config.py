@@ -4,6 +4,7 @@ import json
 import math
 import os
 from pathlib import Path
+from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -59,6 +60,7 @@ class Simulation(StrictModel):
 
 class Policy(StrictModel):
     model: Path
+    prompt_profile: Literal["trajectory_v1", "navigation_v2"] = "trajectory_v1"
     sim_url: str = "http://127.0.0.1:18810"
     gpu_memory_utilization: float = Field(default=0.65, gt=0, lt=1)
     max_model_len: int = Field(default=8192, ge=1024)

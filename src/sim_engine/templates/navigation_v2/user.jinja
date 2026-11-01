@@ -1,0 +1,7 @@
+Follow the entire route in order. Passing an intermediate landmark does not complete the route.
+Instruction: {{ instruction | json }}
+Robot/camera: {{ robot_camera | json }}
+Observations:
+{% for observation in observations %}
+{% if loop.last %}Current: {% endif %}<image>
+{% endfor %}

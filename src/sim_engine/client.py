@@ -75,6 +75,7 @@ class EngineClient:
                     {
                         "output": result["text"],
                         "valid": result["valid"],
+                        "stop": result.get("stop", False),
                         "seconds": time.monotonic() - started,
                         "request_id": request_id,
                         "policy_version": result["policy_version"],
@@ -87,6 +88,11 @@ class EngineClient:
                 if not result["valid"]:
                     await self.request(
                         "POST", f"{self.sim_url}/v1/sessions/{sid}/finish", {"reason": "invalid_output"}
+                    )
+                    break
+                if result.get("stop", False):
+                    await self.request(
+                        "POST", f"{self.sim_url}/v1/sessions/{sid}/finish", {"reason": "policy_stop"}
                     )
                     break
                 execution_started = time.monotonic()
@@ -164,7 +170,11 @@ async def rollout(
             "max_plans": max_plans,
             "policy": policy_health,
             "simulation_protocol": sim_health.get("protocol", {}),
-            "stop_policy": "absent_in_q8_baseline; forced_end_is_failure",
+            "stop_policy": (
+                "explicit_model_stop; forced_end_is_failure"
+                if policy_health.get("stop_enabled")
+                else "absent_in_q8_baseline; forced_end_is_failure"
+            ),
             "rollout_implementation_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         }
         run["fingerprint"] = hashlib.sha256(json.dumps(run, sort_keys=True).encode()).hexdigest()

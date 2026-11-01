@@ -36,6 +36,13 @@ probabilities, policy version and timing. Evaluation uses temperature 0. RL
 callers must record sampling parameters and verify log-probability semantics for
 their training algorithm. Reusing a request ID with different inputs is rejected.
 
+The result also carries `stop`. For `navigation_v2`, a valid STOP has `stop=true`
+and an empty trajectory; the client calls the session's `finish` endpoint with
+`reason=policy_stop`, without executing another primitive action. A movement
+prediction has `stop=false` and exactly eight finite poses. The legacy
+`trajectory_v1` profile accepts only a trajectory and always returns `stop=false`.
+Health exposes `prompt_profile`, `stop_enabled` and the selected template hashes.
+
 Execution:
 
 ```json
