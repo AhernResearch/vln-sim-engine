@@ -1,0 +1,233 @@
+{
+  "all_equal": true,
+  "checks": [
+    {
+      "dataset": "r2r",
+      "episode_id": "100",
+      "indices": [
+        0
+      ],
+      "vllm_prompt_tokens": 538,
+      "reference_prompt_tokens": 538,
+      "image_grid": [
+        [
+          1,
+          28,
+          36
+        ]
+      ]
+    },
+    {
+      "dataset": "r2r",
+      "episode_id": "100",
+      "indices": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "vllm_prompt_tokens": 1602,
+      "reference_prompt_tokens": 1602,
+      "image_grid": [
+        [
+          1,
+          28,
+          36
+        ],
+        [
+          1,
+          28,
+          36
+        ],
+        [
+          1,
+          28,
+          36
+        ],
+        [
+          1,
+          28,
+          36
+        ],
+        [
+          1,
+          28,
+          36
+        ]
+      ]
+    },
+    {
+      "dataset": "r2r",
+      "episode_id": "100",
+      "indices": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "vllm_prompt_tokens": 2400,
+      "reference_prompt_tokens": 2400,
+      "image_grid": [
+        [
+          1,
+          28,
+          36
+        ],
+        [
+          1,
+          28,
+          36
+        ],
+        [
+          1,
+          28,
+          36
+        ],
+        [
+          1,
+          28,
+          36
+        ],
+        [
+          1,
+          28,
+          36
+        ],
+        [
+          1,
+          28,
+          36
+        ],
+        [
+          1,
+          28,
+          36
+        ],
+        [
+          1,
+          28,
+          36
+        ]
+      ]
+    },
+    {
+      "dataset": "rxr",
+      "episode_id": "10071",
+      "indices": [
+        0
+      ],
+      "vllm_prompt_tokens": 752,
+      "reference_prompt_tokens": 752,
+      "image_grid": [
+        [
+          1,
+          28,
+          36
+        ]
+      ]
+    },
+    {
+      "dataset": "rxr",
+      "episode_id": "10071",
+      "indices": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "vllm_prompt_tokens": 1816,
+      "reference_prompt_tokens": 1816,
+      "image_grid": [
+        [
+          1,
+          28,
+          36
+        ],
+        [
+          1,
+          28,
+          36
+        ],
+        [
+          1,
+          28,
+          36
+        ],
+        [
+          1,
+          28,
+          36
+        ],
+        [
+          1,
+          28,
+          36
+        ]
+      ]
+    },
+    {
+      "dataset": "rxr",
+      "episode_id": "10071",
+      "indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "vllm_prompt_tokens": 2614,
+      "reference_prompt_tokens": 2614,
+      "image_grid": [
+        [
+          1,
+          28,
+          36
+        ],
+        [
+          1,
+          28,
+          36
+        ],
+        [
+          1,
+          28,
+          36
+        ],
+        [
+          1,
+          28,
+          36
+        ],
+        [
+          1,
+          28,
+          36
+        ],
+        [
+          1,
+          28,
+          36
+        ],
+        [
+          1,
+          28,
+          36
+        ],
+        [
+          1,
+          28,
+          36
+        ]
+      ]
+    }
+  ]
+}

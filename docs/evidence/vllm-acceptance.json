@@ -1,0 +1,68 @@
+{
+  "backend": "vllm",
+  "vllm_version": "0.19.1",
+  "datasets": {
+    "r2r": {
+      "wall_seconds": 80.03857967816293,
+      "episodes": 10,
+      "plans": 30,
+      "valid_plans": 30,
+      "actions": 120,
+      "mean_policy_seconds": 3.37750606299378,
+      "mean_simulation_rpc_seconds": 0.0564030549954623,
+      "mean_image_prompt_seconds": 0.047499098085487884,
+      "mean_engine_seconds": 3.311461788772916,
+      "plans_per_wall_second": 0.374819244927018,
+      "summary": {
+        "complete": true,
+        "diagnostic_only": true,
+        "episodes": 10,
+        "fingerprint": "330f460f3d8844fd81b529c989bba1b18020f5c5560d6abc4e047feb600cf4db",
+        "metrics": {
+          "collisions": 0.0,
+          "distance_to_goal": 7.10371584892273,
+          "ndtw": 0.3488414871182749,
+          "oracle_success": 0.0,
+          "path_length": 0.7007527772829768,
+          "sdtw": 0.0,
+          "spl": 0.0,
+          "success": 0.0
+        },
+        "termination_counts": {
+          "cancelled": 10
+        }
+      }
+    },
+    "rxr": {
+      "wall_seconds": 74.99753363896161,
+      "episodes": 10,
+      "plans": 30,
+      "valid_plans": 30,
+      "actions": 117,
+      "mean_policy_seconds": 2.980514927736173,
+      "mean_simulation_rpc_seconds": 0.049197145830839874,
+      "mean_image_prompt_seconds": 0.04719841941259802,
+      "mean_engine_seconds": 2.92509363736026,
+      "plans_per_wall_second": 0.4000131543581167,
+      "summary": {
+        "complete": true,
+        "diagnostic_only": true,
+        "episodes": 10,
+        "fingerprint": "c4b2c30f99b63d795b794c362dff0eb07f354efcd1d2127039feea9c7bb8953f",
+        "metrics": {
+          "collisions": 0.2,
+          "distance_to_goal": 9.671558773517608,
+          "ndtw": 0.35301686571001756,
+          "oracle_success": 0.1,
+          "path_length": 0.9277855912368459,
+          "sdtw": 0.0,
+          "spl": 0.0,
+          "success": 0.0
+        },
+        "termination_counts": {
+          "cancelled": 10
+        }
+      }
+    }
+  }
+}

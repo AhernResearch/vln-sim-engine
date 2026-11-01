@@ -27,6 +27,9 @@ Invalid model output is explicitly recorded as `invalid_output`.
 ## Installation
 
 Python 3.10. Simulator and policy use separate environments.
+The validated native Habitat build is commit
+[`f179b584bcd713c5a2a998132211e2cae881d6d1`](https://github.com/facebookresearch/habitat-sim/tree/f179b584bcd713c5a2a998132211e2cae881d6d1),
+built headless with Bullet for Python 3.10.
 
 ```bash
 python3.10 -m venv .venv
@@ -115,3 +118,6 @@ Tests exercise session isolation, idempotent execution, stale requests, causal
 history, strict numerical schemas and exclusion of privileged policy inputs.
 Native Habitat and vLLM acceptance must additionally be measured on real assets
 and a real GPU; unit tests do not establish navigation quality or throughput.
+
+The [2026-11-01 native acceptance](docs/validation-20261101.md) records both
+benchmarks, live vLLM requests, input compatibility, and dataset-specific navmeshes.

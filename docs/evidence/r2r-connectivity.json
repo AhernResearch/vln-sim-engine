@@ -1,0 +1,1 @@
+{"dataset": "r2r_val_unseen", "episodes": 1839, "unreachable": [], "ready": true, "physics": {"agent_height_m": 1.5, "agent_radius_m": 0.1, "forward_m": 0.25, "turn_degrees": 15, "allow_sliding": true}}

@@ -1,0 +1,18 @@
+[
+  {
+    "height": 1.5,
+    "radius": 0.1,
+    "recomputed": true,
+    "path_found": false,
+    "distance": null,
+    "settings": "<habitat_sim._ext.habitat_sim_bindings.NavMeshSettings object at 0x7f31fe82dab0>"
+  },
+  {
+    "height": 0.88,
+    "radius": 0.18,
+    "recomputed": true,
+    "path_found": true,
+    "distance": 7.921516418457031,
+    "settings": "<habitat_sim._ext.habitat_sim_bindings.NavMeshSettings object at 0x7f31fe8a0e30>"
+  }
+]

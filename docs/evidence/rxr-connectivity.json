@@ -1,0 +1,1 @@
+{"dataset": "rxr_val_unseen_en", "episodes": 3669, "unreachable": [], "ready": true, "physics": {"agent_height_m": 0.88, "agent_radius_m": 0.18, "forward_m": 0.25, "turn_degrees": 30.0, "allow_sliding": false}}
