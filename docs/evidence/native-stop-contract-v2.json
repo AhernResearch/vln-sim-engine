@@ -1,0 +1,41 @@
+{
+  "diagnostic_only": true,
+  "checkpoint_step": 1000,
+  "model_generated_stop": true,
+  "examples": [
+    {
+      "episode_id": "10053",
+      "termination": "policy_stop",
+      "actions": 37,
+      "metrics": {
+        "distance_to_goal": 0.48787999153137207,
+        "oracle_success": 1.0,
+        "success": 1.0,
+        "spl": 1.0,
+        "path_length": 7.780639385172057,
+        "ndtw": 0.6721807578239049,
+        "sdtw": 0.6721807578239049,
+        "collisions": 0
+      },
+      "last_output": "{\"stop\":true,\"trajectory\":[]}",
+      "receipt_sha256": "4af877fb4e354b628e2f7a37720f8a247ee7fd34a8aaefbfc2b6afc64f7f2de8"
+    },
+    {
+      "episode_id": "10134",
+      "termination": "policy_stop",
+      "actions": 23,
+      "metrics": {
+        "distance_to_goal": 4.393157482147217,
+        "oracle_success": 0.0,
+        "success": 0.0,
+        "spl": 0.0,
+        "path_length": 4.4999996290897135,
+        "ndtw": 0.6617575372118326,
+        "sdtw": 0.0,
+        "collisions": 0
+      },
+      "last_output": "{\"stop\":true,\"trajectory\":[]}",
+      "receipt_sha256": "10c172c7f9e564a12dfdbf979972689530b42af5463e0ee20efad9fc0ddb4ab9"
+    }
+  ]
+}

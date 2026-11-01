@@ -82,9 +82,9 @@ curl --fail http://127.0.0.1:18811/v1/health
 
 `--max-plans 2` is a short **diagnostic-only** end-to-end check; it must not be
 reported as a complete benchmark score. Without it, the configured 500-action
-budget applies. The present q8 policy has no STOP supervision; reaching the budget
-never counts as a successful stop. `policy_stop` is available only for a future
-policy that explicitly emits a stop decision.
+budget applies. The legacy trajectory-only policy has no STOP supervision;
+reaching the budget never counts as a successful stop. `policy_stop` requires
+an explicit stop decision from a STOP-capable checkpoint.
 
 For STOP-trained prompt-v2 checkpoints, set `policy.prompt_profile` to
 `navigation_v2` and point `policy.model` at that checkpoint. This selects the
@@ -130,3 +130,9 @@ and a real GPU; unit tests do not establish navigation quality or throughput.
 
 The [2026-11-01 native acceptance](docs/validation-20261101.md) records both
 benchmarks, live vLLM requests, input compatibility, and dataset-specific navmeshes.
+
+Prompt-v2 additionally has [actual training-row token/pixel parity](docs/evidence/prompt-v2-parity.json)
+for one-image, eight-image and STOP examples. The [native STOP contract checks](docs/evidence/native-stop-contract-v2.json)
+record both a successful model-generated STOP and an out-of-range STOP correctly
+counted as failure. These examples validate the interface and do not constitute
+an aggregate checkpoint-quality score.
