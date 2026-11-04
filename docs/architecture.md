@@ -4,11 +4,14 @@
 flowchart LR
     B[nav-train benchmark admission] --> R[Concurrent rollout client]
     R -->|reset, step, finish| S[Simulation HTTP server]
-    S --> W1[Habitat process 1]
-    S --> W2[Habitat process 2]
+    S --> Q1[Bounded simulator queue 1]
+    S --> Q2[Bounded simulator queue 2]
+    Q1 --> W1[Habitat process 1]
+    Q2 --> W2[Habitat process 2]
     R -->|instruction and causal frame handles| P[Policy HTTP server]
     P -->|immutable RGB frames| S
-    P --> V[vLLM AsyncLLM]
+    P --> QP[Bounded inference queue]
+    QP --> V[vLLM AsyncLLM]
     R --> O[Atomic episode receipts]
 ```
 
@@ -17,6 +20,14 @@ single spawned worker process, which owns its Habitat and EGL context. A worker
 executes requests through one serialized pipe. HTTP cancellation cannot leave an
 unread pipe response for the next request. An unexpected partial execution or a
 worker disconnect invalidates that session and fails the operation.
+
+Each simulator worker has its own bounded FIFO. The policy has an independent
+bounded inference queue whose consumers submit requests to AsyncLLM. A completed
+request resolves its own future immediately. Episode actors submit that result
+to the owning simulation queue, then submit the new observation for inference.
+There is no cross-episode batch completion barrier. Slow episodes retain their
+own causal order while other episodes advance. Queue capacity, active work,
+completion/failure counts, queue wait and service time are exposed in health.
 
 Simulation steps use an event-index compare-and-set and a request ID. Duplicate
 execution returns the prior receipt; stale decisions and conflicting retries fail.
@@ -29,6 +40,13 @@ images using the frozen training path: area-cap resize, Qwen smart resize, then
 processor normalization with resizing disabled. It caches prepared images and
 passes stable image UUIDs to vLLM. The engine schedules concurrent requests and
 prefix caching; each episode's next action still waits for its actual observation.
+
+Recorded requests may instead supply preallocated PNG images with `prepared=true`.
+The service verifies hashes, patch-grid alignment and the pixel cap, then preserves
+the decoded pixels without another resize. PNG decoding and prompt construction
+run in worker threads outside the engine event loop. A configured LoRA adapter is
+applied to all requests in that policy instance; distinct experiment arms use
+distinct instances. The caller may require an exact visual-token count.
 
 Goals, reference paths, geodesic rewards and global poses are privileged simulator
 or evaluator data. They are never fields in the generation request. This separation

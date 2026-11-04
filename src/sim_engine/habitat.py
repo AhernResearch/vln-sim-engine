@@ -9,13 +9,15 @@ from .data import scene_path
 from .geometry import Pose
 from .metrics import navigation_metrics
 
+HABITAT_VERSION = "0.2.4"
+
 
 class HabitatEnvironment:
     def __init__(self, settings: Settings):
         import habitat_sim as hs
 
-        if hs.__version__ != "0.2.4":
-            raise RuntimeError("habitat-sim 0.2.4 is required")
+        if hs.__version__ != HABITAT_VERSION:
+            raise RuntimeError(f"habitat-sim {HABITAT_VERSION} is required")
         self.hs, self.settings, self.sim = hs, settings, None
 
     def reset(self, episode: dict, camera: Camera, seed: int):
@@ -84,7 +86,7 @@ class HabitatEnvironment:
     def metrics(self, episode, positions, stopped=False):
         return navigation_metrics(
             positions,
-            episode.get("reference_path", []),
+            episode.get("_metric_reference_path", []),
             episode["goals"][0]["position"],
             self.distance,
             stopped=stopped,

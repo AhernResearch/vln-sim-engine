@@ -6,7 +6,6 @@ import hashlib
 import json
 from dataclasses import asdict
 
-from .config import Physics
 from .geometry import next_action, reached, to_world
 from .protocol import StepRequest
 
@@ -16,17 +15,23 @@ class Conflict(ValueError):
 
 
 class Session:
-    def __init__(self, session_id, environment, episode, camera_name, camera, seed, settings):
+    def __init__(self, session_id, environment, episode, camera_name, camera, settings):
         self.id, self.env, self.episode = session_id, environment, episode
         self.camera_name, self.camera, self.settings = camera_name, camera, settings
+        self.physics = environment.physics
         self.frames, self.actions, self.positions, self.predictions = [], [], [], []
         self.collisions = self.stalled = 0
         self.termination = None
         self.replies = {}
+
+    @classmethod
+    def open(cls, session_id, environment, episode, camera_name, camera, seed, settings):
+        """Reset the episode, then capture the initial frame and position."""
         image = environment.reset(episode, camera, seed)
-        self.physics = getattr(environment, "physics", Physics())
-        self._store(image)
-        self.positions.append(environment.position())
+        session = cls(session_id, environment, episode, camera_name, camera, settings)
+        session._store(image)
+        session.positions.append(environment.position())
+        return session
 
     def _store(self, image):
         if image.shape != (self.camera.height, self.camera.width, 3):

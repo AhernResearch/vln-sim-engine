@@ -6,6 +6,7 @@ from fastapi import FastAPI, HTTPException, Response
 
 from . import __version__
 from .data import EpisodeStore, sha256
+from .habitat import HABITAT_VERSION
 from .pool import SessionPool, WorkerError
 from .protocol import FinishRequest, ResetRequest, StepRequest
 
@@ -19,7 +20,7 @@ def create_app(settings, *, store=None, pool_factory=SessionPool):
         try:
             yield
         finally:
-            app.state.pool.close()
+            await app.state.pool.aclose()
 
     app = FastAPI(title="VLN Sim Engine", version=__version__, lifespan=lifespan)
     startup_id = uuid.uuid4().hex
@@ -33,7 +34,7 @@ def create_app(settings, *, store=None, pool_factory=SessionPool):
         "scene_hashes": store.scene_hashes,
         "implementation_sha256": {
             name: sha256(Path(__file__).parent / name)
-            for name in ("geometry.py", "habitat.py", "session.py", "metrics.py")
+            for name in ("geometry.py", "habitat.py", "session.py", "metrics.py", "data.py")
         },
     }
 
@@ -49,13 +50,14 @@ def create_app(settings, *, store=None, pool_factory=SessionPool):
         return {
             "status": "ok" if live == settings.simulation.workers else "degraded",
             "backend": "habitat",
-            "habitat_version": "0.2.4",
+            "habitat_version": HABITAT_VERSION,
             "version": __version__,
             "startup_id": startup_id,
             "workers": settings.simulation.workers,
             "live_workers": live,
             "protocol": protocol,
             "active_sessions": len(app.state.pool.sessions),
+            "queues": [worker.queue.snapshot() for worker in app.state.pool.workers],
         }
 
     @app.get("/v1/datasets")

@@ -6,21 +6,9 @@ import os
 import shutil
 from pathlib import Path
 
-from .client import atomic_json
-from .data import json_file, scene_path, sha256
-from .habitat import HabitatEnvironment
-
-
-def dataset_rows(settings, name):
-    dataset = settings.simulation.datasets[name]
-    rows = json_file(dataset.episodes)["episodes"]
-    if dataset.language:
-        rows = [
-            r for r in rows if r["instruction"].get("language", "").split("-")[0] == dataset.language
-        ]
-    if not rows:
-        raise ValueError("empty dataset")
-    return rows
+from .atomic import atomic_json
+from .data import dataset_rows, scene_path, sha256
+from .habitat import HABITAT_VERSION, HabitatEnvironment
 
 
 def prepare_navmeshes(settings, name, source_root: Path, output: Path):
@@ -31,11 +19,11 @@ def prepare_navmeshes(settings, name, source_root: Path, output: Path):
     dataset = config.simulation.datasets[name]
     dataset.scenes_root = source_root
     physics = dataset.physics
-    rows = dataset_rows(config, name)
+    rows = dataset_rows(dataset)
     examples = {r["scene_id"]: dict(r, _dataset=name) for r in rows}
     env = HabitatEnvironment(config)
     evidence = {
-        "habitat_version": "0.2.4",
+        "habitat_version": HABITAT_VERSION,
         "dataset": name,
         "annotations_sha256": sha256(dataset.episodes),
         "physics": physics.model_dump(),
@@ -79,11 +67,11 @@ def prepare_navmeshes(settings, name, source_root: Path, output: Path):
 def audit_connectivity(settings, name):
     import habitat_sim as hs
 
-    if hs.__version__ != "0.2.4":
-        raise RuntimeError("habitat-sim 0.2.4 required")
+    if hs.__version__ != HABITAT_VERSION:
+        raise RuntimeError(f"habitat-sim {HABITAT_VERSION} is required")
     dataset = settings.simulation.datasets[name]
     root = dataset.scenes_root or settings.simulation.scenes_root
-    rows = dataset_rows(settings, name)
+    rows = dataset_rows(dataset)
     grouped = {}
     for row in rows:
         grouped.setdefault(row["scene_id"], []).append(row)

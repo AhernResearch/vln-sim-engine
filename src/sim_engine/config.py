@@ -53,6 +53,7 @@ class Simulation(StrictModel):
     datasets: dict[str, Dataset]
     gpu: int = Field(default=2, ge=0)
     workers: int = Field(default=2, ge=1, le=32)
+    queue_capacity: int = Field(default=32, ge=1, le=1024)
     max_actions: int = Field(default=500, ge=1, le=2000)
     rpc_timeout_seconds: float = Field(default=60, gt=0)
     reward_mode: str = Field(default="none", pattern="^(none|progress_v1)$")
@@ -70,6 +71,11 @@ class Policy(StrictModel):
     max_pixels: int = Field(default=262144, ge=1024)
     image_cache_entries: int = Field(default=128, ge=8)
     max_pending_requests: int = Field(default=32, ge=1)
+    max_images: int = Field(default=8, ge=1, le=16)
+    lora_adapter: Path | None = None
+    max_lora_rank: int = Field(default=16, ge=1, le=256)
+    seed: int = 0
+    return_logprobs: bool = True
 
 
 class Settings(StrictModel):

@@ -13,6 +13,7 @@ The simulator defaults to loopback port 18810; policy serving uses 18811.
 | POST | `/v1/sessions/{id}/finish` | Explicit stop, model failure or cancellation |
 | DELETE | `/v1/sessions/{id}` | Release the episode and worker |
 | POST | `/v1/policy/generate` | Asynchronous vLLM completion; policy service only |
+| POST | `/v1/policy/generate-recorded` | Prepared causal messages and hashed PNG/JPEG images |
 
 Reset:
 
@@ -42,6 +43,23 @@ and an empty trajectory; the client calls the session's `finish` endpoint with
 prediction has `stop=false` and exactly eight finite poses. The legacy
 `trajectory_v1` profile accepts only a trajectory and always returns `stop=false`.
 Health exposes `prompt_profile`, `stop_enabled` and the selected template hashes.
+
+Recorded generation accepts system/user messages containing `<image>` placeholders
+and an `images` array of `{sha256,data_base64}` entries. There are at most 16
+images, further limited by `policy.max_images` (default 8). `prepared=true`
+preserves supplied pixels and requires patch-grid aligned dimensions within the
+configured pixel cap. `expected_visual_tokens` verifies the resulting vLLM image
+token count. The reply includes `actual_visual_tokens` and `finish_reason`.
+`policy.lora_adapter` selects one immutable adapter per policy instance;
+`policy.return_logprobs=false` disables token log-probability collection for
+evaluation. The default retains log probabilities for existing callers.
+
+Inference admission uses `policy.max_pending_requests` and processes up to
+`policy.max_num_seqs` independent requests through AsyncLLM. Each simulation
+worker has a FIFO bounded by `simulation.queue_capacity` (default 32). Health
+reports inference `queue` or simulation `queues`, including queued/active work,
+completed/failed/rejected counts and aggregate wait/service seconds. A full queue
+returns 429; retry admission with the same request identity.
 
 Execution:
 

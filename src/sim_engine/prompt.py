@@ -35,6 +35,22 @@ def json_value(value):
     )
 
 
+def native_chat_prompt(processor, messages, images):
+    """Serialize a causal text/image prefix without changing its text."""
+    messages = [dict(m) for m in messages]
+    pieces = messages[-1]["content"].split("<image>")
+    if len(pieces) - 1 != len(images):
+        raise ValueError("prompt/image count mismatch")
+    content = []
+    for i, text in enumerate(pieces):
+        if text:
+            content.append({"type": "text", "text": text})
+        if i < len(images):
+            content.append({"type": "image", "image": images[i]})
+    messages[-1]["content"] = content
+    return processor.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+
+
 class PromptBuilder:
     def __init__(self, profile="trajectory_v1"):
         if profile not in ("trajectory_v1", "navigation_v2"):
@@ -77,14 +93,4 @@ class PromptBuilder:
 
     def native_prompt(self, processor, instruction, camera, indices, images):
         messages = self.messages(instruction, camera, indices)
-        pieces = messages[1]["content"].split("<image>")
-        if len(pieces) - 1 != len(images):
-            raise ValueError("prompt/image count mismatch")
-        content = []
-        for i, text in enumerate(pieces):
-            if text:
-                content.append({"type": "text", "text": text})
-            if i < len(images):
-                content.append({"type": "image", "image": images[i]})
-        messages[1]["content"] = content
-        return processor.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+        return native_chat_prompt(processor, messages, images)

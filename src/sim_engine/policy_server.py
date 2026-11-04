@@ -4,7 +4,7 @@ from fastapi import FastAPI, HTTPException
 
 from . import __version__
 from .policy import PolicyBusy, VllmPolicy
-from .protocol import GenerateRequest
+from .protocol import GenerateRequest, RecordedGenerateRequest
 
 
 def create_app(settings, *, backend_factory=VllmPolicy):
@@ -40,6 +40,13 @@ def create_app(settings, *, backend_factory=VllmPolicy):
     async def generate(request: GenerateRequest):
         if request.camera not in settings.cameras:
             raise HTTPException(404, "unknown camera profile")
+        return await execute(request)
+
+    @app.post("/v1/policy/generate-recorded")
+    async def generate_recorded(request: RecordedGenerateRequest):
+        return await execute(request)
+
+    async def execute(request):
         try:
             return await app.state.backend.generate(request)
         except PolicyBusy as error:

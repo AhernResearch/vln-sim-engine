@@ -10,6 +10,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 from .habitat import HabitatEnvironment
 from .session import Conflict, Session
+from .work_queue import AsyncWorkQueue, QueueBusy
 
 
 def _worker(connection, settings, factory):
@@ -26,7 +27,7 @@ def _worker(connection, settings, factory):
                         raise Conflict("worker already owns an active session")
                     if environment is None:
                         environment = factory(settings)
-                    session = Session(environment=environment, settings=settings, **payload)
+                    session = Session.open(environment=environment, settings=settings, **payload)
                     result = session.reset_reply()
                 elif session is None or payload["session_id"] != session.id:
                     raise KeyError("session is not active on this worker")
@@ -91,6 +92,8 @@ class Worker:
         self.executor = ThreadPoolExecutor(max_workers=1)
         self.timeout = settings.simulation.rpc_timeout_seconds
         self.session_id = None
+        self.queue = AsyncWorkQueue(self._queued_call, concurrency=1,
+            capacity=settings.simulation.queue_capacity, name="simulation")
 
     def _call(self, method, payload):
         if not self.process.is_alive():
@@ -108,12 +111,22 @@ class Worker:
         return result
 
     async def call(self, method, payload):
+        try:
+            return await self.queue.submit((method, payload))
+        except QueueBusy as error:
+            raise WorkerError(429, str(error)) from error
+
+    async def _queued_call(self, operation):
+        method, payload = operation
         # The single-thread executor finishes consuming each reply even if its
         # HTTP caller disconnects, preserving pipe/request correspondence.
         loop = asyncio.get_running_loop()
         return await asyncio.shield(loop.run_in_executor(self.executor, self._call, method, payload))
 
     def close(self):
+        self.queue.closed = True
+        for task in self.queue.workers:
+            task.cancel()
         if self.process.is_alive():
             try:
                 self.connection.send(("shutdown", {}))
@@ -181,15 +194,16 @@ class SessionPool:
 
     async def release(self, session_id):
         result = await self.call(session_id, "close")
-        self.sessions.pop(session_id)
-        self.workers_for_release(session_id)
-        return result
-
-    def workers_for_release(self, session_id):
+        self.sessions.pop(session_id, None)
         for worker in self.workers:
             if worker.session_id == session_id:
                 worker.session_id = None
+        return result
 
     def close(self):
         for worker in self.workers:
             worker.close()
+
+    async def aclose(self):
+        await asyncio.gather(*(worker.queue.close() for worker in self.workers))
+        self.close()

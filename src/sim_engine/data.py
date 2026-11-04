@@ -5,7 +5,7 @@ import hashlib
 import json
 from pathlib import Path
 
-from .config import Settings
+from .config import Dataset, Settings
 
 
 def sha256(path: Path) -> str:
@@ -20,6 +20,20 @@ def json_file(path: Path):
     opener = gzip.open if path.suffix == ".gz" else open
     with opener(path, "rt") as stream:
         return json.load(stream)
+
+
+def dataset_rows(dataset: Dataset) -> list[dict]:
+    """Episodes of one dataset, narrowed to the configured instruction language."""
+    rows = json_file(dataset.episodes)["episodes"]
+    if dataset.language:
+        rows = [
+            row
+            for row in rows
+            if row["instruction"].get("language", "").split("-")[0] == dataset.language
+        ]
+    if not rows:
+        raise ValueError("empty dataset")
+    return rows
 
 
 def scene_path(root: Path, relative: str) -> Path:
@@ -40,22 +54,17 @@ class EpisodeStore:
         for name, dataset in settings.simulation.datasets.items():
             root = dataset.scenes_root or settings.simulation.scenes_root
             scene_hashes = self.scene_hashes[name] = {}
-            rows = json_file(dataset.episodes)["episodes"]
-            if dataset.language:
-                rows = [
-                    r
-                    for r in rows
-                    if r["instruction"].get("language", "").split("-")[0] == dataset.language
-                ]
             references = json_file(dataset.reference_paths) if dataset.reference_paths else None
             records = {}
-            for row in rows:
+            for row in dataset_rows(dataset):
                 row["_dataset"] = name
+                row.pop("_metric_reference_path", None)
                 key = str(row["episode_id"])
                 if key in records:
                     raise ValueError("duplicate episode identity")
                 if references is not None:
                     row["reference_path"] = references[key]["locations"]
+                    row["_metric_reference_path"] = references[key]["locations"]
                 geometry = scene_path(root, row["scene_id"])
                 if not geometry.is_file() or not geometry.with_suffix(".navmesh").is_file():
                     raise FileNotFoundError(f"missing scene geometry/navmesh: {geometry}")
@@ -63,14 +72,13 @@ class EpisodeStore:
                     if asset not in scene_hashes:
                         scene_hashes[asset] = sha256(scene_path(root, asset))
                 records[key] = row
-            if not records:
-                raise ValueError("empty dataset")
             self.rows[name] = records
             self.metadata[name] = {
                 "episodes": len(records),
                 "annotations_sha256": sha256(dataset.episodes),
                 "reference_sha256": sha256(dataset.reference_paths) if references else None,
                 "physics": dataset.physics.model_dump(),
+                "ndtw_reference": "explicit_gt_locations" if references is not None else "unavailable",
             }
 
     def get(self, dataset: str, episode_id: str) -> dict:

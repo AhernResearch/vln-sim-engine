@@ -11,16 +11,7 @@ from pathlib import Path
 
 import httpx
 
-
-def atomic_json(path: Path, value):
-    import tempfile
-
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with tempfile.NamedTemporaryFile("w", dir=path.parent, delete=False) as stream:
-        json.dump(value, stream, ensure_ascii=False, allow_nan=False)
-        stream.write("\n")
-        temporary = Path(stream.name)
-    temporary.replace(path)
+from .atomic import atomic_json
 
 
 def history_indices(anchor):

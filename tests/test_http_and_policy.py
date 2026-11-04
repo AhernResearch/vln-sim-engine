@@ -4,7 +4,7 @@ from types import SimpleNamespace
 
 import pytest
 from fastapi.testclient import TestClient
-from test_sessions import TestEnvironment, episode, request, settings
+from helpers import TestEnvironment, episode, request, settings
 
 from sim_engine.policy import PolicyBusy, VllmPolicy
 from sim_engine.pool import SessionPool
