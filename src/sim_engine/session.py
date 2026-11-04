@@ -6,8 +6,10 @@ import hashlib
 import json
 from dataclasses import asdict
 
-from .geometry import next_action, reached, to_world
+from .controllers import CONTROLLERS
 from .protocol import StepRequest
+
+STOP_REASONS = ("policy_stop", "forced_stop")
 
 
 class Conflict(ValueError):
@@ -75,48 +77,39 @@ class Session:
         if self.termination:
             raise Conflict("episode has already ended")
         origin = self.env.pose()
-        targets = [to_world(origin, point) for point in request.trajectory]
-        start, cursor = len(self.actions), 0
+        start = len(self.actions)
         before = (
             self.env.distance(self.positions[-1], self.episode["goals"][0]["position"])
             if self.settings.simulation.reward_mode != "none"
             else None
         )
         old_collisions = self.collisions
-        for _ in range(min(request.action_budget, self.settings.simulation.max_actions - start)):
-            pose = self.env.pose()
-            while cursor < len(targets) and reached(
-                pose, targets[cursor], self.physics.forward_m, self.physics.turn_degrees
-            ):
-                cursor += 1
-            if cursor == len(targets):
-                break
-            action = next_action(
-                pose, targets[cursor], self.physics.forward_m, self.physics.turn_degrees
-            )
-            if action is None:
-                break
-            image, collided = self.env.step(action)
-            self._store(image)
-            self.actions.append(action)
+        command = request.command
+        executed = CONTROLLERS[command.kind].execute(
+            self.env, self.physics, command, self.settings.simulation.max_actions - start
+        )
+        for item in executed:
+            self._store(item.image)
+            self.actions.append(item.action)
             self.positions.append(self.env.position())
-            self.collisions += int(collided)
+            self.collisions += int(item.collided)
         end = len(self.actions)
         self.stalled = self.stalled + 1 if start == end else 0
         if end >= self.settings.simulation.max_actions:
             self.termination = "timeout"
         elif self.stalled >= 3:
             self.termination = "stalled"
-        self.predictions.append(
-            {
-                "request_id": request.request_id,
-                "origin": asdict(origin),
-                "start_event_index": start,
-                "end_event_index": end,
-                "trajectory": request.trajectory,
-                "policy_version": request.policy_version,
-            }
-        )
+        prediction = {
+            "request_id": request.request_id,
+            "origin": asdict(origin),
+            "start_event_index": start,
+            "end_event_index": end,
+            "command": command.model_dump(),
+            "policy_version": request.policy_version,
+        }
+        if command.kind == "waypoints":
+            prediction["trajectory"] = command.trajectory
+        self.predictions.append(prediction)
         reply = {
             "session_id": self.id,
             "request_id": request.request_id,
@@ -144,7 +137,7 @@ class Session:
 
     def metrics(self):
         result = self.env.metrics(
-            self.episode, self.positions, stopped=self.termination == "policy_stop"
+            self.episode, self.positions, stopped=self.termination in STOP_REASONS
         )
         result["collisions"] = self.collisions
         return {

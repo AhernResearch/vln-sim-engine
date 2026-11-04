@@ -12,11 +12,11 @@ class TestEnvironment:
     __test__ = False
 
     def __init__(self, settings):
-        self.x = self.yaw = 0
+        self.x = self.y = self.yaw = 0
         self.physics = Physics()
 
     def reset(self, episode, camera, seed):
-        self.x = self.yaw = 0
+        self.x = self.y = self.yaw = 0
         self.camera = camera
         return self.image()
 
@@ -26,18 +26,25 @@ class TestEnvironment:
         )
 
     def pose(self):
-        return Pose(self.x, 0, self.yaw)
+        return Pose(self.x, self.y, self.yaw)
 
     def position(self):
-        return [0, 0, -self.x]
+        return [-self.y, 0, -self.x]
 
     def step(self, action):
         if action == "MOVE_FORWARD":
-            self.x += 0.25
+            self.x += 0.25 * math.cos(self.yaw)
+            self.y += 0.25 * math.sin(self.yaw)
         elif action == "TURN_LEFT":
             self.yaw += math.pi / 12
         else:
             self.yaw -= math.pi / 12
+        return self.image(), False
+
+    def velocity_step(self, linear_mps, angular_rps, dt, allow_sliding):
+        self.x += linear_mps * dt * math.cos(self.yaw)
+        self.y += linear_mps * dt * math.sin(self.yaw)
+        self.yaw += angular_rps * dt
         return self.image(), False
 
     def distance(self, a, b):

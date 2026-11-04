@@ -17,12 +17,13 @@ class ResetRequest(StrictModel):
     seed: StrictInt = 0
 
 
-class StepRequest(StrictModel):
-    request_id: Identifier
-    expected_event_index: Annotated[StrictInt, Field(ge=0)]
+FiniteFloat = Annotated[float, Field(allow_inf_nan=False)]
+
+
+class WaypointCommand(StrictModel):
+    kind: Literal["waypoints"] = "waypoints"
     trajectory: Annotated[list[tuple[float, float, float]], Field(min_length=8, max_length=8)]
     action_budget: Annotated[StrictInt, Field(ge=1, le=4)] = 4
-    policy_version: str = ""
 
     @field_validator("trajectory", mode="before")
     @classmethod
@@ -37,8 +38,38 @@ class StepRequest(StrictModel):
         return value
 
 
+class VelocityCommand(StrictModel):
+    """Body-frame unicycle velocity held for the dataset's velocity time step."""
+
+    kind: Literal["velocity"]
+    linear_mps: FiniteFloat
+    angular_rps: FiniteFloat
+
+
+class StepRequest(StrictModel):
+    request_id: Identifier
+    expected_event_index: Annotated[StrictInt, Field(ge=0)]
+    command: Annotated[WaypointCommand | VelocityCommand, Field(discriminator="kind")]
+    policy_version: str = ""
+
+    @model_validator(mode="before")
+    @classmethod
+    def legacy_waypoints(cls, value):
+        """Accept the original top-level trajectory/action_budget body as a waypoint command."""
+        if isinstance(value, dict) and "command" not in value and "trajectory" in value:
+            value = dict(value)
+            command = {"kind": "waypoints", "trajectory": value.pop("trajectory")}
+            if "action_budget" in value:
+                command["action_budget"] = value.pop("action_budget")
+            value["command"] = command
+        return value
+
+
 class FinishRequest(StrictModel):
-    reason: Literal["policy_stop", "invalid_output", "cancelled"]
+    """``forced_stop`` is a caller-imposed STOP at its own decision budget, not a model STOP;
+    both are scored at the stopped pose, and the reason stays distinguishable."""
+
+    reason: Literal["policy_stop", "forced_stop", "invalid_output", "cancelled"]
 
 
 class Observation(StrictModel):

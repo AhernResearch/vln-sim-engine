@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 class StrictModel(BaseModel):
@@ -32,12 +32,30 @@ class Camera(StrictModel):
         return result
 
 
+class VelocityLimits(StrictModel):
+    """habitat-lab ``velocity_control`` settings, in its native units."""
+
+    linear_mps: tuple[float, float] = (0.0, 2.5)
+    angular_dps: tuple[float, float] = (-300.0, 300.0)
+    min_abs_linear_mps: float = Field(default=0.01, ge=0, allow_inf_nan=False)
+    min_abs_angular_dps: float = Field(default=0.5, ge=0, allow_inf_nan=False)
+    time_step_s: float = Field(default=0.1, gt=0, allow_inf_nan=False)
+
+    @model_validator(mode="after")
+    def ordered_ranges(self):
+        for low, high in (self.linear_mps, self.angular_dps):
+            if not (math.isfinite(low) and math.isfinite(high) and low < high):
+                raise ValueError("velocity ranges must be finite and increasing")
+        return self
+
+
 class Physics(StrictModel):
     agent_height_m: float = Field(default=1.5, gt=0, allow_inf_nan=False)
     agent_radius_m: float = Field(default=0.1, gt=0, allow_inf_nan=False)
     forward_m: float = Field(default=0.25, gt=0, allow_inf_nan=False)
     turn_degrees: float = Field(default=15, gt=0, le=90, allow_inf_nan=False)
     allow_sliding: bool = True
+    velocity: VelocityLimits | None = None
 
 
 class Dataset(StrictModel):

@@ -1,0 +1,49 @@
+{
+  "purpose": "habitat-sim 0.2.4 -> 0.3.1 engine switch and velocity control acceptance",
+  "date": "2026-11-04",
+  "host": "my-ubuntu-server (RTX 4090, NVIDIA 570.133.07)",
+  "habitat_sim": {
+    "version": "0.3.1",
+    "source_commit": "3d6d67d6deae4ab2472cc84df7a3cef1503f606d",
+    "same_commit_as": "aihabitat conda habitat-sim=0.3.1 py3.9 build used by LightNav-0 habitat_server",
+    "build": "python3.10 setup.py bdist_wheel --headless --with-bullet",
+    "source_archive_sha256": "93eb6d7dd48a21a8104384b5e97da6cd6a3ac607142c19968d22f4993638daa6",
+    "wheel_sha256": "839a6cd36b159d5e51b99c542e50dcfd8424f94aa32b5100e53e81f160de9ba2"
+  },
+  "discrete_replay_parity": {
+    "method": "Replay recorded native actions of the prompt-v2 ckpt1000 runs (produced on 0.2.4 by the code snapshot whose implementation hashes match run.json) in both engines; compare per-step positions, collisions and recomputed metrics.",
+    "source_runs": "sim_engine_v2_ckpt1000_20261101/runs/{r2r,rxr}-trained_ce30",
+    "script_sha256": "5abadca9d18843c69be5bef36dea68a5bac745629a7d5374af84df72009950a1",
+    "r2r_val_unseen": {"episodes": 10, "steps_with_frames": 1707, "position_exact": "10/10 both engines",
+                        "max_position_deviation_m": 0.0, "collision_counts_match": "10/10",
+                        "max_metric_abs_diff": 0.0},
+    "rxr_val_unseen_en": {"episodes": 10, "steps_with_frames": 2634, "position_exact": "10/10 both engines",
+                           "max_position_deviation_m": 0.0, "collision_counts_match": "10/10",
+                           "max_metric_abs_diff": 0.0},
+    "rendering": {
+      "byte_identical_frames_across_engines": "5/4341",
+      "sampled_frames": 6,
+      "mean_abs_diff_per_channel": [0.807, 0.933],
+      "max_abs_diff": 27,
+      "pixels_differing_more_than_8_percent": [0.0, 0.04],
+      "psnr_db": [45.9, 47.0],
+      "script_sha256": "79588e9257162b4344e0ad12691c8b7ee3e1c15cab48874054af70073dae48de",
+      "consequence": "Physics and metrics are unchanged; pixels are not. Scores produced on 0.3.1 are a new evaluation identity and are not pooled with 0.2.4 results."
+    },
+    "porting_fix": "0.3.1 SensorSpec.position/orientation require magnum.Vector3; Python lists are rejected."
+  },
+  "velocity_smoke": {
+    "config_sha256": "3c5ceb3a9b98c549297d97bb68bc3737f1cd54b14a50ab4cb6eda320dfe4c2ef",
+    "script_sha256": "7763632242c442836a3043f5833e450e08f0d9bfaefd52352cd4470b6c1a2b46",
+    "dataset": "r2r_val_unseen_lightnav episode 10, camera lightnav_fwd120 (480x270, hfov 120, 0.88 m, level)",
+    "forward_1.5mps_step_m": [0.15, 0.15, 0.15],
+    "turn_3rps_step_deg": [17.189, 17.189, 17.189],
+    "clipped_9mps_step_m": 0.25,
+    "clipped_10rps_step_deg": 30.0,
+    "sub_threshold_command": "rejected (422 at HTTP); session unchanged",
+    "wall_drive_80_steps_at_2.5mps": {"collisions": 22, "min_step_m": 0.0125, "max_step_m": 0.2591,
+                                        "agent_on_navmesh": true},
+    "note": "Steps slightly above 0.25 m occur when try_step re-projects the agent onto the navmesh while sliding; the same filter is used by habitat-lab VelocityAction. Equivalence to habitat-lab itself is established separately by the LightNav-0 reference comparison."
+  },
+  "diagnostic_only": true
+}

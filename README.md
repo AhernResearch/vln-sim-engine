@@ -27,16 +27,19 @@ Invalid model output is explicitly recorded as `invalid_output`.
 ## Installation
 
 Python 3.10. Simulator and policy use separate environments.
-The validated native Habitat build is commit
-[`f179b584bcd713c5a2a998132211e2cae881d6d1`](https://github.com/facebookresearch/habitat-sim/tree/f179b584bcd713c5a2a998132211e2cae881d6d1),
-built headless with Bullet for Python 3.10.
+The validated native Habitat build is habitat-sim v0.3.1, commit
+[`3d6d67d6deae4ab2472cc84df7a3cef1503f606d`](https://github.com/facebookresearch/habitat-sim/tree/3d6d67d6deae4ab2472cc84df7a3cef1503f606d),
+built headless with Bullet for Python 3.10 (`setup.py bdist_wheel --headless --with-bullet`).
+Discrete replay parity with the earlier 0.2.4 build and velocity-control acceptance are in
+[`docs/evidence/habitat-031-velocity-acceptance.json`](docs/evidence/habitat-031-velocity-acceptance.json);
+rendered pixels differ slightly, so 0.3.1 scores are a new evaluation identity.
 
 ```bash
 python3.10 -m venv .venv
 .venv/bin/python -m pip install -e '.[dev]'
 # Policy environment: install the pinned core and GPU-compatible PyTorch stack.
 /path/to/policy/python -m pip install -e '.[policy]'
-# Simulator environment additionally needs pinned habitat-sim 0.2.4, headless,
+# Simulator environment additionally needs pinned habitat-sim 0.3.1, headless,
 # with Bullet. It does not require Torch, Swift or vLLM.
 /path/to/habitat/python -m pip install -e '.[habitat]'
 ```

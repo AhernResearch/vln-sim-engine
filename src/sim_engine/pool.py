@@ -8,6 +8,7 @@ import traceback
 import uuid
 from concurrent.futures import ThreadPoolExecutor
 
+from .controllers import CommandRejected
 from .habitat import HabitatEnvironment
 from .session import Conflict, Session
 from .work_queue import AsyncWorkQueue, QueueBusy
@@ -58,6 +59,8 @@ def _worker(connection, settings, factory):
                 connection.send((200, result))
             except Conflict as error:
                 connection.send((409, str(error)))
+            except CommandRejected as error:
+                connection.send((422, str(error)))
             except KeyError as error:
                 connection.send((404, str(error)))
             except Exception:

@@ -5,7 +5,7 @@ import json
 from pydantic import StrictBool, field_validator, model_validator
 
 from .config import StrictModel
-from .protocol import StepRequest
+from .protocol import WaypointCommand
 
 
 class NavigationPrediction(StrictModel):
@@ -15,7 +15,7 @@ class NavigationPrediction(StrictModel):
     @field_validator("trajectory", mode="before")
     @classmethod
     def finite_points(cls, value):
-        return StepRequest.finite_numeric_points(value)
+        return WaypointCommand.finite_numeric_points(value)
 
     @model_validator(mode="after")
     def stop_and_horizon_agree(self):

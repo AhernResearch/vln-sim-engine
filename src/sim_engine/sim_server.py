@@ -34,7 +34,9 @@ def create_app(settings, *, store=None, pool_factory=SessionPool):
         "scene_hashes": store.scene_hashes,
         "implementation_sha256": {
             name: sha256(Path(__file__).parent / name)
-            for name in ("geometry.py", "habitat.py", "session.py", "metrics.py", "data.py")
+            for name in (
+                "geometry.py", "controllers.py", "habitat.py", "session.py", "metrics.py", "data.py"
+            )
         },
     }
 

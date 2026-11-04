@@ -61,17 +61,42 @@ reports inference `queue` or simulation `queues`, including queued/active work,
 completed/failed/rejected counts and aggregate wait/service seconds. A full queue
 returns 429; retry admission with the same request identity.
 
-Execution:
+Execution carries one control command. `waypoints` is the original interface: eight
+local poses followed by a discrete-action descent of at most `action_budget` actions.
 
 ```json
-{"request_id":"unique-step-id","expected_event_index":0,"action_budget":4,
+{"request_id":"unique-step-id","expected_event_index":0,
  "policy_version":"qwen3-vl-4b-epoch1",
- "trajectory":[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],
-               [1.25,0,0],[1.5,0,0],[1.75,0,0],[2,0,0]]}
+ "command":{"kind":"waypoints","action_budget":4,
+            "trajectory":[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],
+                          [1.25,0,0],[1.5,0,0],[1.75,0,0],[2,0,0]]}}
 ```
 
+The legacy body with top-level `trajectory`/`action_budget` is accepted as the same
+waypoint command. `velocity` holds a body-frame unicycle command for the dataset's
+`physics.velocity.time_step_s`, following habitat-lab 0.3.1 `VelocityAction`:
+
+```json
+{"request_id":"unique-step-id","expected_event_index":0,
+ "command":{"kind":"velocity","linear_mps":0.8,"angular_rps":-0.3}}
+```
+
+Velocities are clipped to `physics.velocity.linear_mps` and `angular_dps`, integrated,
+then snapped to the navmesh (`try_step`, or `try_step_no_sliding` without sliding). One
+command yields one action and one observation. A dataset without `physics.velocity`
+rejects velocity commands with 422. A command below both minimum speeds is a STOP in
+habitat-lab; here it is rejected with 422 and the caller must use `finish`. Rejection
+does not advance or invalidate the session.
+
 Execution returns actual actions, per-action observation handles, collision count,
-new event index and termination. Optional training rewards are separate fields and
+new event index and termination. Waypoint actions are native action names; velocity
+actions are the executed (clipped) `linear_mps`/`angular_rps`.
+
+`finish` reasons are `policy_stop`, `forced_stop`, `invalid_output` and `cancelled`.
+`forced_stop` is a STOP imposed by the caller at its own decision budget (for example,
+reproducing a protocol that stops on the last allowed step); like `policy_stop` it is
+scored at the stopped pose, and the receipt keeps the two apart. A session that already
+reached `max_actions` is a `timeout` and cannot be converted into a stop. Optional training rewards are separate fields and
 must not be projected into policy requests. All history observations must belong
 to one active session and have unique increasing event indices.
 

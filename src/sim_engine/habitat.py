@@ -9,7 +9,7 @@ from .data import scene_path
 from .geometry import Pose
 from .metrics import navigation_metrics
 
-HABITAT_VERSION = "0.2.4"
+HABITAT_VERSION = "0.3.1"
 
 
 class HabitatEnvironment:
@@ -21,6 +21,7 @@ class HabitatEnvironment:
         self.hs, self.settings, self.sim = hs, settings, None
 
     def reset(self, episode: dict, camera: Camera, seed: int):
+        import magnum as mn
         import numpy as np
         from habitat_sim.utils.common import quat_from_coeffs
 
@@ -36,7 +37,9 @@ class HabitatEnvironment:
         sensor = hs.CameraSensorSpec()
         sensor.uuid, sensor.sensor_type = "rgb", hs.SensorType.COLOR
         sensor.resolution = [camera.height, camera.width]
-        sensor.position, sensor.orientation = [0, camera.height_m, 0], [-camera.pitch_down_rad, 0, 0]
+        # habitat-sim 0.3 bindings require magnum vectors; lists are no longer converted.
+        sensor.position = mn.Vector3(0, camera.height_m, 0)
+        sensor.orientation = mn.Vector3(-camera.pitch_down_rad, 0, 0)
         sensor.hfov = camera.hfov
         agent = hs.agent.AgentConfiguration()
         agent.height, agent.radius = self.physics.agent_height_m, self.physics.agent_radius_m
@@ -75,6 +78,36 @@ class HabitatEnvironment:
     def step(self, action):
         result = self.sim.step(action)
         return result["rgb"][:, :, :3], bool(result["collided"])
+
+    def velocity_step(self, linear_mps, angular_rps, dt, allow_sliding):
+        """Integrate a body velocity and snap it to the navmesh (habitat-lab VelocityAction)."""
+        import magnum as mn
+        import numpy as np
+
+        hs = self.hs
+        control = hs.physics.VelocityControl()
+        control.controlling_lin_vel = control.controlling_ang_vel = True
+        control.lin_vel_is_local = control.ang_vel_is_local = True
+        control.linear_velocity = np.array([0.0, 0.0, -linear_mps])
+        control.angular_velocity = np.array([0.0, angular_rps, 0.0])
+        agent = self.sim.get_agent(0)
+        state = agent.get_state()
+        current = hs.RigidState(
+            mn.Quaternion(state.rotation.imag, state.rotation.real), state.position
+        )
+        goal = control.integrate_transform(dt, current)
+        pathfinder = self.sim.pathfinder
+        step = pathfinder.try_step if allow_sliding else pathfinder.try_step_no_sliding
+        final = step(state.position, goal.translation)
+        before = (goal.translation - state.position).dot()
+        after = (final - state.position).dot()
+        state.position = final
+        state.rotation = [*goal.rotation.vector, goal.rotation.scalar]
+        state.sensor_states = {}
+        agent.set_state(state, False)
+        self.sim.step_physics(1.0 / 60.0)
+        image = self.sim.get_sensor_observations()["rgb"][:, :, :3]
+        return image, bool(after + 1e-5 < before)
 
     def distance(self, start, end):
         path = self.hs.ShortestPath()
