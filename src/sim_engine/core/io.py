@@ -51,3 +51,13 @@ def replace_json(path, value):
         stream.write("\n")
         temporary = Path(stream.name)
     temporary.replace(path)
+
+
+SOURCE_SUFFIXES = {".py", ".cpp", ".h", ".so", ".pyd"}
+
+
+def implementation_sources(root=None) -> dict[str, str]:
+    """Hashes of every Python, native source and binary file of the installed package."""
+    root = Path(root) if root is not None else Path(__file__).parents[1]
+    return {str(p.relative_to(root)): file_sha256(p) for p in sorted(root.rglob("*"))
+            if p.is_file() and p.suffix in SOURCE_SUFFIXES}

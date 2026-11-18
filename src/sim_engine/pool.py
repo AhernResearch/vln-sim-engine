@@ -13,9 +13,9 @@ import numpy as np
 from .backends import create_environment
 from .controllers import CommandRejected
 from .core.process import ProcessWorker, WorkerError
+from .core.queue import AsyncWorkQueue, QueueBusy
 from .expert import expert_job
 from .session import Conflict, Session
-from .work_queue import AsyncWorkQueue, QueueBusy
 
 
 class SessionHost:
@@ -238,10 +238,12 @@ class SessionPool:
                 worker.session_id = None
         return result
 
-    def close(self):
+    async def start(self):
+        """Each worker reports the runtime identity it actually loaded."""
+        self.runtimes = await asyncio.gather(*(w.call("runtime", {}) for w in self.workers))
+        return self
+
+    async def close(self):
+        await asyncio.gather(*(worker.queue.close() for worker in self.workers))
         for worker in self.workers:
             worker.close()
-
-    async def aclose(self):
-        await asyncio.gather(*(worker.queue.close() for worker in self.workers))
-        self.close()

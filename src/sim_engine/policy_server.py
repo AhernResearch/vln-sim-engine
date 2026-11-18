@@ -1,23 +1,21 @@
-from contextlib import asynccontextmanager
+from fastapi import HTTPException
 
-from fastapi import FastAPI, HTTPException
-
-from . import __version__
+from .core.http import service_app
 from .policy import PolicyBusy, VllmPolicy
 from .protocol import GenerateRequest, RecordedGenerateRequest
 
 
 def create_app(settings, *, backend_factory=VllmPolicy):
-    @asynccontextmanager
-    async def lifespan(app):
-        app.state.backend = backend_factory(settings)
+    async def open_backend():
+        backend = backend_factory(settings)
         try:
-            await app.state.backend.start()
-            yield
-        finally:
-            await app.state.backend.close()
+            await backend.start()
+        except BaseException:
+            await backend.close()
+            raise
+        return backend
 
-    app = FastAPI(title="VLN vLLM Policy", version=__version__, lifespan=lifespan)
+    app = service_app("VLN vLLM Policy", "backend", open_backend)
 
     @app.get("/v1/health")
     async def health():

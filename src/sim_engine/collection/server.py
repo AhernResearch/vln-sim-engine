@@ -14,12 +14,10 @@ import time
 import uuid
 from collections import Counter, deque
 from concurrent.futures import ThreadPoolExecutor
-from contextlib import asynccontextmanager
 from pathlib import Path
 
-from fastapi import FastAPI
-
-from sim_engine.async_io import AsyncDisk
+from sim_engine.core.disk import AsyncDisk
+from sim_engine.core.http import service_app
 from sim_engine.core.io import create_json, read_json, replace_json
 from sim_engine.core.process import ProcessWorker, WorkerError
 from sim_engine.data import EpisodeStore, scene_path
@@ -132,7 +130,7 @@ class CollectionService:
         self.root.mkdir(parents=True, exist_ok=True)
         self.instance_root = self.root / "instances" / self.owner
         code_root = Path(__file__).parent.parent
-        from sim_engine.planning.implementation import implementation_sources
+        from sim_engine.core.io import implementation_sources
 
         self.source_sha256 = implementation_sources(code_root)
         create_json(
@@ -705,21 +703,10 @@ class CollectionService:
 def create_app(settings, *, store=None, actor_factory=CollectionActor):
     store = store or EpisodeStore(settings)
 
-    @asynccontextmanager
-    async def lifespan(app):
-        app.state.collection = CollectionService(settings, store, actor_factory)
-        try:
-            yield
-        finally:
-            await app.state.collection.close()
+    async def open_service():
+        return CollectionService(settings, store, actor_factory)
 
-    app = FastAPI(title="Privileged training collection service", lifespan=lifespan)
-
-    @app.exception_handler(WorkerError)
-    async def worker_error(request, error):
-        from fastapi.responses import JSONResponse
-
-        return JSONResponse(status_code=error.status, content={"detail": str(error)})
+    app = service_app("Privileged training collection service", "collection", open_service)
 
     @app.get("/v1/health")
     async def health():

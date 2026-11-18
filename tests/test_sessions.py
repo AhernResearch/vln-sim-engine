@@ -53,7 +53,7 @@ async def test_worker_processes_isolate_sessions_and_release_capacity(tmp_path):
         with pytest.raises(WorkerError):
             await pool.call(a["session_id"], "metrics")
     finally:
-        pool.close()
+        await pool.close()
 
 
 async def test_dead_worker_invalidates_session_and_other_worker_remains_usable(tmp_path):
@@ -70,4 +70,4 @@ async def test_dead_worker_invalidates_session_and_other_worker_remains_usable(t
         other = await pool.reset(episode("other"), "trained_ce30", 0)
         assert other["episode_id"] == "other"
     finally:
-        pool.close()
+        await pool.close()

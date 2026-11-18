@@ -5,7 +5,7 @@ import threading
 
 import pytest
 
-from sim_engine.async_io import AsyncDisk
+from sim_engine.core.disk import AsyncDisk
 
 
 @pytest.mark.asyncio

@@ -2,7 +2,7 @@ import asyncio
 
 import pytest
 
-from sim_engine.work_queue import AsyncWorkQueue, QueueBusy
+from sim_engine.core.queue import AsyncWorkQueue, QueueBusy
 
 
 async def test_fast_completion_reaches_simulation_before_slow_inference_finishes():

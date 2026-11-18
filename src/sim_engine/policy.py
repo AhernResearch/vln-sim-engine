@@ -16,11 +16,11 @@ from PIL import Image
 
 from sim_engine.core.io import file_sha256
 
+from .core.queue import AsyncWorkQueue, QueueBusy
 from .data import model_identity
 from .outputs import parse_prediction
 from .prompt import PromptBuilder, native_chat_prompt, prepare_training_image
 from .protocol import RecordedGenerateRequest
-from .work_queue import AsyncWorkQueue, QueueBusy
 
 
 class PolicyBusy(RuntimeError):

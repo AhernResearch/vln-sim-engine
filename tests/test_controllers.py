@@ -98,4 +98,4 @@ async def test_worker_reports_rejection_as_422_without_invalidating_the_session(
         payload = StepRequest.model_validate(request()).model_dump()
         assert (await pool.call(sid, "step", request=payload))["event_index"] == 4
     finally:
-        pool.close()
+        await pool.close()

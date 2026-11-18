@@ -63,7 +63,7 @@ class HTTPPlanningClient:
         self.identities = {}
         self.last_health = {}
         self.cursor = 0
-        from .implementation import implementation_sources
+        from sim_engine.core.io import implementation_sources
 
         self.implementation_digest = fingerprint(implementation_sources())
 

@@ -8,9 +8,9 @@ import pytest
 
 from sim_engine.collection.clearance import ClearanceError, ClearancePlanner, ClearanceProfile
 from sim_engine.collection.corridor import CorridorGeometry
+from sim_engine.core.io import implementation_sources
 from sim_engine.planning.context import PlanningContext, PlanningStopped
 from sim_engine.planning.contracts import PlanningBudget, PlanningProfile
-from sim_engine.planning.implementation import implementation_sources
 from sim_engine.planning.native import native_search
 
 

@@ -29,15 +29,6 @@ PLY_TYPES = {"float": "f", "float32": "f", "double": "d", "float64": "d",
              "uint": "I", "uint32": "I", "int": "i", "int32": "i"}
 
 
-def source_fingerprint():
-    """Hashes of the loaded Habitat bindings and every sim-engine source file."""
-    from habitat_sim._ext import habitat_sim_bindings
-
-    root = Path(__file__).resolve().parents[1]
-    return {"bindings_sha256": file_sha256(habitat_sim_bindings.__file__),
-            "python_sources": {str(p.relative_to(root)): file_sha256(p) for p in sorted(root.rglob("*.py"))}}
-
-
 def asset_path(root, relative):
     root = Path(root).resolve()
     path = (root / relative).resolve()

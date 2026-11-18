@@ -1,10 +1,10 @@
 import uuid
-from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, HTTPException, Response
+from fastapi import HTTPException, Response
 
 from . import __version__
-from .core.process import WorkerError
+from .core.http import service_app
+from .core.io import implementation_sources
 from .data import EpisodeStore
 from .pool import SessionPool
 from .protocol import ExpertRequest, FinishRequest, ResetRequest, StepRequest
@@ -13,22 +13,10 @@ from .protocol import ExpertRequest, FinishRequest, ResetRequest, StepRequest
 def create_app(settings, *, store=None, pool_factory=SessionPool):
     store = store or EpisodeStore(settings)
 
-    @asynccontextmanager
-    async def lifespan(app):
-        app.state.pool = pool_factory(settings)
-        try:
-            import asyncio
+    async def open_pool():
+        return await pool_factory(settings).start()
 
-            app.state.runtimes = await asyncio.gather(
-                *(worker.call("runtime", {}) for worker in app.state.pool.workers))
-            app.state.runtime = app.state.runtimes[0]
-            yield
-        finally:
-            await app.state.pool.aclose()
-
-    app = FastAPI(title="VLN Sim Engine", version=__version__, lifespan=lifespan)
-    from .planning.implementation import implementation_sources
-
+    app = service_app("VLN Sim Engine", "pool", open_pool)
     startup_id = uuid.uuid4().hex
     protocol = {
         "max_actions": settings.simulation.max_actions,
@@ -41,21 +29,16 @@ def create_app(settings, *, store=None, pool_factory=SessionPool):
         "implementation_sha256": implementation_sources(),
     }
 
-    @app.exception_handler(WorkerError)
-    async def worker_error(request, error):
-        from fastapi.responses import JSONResponse
-
-        return JSONResponse(status_code=error.status, content={"detail": str(error)})
-
     @app.get("/v1/health")
     async def health():
         live = sum(worker.alive for worker in app.state.pool.workers)
+        runtimes = app.state.pool.runtimes
         return {
             "status": "ok" if live == settings.simulation.workers else "degraded",
             "backend": settings.simulation.backend,
-            "runtime": app.state.runtime,
-            "habitat_version": app.state.runtime.get("habitat_version"),
-            "worker_runtimes": app.state.runtimes,
+            "runtime": runtimes[0],
+            "habitat_version": runtimes[0].get("habitat_version"),
+            "worker_runtimes": runtimes,
             "capabilities": {"sensors": settings.simulation.sensors,
                              "commands": ["waypoints", "velocity"],
                              "task_types": ["navigation", "development"]},

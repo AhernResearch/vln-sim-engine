@@ -12,13 +12,10 @@ import sys
 import time
 import uuid
 from collections import deque
-from contextlib import asynccontextmanager
 from pathlib import Path
 
-from fastapi import FastAPI
-from fastapi.responses import JSONResponse
-
-from sim_engine.async_io import AsyncDisk
+from sim_engine.core.disk import AsyncDisk
+from sim_engine.core.http import service_app
 from sim_engine.core.io import create_json, fingerprint, read_json, replace_json
 from sim_engine.core.process import SPAWN, ProcessWorker, WorkerError, WorkerTimeout
 
@@ -117,7 +114,7 @@ class PlanningService:
         self.root = settings.root.resolve()
         self.instance_root = self.root / "instances" / self.owner
         self.assets = {(a.dataset, a.scene_id): a.sha256 for a in settings.assets}
-        from .implementation import implementation_sources
+        from sim_engine.core.io import implementation_sources
 
         self.sources = implementation_sources()
         self.implementation_digest = fingerprint(self.sources)
@@ -279,19 +276,10 @@ class PlanningService:
 
 
 def create_app(settings, *, engine_factory=PlanningEngine):
-    @asynccontextmanager
-    async def lifespan(app):
-        app.state.planner = PlanningService(settings, engine_factory)
-        try:
-            yield
-        finally:
-            await app.state.planner.close()
+    async def open_service():
+        return PlanningService(settings, engine_factory)
 
-    app = FastAPI(title="CPU NavMesh planning service", lifespan=lifespan)
-
-    @app.exception_handler(WorkerError)
-    async def worker_error(request, error):
-        return JSONResponse(status_code=error.status, content={"detail": str(error)})
+    app = service_app("CPU NavMesh planning service", "planner", open_service)
 
     @app.get("/v1/health")
     async def health():
