@@ -16,9 +16,11 @@ from dataclasses import asdict, dataclass
 import numpy as np
 
 from sim_engine.core.cache import MISSING, BoundedMemo
-from sim_engine.planning.context import checkpoint
+from sim_engine.navigation.budget import checkpoint
 
 from .corridor import CorridorGeometry
+from .errors import ClearanceError
+from .native import as_point, native_fair, native_search, native_swept_edge, require_native
 
 
 @dataclass(frozen=True)
@@ -45,17 +47,6 @@ class ClearanceProfile:
             value = getattr(self, key)
             if type(value) is not int or value < 1:
                 raise ValueError(f"{key} must be a positive integer")
-
-
-class ClearanceError(ValueError):
-    """Candidate cannot satisfy the frozen preparation profile; retain evidence."""
-
-
-def _point(value):
-    point = np.asarray(value, dtype=float)
-    if point.shape != (3,) or not np.isfinite(point).all():
-        raise ClearanceError("navmesh returned a nonfinite or invalid world point")
-    return point
 
 
 def _resample(points, spacing):
@@ -90,7 +81,6 @@ class ClearancePlanner:
             raise ValueError("native path processing requires a task query cache")
         self.query_cache, self.native_path = query_cache, native_path
         if search_backend == "native":
-            from sim_engine.planning.native import require_native
 
             require_native()
 
@@ -120,7 +110,7 @@ class ClearancePlanner:
     def edge_clear(self, a, b):
         """Check the swept segment, not just its endpoints; never slide a candidate."""
         checkpoint(phase="swept_clearance")
-        a, b = _point(a), _point(b)
+        a, b = as_point(a), as_point(b)
         if not self.optimize:
             return self._edge_uncached(a, b)[0]
         key = (self.profile, a.tobytes(), b.tobytes())
@@ -135,7 +125,6 @@ class ClearancePlanner:
 
     def _edge_uncached(self, a, b):
         if self.native_path:
-            from sim_engine.planning.native import native_swept_edge
 
             return native_swept_edge(self, a, b)
         points = _resample([a, b], self.profile.edge_sample_m)
@@ -143,7 +132,7 @@ class ClearancePlanner:
         previous = a
         for p in points:
             try:
-                snapped = _point(self.navmesh.snap_point(np.asarray(p, dtype=np.float32)))
+                snapped = as_point(self.navmesh.snap_point(np.asarray(p, dtype=np.float32)))
             except ClearanceError:
                 return False, queries
             if np.linalg.norm(snapped[[0, 2]] - p[[0, 2]]) > 1e-4:
@@ -154,7 +143,7 @@ class ClearancePlanner:
             if self.clearance(snapped) + 1e-6 < self.profile.clearance_m:
                 return False, queries
             try:
-                reached = _point(
+                reached = as_point(
                     self.navmesh.try_step_no_sliding(
                         np.asarray(previous, dtype=np.float32), np.asarray(snapped, dtype=np.float32)
                     )
@@ -222,7 +211,7 @@ class ClearancePlanner:
                 if not self._in_corridor(candidate, seed):
                     continue
                 try:
-                    p = _point(self.navmesh.snap_point(candidate.astype(np.float32)))
+                    p = as_point(self.navmesh.snap_point(candidate.astype(np.float32)))
                 except ClearanceError:
                     continue
                 if np.linalg.norm(p[[0, 2]] - candidate[[0, 2]]) > 1e-4:
@@ -260,14 +249,13 @@ class ClearancePlanner:
             i = chosen
         points = np.asarray(_resample(reduced, self.profile.resample_m))
         if self.native_path:
-            from sim_engine.planning.native import native_fair
 
             return native_fair(self, points, seed)
         for _ in range(self.profile.smoothing_passes):
             for i in range(1, len(points) - 1):
                 candidate = 0.5 * points[i] + 0.25 * (points[i - 1] + points[i + 1])
                 try:
-                    p = _point(self.navmesh.snap_point(candidate.astype(np.float32)))
+                    p = as_point(self.navmesh.snap_point(candidate.astype(np.float32)))
                 except ClearanceError:
                     continue
                 if np.linalg.norm(p[[0, 2]] - candidate[[0, 2]]) > 1e-4 or not self._in_corridor(
@@ -281,10 +269,10 @@ class ClearancePlanner:
         return list(points)
 
     def prepare(self, anchors):
-        originals = [_point(a) for a in anchors]
+        originals = [as_point(a) for a in anchors]
         if len(originals) < 2:
             raise ClearanceError("at least two ordered anchors are required")
-        snapped = [_point(self.navmesh.snap_point(a.astype(np.float32))) for a in originals]
+        snapped = [as_point(self.navmesh.snap_point(a.astype(np.float32))) for a in originals]
         residuals = [float(np.linalg.norm(a - b)) for a, b in zip(originals, snapped)]
         if max(residuals) > self.profile.max_anchor_snap_m:
             raise ClearanceError("anchor snap exceeds the source geometry tolerance")
@@ -296,7 +284,7 @@ class ClearancePlanner:
                 mappings.append(len(route) - 1)
                 reports.append({"segment": index, "repeated_anchor": True, "expanded": 0})
                 continue
-            seed = np.asarray([_point(p) for p in self.shortest_path(a, b)])
+            seed = np.asarray([as_point(p) for p in self.shortest_path(a, b)])
             if (
                 len(seed) < 2
                 or np.linalg.norm(seed[0] - a) > 1e-3
@@ -308,7 +296,6 @@ class ClearancePlanner:
             if safe:
                 initial, expanded = list(seed), 0
             elif self.search_backend == "native":
-                from sim_engine.planning.native import native_search
 
                 initial, expanded = native_search(self, a, b, seed)
             else:
@@ -321,7 +308,7 @@ class ClearancePlanner:
             reports.append({"segment": index, "seed_satisfied_clearance": safe, "expanded": expanded})
         samples = _resample(route, self.profile.edge_sample_m)
         clearances = [
-            self.clearance(_point(self.navmesh.snap_point(p.astype(np.float32)))) for p in samples
+            self.clearance(as_point(self.navmesh.snap_point(p.astype(np.float32)))) for p in samples
         ]
         return {
             "profile": asdict(self.profile),

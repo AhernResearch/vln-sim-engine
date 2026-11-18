@@ -4,7 +4,7 @@ import math
 
 import numpy as np
 
-from sim_engine.planning.context import checkpoint
+from sim_engine.navigation.budget import checkpoint
 
 from .guidance import surface_point, surface_segment
 from .limits import distance_allowed, validate_distance_limits

@@ -3,7 +3,7 @@
 import math
 from collections import Counter
 
-from sim_engine.planning.context import checkpoint
+from sim_engine.navigation.budget import checkpoint
 
 from .limits import distance_allowed, validate_distance_limits
 from .visual_geometry import backproject, validate_floor_target

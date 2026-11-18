@@ -8,7 +8,6 @@ planning and tracking are pure SE(2) geometry (unit-testable without Habitat);
 from __future__ import annotations
 
 import hashlib
-import math
 import shutil
 import uuid
 from dataclasses import asdict, dataclass
@@ -17,91 +16,8 @@ from pathlib import Path
 from sim_engine.core.io import replace_json
 
 from .controllers import CONTROLLERS
-from .geometry import Pose, wrap
+from .navigation.tracking import ControllerProfile, Polyline, UnicycleTracker
 from .protocol import VelocityCommand
-
-
-@dataclass(frozen=True)
-class ControllerProfile:
-    """Versioned control profile; its fields are recorded with every rollout."""
-
-    name: str = "path_follow_4hz_v2"
-    dt_s: float = 0.25
-    v_max_mps: float = 0.6
-    omega_max_rps: float = 1.26
-    lookahead_m: float = 0.5
-    turn_in_place_deg: float = 35.0
-    goal_radius_m: float = 0.25
-    max_cross_track_m: float = 0.3
-    turn_gain: float = 2.0
-    resample_m: float = 0.05
-    # Projection only searches this far past the progress made so far, so routes that
-    # revisit a place (RxR) cannot snap the agent onto a later or earlier pass.
-    search_window_m: float = 1.0
-    # Longer than a 180-degree in-place turn (10 steps), so only wedged agents trip it.
-    stall_steps: int = 16
-
-    def command(self, heading_error: float) -> dict:
-        """One unicycle command from the signed heading error to the lookahead point."""
-        error = math.degrees(abs(heading_error))
-        if error > self.turn_in_place_deg:
-            return {"linear_mps": 0.0, "angular_rps": math.copysign(self.omega_max_rps, heading_error)}
-        return {
-            "linear_mps": self.v_max_mps * max(math.cos(heading_error), 0.0),
-            "angular_rps": max(
-                min(self.turn_gain * heading_error, self.omega_max_rps), -self.omega_max_rps
-            ),
-        }
-
-
-class Polyline:
-    """Dense, arc-length parametrized path in world SE(2)."""
-
-    def __init__(self, points):
-        if len(points) < 2:
-            raise ValueError("path needs at least two points")
-        self.points = [(float(x), float(y)) for x, y, *_ in points]
-        self.cumulative = [0.0]
-        for (ax, ay), (bx, by) in zip(self.points, self.points[1:]):
-            self.cumulative.append(self.cumulative[-1] + math.hypot(bx - ax, by - ay))
-        if self.length <= 0:
-            raise ValueError("path has zero length")
-
-    @property
-    def length(self) -> float:
-        return self.cumulative[-1]
-
-    def point_at(self, arc: float):
-        arc = max(0.0, min(arc, self.length))
-        low, high = 0, len(self.cumulative) - 1
-        while low + 1 < high:
-            middle = (low + high) // 2
-            if self.cumulative[middle] <= arc:
-                low = middle
-            else:
-                high = middle
-        span = self.cumulative[high] - self.cumulative[low]
-        ratio = 0.0 if span <= 0 else (arc - self.cumulative[low]) / span
-        (ax, ay), (bx, by) = self.points[low], self.points[high]
-        return ax + ratio * (bx - ax), ay + ratio * (by - ay)
-
-    def project(self, x: float, y: float, start: float = 0.0, end: float = math.inf):
-        """Nearest arc length, distance and path heading among segments overlapping [start, end]."""
-        best = (-1.0, math.inf, 0.0)
-        for index, ((ax, ay), (bx, by)) in enumerate(zip(self.points, self.points[1:])):
-            if self.cumulative[index + 1] < start or self.cumulative[index] > end:
-                continue
-            dx, dy = bx - ax, by - ay
-            span = dx * dx + dy * dy
-            ratio = 0.0 if span <= 0 else max(0.0, min(1.0, ((x - ax) * dx + (y - ay) * dy) / span))
-            distance = math.hypot(x - (ax + ratio * dx), y - (ay + ratio * dy))
-            if distance < best[1]:
-                best = (self.cumulative[index] + ratio * math.sqrt(span), distance, math.atan2(dy, dx))
-        return best
-
-    def resample(self, spacing: float) -> Polyline:
-        steps = max(1, math.ceil(self.length / spacing))
-        return Polyline([(*self.point_at(i * self.length / steps), 0.0) for i in range(steps + 1)])
 
 
 class PathPlanner:
@@ -124,30 +40,6 @@ class PathPlanner:
                 raise ValueError("reference path is not connected on the navmesh") from error
         # Habitat (x, y, z) -> base frame used by ``pose()``: forward = -z, left = -x.
         return [(-p[2], -p[0], 0.0) for p in route]
-
-
-class UnicycleTracker:
-    """Pure pursuit over a polyline; emits one velocity command per control step."""
-
-    def __init__(self, path: Polyline, profile: ControllerProfile):
-        self.path, self.profile, self.max_progress, self.idle = path, profile, 0.0, 0
-
-    def command(self, pose: Pose):
-        """Next command plus the cross-track error at this pose."""
-        arc, cross_track, _ = self.path.project(
-            pose.x, pose.y, self.max_progress, self.max_progress + self.profile.search_window_m
-        )
-        if cross_track > self.profile.max_cross_track_m:
-            raise ValueError(f"cross-track error {cross_track:.3f} m exceeds limit")
-        self.idle = 0 if arc > self.max_progress + 1e-3 else self.idle + 1
-        if self.idle > self.profile.stall_steps:
-            raise ValueError(f"stalled: no path progress for {self.idle} steps")
-        self.max_progress = max(self.max_progress, arc)
-        if self.path.length - arc <= self.profile.goal_radius_m:
-            return None, cross_track
-        target = self.path.point_at(min(arc + self.profile.lookahead_m, self.path.length))
-        heading = math.atan2(target[1] - pose.y, target[0] - pose.x)
-        return self.profile.command(wrap(heading - pose.yaw)), cross_track
 
 
 @dataclass(frozen=True)

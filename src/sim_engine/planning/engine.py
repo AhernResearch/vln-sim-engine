@@ -6,11 +6,11 @@ from collections import OrderedDict
 
 import numpy as np
 
-from sim_engine.collection.limits import distance_allowed
-from sim_engine.collection.region import ground_region
 from sim_engine.core.io import create_json, file_sha256, read_json
+from sim_engine.navigation.budget import PlanningContext, PlanningStopped, checkpoint
+from sim_engine.navigation.limits import distance_allowed
+from sim_engine.planning.region import ground_region
 
-from .context import PlanningContext, PlanningStopped, checkpoint
 from .contracts import Blob
 from .geometry import NavMeshContext
 

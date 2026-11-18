@@ -2,7 +2,7 @@ import math
 
 import pytest
 
-from sim_engine.geometry import Pose, next_action, reached, to_world
+from sim_engine.navigation.pose import Pose, next_action, reached, to_world
 
 
 @pytest.mark.parametrize('yaw', [-2.8, 0., 1.2574257679851353])

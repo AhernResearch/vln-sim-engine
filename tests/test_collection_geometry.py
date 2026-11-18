@@ -8,8 +8,8 @@ import numpy as np
 import pytest
 from PIL import Image
 
-from sim_engine.collection.region import preview_target
 from sim_engine.core.io import create_json, file_sha256, read_json
+from sim_engine.planning.region import preview_target
 
 
 def test_scene_cache_reuses_entries_and_closes_only_the_lru_on_eviction(tmp_path, monkeypatch):
@@ -121,7 +121,7 @@ def test_production_observe_captures_rgb_depth_once_per_view_and_restores_headin
 
 
 def test_preview_keeps_the_same_path_scaled_budget():
-    from sim_engine.collection import region
+    from sim_engine.planning import region
 
     calls = []
 

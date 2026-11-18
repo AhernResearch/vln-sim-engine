@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from typing import Any, Protocol
 
 from sim_engine.config import Camera, Physics
-from sim_engine.geometry import Pose
+from sim_engine.navigation.pose import Pose
 
 
 @dataclass(frozen=True)

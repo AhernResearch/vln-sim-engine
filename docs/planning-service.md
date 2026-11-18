@@ -30,8 +30,10 @@ R2R chunk：规划与预演 → 观测 → 执行 → 审计；训练侧模型�
 | 对象 / 文件 | 职责 |
 | --- | --- |
 | `planning/contracts.py` | 版本化 PlanRequest、PlanningProfile、PlanningBudget、校验 Blob、独立 PlannerSettings |
+| `planning/tasks.py` | 采集与规划共用的 TaskRequest / RegionRequest 输入契约 |
+| `navigation/` | 纯几何：净空 A*、走廊、引导、可见区域、路径跟踪、NavMesh 查询缓存与 C++ 内核；不持有仿真器、不写文件 |
 | `planning/geometry.py` 的 NavMeshContext | 只加载 PathFinder 与 NavMesh；不需要 GLB、EpisodeStore 或 Simulator |
-| `planning/context.py` 的 PlanningContext | 每个任务共享总墙钟、查询与 A* 展开预算，及时取消，任务结束释放查询缓存 |
+| `navigation/budget.py` 的 PlanningContext | 每个任务共享总墙钟、查询与 A* 展开预算，及时取消，任务结束释放查询缓存 |
 | `planning/engine.py` 的 PlanningEngine | 自由框、R2R 和参考测量；复用现有选点、净空与跟踪算法 |
 | `planning/service.py` 的 PlanningService / PlanningWorker | 有界在途任务、CPU spawn 进程、独立尝试、硬超时、状态与回执 |
 | `planning/client.py` | 本机/HTTP 两种客户端；部署位置不改变业务输入输出；验证和安装产物 |
@@ -42,7 +44,8 @@ R2R chunk：规划与预演 → 观测 → 执行 → 审计；训练侧模型�
 
 4Hz 路径跟踪和单步碰撞/净空保护仍紧贴实际仿真状态；它们不重新选择目标或执行全局 A*。
 原有离线 SceneBackend 通过共享 NavMeshContext 保持兼容，服务主线不再调用它的规划方法。
-已有 license、NOTICE 和 provenance 保留在 collection 包中，几何方法从原适配器迁移并复用。
+迁移来源的 license、NOTICE 和 provenance 统一保存在 `sim_engine/licenses/`。
+依赖方向为 `core ← navigation ← planning ← collection`，由 `tests/test_layering.py` 强制。
 
 ## 本机、远程与混合部署
 
@@ -132,7 +135,7 @@ A*、任务级精确几何查询缓存、批量查询接口、原生边检查与
 `CURRENT_PLANNING_PROFILE`，C++ 扩展为构建必需项，服务启动检查内核。
 `collection-v2` / `collection-v3` / `collection-v4` 的显式请求继续保留。
 ROI 掩码需结合 `computed_mask` 读取，框外未计算区域不代表障碍。
-v5 内核分工：`planning/queries.py::NavMeshQueries` 绑定一个不可变 NavMesh，持有任务级
+v5 内核分工：`navigation/queries.py::NavMeshQueries` 绑定一个不可变 NavMesh，持有任务级
 snap / clearance / island 精确缓存（float32 坐标字节为键，各 65,536 项 LRU，统计随回执保存为
 `geometry_queries`，任务结束清理）；`_astar.cpp` 沿用原 A* 顺序并直接使用该缓存；
 `_path.cpp` 做顺序扫掠边检查与原位 fairing。相对 v4，10 组配对规划 CPU 总时间

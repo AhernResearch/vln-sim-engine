@@ -2,9 +2,9 @@
 
 import math
 
-from sim_engine.planning.context import checkpoint
+from sim_engine.navigation.budget import checkpoint
 
-from .storage import RejectedCandidate
+from .errors import RejectedCandidate
 
 
 def surface_point(mesh, point, *, horizontal_limit=0.03, vertical_limit=0.25):

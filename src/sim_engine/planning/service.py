@@ -16,8 +16,9 @@ from pathlib import Path
 
 from sim_engine.core.disk import AsyncDisk
 from sim_engine.core.http import service_app
-from sim_engine.core.io import create_json, fingerprint, read_json, replace_json
+from sim_engine.core.io import create_json, fingerprint, implementation_sources, read_json, replace_json
 from sim_engine.core.process import SPAWN, ProcessWorker, WorkerError, WorkerTimeout
+from sim_engine.navigation.native import require_native
 
 from .contracts import PlanRequest
 from .engine import PlanningEngine
@@ -106,7 +107,6 @@ class PlanningWorker(ProcessWorker):
 
 class PlanningService:
     def __init__(self, settings, engine_factory=PlanningEngine):
-        from .native import require_native
 
         require_native()
         self.settings = settings
@@ -114,7 +114,6 @@ class PlanningService:
         self.root = settings.root.resolve()
         self.instance_root = self.root / "instances" / self.owner
         self.assets = {(a.dataset, a.scene_id): a.sha256 for a in settings.assets}
-        from sim_engine.core.io import implementation_sources
 
         self.sources = implementation_sources()
         self.implementation_digest = fingerprint(self.sources)

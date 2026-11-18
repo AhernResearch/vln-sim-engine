@@ -50,19 +50,19 @@ def main():
         p = geometry.shortest(ep['start_position'], ep['start_position'])
         assert p
         # Exercise the required native query and A* kernels, not only PathFinder.
-        from sim_engine.planning.queries import NavMeshQueries
+        from sim_engine.navigation.queries import NavMeshQueries
         queries = NavMeshQueries(geometry.pf)
         assert len(queries.snap_many([ep['start_position']])) == 1
         assert len(queries.clearance_many([ep['start_position']])) == 1
-        from sim_engine.planning.native import native_search
+        from sim_engine.navigation.native import native_search
         native_search(geometry.planner, ep['start_position'], ep['start_position'],
                       [ep['start_position'], ep['start_position']])
     finally:
         env.close()
     # Exercise the collection adapter and real shared expert, with an explicit sampled goal.
     from sim_engine.collection.backend import CollectionActor
-    from sim_engine.collection.tracking import preview
     from sim_engine.config import CollectionSettings
+    from sim_engine.navigation.tracking import preview
     settings.collection = CollectionSettings(root=args.output / 'collection', training_datasets=[dataset])
     actor = CollectionActor(settings, settings.simulation.gpu)
     task = {'dataset': dataset, 'scene_id': ep['scene_id'], 'camera': camera,

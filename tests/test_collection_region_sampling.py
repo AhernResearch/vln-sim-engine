@@ -5,7 +5,7 @@ from types import SimpleNamespace
 import numpy as np
 import pytest
 
-from sim_engine.collection.visual_region import inside_bbox, sample_region
+from sim_engine.navigation.visual_region import inside_bbox, sample_region
 
 
 def scene():

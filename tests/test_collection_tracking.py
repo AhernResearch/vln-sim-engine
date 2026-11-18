@@ -2,7 +2,7 @@ from types import SimpleNamespace
 
 import pytest
 
-from sim_engine.collection.tracking import EndpointTracker
+from sim_engine.navigation.tracking import EndpointTracker
 
 
 def test_final_translation_cannot_overshoot_remaining_route():

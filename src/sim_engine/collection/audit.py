@@ -3,9 +3,9 @@
 import json
 
 from sim_engine.core.io import create_json, read_json
+from sim_engine.navigation.visual_region import inside_bbox, project_world
 
 from .recording import validate_recording
-from .visual_region import inside_bbox, project_world
 
 
 def audit_recording(request, folder, target, result):

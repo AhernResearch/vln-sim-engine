@@ -7,11 +7,11 @@ import numpy as np
 import pytest
 from test_native_astar import Mesh as ObstacleMesh
 
-from sim_engine.collection.clearance import ClearancePlanner, ClearanceProfile
-from sim_engine.planning.context import PlanningContext, PlanningStopped
+from sim_engine.navigation.budget import PlanningContext, PlanningStopped
+from sim_engine.navigation.clearance import ClearancePlanner, ClearanceProfile
+from sim_engine.navigation.native import native_search, require_native
+from sim_engine.navigation.queries import NavMeshQueries
 from sim_engine.planning.contracts import PlanningBudget, PlanningProfile
-from sim_engine.planning.native import native_search, require_native
-from sim_engine.planning.queries import NavMeshQueries
 
 
 @pytest.fixture(autouse=True)
@@ -265,7 +265,7 @@ def test_v5_keeps_legacy_v4_flags_and_explicit_new_processing():
 def test_stale_compiled_kernel_is_rejected(monkeypatch):
     from types import SimpleNamespace
 
-    from sim_engine.planning import native
+    from sim_engine.navigation import native
 
     monkeypatch.setattr(native.importlib, "import_module", lambda name: SimpleNamespace(KERNEL_API=1))
     with pytest.raises(RuntimeError, match="kernel API 2"):

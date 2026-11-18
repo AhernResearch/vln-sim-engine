@@ -10,7 +10,7 @@ import math
 from dataclasses import dataclass
 from typing import Any
 
-from .geometry import next_action, reached, to_world
+from sim_engine.navigation.pose import next_action, reached, to_world
 
 
 class CommandRejected(ValueError):

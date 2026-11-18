@@ -5,13 +5,12 @@ import math
 import numpy as np
 
 from sim_engine.core.io import create_json
-
-from .guidance import plan_with_preferences
-from .limits import execution_budget
-from .region_selection import select_region_plan
-from .safe_image import safe_floor_mask
-from .tracking import preview
-from .visual_region import project_world, sample_region
+from sim_engine.navigation.guidance import plan_with_preferences
+from sim_engine.navigation.limits import execution_budget
+from sim_engine.navigation.region_selection import select_region_plan
+from sim_engine.navigation.safe_image import safe_floor_mask
+from sim_engine.navigation.tracking import preview
+from sim_engine.navigation.visual_region import project_world, sample_region
 
 
 def preview_target(backend, config, episode, goal, path):

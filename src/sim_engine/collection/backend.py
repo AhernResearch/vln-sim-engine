@@ -9,16 +9,16 @@ from dataclasses import asdict
 import numpy as np
 from PIL import Image
 
-from sim_engine.core.io import create_json, read_json
+from sim_engine.core.io import create_json, file_sha256, read_json
 from sim_engine.data import scene_path
+from sim_engine.navigation.clearance import ClearanceProfile
+from sim_engine.planning.contracts import PlanningProfile
 from sim_engine.scenes import resolve_scene
 
-from .clearance import ClearanceProfile
 from .simulation import SceneBackend
 
 
 def geometry_config(settings, request):
-    from sim_engine.planning.contracts import PlanningProfile
 
     return PlanningProfile(version=settings.collection.planning_profile_version,
                            base_steps=settings.collection.base_steps).geometry(request)
@@ -109,7 +109,6 @@ class CollectionActor:
         backend = self._backend(request)
         prepared = read_json(folder / "private-geometry.json")
         lease = read_json(folder / "execution-lease.json")
-        from sim_engine.core.io import file_sha256
 
         plan = read_json(folder / "planning-result.json")
         if (lease["task_id"] != request["request_id"]

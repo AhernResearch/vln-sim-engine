@@ -5,12 +5,22 @@ import math
 
 import numpy as np
 
-from .context import checkpoint
+from sim_engine.navigation.errors import ClearanceError
+
+from .budget import checkpoint
+
+
+def as_point(value):
+    point = np.asarray(value, dtype=float)
+    if point.shape != (3,) or not np.isfinite(point).all():
+        raise ClearanceError("navmesh returned a nonfinite or invalid world point")
+    return point
+
 
 
 def require_native():
     try:
-        kernel = importlib.import_module("sim_engine.planning._astar")
+        kernel = importlib.import_module("sim_engine.navigation._astar")
     except ImportError as error:
         raise RuntimeError("native planning requires the compiled sim-engine geometry extension") from error
     if getattr(kernel, "KERNEL_API", None) != 2:
@@ -19,7 +29,6 @@ def require_native():
 
 
 def native_search(planner, start, goal, seed):
-    from sim_engine.collection.clearance import ClearanceError, _point
 
     kernel = require_native()
     profile = planner.profile
@@ -40,7 +49,7 @@ def native_search(planner, start, goal, seed):
         )
     except ValueError as error:
         raise ClearanceError(str(error)) from error
-    return [_point(p) for p in path], expanded
+    return [as_point(p) for p in path], expanded
 
 
 def _norm_beyond(delta, threshold):
@@ -48,7 +57,6 @@ def _norm_beyond(delta, threshold):
 
 
 def native_swept_edge(planner, a, b):
-    from sim_engine.collection.clearance import ClearanceError
 
     q, p = planner.query_cache, planner.profile
     # NumPy computes the old sample count, including integer-distance boundaries.
@@ -66,7 +74,6 @@ def _path_check(queries=0, expansions=0):
 
 
 def native_fair(planner, points, seed):
-    from sim_engine.collection.clearance import ClearanceError, _point
 
     q, p = planner.query_cache, planner.profile
     try:
@@ -77,4 +84,4 @@ def native_fair(planner, points, seed):
         )
     except ValueError as error:
         raise ClearanceError(str(error)) from error
-    return [_point(point) for point in result]
+    return [as_point(point) for point in result]

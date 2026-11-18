@@ -3,7 +3,7 @@
 
 namespace sim_engine_native {
 namespace {
-constexpr const char* name="sim_engine.planning.NavMeshQueries.v1";
+constexpr const char* name="sim_engine.navigation.NavMeshQueries.v1";
 void destroy(PyObject* capsule) {
     auto* value=static_cast<Queries*>(PyCapsule_GetPointer(capsule,name));
     if (value) delete value; else PyErr_Clear();

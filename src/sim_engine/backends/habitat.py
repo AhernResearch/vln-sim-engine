@@ -7,7 +7,7 @@ import math
 from pathlib import Path
 
 from sim_engine.config import Camera, Physics, Settings
-from sim_engine.geometry import Pose
+from sim_engine.navigation.pose import Pose
 from sim_engine.scenes import resolve_scene
 
 from .contracts import Capture

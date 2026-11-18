@@ -12,8 +12,8 @@ from fastapi.testclient import TestClient
 from planning_fakes import FakePlanningEngine
 
 from sim_engine.core.io import file_sha256, fingerprint
+from sim_engine.navigation.budget import PlanningContext, PlanningStopped, checkpoint
 from sim_engine.planning.client import HTTPPlanningClient, wait_for_plan
-from sim_engine.planning.context import PlanningContext, PlanningStopped, checkpoint
 from sim_engine.planning.contracts import Blob, PlannerSettings, PlanningBudget, PlanRequest
 from sim_engine.planning.service import create_app
 

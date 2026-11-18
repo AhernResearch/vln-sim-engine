@@ -4,7 +4,9 @@ import math
 
 import numpy as np
 
-from .context import checkpoint
+from sim_engine.navigation.errors import ClearanceError
+
+from .budget import checkpoint
 from .native import require_native
 
 
@@ -30,7 +32,6 @@ class NavMeshQueries:
         self.arena = self.kernel.query_cache(capacity)
 
     def _snap(self, point):
-        from sim_engine.collection.clearance import ClearanceError
 
         try:
             return self.navmesh.snap_point(np.asarray(point, dtype=np.float32))
@@ -44,7 +45,6 @@ class NavMeshQueries:
         return self.navmesh.get_island(np.asarray(point, dtype=np.float32))
 
     def _step(self, a, b):
-        from sim_engine.collection.clearance import ClearanceError
 
         try:
             return self.navmesh.try_step_no_sliding(np.asarray(a, dtype=np.float32),

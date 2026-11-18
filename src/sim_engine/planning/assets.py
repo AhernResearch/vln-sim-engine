@@ -6,6 +6,7 @@ from pathlib import Path
 
 from sim_engine.core.io import create_json, file_sha256
 from sim_engine.data import EpisodeStore
+from sim_engine.scenes import resolve_scene
 
 from .contracts import NavMeshAsset, PlannerSettings
 
@@ -13,7 +14,6 @@ from .contracts import NavMeshAsset, PlannerSettings
 def registered_assets(settings, store):
     assets = []
     for dataset in settings.collection.training_datasets:
-        from sim_engine.scenes import resolve_scene
 
         for scene in sorted(s for s in store.scene_hashes[dataset] if not s.endswith(".navmesh")):
             path = resolve_scene(settings, dataset, scene).navmesh

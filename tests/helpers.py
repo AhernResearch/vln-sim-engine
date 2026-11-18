@@ -5,7 +5,7 @@ import math
 import numpy as np
 
 from sim_engine.config import Physics, Settings, VelocityLimits
-from sim_engine.geometry import Pose
+from sim_engine.navigation.pose import Pose
 
 
 class TestEnvironment:

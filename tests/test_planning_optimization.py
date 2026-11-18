@@ -7,12 +7,12 @@ from types import SimpleNamespace
 import numpy as np
 import pytest
 
-from sim_engine.collection.clearance import ClearancePlanner, ClearanceProfile
-from sim_engine.collection.corridor import CorridorGeometry
-from sim_engine.collection.safe_image import safe_floor_mask
-from sim_engine.collection.visual_region import sample_region
 from sim_engine.core.cache import MISSING, BoundedMemo
-from sim_engine.planning.context import PlanningContext, PlanningStopped
+from sim_engine.navigation.budget import PlanningContext, PlanningStopped
+from sim_engine.navigation.clearance import ClearancePlanner, ClearanceProfile
+from sim_engine.navigation.corridor import CorridorGeometry
+from sim_engine.navigation.safe_image import safe_floor_mask
+from sim_engine.navigation.visual_region import sample_region
 from sim_engine.planning.contracts import PlanningBudget, PlanningProfile
 
 

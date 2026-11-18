@@ -2,10 +2,15 @@
 
 import math
 
-from sim_engine.collection.sampling import ReferenceCache, select_pose
-from sim_engine.collection.storage import RejectedCandidate
 from sim_engine.core.io import create_json
-from sim_engine.planning.context import checkpoint
+from sim_engine.navigation.budget import checkpoint
+from sim_engine.navigation.clearance import ClearancePlanner, ClearanceProfile
+from sim_engine.navigation.errors import RejectedCandidate
+from sim_engine.navigation.guidance import dense_surface_path, plan_with_preferences
+from sim_engine.navigation.queries import NavMeshQueries
+from sim_engine.navigation.reference import reference_state
+from sim_engine.navigation.tracking import expert_profile, preview
+from sim_engine.planning.sampling import ReferenceCache, select_pose
 
 
 class NavMeshContext:
@@ -15,8 +20,6 @@ class NavMeshContext:
         import habitat_sim as hs
         import numpy as np
 
-        from sim_engine.collection.clearance import ClearancePlanner, ClearanceProfile
-        from sim_engine.collection.tracking import expert_profile
 
         self.hs, self.np = hs, np
         self.scene_id, self.scene = scene_id, scene_id
@@ -29,7 +32,6 @@ class NavMeshContext:
         search_backend = config.get("search_backend", "python")
         self.queries = None
         if config.get("query_optimizations", False):
-            from .queries import NavMeshQueries
 
             self.queries = NavMeshQueries(self.pf)
         native_path = config.get("native_path_optimizations", False)
@@ -72,7 +74,6 @@ class NavMeshContext:
 
     def reference(self, task, index):
         """Source samples guide the route; only the task goal is fixed."""
-        from sim_engine.collection.guidance import plan_with_preferences
 
         if "reference_guides" in task:
             clean = task["reference_guides"][:-1]
@@ -103,7 +104,6 @@ class NavMeshContext:
         return prepared
 
     def prepare(self, candidate, folder):
-        from sim_engine.collection.tracking import preview
 
         task = self.tasks[candidate["task_id"]]
         if candidate["scene"] != self.scene or task["scene"] != self.scene:
@@ -129,7 +129,6 @@ class NavMeshContext:
 
         create_json(folder / "expert-profile.json", asdict(self.expert_profile))
         if "reference_guides" in task:
-            from sim_engine.collection.reference import reference_state
 
             selected = reference_state(
                 reference["path"], candidate["reference_fraction"], task["source_start_yaw"]
@@ -173,7 +172,6 @@ class NavMeshContext:
             try:
                 # Connect to the adjusted safe guide, not the potentially unsafe old center.
                 connector = planner.prepare([snapped.tolist(), remaining_path[0]])["world_points"]
-                from sim_engine.collection.guidance import dense_surface_path
 
                 path, _ = dense_surface_path(planner, connector + remaining_path[1:])
                 forecast = preview(

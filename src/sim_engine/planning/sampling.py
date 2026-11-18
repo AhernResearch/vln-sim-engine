@@ -1,9 +1,8 @@
 """Deterministic, bounded rejection sampling before observation or movement."""
 
 from sim_engine.core.io import create_json
-
-from .determinism import perturbation
-from .storage import RejectedCandidate
+from sim_engine.navigation.determinism import perturbation
+from sim_engine.navigation.errors import RejectedCandidate
 
 
 class ReferenceCache:

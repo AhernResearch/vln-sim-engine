@@ -4,8 +4,15 @@ import copy
 import time
 from pathlib import Path
 
+from sim_engine.backends import create_environment
+from sim_engine.config import Camera, Settings
 from sim_engine.core.io import create_json, file_sha256
+from sim_engine.navigation.clearance import ClearanceProfile
+from sim_engine.navigation.tracking import make_tracker
 from sim_engine.planning.geometry import NavMeshContext
+from sim_engine.scenes import resolve_scene
+
+from .recording import calibration
 
 
 def make_backend(worker, manifest, scene):
@@ -14,9 +21,6 @@ def make_backend(worker, manifest, scene):
 
 class SceneBackend(NavMeshContext):
     def __init__(self, worker, manifest, scene):
-        from sim_engine.config import Camera, Settings
-
-        from .clearance import ClearanceProfile
 
         runtime = copy.deepcopy(manifest["runtime"])
         runtime["settings"]["simulation"]["gpu"] = worker["gpu"]
@@ -24,7 +28,6 @@ class SceneBackend(NavMeshContext):
         camera = Camera.model_validate(runtime["camera"])
         if "train_pilot" not in self.settings.simulation.datasets:
             raise ValueError("frozen simulation requires train_pilot physics")
-        from sim_engine.scenes import resolve_scene
 
         self.scene_id = runtime.get("scene_id") or str(
             Path(scene).relative_to(self.settings.simulation.scenes_root))
@@ -45,7 +48,6 @@ class SceneBackend(NavMeshContext):
         self.loads = self.resets = 0
 
     def reset_candidate(self, ep):
-        from sim_engine.backends import create_environment
 
         if self.env is None:
             self.env = create_environment(self.settings)
@@ -76,7 +78,6 @@ class SceneBackend(NavMeshContext):
                 views[label] = {**captured.sensors["depth"], "depth_sha256": file_sha256(depth_file)}
         captured = self.env.capture()
         projections = {key: captured.calibration["projections"][key] for key in ("rgb", "depth")}
-        from .recording import calibration
 
         create_json(
             folder / "camera.json",
@@ -103,7 +104,6 @@ class SceneBackend(NavMeshContext):
 
         from PIL import Image
 
-        from .tracking import make_tracker
 
         # A new tracker uses the same frozen profile as the preflight.
         tracker = make_tracker(prepared["path"], self.expert_profile)

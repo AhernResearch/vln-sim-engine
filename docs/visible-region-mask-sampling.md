@@ -5,7 +5,7 @@ intersection of the original model box and its visible-safe-floor mask. A fixed
 uniform grid could miss all support in a tiny patch even when the mask contained
 valid pixels. No box expansion, prompt change or movement retry is involved.
 
-`collection.visual_region.sample_region` keeps the existing geometric acceptance
+`navigation.visual_region.sample_region` keeps the existing geometric acceptance
 checks and center/clearance candidate ranking. With a mask, pixel selection is:
 
 1. Keep only safe pixel centers inside the original normalized box.

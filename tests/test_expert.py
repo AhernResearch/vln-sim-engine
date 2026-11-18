@@ -5,14 +5,9 @@ import pytest
 from fastapi.testclient import TestClient
 from helpers import ExpertTestEnvironment, settings
 
-from sim_engine.expert import (
-    ControllerProfile,
-    ExpertRollout,
-    PathPlanner,
-    Polyline,
-    UnicycleTracker,
-)
-from sim_engine.geometry import Pose
+from sim_engine.expert import ExpertRollout, PathPlanner
+from sim_engine.navigation.pose import Pose
+from sim_engine.navigation.tracking import ControllerProfile, Polyline, UnicycleTracker
 from sim_engine.pool import SessionPool
 from sim_engine.sim_server import create_app
 

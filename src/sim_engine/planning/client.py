@@ -7,12 +7,12 @@ from urllib.parse import urlsplit
 
 import httpx
 
-from sim_engine.core.io import create_json, file_sha256, fingerprint, read_json
+from sim_engine.core.io import create_json, file_sha256, fingerprint, implementation_sources, read_json
 from sim_engine.core.process import WorkerError
 from sim_engine.scenes import resolve_scene
 
 from .assets import registered_assets
-from .contracts import Blob, PlannerSettings, PlanRequest
+from .contracts import OUTPUT_NAMES, Blob, PlannerSettings, PlanRequest
 from .service import PlanningService
 
 TERMINAL = {"feasible", "infeasible", "budget_exhausted", "cancelled", "worker_failed"}
@@ -63,7 +63,6 @@ class HTTPPlanningClient:
         self.identities = {}
         self.last_health = {}
         self.cursor = 0
-        from sim_engine.core.io import implementation_sources
 
         self.implementation_digest = fingerprint(implementation_sources())
 
@@ -201,7 +200,6 @@ async def wait_for_plan(client, job, cancel_requested):
 def install_result(folder, job, result):
     import re
 
-    from .contracts import OUTPUT_NAMES
 
     blobs = {name: Blob.model_validate(value) for name, value in result.get("artifacts", {}).items()}
     if sum(blob.size for blob in blobs.values()) > 128 * 1024**2:

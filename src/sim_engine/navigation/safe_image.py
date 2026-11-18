@@ -5,9 +5,10 @@ from collections import Counter
 
 import numpy as np
 
-from sim_engine.planning.context import checkpoint
+from sim_engine.navigation.budget import checkpoint
 
 from .limits import distance_allowed, validate_distance_limits
+from .visual_region import validate_bbox
 
 
 def depth_world(depth, intrinsics, sensor):
@@ -90,7 +91,6 @@ def safe_floor_mask(
         floor &= horizontal <= max_distance
     scope = {}
     if bbox is not None:
-        from .visual_region import validate_bbox
 
         x0, y0, x1, y1 = validate_bbox(bbox)
         height, width = depth.shape

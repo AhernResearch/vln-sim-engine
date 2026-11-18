@@ -625,7 +625,7 @@ def test_restart_never_replays_an_unsettled_claim(tmp_path):
     request = task("abandoned")
     cid = request["request_id"]
     folder = cfg.collection.root / "tasks" / cid
-    from sim_engine.collection.protocol import TaskRequest
+    from sim_engine.planning.tasks import TaskRequest
 
     create_json(folder / "request.json", TaskRequest.model_validate(request).model_dump(mode="json"))
     create_json(folder / "status.json", {"status": "executing"})

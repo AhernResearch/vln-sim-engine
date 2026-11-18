@@ -6,12 +6,13 @@ from threading import Event
 import numpy as np
 import pytest
 
-from sim_engine.collection.clearance import ClearanceError, ClearancePlanner, ClearanceProfile
-from sim_engine.collection.corridor import CorridorGeometry
 from sim_engine.core.io import implementation_sources
-from sim_engine.planning.context import PlanningContext, PlanningStopped
+from sim_engine.navigation.budget import PlanningContext, PlanningStopped
+from sim_engine.navigation.clearance import ClearancePlanner, ClearanceProfile
+from sim_engine.navigation.corridor import CorridorGeometry
+from sim_engine.navigation.errors import ClearanceError
+from sim_engine.navigation.native import native_search
 from sim_engine.planning.contracts import PlanningBudget, PlanningProfile
-from sim_engine.planning.native import native_search
 
 
 class Mesh:
@@ -34,7 +35,7 @@ def make_planner(**kw):
 
 @pytest.fixture
 def native():
-    return pytest.importorskip("sim_engine.planning._astar")
+    return pytest.importorskip("sim_engine.navigation._astar")
 
 
 @pytest.mark.parametrize("height", [0., .025, -.025, .075, -.075])
@@ -94,7 +95,7 @@ def test_native_per_search_limit_and_callback_errors_do_not_retry(native, monkey
 
 def test_mainline_defaults_match_and_missing_extension_fails_before_search(monkeypatch, tmp_path):
     from sim_engine.config import CURRENT_PLANNING_PROFILE, CollectionSettings
-    from sim_engine.planning import native as module
+    from sim_engine.navigation import native as module
 
     assert PlanningProfile().version == CURRENT_PLANNING_PROFILE == "collection-v5"
     assert CollectionSettings(root=tmp_path, training_datasets=["train"]).planning_profile_version == (
@@ -115,15 +116,17 @@ def test_mainline_defaults_match_and_missing_extension_fails_before_search(monke
 def test_collection_startup_rejects_missing_native_before_creating_attempts(tmp_path, monkeypatch):
     from helpers import settings
 
+    from sim_engine.collection import server
     from sim_engine.collection.server import CollectionService
     from sim_engine.config import CollectionSettings
-    from sim_engine.planning import native as module
+    from sim_engine.planning import service
     from sim_engine.planning.service import PlanningService
 
     def unavailable():
         raise RuntimeError("native unavailable")
 
-    monkeypatch.setattr(module, "require_native", unavailable)
+    for module in (server, service):
+        monkeypatch.setattr(module, "require_native", unavailable)
     config = settings(tmp_path)
     config.collection = CollectionSettings(root=tmp_path/"records", training_datasets=["train"])
     with pytest.raises(RuntimeError, match="native unavailable"):

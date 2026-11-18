@@ -16,11 +16,13 @@ from collections import Counter, deque
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
+from sim_engine.collection.protocol import StatusRequest
 from sim_engine.core.disk import AsyncDisk
 from sim_engine.core.http import service_app
-from sim_engine.core.io import create_json, read_json, replace_json
+from sim_engine.core.io import create_json, implementation_sources, read_json, replace_json
 from sim_engine.core.process import ProcessWorker, WorkerError
 from sim_engine.data import EpisodeStore, scene_path
+from sim_engine.navigation.native import require_native
 from sim_engine.planning.client import (
     HTTPPlanningClient,
     LocalPlanningClient,
@@ -28,10 +30,10 @@ from sim_engine.planning.client import (
     install_result,
     wait_for_plan,
 )
+from sim_engine.planning.tasks import RegionRequest, TaskRequest
 
 from .audit import audit_recording
 from .backend import CollectionActor, geometry_config
-from .protocol import RegionRequest, StatusRequest, TaskRequest
 
 
 def collection_key(request):
@@ -121,7 +123,6 @@ class CollectionService:
         if settings.collection is None:
             raise ValueError("collection service requires an explicit collection configuration")
         if settings.collection.planning_profile_version in {"collection-v4", "collection-v5"}:
-            from sim_engine.planning.native import require_native
 
             require_native()
         self.settings, self.store = settings, store
@@ -130,7 +131,6 @@ class CollectionService:
         self.root.mkdir(parents=True, exist_ok=True)
         self.instance_root = self.root / "instances" / self.owner
         code_root = Path(__file__).parent.parent
-        from sim_engine.core.io import implementation_sources
 
         self.source_sha256 = implementation_sources(code_root)
         create_json(
