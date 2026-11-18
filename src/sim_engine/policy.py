@@ -14,7 +14,9 @@ from pathlib import Path
 import httpx
 from PIL import Image
 
-from .data import model_identity, sha256
+from sim_engine.core.io import file_sha256
+
+from .data import model_identity
 from .outputs import parse_prediction
 from .prompt import PromptBuilder, native_chat_prompt, prepare_training_image
 from .protocol import RecordedGenerateRequest
@@ -189,7 +191,7 @@ class VllmPolicy:
             "prompt_profile": self.builder.profile,
             "stop_enabled": self.builder.stop_enabled,
             "implementation_sha256": {
-                name: sha256(Path(__file__).parent / name)
+                name: file_sha256(Path(__file__).parent / name)
                 for name in ("policy.py", "prompt.py", "outputs.py", "protocol.py", "config.py")
             },
             "processor_versions": {
@@ -210,7 +212,7 @@ class VllmPolicy:
             },
             "queue": self.queue.snapshot(),
             "prompt_hashes": {
-                name: sha256(self.builder.template_root / (name + ".jinja"))
+                name: file_sha256(self.builder.template_root / (name + ".jinja"))
                 for name in ("system", "user")
             },
         }

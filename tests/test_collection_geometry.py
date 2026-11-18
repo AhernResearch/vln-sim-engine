@@ -9,7 +9,7 @@ import pytest
 from PIL import Image
 
 from sim_engine.collection.region import preview_target
-from sim_engine.collection.storage import digest, read, write
+from sim_engine.core.io import create_json, file_sha256, read_json
 
 
 def test_scene_cache_reuses_entries_and_closes_only_the_lru_on_eviction(tmp_path, monkeypatch):
@@ -111,12 +111,12 @@ def test_production_observe_captures_rgb_depth_once_per_view_and_restores_headin
         {"task_id": "t"}, {"episode": episode, "yaw": 0.0}, tmp_path, capture_depth=True
     )
     assert len(renders) == 4 and not rotations
-    views = read(tmp_path / "view-sensors.json")
+    views = read_json(tmp_path / "view-sensors.json")
     for i, view in enumerate(("front", "right", "back", "left"), 1):
         with np.load(tmp_path / (view + "-depth.npz")) as data:
             assert np.all(data["depth_m"] == i)
         assert np.all(np.asarray(Image.open(tmp_path / (view + ".png"))) == i)
-        assert views[view]["depth_sha256"] == digest(tmp_path / (view + "-depth.npz"))
+        assert views[view]["depth_sha256"] == file_sha256(tmp_path / (view + "-depth.npz"))
     assert set(result) == {"instruction", "images"}
 
 
@@ -162,12 +162,12 @@ def test_executor_restores_prefetched_start_and_persists_intended_goal_before_mo
         },
         "yaw": 0.0,
     }
-    write(tmp_path / "start-state.json", prepared)
-    write(
+    create_json(tmp_path / "start-state.json", prepared)
+    create_json(
         tmp_path / "camera.json",
         {"sensors": {"depth": {"intrinsics_K": [[5, 0, 20], [0, 5, 20], [0, 0, 1]]}}},
     )
-    write(
+    create_json(
         tmp_path / "view-sensors.json",
         {"front": {"position": [0.0, 1.0, 0.0], "rotation_xyzw": [0.0, 0.0, 0.0, 1.0]}},
     )
@@ -180,7 +180,7 @@ def test_executor_restores_prefetched_start_and_persists_intended_goal_before_mo
 
     def rollout(candidate, state, folder, stop):
         assert restored == [[0.0, 0.0, 0.0]]
-        assert read(folder / "selected-goal.json")["position"] == goal
+        assert read_json(folder / "selected-goal.json")["position"] == goal
         assert actor_backend.config["max_steps"] == 170
         return {
             "passed": True,
@@ -211,11 +211,11 @@ def test_executor_restores_prefetched_start_and_persists_intended_goal_before_mo
     prepared.update(path=[[0, 0, 0], goal], requested_goal_position=goal,
                     goal_adjustment_m=0, endpoint_review_required=False,
                     execution_budget={"max_steps": 170})
-    write(tmp_path / "private-geometry.json", prepared)
-    write(tmp_path / "planning-result.json", {"result_digest": "f" * 64})
-    write(tmp_path / "execution-lease.json", {
+    create_json(tmp_path / "private-geometry.json", prepared)
+    create_json(tmp_path / "planning-result.json", {"result_digest": "f" * 64})
+    create_json(tmp_path / "execution-lease.json", {
         "identity": "a" * 32, "task_id": "a" * 64,
-        "plan_digest": "f" * 64, "prepared_sha256": digest(tmp_path / "private-geometry.json"),
+        "plan_digest": "f" * 64, "prepared_sha256": file_sha256(tmp_path / "private-geometry.json"),
         "runtime": {"habitat_sim": "test", "numpy": np.__version__},
         "navmesh_sha256": hashlib.sha256(b"test").hexdigest(),
     })
@@ -244,7 +244,7 @@ def test_executor_restores_prefetched_start_and_persists_intended_goal_before_mo
         SimpleNamespace(is_set=lambda: False),
     )
     assert result["status"] == "geometry_complete"
-    assert read(tmp_path / "selected-goal.json")["source"] == "planned_before_movement"
+    assert read_json(tmp_path / "selected-goal.json")["source"] == "planned_before_movement"
 
 
 def test_native_environment_reuses_only_compatible_scene_camera_and_physics(tmp_path, monkeypatch):

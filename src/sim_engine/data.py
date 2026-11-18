@@ -1,30 +1,14 @@
 from __future__ import annotations
 
-import gzip
-import hashlib
-import json
 from pathlib import Path
 
 from .config import Dataset, Settings
-
-
-def sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(8 << 20), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
-def json_file(path: Path):
-    opener = gzip.open if path.suffix == ".gz" else open
-    with opener(path, "rt") as stream:
-        return json.load(stream)
+from .core.io import file_sha256, read_json
 
 
 def dataset_rows(dataset: Dataset) -> list[dict]:
     """Episodes of one dataset, narrowed to the configured instruction language."""
-    rows = json_file(dataset.episodes)["episodes"]
+    rows = read_json(dataset.episodes)["episodes"]
     if dataset.language:
         rows = [
             row
@@ -53,7 +37,7 @@ class EpisodeStore:
         self.scene_hashes = {}
         for name, dataset in settings.simulation.datasets.items():
             scene_hashes = self.scene_hashes[name] = {}
-            references = json_file(dataset.reference_paths) if dataset.reference_paths else None
+            references = read_json(dataset.reference_paths) if dataset.reference_paths else None
             records = {}
             for row in dataset_rows(dataset):
                 row["_dataset"] = name
@@ -71,9 +55,9 @@ class EpisodeStore:
                     if scene.manifest:
                         scene_hashes[row["scene_id"]] = scene.assets
                     else:
-                        scene_hashes.update({row["scene_id"]: sha256(scene.render),
+                        scene_hashes.update({row["scene_id"]: file_sha256(scene.render),
                                              str(Path(row["scene_id"]).with_suffix(".navmesh")):
-                                             sha256(scene.navmesh)})
+                                             file_sha256(scene.navmesh)})
                 row["_task"] = dataset.task
                 if dataset.task == "development" and row.get("goals"):
                     raise ValueError("development episodes must not contain scoring goals")
@@ -84,8 +68,8 @@ class EpisodeStore:
             self.metadata[name] = {
                 "task": dataset.task,
                 "episodes": len(records),
-                "annotations_sha256": sha256(dataset.episodes),
-                "reference_sha256": sha256(dataset.reference_paths) if references else None,
+                "annotations_sha256": file_sha256(dataset.episodes),
+                "reference_sha256": file_sha256(dataset.reference_paths) if references else None,
                 "physics": dataset.physics.model_dump(),
                 "ndtw_reference": "explicit_gt_locations" if references is not None else "unavailable",
             }
@@ -100,6 +84,6 @@ def model_identity(root: Path):
         raise ValueError("checkpoint has no safetensors weights")
     return {
         "directory": str(root.resolve()),
-        "weights": [{"file": p.name, "bytes": p.stat().st_size, "sha256": sha256(p)} for p in weights],
-        "processor_files": {p.name: sha256(p) for p in sorted(root.glob("*.json"))},
+        "weights": [{"file": p.name, "bytes": p.stat().st_size, "sha256": file_sha256(p)} for p in weights],
+        "processor_files": {p.name: file_sha256(p) for p in sorted(root.glob("*.json"))},
     }

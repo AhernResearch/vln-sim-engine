@@ -19,7 +19,6 @@ from PIL import Image
 from planning_fakes import fake_audit, fake_local_client
 
 from sim_engine.collection.server import CollectionService, create_app
-from sim_engine.collection.storage import digest, read, write
 from sim_engine.config import (
     CollectionScene,
     CollectionSceneBudget,
@@ -28,6 +27,7 @@ from sim_engine.config import (
     Physics,
     VelocityLimits,
 )
+from sim_engine.core.io import create_json, file_sha256, read_json
 
 
 @pytest.fixture(autouse=True)
@@ -57,21 +57,21 @@ class FakeActor:
         if request["kind"] == "short_instructions":
             prepared = {"episode": {k: request[k] for k in
                         ["start_position", "start_rotation", "scene_id"]}, "yaw": 0}
-            write(folder / "start-state.json", prepared)
-        write(folder / "camera.json", {})
+            create_json(folder / "start-state.json", prepared)
+        create_json(folder / "camera.json", {})
         views = {}
         for view in ("front", "right", "back", "left"):
             depth = folder / (view + "-depth.npz")
             np.savez_compressed(depth, depth_m=np.ones((32, 32), dtype=np.float32))
-            views[view] = {"depth_sha256": digest(depth)}
-        write(folder / "view-sensors.json", views)
+            views[view] = {"depth_sha256": file_sha256(depth)}
+        create_json(folder / "view-sensors.json", views)
         for view in ("front", "right", "back", "left"):
             path = folder / (view + ".png")
             Image.new("RGB", (32, 32), (self.observed, 0, 0)).save(path)
-            public["images"][view] = {"path": str(path), "sha256": digest(path)}
+            public["images"][view] = {"path": str(path), "sha256": file_sha256(path)}
         if request["kind"] == "r2r_chunks":
             public["instruction"] = request["instruction"]
-        write(
+        create_json(
             folder / "observed.json",
             {"loads": self.loads, "observed": self.observed, "pid": os.getpid()},
         )
@@ -82,12 +82,12 @@ class FakeActor:
     def execute(self, request, folder, target, stop):
         assert (folder / "observation-ready.json").exists()
         if request["kind"] == "short_instructions":
-            assert target == read(folder / "target.json")
-        write(folder / "movement-attempted.json", {"source": "fake_physics"})
+            assert target == read_json(folder / "target.json")
+        create_json(folder / "movement-attempted.json", {"source": "fake_physics"})
         if request["instruction"] == "crash":
             os._exit(74)
         time.sleep(0.02)
-        write(folder / "fake-execution.json", {"pid": os.getpid(), "loads": self.loads})
+        create_json(folder / "fake-execution.json", {"pid": os.getpid(), "loads": self.loads})
         return {"status": "completed_audit", "geometry": {"passed": True, "source": "fake_physics"}}
 
     def close(self):
@@ -183,7 +183,7 @@ def test_blocked_claim_keeps_health_responsive_and_duplicate_does_not_replay(tmp
     cfg = config(tmp_path)
     request = task("blocked-claim")
     entered, release = Event(), Event()
-    original = server.write
+    original = server.create_json
     writes = []
 
     def blocked(path, value):
@@ -194,7 +194,7 @@ def test_blocked_claim_keeps_health_responsive_and_duplicate_does_not_replay(tmp
         original(path, value)
 
     with TestClient(app(cfg)) as client, ThreadPoolExecutor(max_workers=3) as calls:
-        monkeypatch.setattr(server, "write", blocked)
+        monkeypatch.setattr(server, "create_json", blocked)
         first = calls.submit(client.post, "/v1/collections", json=request)
         try:
             assert entered.wait(2)
@@ -220,7 +220,7 @@ def test_blocked_terminal_receipt_does_not_publish_success_before_durable_write(
     cfg = config(tmp_path)
     request = task("blocked-receipt")
     entered, release = Event(), Event()
-    original = server.write
+    original = server.create_json
 
     def blocked(path, value):
         if path.name == "receipt.json":
@@ -229,7 +229,7 @@ def test_blocked_terminal_receipt_does_not_publish_success_before_durable_write(
         original(path, value)
 
     with TestClient(app(cfg)) as client, ThreadPoolExecutor(max_workers=1) as calls:
-        monkeypatch.setattr(server, "write", blocked)
+        monkeypatch.setattr(server, "create_json", blocked)
         client.post("/v1/collections", json=request)
         wait(client, request["request_id"], {"observation_ready"})
         client.post("/v1/collections/" + request["request_id"] + "/target", json=TARGET)
@@ -328,7 +328,7 @@ def test_rolling_budget_waits_for_target_and_drains_independently_before_rebindi
         assert health["worker_state"][1]["scene_binding"][1] == "c.glb"
         assert client.post("/v1/collections", json=c).status_code == 200
         ready = wait(client, c["request_id"], {"observation_ready"})
-        assert read(Path(ready["output"]) / "observed.json")["pid"] == original[1]["pid"]
+        assert read_json(Path(ready["output"]) / "observed.json")["pid"] == original[1]["pid"]
         client.delete("/v1/collections/" + c["request_id"])
         assert client.post("/v1/collections", json=d).status_code == 200
         wait(client, d["request_id"], {"observation_ready"})
@@ -345,7 +345,7 @@ def test_rolling_budget_waits_for_target_and_drains_independently_before_rebindi
         assert [w["pid"] for w in health["worker_state"]] == [w["pid"] for w in original]
         assert health["scene_schedule"][0]["claimed"] == 2
         history = list((cfg.collection.root / "instances").glob("*/workers/1/bindings/*.json"))
-        assert len(history) == 2 and read(history[0])["reason"] == "scene_budget_drained"
+        assert len(history) == 2 and read_json(history[0])["reason"] == "scene_budget_drained"
 
 
 @pytest.mark.parametrize(
@@ -424,7 +424,7 @@ def test_fixed_workers_keep_scene_ownership_across_prefetch_and_reverse_target_a
             assert client.post("/v1/collections", json=request).status_code == 200
         for request in requests:
             ready = wait(client, request["request_id"], {"observation_ready"})
-            observed = read(Path(ready["output"]) / "observed.json")
+            observed = read_json(Path(ready["output"]) / "observed.json")
             assert observed["loads"] == 1
             scene_pids.setdefault(request["scene_id"], set()).add(observed["pid"])
             observations[request["request_id"]] = (ready, observed)
@@ -437,7 +437,7 @@ def test_fixed_workers_keep_scene_ownership_across_prefetch_and_reverse_target_a
             cid = request["request_id"]
             result = wait(client, cid, {"completed_audit"})
             assert (
-                read(Path(result["output"]) / "fake-execution.json")["pid"]
+                read_json(Path(result["output"]) / "fake-execution.json")["pid"]
                 == observations[cid][1]["pid"]
             )
         health = client.get("/v1/health").json()
@@ -561,7 +561,7 @@ def test_prefetch_releases_worker_and_warm_scene_survives_across_independent_bat
         # All four observations finish without any model response, with only one worker.
         ready = [wait(client, r["request_id"], {"observation_ready"}) for r in requests]
         assert all(not (Path(r["output"]) / "movement-attempted.json").exists() for r in ready)
-        rows = [read(Path(r["output"]) / "observed.json") for r in ready]
+        rows = [read_json(Path(r["output"]) / "observed.json") for r in ready]
         assert {r["loads"] for r in rows} == {1}
         assert len({r["pid"] for r in rows}) == 1
         for request in reversed(requests):
@@ -570,16 +570,16 @@ def test_prefetch_releases_worker_and_warm_scene_survives_across_independent_bat
             receipt = wait(client, cid, {"completed_audit"})
             assert receipt["training_admission"] == "pending_review"
             original = Path(receipt["output"]) / "receipt.json"
-            old_hash = digest(original)
+            old_hash = file_sha256(original)
             assert (
                 client.post(f"/v1/collections/{cid}/target", json=TARGET).json()["status"]
                 == "completed_audit"
             )
-            assert digest(original) == old_hash
+            assert file_sha256(original) == old_hash
         later = task("next-batch")
         client.post("/v1/collections", json=later)
         result = wait(client, later["request_id"], {"observation_ready"})
-        assert read(Path(result["output"]) / "observed.json")["loads"] == 1
+        assert read_json(Path(result["output"]) / "observed.json")["loads"] == 1
         assert (
             client.delete("/v1/collections/" + later["request_id"]).json()["status"]
             == "cancelled_before_movement"
@@ -618,7 +618,7 @@ def test_r2r_execution_overlaps_annotation_and_new_session_uses_same_worker(tmp_
             result = wait(client, request["request_id"], {"completed_audit"})
             assert result["public"]["instruction"] == "go"
             assert not {"goal_position", "reference_guides", "start_position"} & result["public"].keys()
-            assert read(Path(result["output"]) / "fake-execution.json")["loads"] == 1
+            assert read_json(Path(result["output"]) / "fake-execution.json")["loads"] == 1
 
 
 def test_restart_never_replays_an_unsettled_claim(tmp_path):
@@ -628,8 +628,8 @@ def test_restart_never_replays_an_unsettled_claim(tmp_path):
     folder = cfg.collection.root / "tasks" / cid
     from sim_engine.collection.protocol import TaskRequest
 
-    write(folder / "request.json", TaskRequest.model_validate(request).model_dump(mode="json"))
-    write(folder / "status.json", {"status": "executing"})
+    create_json(folder / "request.json", TaskRequest.model_validate(request).model_dump(mode="json"))
+    create_json(folder / "status.json", {"status": "executing"})
     with TestClient(app(cfg)) as client:
         result = client.post("/v1/collections", json=request)
         assert result.status_code == 200

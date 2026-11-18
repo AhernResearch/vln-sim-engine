@@ -11,10 +11,10 @@ import pytest
 from fastapi.testclient import TestClient
 from planning_fakes import FakePlanningEngine
 
-from sim_engine.collection.storage import digest
+from sim_engine.core.io import file_sha256, fingerprint
 from sim_engine.planning.client import HTTPPlanningClient, wait_for_plan
 from sim_engine.planning.context import PlanningContext, PlanningStopped, checkpoint
-from sim_engine.planning.contracts import Blob, PlannerSettings, PlanningBudget, PlanRequest, fingerprint
+from sim_engine.planning.contracts import Blob, PlannerSettings, PlanningBudget, PlanRequest
 from sim_engine.planning.service import create_app
 
 
@@ -24,7 +24,7 @@ def config(tmp_path):
     return PlannerSettings(root=tmp_path / "planner", workers=1, capacity=2,
                            hard_timeout_grace_s=0.1,
                            assets=[dict(dataset="train", scene_id="scene.glb", path=mesh,
-                                        sha256=digest(mesh))])
+                                        sha256=file_sha256(mesh))])
 
 
 def job(cfg, instruction="go", **budget):
@@ -53,7 +53,7 @@ def test_blocked_plan_claim_keeps_health_responsive_and_duplicate_claim_unique(t
     cfg = config(tmp_path)
     value = job(cfg)
     entered, release = Event(), Event()
-    original = service.write
+    original = service.create_json
     writes = []
 
     def blocked(path, document):
@@ -64,7 +64,7 @@ def test_blocked_plan_claim_keeps_health_responsive_and_duplicate_claim_unique(t
         original(path, document)
 
     with TestClient(create_app(cfg, engine_factory=FakePlanningEngine)) as client, ThreadPoolExecutor(max_workers=3) as calls:
-        monkeypatch.setattr(service, "write", blocked)
+        monkeypatch.setattr(service, "create_json", blocked)
         first = calls.submit(client.post, "/v1/plans", json=value.model_dump(mode="json"))
         try:
             assert entered.wait(2)
@@ -92,12 +92,12 @@ def test_fault_isolated_to_one_attempt_capacity_replaced_without_replay(tmp_path
         bad = wait(client, first.attempt_id)
         assert bad["status"] == expected
         receipt = cfg.root / "attempts" / first.attempt_id / "result.json"
-        before = digest(receipt)
+        before = file_sha256(receipt)
         assert client.post("/v1/plans", json=first.model_dump(mode="json")).json() == bad
         second = job(cfg)
         client.post("/v1/plans", json=second.model_dump(mode="json"))
         assert wait(client, second.attempt_id)["status"] == "feasible"
-        assert digest(receipt) == before
+        assert file_sha256(receipt) == before
         assert not list(cfg.root.rglob("movement-attempted.json"))
 
 
@@ -196,9 +196,9 @@ async def test_remote_shutdown_cancels_only_bound_attempts_and_keeps_endpoint_ev
     await client.submit(value)
     evidence = list((tmp_path / "collection-task/planning-endpoints").glob("*.json"))
     assert len(evidence) == 1
-    from sim_engine.collection.storage import read
-    assert read(evidence[0])["attempt_id"] == value.attempt_id
-    assert read(evidence[0])["endpoint"] == "http://planner"
+    from sim_engine.core.io import read_json
+    assert read_json(evidence[0])["attempt_id"] == value.attempt_id
+    assert read_json(evidence[0])["endpoint"] == "http://planner"
     await client.close()
     assert [path for method, path in calls if method == "DELETE"] == ["/v1/plans/" + value.attempt_id]
     assert not client.bindings and not client.evidence

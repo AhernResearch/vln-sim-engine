@@ -4,7 +4,9 @@ import math
 import uuid
 from pathlib import Path
 
-from .scan_assets import asset_path, sha256, verify_manifest, write_json
+from sim_engine.core.io import create_json, file_sha256
+
+from .scan_assets import asset_path, verify_manifest
 
 # Fixed Recast resolution and climb limits; agent geometry is a bake argument.
 NAVMESH_SETTINGS = {"agent_max_climb": 0.2, "agent_max_slope": 45.0,
@@ -77,14 +79,14 @@ def bake(manifest_path, agent_radius_m=0.18, agent_height_m=1.5):
             {"episode_id": "scan-dev-0", "scene_id": manifest["scene_id"],
              "start_position": start, "start_rotation": [0, 0, 0, 1],
              "instruction": {"instruction_text": "Observe the surroundings, explore a short clear section of the corridor, then stop."}}]}
-        write_json(destination / "episodes.json", episodes)
-        receipt = {"schema": "open_nav_scan_navigation_v1", "source_manifest_sha256": sha256(path),
+        create_json(destination / "episodes.json", episodes)
+        receipt = {"schema": "open_nav_scan_navigation_v1", "source_manifest_sha256": file_sha256(path),
                    "owner": uuid.uuid4().hex, "purpose": "development", "geometry_review": "required",
                    "settings": frozen, "habitat_version": habitat_sim.__version__,
                    "navigable_area_m2": float(sim.pathfinder.navigable_area),
                    **start_diagnostics,
-                   "assets": {key: {"path": name, "sha256": sha256(destination / name)}
+                   "assets": {key: {"path": name, "sha256": file_sha256(destination / name)}
                               for key, name in (("navmesh", "scene.navmesh"), ("episodes", "episodes.json"))}}
-        write_json(destination / "receipt.json", receipt)
+        create_json(destination / "receipt.json", receipt)
     return receipt
 

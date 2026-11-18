@@ -3,7 +3,7 @@
 import os
 import time
 
-from sim_engine.collection.storage import read, write
+from sim_engine.core.io import create_json, read_json
 from sim_engine.planning.context import PlanningContext, checkpoint
 from sim_engine.planning.contracts import Blob
 
@@ -40,10 +40,10 @@ class FakePlanningEngine:
             "goal_adjustment_m": 0, "endpoint_review_required": False,
         }
         names = ["private-geometry.json"]
-        write(folder / "private-geometry.json", prepared)
+        create_json(folder / "private-geometry.json", prepared)
         if job.task.kind == "r2r_chunks":
             names.append("start-state.json")
-            write(folder / "start-state.json", prepared)
+            create_json(folder / "start-state.json", prepared)
         return {"outcome": "feasible", "prepared": prepared, "artifacts": {
             name: Blob.encode((folder / name).read_bytes(), name).model_dump(mode="json")
             for name in names}}
@@ -55,5 +55,5 @@ def fake_local_client(settings, store, root):
 
 
 def fake_audit(request, folder, target, result):
-    assert read(folder / "fake-execution.json")
+    assert read_json(folder / "fake-execution.json")
     return dict(result, status="completed_audit")

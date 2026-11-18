@@ -188,9 +188,9 @@ class HabitatEnvironment:
         if not hasattr(self, "_identity"):
             from habitat_sim._ext import habitat_sim_bindings
 
-            from sim_engine.data import sha256
+            from sim_engine.core.io import file_sha256
 
-            bindings = sha256(Path(habitat_sim_bindings.__file__))
+            bindings = file_sha256(Path(habitat_sim_bindings.__file__))
             self._identity = {"backend": self.settings.simulation.backend,
                               "habitat_version": self.hs.__version__,
                               "bindings_sha256": bindings, "depth_source": self.depth_source,
@@ -293,7 +293,7 @@ class GaussianEnvironment(HabitatEnvironment):
 
     def depth_contract(self, bindings_sha256):
         """Metric depth is admitted only with a passed report for this exact binding."""
-        from sim_engine.data import sha256
+        from sim_engine.core.io import file_sha256
 
         path = self.settings.simulation.depth_validation
         if path is None:
@@ -305,4 +305,4 @@ class GaussianEnvironment(HabitatEnvironment):
                 or report.get("depth_units") != "meters"):
             raise ValueError("depth validation does not match this runtime")
         return {"depth_convention": report["depth_convention"],
-                "depth_validation_sha256": sha256(path)}
+                "depth_validation_sha256": file_sha256(path)}

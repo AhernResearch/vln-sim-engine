@@ -15,10 +15,10 @@ from dataclasses import asdict, dataclass
 
 import numpy as np
 
+from sim_engine.core.cache import MISSING, BoundedMemo
 from sim_engine.planning.context import checkpoint
 
 from .corridor import CorridorGeometry
-from .query_cache import MISSING, BoundedMemo
 
 
 @dataclass(frozen=True)

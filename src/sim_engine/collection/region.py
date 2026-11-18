@@ -4,11 +4,12 @@ import math
 
 import numpy as np
 
+from sim_engine.core.io import create_json
+
 from .guidance import plan_with_preferences
 from .limits import execution_budget
 from .region_selection import select_region_plan
 from .safe_image import safe_floor_mask
-from .storage import write
 from .tracking import preview
 from .visual_region import project_world, sample_region
 
@@ -67,7 +68,7 @@ def ground_region(backend, task, depth, camera, views, start, folder, config, ep
         with (folder / "visible-floor-mask.npz").open("xb") as f:
             np.savez_compressed(f, safe_mask=mask, navmesh_points=visible_goals,
                                 clearance_m=clearance, **extra)
-        write(folder / "visible-floor-mask.json", stats)
+        create_json(folder / "visible-floor-mask.json", stats)
         yy, xx = np.indices(mask.shape)
         x0, y0, x1, y1 = task["bbox"]
         inside = (
@@ -98,7 +99,7 @@ def ground_region(backend, task, depth, camera, views, start, folder, config, ep
         min_distance=config.get("min_local_geodesic_m", 0.0),
         safe_mask=mask,
     )
-    write(folder / "region-candidates.json", region)
+    create_json(folder / "region-candidates.json", region)
     selection = select_region_plan(
         region,
         mesh=backend.pf,
@@ -125,7 +126,7 @@ def ground_region(backend, task, depth, camera, views, start, folder, config, ep
         adjustments_per_candidate=config.get("region_adjustments_per_candidate", 4),
         target_valid=target_valid,
     )
-    write(folder / "region-selection.json", selection)
+    create_json(folder / "region-selection.json", selection)
     if selection["status"] != "feasible":
         raise ValueError(selection["reason"])
     candidate = selection["selected"]

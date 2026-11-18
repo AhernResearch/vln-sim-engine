@@ -9,7 +9,7 @@ import magnum as mn
 import numpy as np
 
 from sim_engine.backends.habitat import GaussianEnvironment
-from sim_engine.scan_assets import sha256
+from sim_engine.core.io import file_sha256
 
 
 def main():
@@ -59,7 +59,7 @@ def main():
     from habitat_sim._ext import habitat_sim_bindings
     report = {'passed': all(s['passed'] for s in samples), 'samples': samples,
               'depth_convention': 'axial_minus_camera_z', 'depth_units': 'meters',
-              'bindings_sha256': sha256(habitat_sim_bindings.__file__),
+              'bindings_sha256': file_sha256(habitat_sim_bindings.__file__),
               'geometry_accuracy_review': 'required'}
     (args.output / 'receipt.json').write_text(json.dumps(report, indent=2))
     print(json.dumps(report, indent=2))

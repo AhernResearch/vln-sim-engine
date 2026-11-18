@@ -7,10 +7,9 @@ import random
 import uuid
 from pathlib import Path
 
-from sim_engine.data import EpisodeStore, sha256
+from sim_engine.core.io import create_json, file_sha256
+from sim_engine.data import EpisodeStore
 from sim_engine.scenes import resolve_scene
-
-from .storage import write
 
 MIN_CLEARANCE_M = 0.15
 MIN_ISLAND_AREA_M2 = 2.0
@@ -87,7 +86,7 @@ def build_pool(settings, config_sha256, dataset, camera, output: Path, owner, *,
     store = EpisodeStore(settings)
     scenes = sorted({r["scene_id"] for r in store.rows[dataset].values()})
     output.mkdir(parents=True, exist_ok=False)
-    write(output / "owner.json", {"owner": owner, "scope": "train_navmesh_start_pool",
+    create_json(output / "owner.json", {"owner": owner, "scope": "train_navmesh_start_pool",
                                   "config_sha256": config_sha256, "model_requests": 0,
                                   "movement_commands": 0})
     finders = []
@@ -103,13 +102,13 @@ def build_pool(settings, config_sha256, dataset, camera, output: Path, owner, *,
     for i, ((scene, navmesh, pf), goal, area) in enumerate(zip(finders, goals, areas)):
         cap = math.ceil(goal * attempt_factor)
         pool = output / f"scene-{i:03d}.json"
-        write(pool, {"owner": owner, "scene_id": scene, "seed": seed + i,
-                     "navmesh_sha256": sha256(navmesh), "minimum_clearance_m": MIN_CLEARANCE_M,
+        create_json(pool, {"owner": owner, "scene_id": scene, "seed": seed + i,
+                     "navmesh_sha256": file_sha256(navmesh), "minimum_clearance_m": MIN_CLEARANCE_M,
                      "minimum_island_area_m2": MIN_ISLAND_AREA_M2, "pose_cell_m": POSE_CELL_M,
                      "yaw_bins": YAW_BINS, "poses": sample(pf, cap, seed + i)})
         rows.append({"dataset": dataset, "scene_id": scene, "camera": camera, "success_goal": goal,
                      "attempts": cap, "eligible_navmesh_area_m2": area, "pool": pool.name,
-                     "pool_sha256": sha256(pool)})
+                     "pool_sha256": file_sha256(pool)})
     manifest = {
         "owner": owner, "split": "train", "total_success_goal": sum(goals),
         "total_attempt_cap": sum(r["attempts"] for r in rows),
@@ -118,5 +117,5 @@ def build_pool(settings, config_sha256, dataset, camera, output: Path, owner, *,
         "scenes": rows, "dataset_identity": store.scene_hashes[dataset],
         "habitat_version": hs.__version__, "model_requests": 0, "movement_commands": 0,
     }
-    write(output / "manifest.json", manifest)
+    create_json(output / "manifest.json", manifest)
     return {key: manifest[key] for key in ("total_success_goal", "total_attempt_cap")}

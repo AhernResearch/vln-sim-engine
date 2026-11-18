@@ -6,8 +6,9 @@ import os
 import shutil
 from pathlib import Path
 
-from .atomic import atomic_json
-from .data import dataset_rows, scene_path, sha256
+from sim_engine.core.io import file_sha256, replace_json
+
+from .data import dataset_rows, scene_path
 from .habitat import HABITAT_VERSION, HabitatEnvironment
 
 
@@ -27,7 +28,7 @@ def prepare_navmeshes(settings, name, source_root: Path, output: Path):
     evidence = {
         "habitat_version": HABITAT_VERSION,
         "dataset": name,
-        "annotations_sha256": sha256(dataset.episodes),
+        "annotations_sha256": file_sha256(dataset.episodes),
         "physics": physics.model_dump(),
         "scenes": {},
     }
@@ -50,9 +51,9 @@ def prepare_navmeshes(settings, name, source_root: Path, output: Path):
             if not env.sim.pathfinder.save_nav_mesh(str(target)):
                 raise RuntimeError("failed to save derived navmesh: " + scene)
             evidence["scenes"][scene] = {
-                "geometry_sha256": sha256(source),
-                "source_navmesh_sha256": sha256(source.with_suffix(".navmesh")),
-                "derived_navmesh_sha256": sha256(target),
+                "geometry_sha256": file_sha256(source),
+                "source_navmesh_sha256": file_sha256(source.with_suffix(".navmesh")),
+                "derived_navmesh_sha256": file_sha256(target),
                 "settings": {
                     key: getattr(mesh, key)
                     for key in dir(mesh)
@@ -62,7 +63,7 @@ def prepare_navmeshes(settings, name, source_root: Path, output: Path):
             print("Prepared " + scene, flush=True)
     finally:
         env.close()
-    atomic_json(output / "navmesh-provenance.json", evidence)
+    replace_json(output / "navmesh-provenance.json", evidence)
     return evidence
 
 

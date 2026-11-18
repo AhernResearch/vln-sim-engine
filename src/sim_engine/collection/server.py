@@ -7,7 +7,6 @@ Workers perform whole observation/execution operations and are never auto-restar
 from __future__ import annotations
 
 import asyncio
-import hashlib
 import json
 import multiprocessing as mp
 import os
@@ -22,7 +21,7 @@ from pathlib import Path
 from fastapi import FastAPI
 
 from sim_engine.async_io import AsyncDisk
-from sim_engine.atomic import atomic_json
+from sim_engine.core.io import create_json, read_json, replace_json
 from sim_engine.data import EpisodeStore, scene_path
 from sim_engine.planning.client import (
     HTTPPlanningClient,
@@ -36,13 +35,6 @@ from sim_engine.pool import WorkerError
 from .audit import audit_recording
 from .backend import CollectionActor, geometry_config
 from .protocol import RegionRequest, StatusRequest, TaskRequest
-from .storage import read, write
-
-
-def fingerprint(value):
-    return hashlib.sha256(
-        json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()
-    ).hexdigest()
 
 
 def collection_key(request):
@@ -94,7 +86,7 @@ class ActorWorker:
         self.gpu = gpu
         self.folder = folder
         self.binding_generation = 0
-        write(
+        create_json(
             folder / "ownership.json",
             {
                 "owner": owner,
@@ -111,7 +103,7 @@ class ActorWorker:
         )
         self.process.start()
         child.close()
-        write(
+        create_json(
             folder / "process.json", {"owner": owner, "instance": self.instance, "pid": self.process.pid}
         )
         self.executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="collection-rpc")
@@ -127,7 +119,7 @@ class ActorWorker:
         if self.current is not None:
             raise RuntimeError("cannot rebind a busy collection worker")
         generation = self.binding_generation + 1
-        await disk.run(write,
+        await disk.run(create_json,
             self.folder / "bindings" / f"{generation:06d}.json",
             {
                 "instance": self.instance,
@@ -217,7 +209,7 @@ class CollectionService:
         from sim_engine.planning.implementation import implementation_sources
 
         self.source_sha256 = implementation_sources(code_root)
-        write(
+        create_json(
             self.instance_root / "ownership.json",
             {
                 "owner": self.owner,
@@ -342,7 +334,7 @@ class CollectionService:
         if not folder.exists():
             raise WorkerError(404, "unknown collection task")
         if (folder / "receipt.json").exists():
-            return read(folder / "receipt.json")
+            return read_json(folder / "receipt.json")
         return {
             "request_id": cid,
             "status": "failed_or_uncertain",
@@ -364,7 +356,7 @@ class CollectionService:
         return result
 
     async def _persist(self, state):
-        await self.disk.run(atomic_json, state["folder"] / "status.json", self._view(state))
+        await self.disk.run(replace_json, state["folder"] / "status.json", self._view(state))
 
     async def _finish(self, state, result):
         cid = state["request"]["request_id"]
@@ -374,7 +366,7 @@ class CollectionService:
             training_admission="pending_review",
             cancel_requested=state.get("cancel_requested", False),
         )
-        await self.disk.run(write, state["folder"] / "receipt.json", receipt)
+        await self.disk.run(create_json, state["folder"] / "receipt.json", receipt)
         self.observations = deque(i for i in self.observations if i != cid)
         self.executions = deque(i for i in self.executions if i != cid)
         self.planning = deque(i for i in self.planning if i != cid)
@@ -392,7 +384,7 @@ class CollectionService:
         async with self.condition:
             if await self.disk.run(folder.exists):
                 try:
-                    old = await self.disk.run(read, folder / "request.json")
+                    old = await self.disk.run(read_json, folder / "request.json")
                 except (OSError, ValueError) as error:
                     raise WorkerError(
                         409, "partial collection claim; manual inspection required"
@@ -447,8 +439,8 @@ class CollectionService:
             self.active[cid] = state
             try:
                 await self.disk.run(lambda: folder.mkdir(parents=True))
-                await self.disk.run(write, folder / "request.json", value)
-                await self.disk.run(write,
+                await self.disk.run(create_json, folder / "request.json", value)
+                await self.disk.run(create_json,
                     folder / "lease.json",
                     {
                         "owner": value["owner"],
@@ -477,7 +469,7 @@ class CollectionService:
             path = folder / "target.json"
             value = target.model_dump(mode="json")
             if await self.disk.run(path.exists):
-                if await self.disk.run(read, path) != value:
+                if await self.disk.run(read_json, path) != value:
                     raise WorkerError(409, "collection target is already frozen")
                 return await self.status(cid)
             state = self.active.get(cid)
@@ -487,7 +479,7 @@ class CollectionService:
                 or state["request"]["kind"] != "short_instructions"
             ):
                 raise WorkerError(409, "task is not awaiting a free-region target")
-            await self.disk.run(write, path, value)
+            await self.disk.run(create_json, path, value)
             state.update(status="queued_planning", target=value)
             await self._persist(state)
             self.planning.append(cid)
@@ -586,7 +578,7 @@ class CollectionService:
                             self.condition.notify_all()
                             continue
                         state["public"] = result["public"]
-                        await self.disk.run(write, state["folder"] / "observation-ready.json", result)
+                        await self.disk.run(create_json, state["folder"] / "observation-ready.json", result)
                         if state.get("cancel_requested"):
                             await self._finish(state, {"status": "cancelled_before_movement"})
                         elif state["request"]["kind"] == "r2r_chunks":
@@ -645,7 +637,7 @@ class CollectionService:
                                               state["folder"], state.get("target"))
                 state["planning_job"] = job
                 self.planner.prepare(job, state["folder"])
-                await self.disk.run(write, state["folder"] / "planning-claim.json", {
+                await self.disk.run(create_json, state["folder"] / "planning-claim.json", {
                     "attempt_id": job.attempt_id, "input_digest": job.digest(),
                     "automatic_replay": False,
                 })

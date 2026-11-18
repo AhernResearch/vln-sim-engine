@@ -12,15 +12,10 @@ from pydantic import Field, model_validator
 
 from sim_engine.collection.protocol import RegionRequest, TaskRequest
 from sim_engine.config import CURRENT_PLANNING_PROFILE, Camera, PlanningVersion, StrictModel
+from sim_engine.core.io import fingerprint
 
 Digest = Annotated[str, Field(pattern=r"^[a-f0-9]{64}$")]
 Identity = Annotated[str, Field(pattern=r"^[a-f0-9]{32}$")]
-
-
-def fingerprint(value):
-    return hashlib.sha256(json.dumps(
-        value, sort_keys=True, separators=(",", ":"), allow_nan=False
-    ).encode()).hexdigest()
 
 
 class Blob(StrictModel):

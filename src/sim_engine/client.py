@@ -11,7 +11,7 @@ from pathlib import Path
 
 import httpx
 
-from .atomic import atomic_json
+from sim_engine.core.io import replace_json
 
 
 def history_indices(anchor):
@@ -172,7 +172,7 @@ async def rollout(
         manifest = output / "run.json"
         if manifest.exists() and json.loads(manifest.read_text()) != run:
             raise ValueError("resume model/config/assets mismatch")
-        atomic_json(manifest, run)
+        replace_json(manifest, run)
         semaphore = asyncio.Semaphore(concurrency)
 
         async def one(key):
@@ -185,7 +185,7 @@ async def rollout(
                     return record
                 result = await client.run_episode(dataset, str(key), camera, seed, max_plans)
                 result["fingerprint"] = run["fingerprint"]
-                atomic_json(path, result)
+                replace_json(path, result)
                 print(json.dumps({"episode": key, "termination": result["termination"]}), flush=True)
                 return result
 
@@ -212,7 +212,7 @@ async def rollout(
                 for name in sorted({r["termination"] for r in records})
             },
         }
-        atomic_json(output / "summary.json", summary)
+        replace_json(output / "summary.json", summary)
         return summary
     finally:
         await client.close()

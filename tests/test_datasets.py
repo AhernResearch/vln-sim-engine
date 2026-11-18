@@ -4,7 +4,8 @@ import json
 from helpers import episode, settings
 
 from sim_engine.config import Dataset, Physics
-from sim_engine.data import EpisodeStore, sha256
+from sim_engine.core.io import file_sha256
+from sim_engine.data import EpisodeStore
 
 
 def test_dataset_specific_geometry_and_physics_are_kept_separate(tmp_path):
@@ -24,7 +25,7 @@ def test_dataset_specific_geometry_and_physics_are_kept_separate(tmp_path):
     store = EpisodeStore(config)
     asset = "mp3d/one/one.navmesh"
     assert store.scene_hashes["r2r"][asset] != store.scene_hashes["rxr"][asset]
-    assert store.scene_hashes["rxr"][asset] == sha256(tmp_path / "rxr" / asset)
+    assert store.scene_hashes["rxr"][asset] == file_sha256(tmp_path / "rxr" / asset)
     assert store.get("r2r", "a")["_dataset"] == "r2r"
     assert store.get("rxr", "a")["_dataset"] == "rxr"
     assert store.metadata["rxr"]["physics"]["agent_height_m"] == 0.88

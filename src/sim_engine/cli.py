@@ -91,11 +91,12 @@ def main(argv=None):
 
     settings = Settings.read(args.config)
     if args.command == "build-start-pool":
+        from sim_engine.core.io import file_sha256
+
         from .collection.start_pool import build_pool
-        from .data import sha256
 
         print(json.dumps(build_pool(
-            settings, sha256(args.config), args.dataset, args.camera, args.output, args.owner,
+            settings, file_sha256(args.config), args.dataset, args.camera, args.output, args.owner,
             successes=args.successes, minimum_per_scene=args.minimum_per_scene,
             attempt_factor=args.attempt_factor, seed=args.seed), indent=2))
         return
@@ -104,14 +105,15 @@ def main(argv=None):
         print(json.dumps(export_assets(settings, args.output), indent=2))
         return
     if args.command in ("prepare-navmeshes", "audit-navmesh"):
-        from .client import atomic_json
+        from sim_engine.core.io import replace_json
+
         from .navmesh import audit_connectivity, prepare_navmeshes
 
         if args.command == "prepare-navmeshes":
             prepare_navmeshes(settings, args.dataset, args.source_root, args.output)
         else:
             result = audit_connectivity(settings, args.dataset)
-            atomic_json(args.output, result)
+            replace_json(args.output, result)
             print(json.dumps(result, indent=2))
             if not result["ready"]:
                 raise SystemExit(2)

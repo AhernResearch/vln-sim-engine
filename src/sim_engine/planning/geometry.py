@@ -3,7 +3,8 @@
 import math
 
 from sim_engine.collection.sampling import ReferenceCache, select_pose
-from sim_engine.collection.storage import RejectedCandidate, write
+from sim_engine.collection.storage import RejectedCandidate
+from sim_engine.core.io import create_json
 from sim_engine.planning.context import checkpoint
 
 
@@ -117,7 +118,7 @@ class NavMeshContext:
             reference, reused = self.references.get(
                 (task["id"], index), lambda: self.reference(task, index)
             )
-        write(
+        create_json(
             folder / "reference-check.json",
             dict(reference, cached=reused, task_id=task["id"], source_frame=index),
         )
@@ -126,7 +127,7 @@ class NavMeshContext:
         planner = self.planners[reference["planner_index"]]
         from dataclasses import asdict
 
-        write(folder / "expert-profile.json", asdict(self.expert_profile))
+        create_json(folder / "expert-profile.json", asdict(self.expert_profile))
         if "reference_guides" in task:
             from sim_engine.collection.reference import reference_state
 
@@ -139,7 +140,7 @@ class NavMeshContext:
                 selected["yaw"],
             )
             remaining_path = reference["path"][index:]
-            write(folder / "reference-state.json", selected)
+            create_json(folder / "reference-state.json", selected)
         else:
             center = self.np.asarray(task["rows"][index]["world_position"])
             source_yaw = task["rows"][index]["base_pose_se2"][2]
@@ -206,7 +207,7 @@ class NavMeshContext:
             }
 
         value = select_pose(candidate, self.config, evaluate, folder)
-        write(folder / "preflight.json", value.pop("forecast"))
-        write(folder / "private-geometry.json", value)
+        create_json(folder / "preflight.json", value.pop("forecast"))
+        create_json(folder / "private-geometry.json", value)
         return value
 

@@ -4,9 +4,8 @@ import copy
 import time
 from pathlib import Path
 
+from sim_engine.core.io import create_json, file_sha256
 from sim_engine.planning.geometry import NavMeshContext
-
-from .storage import digest, write
 
 
 def make_backend(worker, manifest, scene):
@@ -68,25 +67,25 @@ class SceneBackend(NavMeshContext):
         for label, captured in self.env.observe_views(prepared["yaw"]).items():
             target = folder / (label + ".png")
             Image.fromarray(captured.images["rgb"]).save(target)
-            images[label] = {"path": str(target.resolve()), "sha256": digest(target)}
+            images[label] = {"path": str(target.resolve()), "sha256": file_sha256(target)}
             if capture_depth:
                 depth_file = folder / (label + "-depth.npz")
                 with depth_file.open("xb") as stream:
                     self.np.savez_compressed(stream, depth_m=self.np.asarray(
                         captured.images["depth"], dtype=self.np.float32))
-                views[label] = {**captured.sensors["depth"], "depth_sha256": digest(depth_file)}
+                views[label] = {**captured.sensors["depth"], "depth_sha256": file_sha256(depth_file)}
         captured = self.env.capture()
         projections = {key: captured.calibration["projections"][key] for key in ("rgb", "depth")}
         from .recording import calibration
 
-        write(
+        create_json(
             folder / "camera.json",
             {**calibration(self.camera.model_dump(), projections, *self.depth_near_far),
              **{k: v for k, v in captured.calibration.items() if k != "projections"}},
         )
         if capture_depth:
-            write(folder / "view-sensors.json", views)
-        write(
+            create_json(folder / "view-sensors.json", views)
+        create_json(
             folder / "scene-cache.json",
             {
                 "scene": self.scene,
@@ -140,13 +139,13 @@ class SceneBackend(NavMeshContext):
                     "sensors": sensors,
                     "collided": bool(incoming_collision),
                     "depth_valid": depth_valid,
-                    "rgb_sha256": digest(image),
-                    "depth_sha256": digest(depth_path),
+                    "rgb_sha256": file_sha256(image),
+                    "depth_sha256": file_sha256(depth_path),
                 }
                 states.write(json.dumps(record) + "\n")
                 states.flush()
                 if not depth_valid:
-                    write(
+                    create_json(
                         folder / f"depth-invalid-{step:05d}.json",
                         {
                             "frame": step,
@@ -198,7 +197,7 @@ class SceneBackend(NavMeshContext):
         passed = (
             final == "expert_stop" and collisions == 0 and distance <= self.config["goal_tolerance_m"]
         )
-        write(
+        create_json(
             folder / "terminal.json",
             {
                 "receipt_stop": passed,

@@ -5,7 +5,6 @@ annotations are never modified or copied into the navigation episode file.
 """
 
 import argparse
-import hashlib
 import json
 import math
 import re
@@ -13,6 +12,8 @@ import shutil
 import struct
 import zipfile
 from pathlib import Path
+
+from sim_engine.core.io import create_json, file_sha256
 
 
 def vector(value, size):
@@ -28,27 +29,13 @@ PLY_TYPES = {"float": "f", "float32": "f", "double": "d", "float64": "d",
              "uint": "I", "uint32": "I", "int": "i", "int32": "i"}
 
 
-def sha256(path):
-    h = hashlib.sha256()
-    with Path(path).open("rb") as stream:
-        for block in iter(lambda: stream.read(1024 * 1024), b""):
-            h.update(block)
-    return h.hexdigest()
-
-
 def source_fingerprint():
     """Hashes of the loaded Habitat bindings and every sim-engine source file."""
     from habitat_sim._ext import habitat_sim_bindings
 
     root = Path(__file__).resolve().parents[1]
-    return {"bindings_sha256": sha256(habitat_sim_bindings.__file__),
-            "python_sources": {str(p.relative_to(root)): sha256(p) for p in sorted(root.rglob("*.py"))}}
-
-
-def write_json(path, value):
-    with Path(path).open("x", encoding="utf-8") as stream:
-        json.dump(value, stream, ensure_ascii=False, indent=2, allow_nan=False)
-        stream.write("\n")
+    return {"bindings_sha256": file_sha256(habitat_sim_bindings.__file__),
+            "python_sources": {str(p.relative_to(root)): file_sha256(p) for p in sorted(root.rglob("*.py"))}}
 
 
 def asset_path(root, relative):
@@ -75,7 +62,7 @@ def verify_manifest(path):
         raise ValueError("Scene package has an unsupported coordinate or asset contract")
     for asset in manifest["assets"].values():
         source = asset_path(path.parent, asset["path"])
-        if sha256(source) != asset["sha256"]:
+        if file_sha256(source) != asset["sha256"]:
             raise ValueError("Scene asset hash mismatch: " + str(source))
     return manifest
 
@@ -182,7 +169,7 @@ def prepare(archive, output, lod=3):
             path = output / "stages" / ("m_floor." + ending)
             with bundle.open(selected[key]) as source:
                 count = transform_ply(source, path, gaussian=(key == "render"))
-            assets[key] = {"path": str(path.relative_to(output)), "sha256": sha256(path),
+            assets[key] = {"path": str(path.relative_to(output)), "sha256": file_sha256(path),
                            "source_member": selected[key].filename, "vertices": count}
         poses = json.loads(bundle.read(selected["scan_poses"]))["poses"]
         positions = []
@@ -192,22 +179,22 @@ def prepare(archive, output, lod=3):
                 raise ValueError("Non-finite scan position")
             positions.append([x, z, -y])
         path = output / "scan_positions.json"
-        write_json(path, {"positions": positions, "role": "coverage_diagnostic_only"})
-        assets["scan_poses"] = {"path": path.name, "sha256": sha256(path),
+        create_json(path, {"positions": positions, "role": "coverage_diagnostic_only"})
+        assets["scan_poses"] = {"path": path.name, "sha256": file_sha256(path),
                                 "source_member": selected["scan_poses"].filename}
         for key, asset in (("stage", "render"), ("geometry_stage", "mesh")):
             path = output / (key + ".stage_config.json")
-            write_json(path, {"render_asset": assets[asset]["path"], "up": [0, 1, 0],
+            create_json(path, {"render_asset": assets[asset]["path"], "up": [0, 1, 0],
                               "front": [0, 0, -1], "norm_quaternion": False})
-            assets[key] = {"path": path.name, "sha256": sha256(path)}
+            assets[key] = {"path": path.name, "sha256": file_sha256(path)}
     manifest = {"schema": "open_nav_scan_v1", "backend": "habitat_gs", "purpose": "development",
                 "scene_id": "m_floor", "lod": lod, "units": "metre",
                 "scan_to_habitat": SCAN_TO_HABITAT,
                 "upstream": {"repository": "https://github.com/zju3dv/habitat-gs",
                              "commit": HABITAT_GS_COMMIT},
-                "source": {"archive": archive.name, "sha256": sha256(archive)},
+                "source": {"archive": archive.name, "sha256": file_sha256(archive)},
                 "assets": assets, "geometry_review": "required", "evaluation_available": False}
-    write_json(output / "scene.json", manifest)
+    create_json(output / "scene.json", manifest)
     return output / "scene.json"
 
 
@@ -217,11 +204,11 @@ def load_scan_package(path):
     navigation = path.parent / "navigation"
     receipt = json.loads((navigation / "receipt.json").read_text())
     if (receipt.get("schema") != "open_nav_scan_navigation_v1"
-            or receipt.get("source_manifest_sha256") != sha256(path)
+            or receipt.get("source_manifest_sha256") != file_sha256(path)
             or set(receipt.get("assets", {})) != {"navmesh", "episodes"}):
         raise ValueError("Navigation receipt does not match the prepared scene")
     for item in receipt["assets"].values():
-        if sha256(asset_path(navigation, item["path"])) != item["sha256"]:
+        if file_sha256(asset_path(navigation, item["path"])) != item["sha256"]:
             raise ValueError("Navigation asset hash mismatch: " + item["path"])
     episodes_path = asset_path(navigation, receipt["assets"]["episodes"]["path"])
     data = json.loads(episodes_path.read_text())
@@ -251,7 +238,7 @@ def check_scan_package(path):
     path, manifest, receipt, episodes = load_scan_package(path)
     return {"dataset": "scan", "split": "development", "backend": "habitat_gs",
             "episode_count": len(episodes), "evaluation_available": False,
-            "scene_manifest_sha256": sha256(path), "habitat_gs_commit": manifest["upstream"]["commit"],
+            "scene_manifest_sha256": file_sha256(path), "habitat_gs_commit": manifest["upstream"]["commit"],
             "geometry_review": "required", "navmesh_sha256": receipt["assets"]["navmesh"]["sha256"]}
 
 

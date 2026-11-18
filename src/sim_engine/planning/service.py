@@ -1,6 +1,6 @@
 """Bounded CPU queue with durable attempt identities and replaceable process capacity.
 
-Only read-only planning processes may be replaced. A killed job is settled once;
+Only read_json-only planning processes may be replaced. A killed job is settled once;
 its input is never automatically submitted to another process.
 """
 
@@ -19,11 +19,10 @@ from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 
 from sim_engine.async_io import AsyncDisk
-from sim_engine.atomic import atomic_json
-from sim_engine.collection.storage import read, write
+from sim_engine.core.io import create_json, fingerprint, read_json, replace_json
 from sim_engine.pool import WorkerError
 
-from .contracts import PlanRequest, fingerprint
+from .contracts import PlanRequest
 from .engine import PlanningEngine
 
 
@@ -92,7 +91,7 @@ class PlanningWorker:
         self.ready = False
         self.generation += 1
         ticks = Path(f"/proc/{self.process.pid}/stat")
-        write(self.folder / self.instance / "ownership.json", {
+        create_json(self.folder / self.instance / "ownership.json", {
             "service_owner": self.service_owner, "instance": self.instance,
             "pid": self.process.pid,
             "start_ticks": ticks.read_text().rsplit(")", 1)[1].split()[19] if ticks.exists() else None,
@@ -165,7 +164,7 @@ class PlanningService:
 
         self.sources = implementation_sources()
         self.implementation_digest = fingerprint(self.sources)
-        write(self.instance_root / "ownership.json", {
+        create_json(self.instance_root / "ownership.json", {
             "owner": self.owner, "settings": settings.model_dump(mode="json"),
             "source_sha256": self.sources, "automatic_replay": False,
         })
@@ -196,7 +195,7 @@ class PlanningService:
     @staticmethod
     def _stored_status(cid, folder):
         if (folder / "result.json").exists():
-            return read(folder / "result.json")
+            return read_json(folder / "result.json")
         if folder.exists():
             return {"attempt_id": cid, "status": "worker_failed",
                     "error": "unsettled prior lifetime; no replay", "automatic_replay": False}
@@ -209,7 +208,7 @@ class PlanningService:
     async def _submit(self, job):
         folder = self.folder(job.attempt_id)
         if await self.disk.run(folder.exists):
-            old = await self.disk.run(read, folder / "input.json")
+            old = await self.disk.run(read_json, folder / "input.json")
             if old["input_digest"] != job.digest():
                 raise WorkerError(409, "planning identity reused with different input")
             return await self.status(job.attempt_id)
@@ -225,12 +224,12 @@ class PlanningService:
         self.active[job.attempt_id] = {"job": job, "view": view}
         try:
             await self.disk.run(lambda: folder.mkdir(parents=True))
-            await self.disk.run(write, folder / "input.json", {"input_digest": job.digest(), "request": job.model_dump(mode="json")})
+            await self.disk.run(create_json, folder / "input.json", {"input_digest": job.digest(), "request": job.model_dump(mode="json")})
         except BaseException:
             self.active.pop(job.attempt_id, None)
             raise
         view["status"] = "queued"
-        await self.disk.run(atomic_json, folder / "status.json", view)
+        await self.disk.run(replace_json, folder / "status.json", view)
         self.queue.append(job.attempt_id)
         self.work_available.set()
         return view
@@ -242,7 +241,7 @@ class PlanningService:
         receipt = dict(state["view"], **result)
         receipt.update(status=outcome, navmesh_sha256=state["job"].navmesh_sha256)
         receipt["result_digest"] = fingerprint(receipt)
-        await self.disk.run(write, self.folder(cid) / "result.json", receipt)
+        await self.disk.run(create_json, self.folder(cid) / "result.json", receipt)
         self.active.pop(cid, None)
         self.queue = deque(i for i in self.queue if i != cid)
         return receipt
@@ -287,7 +286,7 @@ class PlanningService:
                 worker.progress[:] = [0, 0, 0]
                 state["view"]["status"] = "planning"
                 state["view"]["worker_instance"] = worker.instance
-                await self.disk.run(atomic_json, self.folder(cid) / "status.json", state["view"])
+                await self.disk.run(replace_json, self.folder(cid) / "status.json", state["view"])
                 scratch = self.folder(cid) / "artifacts"
                 await self.disk.run(scratch.mkdir)
             try:

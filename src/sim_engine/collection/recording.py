@@ -4,7 +4,7 @@ import json
 import math
 from pathlib import Path
 
-from .storage import digest, read
+from sim_engine.core.io import file_sha256, read_json
 
 
 def calibration(camera, projections, near, far, dt=0.25):
@@ -47,10 +47,10 @@ def validate_recording(folder):
     from PIL import Image
 
     folder = Path(folder)
-    camera = read(folder / "camera.json")
+    camera = read_json(folder / "camera.json")
     rows = [json.loads(line) for line in (folder / "world_states.jsonl").read_text().splitlines()]
     commands = [json.loads(line) for line in (folder / "commands.jsonl").read_text().splitlines()]
-    terminal = read(folder / "terminal.json")
+    terminal = read_json(folder / "terminal.json")
     if camera.get("schema_version") != 2:
         raise ValueError("collection requires schema-2 per-frame sensor poses")
     dt = camera["control_dt_s"]
@@ -130,7 +130,7 @@ def validate_recording(folder):
         ):
             raise ValueError("RGB/depth sensor orientations differ")
         image, depth_file = folder / "rgb" / f"{i:05d}.jpg", folder / "depth" / f"{i:05d}.npz"
-        if digest(image) != row["rgb_sha256"] or digest(depth_file) != row["depth_sha256"]:
+        if file_sha256(image) != row["rgb_sha256"] or file_sha256(depth_file) != row["depth_sha256"]:
             raise ValueError("recorded media hash mismatch")
         with Image.open(image) as image_data:
             if list(image_data.size) != camera["resolution_wh"]:

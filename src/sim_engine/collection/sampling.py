@@ -1,7 +1,9 @@
 """Deterministic, bounded rejection sampling before observation or movement."""
 
+from sim_engine.core.io import create_json
+
 from .determinism import perturbation
-from .storage import RejectedCandidate, write
+from .storage import RejectedCandidate
 
 
 class ReferenceCache:
@@ -35,19 +37,19 @@ def select_pose(candidate, config, evaluate, folder):
         try:
             value = evaluate(draw)
         except RejectedCandidate as error:
-            write(
+            create_json(
                 folder / "pose-trials" / f"{trial:03d}.json",
                 dict(record, status="rejected", reason=str(error)),
             )
             continue
         except Exception as error:
-            write(
+            create_json(
                 folder / "pose-trials" / f"{trial:03d}.json",
                 dict(record, status="error", reason=repr(error)),
             )
             raise
-        write(folder / "pose-trials" / f"{trial:03d}.json", dict(record, status="selected"))
-        write(
+        create_json(folder / "pose-trials" / f"{trial:03d}.json", dict(record, status="selected"))
+        create_json(
             folder / "pose-selection.json",
             {
                 "status": "selected",
@@ -59,7 +61,7 @@ def select_pose(candidate, config, evaluate, folder):
             },
         )
         return value
-    write(
+    create_json(
         folder / "pose-selection.json",
         {"status": "exhausted", "attempts": limit, "limit": limit, "movement_retried": False},
     )

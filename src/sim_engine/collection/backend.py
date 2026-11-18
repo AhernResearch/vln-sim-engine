@@ -9,12 +9,12 @@ from dataclasses import asdict
 import numpy as np
 from PIL import Image
 
+from sim_engine.core.io import create_json, read_json
 from sim_engine.data import scene_path
 from sim_engine.scenes import resolve_scene
 
 from .clearance import ClearanceProfile
 from .simulation import SceneBackend
-from .storage import read, write
 
 
 def geometry_config(settings, request):
@@ -80,7 +80,7 @@ class CollectionActor:
         cid = request["request_id"]
         candidate = {"id": cid, "task_id": cid, "scene": backend.scene}
         if request["kind"] == "r2r_chunks":
-            prepared = read(folder / "start-state.json")
+            prepared = read_json(folder / "start-state.json")
         else:
             start = np.asarray(request["start_position"])
             if not backend.pf.is_navigable(start) or backend.guard.clearance(start) < 0.05:
@@ -100,22 +100,22 @@ class CollectionActor:
         public = backend.observe(candidate, prepared, folder, capture_depth=True)
         if request["kind"] == "short_instructions":
             public = {"images": public["images"]}
-        write(folder / "public-observation.json", public)
+        create_json(folder / "public-observation.json", public)
         if request["kind"] == "short_instructions":
-            write(folder / "start-state.json", prepared)
+            create_json(folder / "start-state.json", prepared)
         return {"public": public, "cache": self.stats()}
 
     def execute(self, request, folder, target, stop):
         backend = self._backend(request)
-        prepared = read(folder / "private-geometry.json")
-        lease = read(folder / "execution-lease.json")
-        from .storage import digest
+        prepared = read_json(folder / "private-geometry.json")
+        lease = read_json(folder / "execution-lease.json")
+        from sim_engine.core.io import file_sha256
 
-        plan = read(folder / "planning-result.json")
+        plan = read_json(folder / "planning-result.json")
         if (lease["task_id"] != request["request_id"]
                 or lease["plan_digest"] != plan["result_digest"]
-                or digest(folder / "private-geometry.json") != lease["prepared_sha256"]
-                or digest(backend.scene_asset.navmesh) != lease["navmesh_sha256"]
+                or file_sha256(folder / "private-geometry.json") != lease["prepared_sha256"]
+                or file_sha256(backend.scene_asset.navmesh) != lease["navmesh_sha256"]
                 or (folder / "movement-attempted.json").exists()):
             raise RuntimeError("execution lease mismatch or already consumed; no replay")
         runtime = lease["runtime"]
@@ -125,7 +125,7 @@ class CollectionActor:
         if "execution_budget" in prepared:
             backend.config["max_steps"] = prepared["execution_budget"]["max_steps"]
         # Persist the intended destination before any movement, independently of the stop.
-        write(
+        create_json(
             folder / "selected-goal.json",
             {
                 "position": prepared["requested_goal_position"],
@@ -141,12 +141,12 @@ class CollectionActor:
         np.testing.assert_array_equal(current, np.asarray(Image.open(folder / "front.png")))
         if stop.is_set():
             raise InterruptedError("cancelled before movement")
-        write(folder / "movement-attempted.json", {
+        create_json(folder / "movement-attempted.json", {
             "automatic_retry": False, "execution_lease": lease["identity"],
             "plan_digest": lease["plan_digest"],
         })
         geometry = backend.rollout({"id": request["request_id"]}, prepared, folder, stop)
-        write(folder / "geometry-result.json", {"status": "geometry_complete", "geometry": geometry})
+        create_json(folder / "geometry-result.json", {"status": "geometry_complete", "geometry": geometry})
         return {"status": "geometry_complete", "geometry": geometry, "cache": self.stats()}
 
     def stats(self):

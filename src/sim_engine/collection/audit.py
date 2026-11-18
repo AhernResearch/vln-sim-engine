@@ -2,8 +2,9 @@
 
 import json
 
+from sim_engine.core.io import create_json, read_json
+
 from .recording import validate_recording
-from .storage import read, write
 from .visual_region import inside_bbox, project_world
 
 
@@ -11,10 +12,10 @@ def audit_recording(request, folder, target, result):
     geometry = result["geometry"]
     validation = validate_recording(folder) if geometry["passed"] else None
     if validation:
-        write(folder / "recording-check.json", validation)
+        create_json(folder / "recording-check.json", validation)
     region = None
     if target:
-        camera, views = read(folder / "camera.json"), read(folder / "view-sensors.json")
+        camera, views = read_json(folder / "camera.json"), read_json(folder / "view-sensors.json")
         last = None
         with (folder / "world_states.jsonl").open() as stream:
             for line in stream:
@@ -26,8 +27,8 @@ def audit_recording(request, folder, target, result):
                            views[target["target_view"]], width, height)
         region = {"projected_uv": uv, "bbox": target["bbox"],
                   "inside_original_bbox": inside_bbox(uv, target["bbox"])}
-        write(folder / "region-terminal-check.json", region)
+        create_json(folder / "region-terminal-check.json", region)
     passed = bool(geometry["passed"] and validation and (region is None or region["inside_original_bbox"]))
     return dict(result, status="completed_audit" if passed else "failed_or_uncertain",
-                grounding=read(folder / "grounded-target.json") if target else None,
+                grounding=read_json(folder / "grounded-target.json") if target else None,
                 region_terminal=region, recording_complete=bool(validation))

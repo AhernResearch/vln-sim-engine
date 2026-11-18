@@ -6,15 +6,14 @@ import zipfile
 
 import pytest
 
+from sim_engine.core.io import create_json, file_sha256
 from sim_engine.scan_assets import (
     HABITAT_GS_COMMIT,
     asset_path,
     load_scan_package,
     prepare,
-    sha256,
     transform_ply,
     verify_manifest,
-    write_json,
 )
 
 FIELDS = ["x", "y", "z", "nx", "ny", "nz", "f_dc_0", "f_dc_1", "f_dc_2",
@@ -45,12 +44,12 @@ def add_navigation(manifest):
     folder = manifest.parent / "navigation"
     folder.mkdir()
     (folder / "scene.navmesh").write_bytes(b"navmesh fixture")
-    write_json(folder / "episodes.json", {"purpose": "development", "episodes": [
+    create_json(folder / "episodes.json", {"purpose": "development", "episodes": [
         {"episode_id": "0", "scene_id": "m_floor", "start_position": [0, 0, 0],
          "start_rotation": [0, 0, 0, 1], "instruction": {"instruction_text": "Observe, then stop."}}]})
-    write_json(folder / "receipt.json", {"schema": "open_nav_scan_navigation_v1",
-        "source_manifest_sha256": sha256(manifest),
-        "assets": {key: {"path": name, "sha256": sha256(folder / name)} for key, name in
+    create_json(folder / "receipt.json", {"schema": "open_nav_scan_navigation_v1",
+        "source_manifest_sha256": file_sha256(manifest),
+        "assets": {key: {"path": name, "sha256": file_sha256(folder / name)} for key, name in
                    (("navmesh", "scene.navmesh"), ("episodes", "episodes.json"))}})
     return folder
 
@@ -104,7 +103,7 @@ def test_even_hash_consistent_scan_episodes_reject_evaluation_data(prepared):
     episode_path.write_text(json.dumps(value))
     receipt_path = folder / "receipt.json"
     receipt = json.loads(receipt_path.read_text())
-    receipt["assets"]["episodes"]["sha256"] = sha256(episode_path)
+    receipt["assets"]["episodes"]["sha256"] = file_sha256(episode_path)
     receipt_path.write_text(json.dumps(receipt))
     with pytest.raises(ValueError, match="cannot contain evaluation annotations"):
         load_scan_package(prepared)
@@ -134,7 +133,7 @@ def test_scene_registry_resolves_manifest_and_exports_navmesh(prepared, tmp_path
     store = EpisodeStore(cfg)
     scene = resolve_scene(cfg, 'scan', 'm_floor')
     assert scene.navmesh == navigation / 'scene.navmesh'
-    assert store.scene_hashes['scan']['m_floor']['manifest'] == sha256(prepared)
+    assert store.scene_hashes['scan']['m_floor']['manifest'] == file_sha256(prepared)
     assets = registered_assets(cfg, store)
     assert len(assets) == 1 and assets[0].path == scene.navmesh
     cfg.simulation.backend = 'habitat'
@@ -164,7 +163,7 @@ def test_planning_job_uses_manifest_navmesh_instead_of_scene_id_filename(prepare
         'camera': 'trained_ce30', 'seed': 0, 'start_position': [0, 0, 0],
         'start_rotation': [0, 0, 0, 1]}, folder,
         {'target_view': 'front', 'bbox': [400, 600, 600, 800]})
-    assert job.navmesh_sha256 == sha256(navigation / 'scene.navmesh')
+    assert job.navmesh_sha256 == file_sha256(navigation / 'scene.navmesh')
     assert job.task.dataset == 'scans'
     assert set(job.artifacts) == {'start-state.json', 'camera.json', 'view-sensors.json',
                                   'front-depth.npz'}

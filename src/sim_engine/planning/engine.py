@@ -8,7 +8,7 @@ import numpy as np
 
 from sim_engine.collection.limits import distance_allowed
 from sim_engine.collection.region import ground_region
-from sim_engine.collection.storage import digest, read, write
+from sim_engine.core.io import create_json, file_sha256, read_json
 
 from .context import PlanningContext, PlanningStopped, checkpoint
 from .contracts import Blob
@@ -23,7 +23,7 @@ class PlanningEngine:
 
     def context(self, job):
         asset = self.assets[(job.task.dataset, job.task.scene_id)]
-        if asset.sha256 != job.navmesh_sha256 or digest(asset.path) != asset.sha256:
+        if asset.sha256 != job.navmesh_sha256 or file_sha256(asset.path) != asset.sha256:
             raise RuntimeError("NavMesh identity changed")
         config = job.profile.geometry(job.task.model_dump(mode="json"))
         key = (asset.sha256, job.task.scene_id, job.camera.model_dump_json(), job.profile.model_dump_json())
@@ -71,7 +71,7 @@ class PlanningEngine:
                     candidate = dict(id=cid, task_id=cid, scene=backend.scene,
                                      **{k: task[k] for k in ["offset", "yaw_delta", "reference_fraction"]})
                     prepared = backend.prepare(candidate, folder)
-                    write(folder / "start-state.json", prepared)
+                    create_json(folder / "start-state.json", prepared)
                 else:
                     prepared = self.free_region(backend, job, folder)
                 checkpoint(phase="complete")
@@ -85,16 +85,16 @@ class PlanningEngine:
                 backend.clear_task()
 
     def free_region(self, backend, job, folder):
-        prepared = read(folder / "start-state.json")
+        prepared = read_json(folder / "start-state.json")
         episode = prepared["episode"]
         if (episode["start_position"] != list(job.task.start_position)
                 or episode["start_rotation"] != list(job.task.start_rotation)
                 or episode["scene_id"] != job.task.scene_id):
             raise ValueError("planning pose does not match observation")
-        camera, views = read(folder / "camera.json"), read(folder / "view-sensors.json")
+        camera, views = read_json(folder / "camera.json"), read_json(folder / "view-sensors.json")
         target = job.target.model_dump(mode="json")
         path = folder / (target["target_view"] + "-depth.npz")
-        if views[target["target_view"]]["depth_sha256"] != digest(path):
+        if views[target["target_view"]]["depth_sha256"] != file_sha256(path):
             raise ValueError("observed depth identity mismatch")
         with zipfile.ZipFile(path) as archive:
             if (archive.namelist() != ["depth_m.npy"]
@@ -122,12 +122,12 @@ class PlanningEngine:
         for name, value in [("grounded-target.json", grounded), ("grounding-check.json", checks),
                             ("reference-check.json", plan), ("preflight.json", forecast),
                             ("execution-budget.json", forecast["execution_budget"])]:
-            write(folder / name, value)
+            create_json(folder / name, value)
         episode["goals"] = [{"position": goal.tolist(), "radius": 0.08}]
         prepared.update(path=plan["path"], requested_goal_position=goal.tolist(),
                         goal_adjustment_m=0.0, endpoint_review_required=False,
                         execution_budget=forecast["execution_budget"])
-        write(folder / "private-geometry.json", prepared)
+        create_json(folder / "private-geometry.json", prepared)
         return prepared
 
     def result(self, outcome, context, folder, inputs, **extra):

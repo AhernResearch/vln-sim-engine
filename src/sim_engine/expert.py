@@ -14,7 +14,8 @@ import uuid
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
-from .atomic import atomic_json
+from sim_engine.core.io import replace_json
+
 from .controllers import CONTROLLERS
 from .geometry import Pose, wrap
 from .protocol import VelocityCommand
@@ -199,8 +200,8 @@ class RolloutWriter:
         )
 
     def seal(self, receipt):
-        atomic_json(self.root / "states.json", {"schema": "resim_states_v1", "rows": self.states})
-        atomic_json(
+        replace_json(self.root / "states.json", {"schema": "resim_states_v1", "rows": self.states})
+        replace_json(
             self.root / "receipt.json",
             {**receipt, "frames": len(self.states), "frames_sha256": self.frames_sha256.hexdigest()},
         )

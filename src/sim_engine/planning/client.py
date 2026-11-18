@@ -7,12 +7,12 @@ from urllib.parse import urlsplit
 
 import httpx
 
-from sim_engine.collection.storage import digest, read, write
+from sim_engine.core.io import create_json, file_sha256, fingerprint, read_json
 from sim_engine.pool import WorkerError
 from sim_engine.scenes import resolve_scene
 
 from .assets import registered_assets
-from .contracts import Blob, PlannerSettings, PlanRequest, fingerprint
+from .contracts import Blob, PlannerSettings, PlanRequest
 from .service import PlanningService
 
 TERMINAL = {"feasible", "infeasible", "budget_exhausted", "cancelled", "worker_failed"}
@@ -105,7 +105,7 @@ class HTTPPlanningClient:
                          "attempt_id": job.attempt_id, "input_digest": job.digest()}
                 path = folder / "planning-endpoints" / (fingerprint(claim) + ".json")
                 if not path.exists():
-                    write(path, claim)
+                    create_json(path, claim)
             try:
                 return await self.request(url, "POST", "/v1/plans", job.model_dump(mode="json"))
             except WorkerError as error:
@@ -116,7 +116,7 @@ class HTTPPlanningClient:
             except httpx.HTTPError:
                 # Resolve identity using GET at the SAME service, not a second POST.
                 return await self.status(job.attempt_id)
-        raise WorkerError(503, "no planner endpoint admitted the read-only task")
+        raise WorkerError(503, "no planner endpoint admitted the read_json-only task")
 
     async def status(self, attempt_id):
         return await self.request(self.bindings[attempt_id], "GET", "/v1/plans/" + attempt_id)
@@ -133,7 +133,7 @@ class HTTPPlanningClient:
             if isinstance(result, BaseException) and folder is not None:
                 path = folder / "planning-cancel-unresolved.json"
                 if not path.exists():
-                    write(path, {"attempt_id": cid, "endpoint": self.bindings[cid],
+                    create_json(path, {"attempt_id": cid, "endpoint": self.bindings[cid],
                                  "error": repr(result), "automatic_replay": False})
             self.release(cid)
         await self.http.aclose()
@@ -149,7 +149,7 @@ def build_job(settings, request, folder, target):
     if request["kind"] == "short_instructions":
         names = ["start-state.json", "camera.json", "view-sensors.json", target["target_view"] + "-depth.npz"]
         artifacts = {name: Blob.encode((folder / name).read_bytes(), name) for name in names}
-    return PlanRequest(attempt_id=uuid.uuid4().hex, task=request, navmesh_sha256=digest(navmesh),
+    return PlanRequest(attempt_id=uuid.uuid4().hex, task=request, navmesh_sha256=file_sha256(navmesh),
                        camera=settings.cameras[request["camera"]], target=target, artifacts=artifacts,
                        profile={"version": config.planning_profile_version, "base_steps": config.base_steps},
                        budget={"wall_s": config.planning_timeout_s,
@@ -191,7 +191,7 @@ async def wait_for_plan(client, job, cancel_requested):
         raise RuntimeError("planning result does not match frozen input")
     expected = state.get("result_digest")
     if expected != fingerprint({k: v for k, v in state.items() if k != "result_digest"}):
-        raise RuntimeError("planning result digest mismatch")
+        raise RuntimeError("planning result file_sha256 mismatch")
     release = getattr(client, "release", None)
     if release is not None:
         release(job.attempt_id)
@@ -220,10 +220,10 @@ def install_result(folder, job, result):
             path.parent.mkdir(parents=True, exist_ok=True)
             with path.open("xb") as stream:
                 stream.write(content)
-    write(folder / "planning-result.json", result)
+    create_json(folder / "planning-result.json", result)
     if result["status"] != "feasible" or job.task.kind == "reference_geometry":
         return
-    prepared = read(folder / "private-geometry.json")
+    prepared = read_json(folder / "private-geometry.json")
     if prepared != result["prepared"]:
         raise ValueError("prepared plan differs from verified artifact")
     start = prepared["episode"]["start_position"]
@@ -231,10 +231,10 @@ def install_result(folder, job, result):
         raise ValueError("plan path does not start at its episode pose")
     if job.task.kind == "short_instructions" and start != list(job.task.start_position):
         raise ValueError("free-task planner moved the frozen start")
-    write(folder / "execution-lease.json", {
+    create_json(folder / "execution-lease.json", {
         "identity": uuid.uuid4().hex, "task_id": job.task.request_id,
         "planning_attempt": job.attempt_id, "plan_digest": result["result_digest"],
-        "prepared_sha256": digest(folder / "private-geometry.json"),
+        "prepared_sha256": file_sha256(folder / "private-geometry.json"),
         "runtime": result.get("runtime", {}), "navmesh_sha256": job.navmesh_sha256,
         "automatic_retry": False,
     })

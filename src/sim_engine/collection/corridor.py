@@ -2,9 +2,8 @@
 
 import numpy as np
 
+from sim_engine.core.cache import MISSING, BoundedMemo
 from sim_engine.planning.context import checkpoint
-
-from .query_cache import MISSING, BoundedMemo
 
 
 class CorridorGeometry:
