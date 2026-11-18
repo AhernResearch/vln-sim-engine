@@ -8,7 +8,6 @@ from __future__ import annotations
 
 import asyncio
 import json
-import multiprocessing as mp
 import os
 import shutil
 import time
@@ -22,6 +21,7 @@ from fastapi import FastAPI
 
 from sim_engine.async_io import AsyncDisk
 from sim_engine.core.io import create_json, read_json, replace_json
+from sim_engine.core.process import ProcessWorker, WorkerError
 from sim_engine.data import EpisodeStore, scene_path
 from sim_engine.planning.client import (
     HTTPPlanningClient,
@@ -30,7 +30,6 @@ from sim_engine.planning.client import (
     install_result,
     wait_for_plan,
 )
-from sim_engine.pool import WorkerError
 
 from .audit import audit_recording
 from .backend import CollectionActor, geometry_config
@@ -41,72 +40,43 @@ def collection_key(request):
     return request["dataset"], request["scene_id"], request["camera"]
 
 
-def actor_main(connection, settings, gpu, factory, stop):
-    actor = factory(settings, gpu)
-    try:
-        while True:
-            payload = connection.recv()
-            if payload is None:
-                return
-            phase, request, folder, target = payload
-            try:
-                method = actor.observe if phase == "observe" else actor.execute
-                result = (
-                    method(request, Path(folder), stop)
-                    if phase == "observe"
-                    else method(request, Path(folder), target, stop)
-                )
-                connection.send((request["request_id"], phase, 200, result))
-            except Exception as error:
-                moved = (Path(folder) / "movement-attempted.json").exists()
-                if moved or not isinstance(error, ValueError):
-                    actor.close()
-                connection.send(
-                    (
-                        request["request_id"],
-                        phase,
-                        422 if isinstance(error, ValueError) and not moved else 500,
-                        {"error": repr(error), "movement_attempted": moved},
-                    )
-                )
-    except EOFError:
-        pass
-    finally:
-        actor.close()
-        connection.close()
+class ActorHost:
+    """Child-side owner of one collection actor and its warm scenes."""
+
+    def __init__(self, stop, settings, gpu, factory):
+        self.stop = stop
+        self.actor = factory(settings, gpu)
+
+    def handle(self, payload):
+        phase, request, folder, target = payload
+        folder = Path(folder)
+        try:
+            if phase == "observe":
+                return 200, self.actor.observe(request, folder, self.stop)
+            return 200, self.actor.execute(request, folder, target, self.stop)
+        except Exception as error:
+            moved = (folder / "movement-attempted.json").exists()
+            rejected = isinstance(error, ValueError) and not moved
+            if not rejected:
+                self.actor.close()
+            return (422 if rejected else 500), {"error": repr(error), "movement_attempted": moved}
+
+    def close(self):
+        self.actor.close()
 
 
-class ActorWorker:
+class ActorWorker(ProcessWorker):
+    kind = "collection"
+
     def __init__(self, settings, gpu, factory, owner, folder, binding=None):
-        context = mp.get_context("spawn")
-        self.connection, child = context.Pipe()
-        self.stop = context.Event()
-        self.instance = uuid.uuid4().hex
         self.binding = None if binding is None else collection_key(binding.model_dump())
-        self.gpu = gpu
-        self.folder = folder
+        self.gpu, self.folder = gpu, folder
         self.binding_generation = 0
-        create_json(
-            folder / "ownership.json",
-            {
-                "owner": owner,
-                "instance": self.instance,
-                "gpu": gpu,
-                "scene_binding": self.binding,
-            },
-        )
-        self.process = context.Process(
-            target=actor_main,
-            args=(child, settings, gpu, factory, self.stop),
-            name="collection-" + self.instance[:8],
-            daemon=True,
-        )
-        self.process.start()
-        child.close()
-        create_json(
-            folder / "process.json", {"owner": owner, "instance": self.instance, "pid": self.process.pid}
-        )
-        self.executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="collection-rpc")
+        super().__init__(ActorHost, settings, gpu, factory)
+        create_json(folder / "ownership.json", {"owner": owner, "instance": self.instance, "gpu": gpu,
+                                                "scene_binding": self.binding})
+        create_json(folder / "process.json",
+                    {"owner": owner, "instance": self.instance, "pid": self.process.pid})
         self.timeout = settings.collection.operation_timeout_s
         self.current = None
         self.current_phase = None
@@ -119,39 +89,12 @@ class ActorWorker:
         if self.current is not None:
             raise RuntimeError("cannot rebind a busy collection worker")
         generation = self.binding_generation + 1
-        await disk.run(create_json,
-            self.folder / "bindings" / f"{generation:06d}.json",
-            {
-                "instance": self.instance,
-                "generation": generation,
-                "previous": self.binding,
-                "next": binding,
-                "reason": "scene_budget_drained",
-            },
-        )
+        await disk.run(create_json, self.folder / "bindings" / f"{generation:06d}.json", {
+            "instance": self.instance, "generation": generation, "previous": self.binding,
+            "next": binding, "reason": "scene_budget_drained"})
         self.binding = binding
         self.binding_generation = generation
         self.warm.clear()
-
-    def _call(self, phase, request, folder, target):
-        if not self.process.is_alive():
-            raise WorkerError(503, "collection worker unavailable; no automatic replay")
-        try:
-            self.connection.send((phase, request, str(folder), target))
-            if not self.connection.poll(self.timeout):
-                self.stop.set()
-                self.process.terminate()
-                self.process.join(timeout=2)
-                raise WorkerError(503, "collection operation timed out; evidence retained")
-            cid, returned_phase, status, result = self.connection.recv()
-            if cid != request["request_id"] or returned_phase != phase:
-                self.process.terminate()
-                raise WorkerError(503, "collection pipe lost correspondence")
-            if status != 200:
-                raise WorkerError(status, json.dumps(result))
-            return result
-        except (EOFError, OSError) as error:
-            raise WorkerError(503, "collection worker disconnected; evidence retained") from error
 
     async def call(self, phase, request, folder, target):
         if self.binding is not None and collection_key(request) != self.binding:
@@ -162,34 +105,17 @@ class ActorWorker:
         began = time.perf_counter()
         self.stop.clear()
         try:
-            result = await asyncio.shield(
-                asyncio.get_running_loop().run_in_executor(
-                    self.executor, self._call, phase, request, folder, target
-                )
-            )
+            status, result = await self.submit((request["request_id"], phase),
+                                               (phase, request, str(folder), target),
+                                               timeout=self.timeout)
+            if status != 200:
+                raise WorkerError(status, json.dumps(result))
             self.last_cache = result.get("cache", self.last_cache)
             return result
         finally:
             self.busy_s[phase] += time.perf_counter() - began
             self.current = None
             self.current_phase = None
-
-    def close(self):
-        self.stop.set()
-        if self.process.is_alive():
-            try:
-                self.connection.send(None)
-            except (OSError, EOFError):
-                pass
-            self.process.join(timeout=2)
-        if self.process.is_alive():
-            self.process.terminate()
-            self.process.join(timeout=2)
-        if self.process.is_alive():
-            self.process.kill()
-            self.process.join(timeout=2)
-        self.connection.close()
-        self.executor.shutdown(wait=False, cancel_futures=True)
 
 
 class CollectionService:
@@ -292,7 +218,7 @@ class CollectionService:
             if scene["status"] != "active":
                 continue
             worker = next(w for w in self.workers if w.instance == scene["worker"])
-            if not worker.process.is_alive():
+            if not worker.alive:
                 scene["status"] = "unavailable"
                 continue
             reached_goal = (
@@ -392,7 +318,7 @@ class CollectionService:
                 if old != value:
                     raise WorkerError(409, "request_id already used with different task")
                 return await self.status(cid)
-            if self.closed or not any(w.process.is_alive() for w in self.workers):
+            if self.closed or not any(w.alive for w in self.workers):
                 raise WorkerError(503, "collection service has no live workers")
             planning_active = sum(s["status"] in {"planning", "queued_planning"}
                                   for s in self.active.values())
@@ -431,7 +357,7 @@ class CollectionService:
                 self._supports(w, value) for w in self.workers
             ):
                 raise WorkerError(422, "scene/camera is outside this fixed scene window")
-            if not any(w.process.is_alive() and self._supports(w, value) for w in self.workers):
+            if not any(w.alive and self._supports(w, value) for w in self.workers):
                 raise WorkerError(503, "no live worker for this scene; no automatic replay")
             dataset = self.settings.simulation.datasets[value["dataset"]]
             await self.disk.run(scene_path, dataset.scenes_root or self.settings.simulation.scenes_root, value["scene_id"])
@@ -529,7 +455,7 @@ class CollectionService:
                                 if not any(
                                     other is not worker
                                     and other.current is None
-                                    and other.process.is_alive()
+                                    and other.alive
                                     and self._key(self.active[cid]["request"]) in other.warm
                                     for other in self.workers
                                 )
@@ -560,7 +486,7 @@ class CollectionService:
         return binding is None or binding == collection_key(request)
 
     async def _consume(self, worker):
-        while not self.closed and worker.process.is_alive():
+        while not self.closed and worker.alive:
             work = await self._next(worker)
             if work is None:
                 return
@@ -607,7 +533,7 @@ class CollectionService:
             async with self.condition:
                 for pending in list(self.active.values()):
                     if pending["status"] not in {"planning", "auditing", "queued_audit"} and not any(
-                        w.process.is_alive() and self._supports(w, pending["request"])
+                        w.alive and self._supports(w, pending["request"])
                         for w in self.workers
                     ):
                         await self._finish(
@@ -659,7 +585,7 @@ class CollectionService:
                         await self._finish(state, {"status": "reference_complete",
                                              "reference_legs": result["reference_legs"],
                                              "source": "navmesh_geometry_not_executed_states"})
-                    elif not any(w.process.is_alive() and self._supports(w, state["request"])
+                    elif not any(w.alive and self._supports(w, state["request"])
                                  for w in self.workers):
                         await self._finish(state, {"status": "failed_or_uncertain", "phase": "planning",
                                              "movement_attempted": False,
@@ -697,7 +623,7 @@ class CollectionService:
                 self.condition.notify_all()
 
     def health(self):
-        live = sum(w.process.is_alive() for w in self.workers)
+        live = sum(w.alive for w in self.workers)
         return {
             "status": "ok" if live == len(self.workers) else "degraded",
             "service_owner": self.owner,
@@ -723,7 +649,7 @@ class CollectionService:
                     "operations": dict(w.operation_counts),
                     "busy_s": dict(w.busy_s),
                     "cache": w.last_cache,
-                    "alive": w.process.is_alive(),
+                    "alive": w.alive,
                 }
                 for w in self.workers
             ],

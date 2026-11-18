@@ -50,6 +50,9 @@ class TestEnvironment:
     def distance(self, a, b):
         return math.dist(a, b)
 
+    def identity(self):
+        return {"backend": "test"}
+
     def metrics(self, episode, positions, stopped=False):
         return {"success": float(stopped), "path_length": len(positions) * 0.25}
 

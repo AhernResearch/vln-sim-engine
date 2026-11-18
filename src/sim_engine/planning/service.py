@@ -7,8 +7,8 @@ its input is never automatically submitted to another process.
 from __future__ import annotations
 
 import asyncio
-import multiprocessing as mp
 import platform
+import sys
 import time
 import uuid
 from collections import deque
@@ -20,76 +20,60 @@ from fastapi.responses import JSONResponse
 
 from sim_engine.async_io import AsyncDisk
 from sim_engine.core.io import create_json, fingerprint, read_json, replace_json
-from sim_engine.pool import WorkerError
+from sim_engine.core.process import SPAWN, ProcessWorker, WorkerError, WorkerTimeout
 
 from .contracts import PlanRequest
 from .engine import PlanningEngine
 
 
-class CancellationFlag:
-    """A byte in shared memory survives a hard kill without an abandoned lock."""
-
-    def __init__(self, context):
-        self.value = context.RawValue("b", 0)
-
-    def set(self):
-        self.value.value = 1
-
-    def clear(self):
-        self.value.value = 0
-
-    def is_set(self):
-        return bool(self.value.value)
+def runtime_versions():
+    """Native libraries are loaded only by the CPU engine, never by the HTTP parent."""
+    versions = {"python": platform.python_version()}
+    for name in ("habitat_sim", "numpy"):
+        if name in sys.modules:
+            versions[name] = getattr(sys.modules[name], "__version__", "unknown")
+    return versions
 
 
-def worker_main(connection, settings, factory, stop, progress):
-    try:
-        engine = factory(settings)
-        connection.send(("ready", {}))
-        while True:
-            payload = connection.recv()
-            if payload is None:
-                break
-            value, folder = payload
-            job = PlanRequest.model_validate(value)
-            try:
-                result = engine.run(job, Path(folder), stop, progress=progress)
-                result["runtime"] = {"python": platform.python_version()}
-                # Native libraries are loaded only by the CPU engine, never by the HTTP parent.
-                import sys
-                for name in ("habitat_sim", "numpy"):
-                    if name in sys.modules:
-                        result["runtime"][name] = getattr(sys.modules[name], "__version__", "unknown")
-            except Exception as error:
-                result = {"outcome": "worker_failed", "error": repr(error), "artifacts": {}}
-            connection.send((job.attempt_id, result))
-    except EOFError:
-        pass
-    finally:
-        connection.close()
+def worker_failed(error):
+    return {"outcome": "worker_failed", "error": error, "artifacts": {}}
 
 
-class PlanningWorker:
+class PlannerHost:
+    """Child-side owner of one CPU planning engine."""
+
+    def __init__(self, stop, settings, factory, progress):
+        self.stop, self.progress = stop, progress
+        self.engine = factory(settings)
+
+    def handle(self, payload):
+        value, folder = payload
+        job = PlanRequest.model_validate(value)
+        try:
+            result = self.engine.run(job, Path(folder), self.stop, progress=self.progress)
+            result["runtime"] = runtime_versions()
+        except Exception as error:
+            result = worker_failed(repr(error))
+        return 200, result
+
+    def close(self):
+        pass  # The engine holds only process memory.
+
+
+class PlanningWorker(ProcessWorker):
+    """Replaceable CPU capacity; a terminated attempt is settled, never resubmitted."""
+
+    kind = "planner"
+
     def __init__(self, settings, factory, folder, service_owner):
-        self.settings, self.factory, self.folder = settings, factory, folder
-        self.service_owner = service_owner
+        self.settings, self.folder, self.service_owner = settings, folder, service_owner
+        self.progress = SPAWN.RawArray("d", [0, 0, 0])  # queries, expansions, last checkpoint unix
         self.current = None
-        self.generation = 0
-        self.start()
+        self.cancel_began = None
+        super().__init__(PlannerHost, settings, factory, self.progress)
 
-    def start(self):
-        context = mp.get_context("spawn")
-        self.connection, child = context.Pipe()
-        self.stop = CancellationFlag(context)
-        self.progress = context.RawArray("d", [0, 0, 0])  # queries, expansions, last checkpoint unix
-        self.instance = uuid.uuid4().hex
-        self.process = context.Process(target=worker_main,
-            args=(child, self.settings, self.factory, self.stop, self.progress),
-            name="planner-" + self.instance[:8], daemon=True)
-        self.process.start()
-        child.close()
-        self.ready = False
-        self.generation += 1
+    def spawn(self):
+        super().spawn()
         ticks = Path(f"/proc/{self.process.pid}/stat")
         create_json(self.folder / self.instance / "ownership.json", {
             "service_owner": self.service_owner, "instance": self.instance,
@@ -99,55 +83,28 @@ class PlanningWorker:
         })
 
     def call(self, job, folder):
+        self.cancel_began = None
+        grace = self.settings.hard_timeout_grace_s
         try:
-            if not self.process.is_alive():
-                return {"outcome": "worker_failed", "error": "CPU worker unavailable", "artifacts": {}}
-            if not self.ready:
-                if not self.connection.poll(30):
-                    raise RuntimeError("CPU worker did not become ready")
-                status, _ = self.connection.recv()
-                if status != "ready":
-                    raise RuntimeError("CPU worker initialization mismatch")
-                self.ready = True
-            began = time.monotonic()
-            self.connection.send((job.model_dump(mode="json"), str(folder)))
-            while True:
-                if self.connection.poll(0.05):
-                    cid, result = self.connection.recv()
-                    if cid != job.attempt_id:
-                        raise RuntimeError("planning reply identity mismatch")
-                    if result.get("outcome") == "worker_failed":
-                        self.terminate()
-                    return result
-                if not self.process.is_alive():
-                    raise RuntimeError("CPU planning worker exited")
-                elapsed = time.monotonic() - began
-                if elapsed > job.budget.wall_s + self.settings.hard_timeout_grace_s:
-                    self.stop.set()
-                    self.terminate()
-                    return {"outcome": "budget_exhausted", "hard_timeout": True, "artifacts": {}}
-                if self.stop.is_set():
-                    if not hasattr(self, "cancel_began"):
-                        self.cancel_began = time.monotonic()
-                    if time.monotonic() - self.cancel_began > self.settings.hard_timeout_grace_s:
-                        self.terminate()
-                        return {"outcome": "cancelled", "hard_timeout": True, "artifacts": {}}
-        except (OSError, EOFError, RuntimeError) as error:
+            _, result = self.exchange(job.attempt_id, (job.model_dump(mode="json"), str(folder)),
+                                      timeout=job.budget.wall_s + grace,
+                                      interrupted=self._cancel_expired)
+        except WorkerTimeout:
+            outcome = "budget_exhausted" if self.cancel_began is None else "cancelled"
+            return {"outcome": outcome, "hard_timeout": True, "artifacts": {}}
+        except WorkerError as error:
             self.terminate()
-            return {"outcome": "worker_failed", "error": repr(error), "artifacts": {}}
+            return worker_failed(repr(error))
+        if result.get("outcome") == "worker_failed":
+            self.terminate()
+        return result
 
-    def terminate(self):
-        if self.process.is_alive():
-            self.process.terminate()
-            self.process.join(2)
-        if self.process.is_alive():
-            self.process.kill()
-            self.process.join(2)
-
-    def close(self):
-        self.stop.set()
-        self.terminate()
-        self.connection.close()
+    def _cancel_expired(self):
+        if not self.stop.is_set():
+            return False
+        if self.cancel_began is None:
+            self.cancel_began = time.monotonic()
+        return time.monotonic() - self.cancel_began > self.settings.hard_timeout_grace_s
 
 
 class PlanningService:
@@ -276,13 +233,10 @@ class PlanningService:
                     continue
                 job = state["job"]
                 worker.current = cid
-                if not worker.process.is_alive():
+                if not worker.alive:
                     # Replace capacity for FUTURE claims only. The failed attempt stays terminal.
-                    worker.connection.close()
-                    await self.disk.run(worker.start)
+                    await self.disk.run(worker.spawn)
                 worker.stop.clear()
-                if hasattr(worker, "cancel_began"):
-                    del worker.cancel_began
                 worker.progress[:] = [0, 0, 0]
                 state["view"]["status"] = "planning"
                 state["view"]["worker_instance"] = worker.instance
@@ -303,7 +257,7 @@ class PlanningService:
                 "evidence_io": self.disk.health(),
                 "capacity": self.settings.capacity, "active": len(self.active),
                 "queued": len(self.queue), "workers": len(self.workers),
-                "live_workers": sum(w.process.is_alive() for w in self.workers),
+                "live_workers": sum(w.alive for w in self.workers),
                 "implementation_digest": self.implementation_digest,
                 "assets": [{"dataset": a.dataset, "scene_id": a.scene_id, "sha256": a.sha256}
                            for a in self.settings.assets],
@@ -320,8 +274,7 @@ class PlanningService:
             runner.cancel()
         await asyncio.gather(*self.runners, return_exceptions=True)
         for state in list(self.active.values()):
-            await self.finish(state, {"outcome": "worker_failed", "error": "planner stopped; no replay",
-                                "artifacts": {}})
+            await self.finish(state, worker_failed("planner stopped; no replay"))
         await self.disk.close()
 
 

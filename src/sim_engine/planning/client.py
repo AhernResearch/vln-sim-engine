@@ -8,7 +8,7 @@ from urllib.parse import urlsplit
 import httpx
 
 from sim_engine.core.io import create_json, file_sha256, fingerprint, read_json
-from sim_engine.pool import WorkerError
+from sim_engine.core.process import WorkerError
 from sim_engine.scenes import resolve_scene
 
 from .assets import registered_assets

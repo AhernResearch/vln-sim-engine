@@ -6,7 +6,8 @@ from pydantic import ValidationError
 
 from sim_engine.config import Physics, VelocityLimits
 from sim_engine.controllers import CommandRejected
-from sim_engine.pool import SessionPool, WorkerError
+from sim_engine.core.process import WorkerError
+from sim_engine.pool import SessionPool
 from sim_engine.protocol import StepRequest
 from sim_engine.session import Session
 

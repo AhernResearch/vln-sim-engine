@@ -503,12 +503,11 @@ async def test_idle_cached_worker_has_priority_without_limiting_busy_scene_paral
         for cid in service.observations
     }
     service._persist = AsyncMock()
-    process = SimpleNamespace(is_alive=lambda: True)
-    cold = SimpleNamespace(instance="cold", current=None, warm=deque(), process=process)
+    cold = SimpleNamespace(instance="cold", current=None, warm=deque(), alive=True)
     warm = SimpleNamespace(
         instance="warm", current="running" if cached_worker_busy else None,
         warm=deque([("train_pilot", "warm-scene", "camera")]),
-        process=process,
+        alive=True,
     )
     service.workers = [cold, warm]
     phase, state = await service._next(cold)

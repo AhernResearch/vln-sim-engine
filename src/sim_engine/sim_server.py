@@ -4,8 +4,9 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, Response
 
 from . import __version__
+from .core.process import WorkerError
 from .data import EpisodeStore
-from .pool import SessionPool, WorkerError
+from .pool import SessionPool
 from .protocol import ExpertRequest, FinishRequest, ResetRequest, StepRequest
 
 
@@ -48,7 +49,7 @@ def create_app(settings, *, store=None, pool_factory=SessionPool):
 
     @app.get("/v1/health")
     async def health():
-        live = sum(worker.process.is_alive() for worker in app.state.pool.workers)
+        live = sum(worker.alive for worker in app.state.pool.workers)
         return {
             "status": "ok" if live == settings.simulation.workers else "degraded",
             "backend": settings.simulation.backend,

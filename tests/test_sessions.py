@@ -3,7 +3,8 @@ import asyncio
 import pytest
 from helpers import TestEnvironment, episode, request, settings
 
-from sim_engine.pool import SessionPool, WorkerError
+from sim_engine.core.process import WorkerError
+from sim_engine.pool import SessionPool
 from sim_engine.session import Conflict, Session
 
 
