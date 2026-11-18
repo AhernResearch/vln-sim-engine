@@ -101,6 +101,6 @@ def request(key="r1", expected=0):
     return {
         "request_id": key,
         "expected_event_index": expected,
-        "trajectory": [[i * 0.25, 0, 0] for i in range(1, 9)],
-        "action_budget": 4,
+        "command": {"kind": "waypoints", "trajectory": [[i * 0.25, 0, 0] for i in range(1, 9)],
+                    "action_budget": 4},
     }

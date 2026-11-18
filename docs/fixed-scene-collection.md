@@ -129,7 +129,8 @@ attempt reserve remains. Exhausting attempts first is recorded as a shortfall,
 never an automatic retry or budget expansion. Legacy attempt-only schedules keep
 their behavior. nav-train marks unclaimed reserve candidates `not_needed`.
 
-`python -m sim_engine.collection.start_pool` prepares train-only start pools using
+`sim-engine build-start-pool --config C --dataset D --camera K --owner O --output DIR`
+prepares train-only start pools using
 CPU PathFinder without creating a Simulator. It validates registered scenes and
 freezes NavMesh hashes, seeds and samples. Allocation uses a per-scene minimum
 plus eligible NavMesh area; sampling filters tiny islands and inadequate

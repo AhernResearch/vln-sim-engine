@@ -93,8 +93,8 @@ class EngineClient:
                     {
                         "request_id": request_id,
                         "expected_event_index": history[-1]["event_index"],
-                        "trajectory": result["trajectory"],
-                        "action_budget": 4,
+                        "command": {"kind": "waypoints", "trajectory": result["trajectory"],
+                                    "action_budget": 4},
                         "policy_version": result["policy_version"],
                     },
                 )

@@ -77,8 +77,7 @@ local poses followed by a discrete-action descent of at most `action_budget` act
                           [1.25,0,0],[1.5,0,0],[1.75,0,0],[2,0,0]]}}
 ```
 
-The legacy body with top-level `trajectory`/`action_budget` is accepted as the same
-waypoint command. `velocity` holds a body-frame unicycle command for the dataset's
+A `command` object is required. `velocity` holds a body-frame unicycle command for the dataset's
 `physics.velocity.time_step_s`, following habitat-lab 0.3.1 `VelocityAction`:
 
 ```json

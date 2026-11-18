@@ -60,18 +60,6 @@ class StepRequest(StrictModel):
     command: Annotated[WaypointCommand | VelocityCommand, Field(discriminator="kind")]
     policy_version: str = ""
 
-    @model_validator(mode="before")
-    @classmethod
-    def legacy_waypoints(cls, value):
-        """Accept the original top-level trajectory/action_budget body as a waypoint command."""
-        if isinstance(value, dict) and "command" not in value and "trajectory" in value:
-            value = dict(value)
-            command = {"kind": "waypoints", "trajectory": value.pop("trajectory")}
-            if "action_budget" in value:
-                command["action_budget"] = value.pop("action_budget")
-            value["command"] = command
-        return value
-
 
 class FinishRequest(StrictModel):
     """``forced_stop`` is a caller-imposed STOP at its own decision budget, not a model STOP;

@@ -41,6 +41,16 @@ def main(argv=None):
     bake.add_argument("--manifest", type=Path, required=True)
     bake.add_argument("--agent-radius-m", type=float, default=0.18)
     bake.add_argument("--agent-height-m", type=float, default=1.5)
+    pool = commands.add_parser("build-start-pool")
+    pool.add_argument("--config", type=Path, required=True)
+    pool.add_argument("--dataset", required=True)
+    pool.add_argument("--camera", required=True)
+    pool.add_argument("--owner", required=True)
+    pool.add_argument("--output", type=Path, required=True)
+    pool.add_argument("--successes", type=int, default=100000)
+    pool.add_argument("--minimum-per-scene", type=int, default=500)
+    pool.add_argument("--attempt-factor", type=float, default=3.0)
+    pool.add_argument("--seed", type=int, default=20261126)
     args = parser.parse_args(argv)
     if args.command == "prepare-scan":
         from .scan_assets import prepare
@@ -80,6 +90,15 @@ def main(argv=None):
     from .config import Settings
 
     settings = Settings.read(args.config)
+    if args.command == "build-start-pool":
+        from .collection.start_pool import build_pool
+        from .data import sha256
+
+        print(json.dumps(build_pool(
+            settings, sha256(args.config), args.dataset, args.camera, args.output, args.owner,
+            successes=args.successes, minimum_per_scene=args.minimum_per_scene,
+            attempt_factor=args.attempt_factor, seed=args.seed), indent=2))
+        return
     if args.command == "export-planner-assets":
         from .planning.assets import export_assets
         print(json.dumps(export_assets(settings, args.output), indent=2))

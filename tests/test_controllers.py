@@ -28,17 +28,12 @@ def velocity(key, expected, linear, angular):
     }
 
 
-def test_legacy_body_is_the_explicit_waypoint_command(tmp_path):
-    legacy = request()
-    explicit = {
-        "request_id": "r1",
-        "expected_event_index": 0,
-        "command": {"kind": "waypoints", "trajectory": legacy["trajectory"], "action_budget": 4},
-    }
-    assert StepRequest.model_validate(legacy) == StepRequest.model_validate(explicit)
-    a, b = open_session(tmp_path), open_session(tmp_path)
-    assert a.step(legacy)["executed_actions"] == b.step(explicit)["executed_actions"]
-    assert [list(p) for p in a.predictions[0]["trajectory"]] == legacy["trajectory"]
+def test_top_level_trajectory_body_is_rejected():
+    body = request()
+    body.update(body.pop("command"))
+    del body["kind"]
+    with pytest.raises(ValidationError):
+        StepRequest.model_validate(body)
 
 
 @pytest.mark.parametrize(

@@ -132,10 +132,13 @@ A*、任务级精确几何查询缓存、批量查询接口、原生边检查与
 `CURRENT_PLANNING_PROFILE`，C++ 扩展为构建必需项，服务启动检查内核。
 `collection-v2` / `collection-v3` / `collection-v4` 的显式请求继续保留。
 ROI 掩码需结合 `computed_mask` 读取，框外未计算区域不代表障碍。
-[查询缓存与原生路径核](planning-query-path-optimization-20261115.md) 记录当前主线；
-[v4 切换与全链路复查](planning-mainline-and-pipeline-review-20261115.md)、
-[第一轮](planning-optimization-round1-20261115.md) 和
-[C++ 第二轮](planning-native-astar-20261115.md) 记录历史对照。以下是拆池时的历史验证。
+v5 内核分工：`planning/queries.py::NavMeshQueries` 绑定一个不可变 NavMesh，持有任务级
+snap / clearance / island 精确缓存（float32 坐标字节为键，各 65,536 项 LRU，统计随回执保存为
+`geometry_queries`，任务结束清理）；`_astar.cpp` 沿用原 A* 顺序并直接使用该缓存；
+`_path.cpp` 做顺序扫掠边检查与原位 fairing。相对 v4，10 组配对规划 CPU 总时间
+54.40 → 34.47 秒；未测量生产吞吐。各轮优化的配对测量保留在
+`evidence/planning-{optimization-round1,native-astar,mainline-review,query-path}-2026111*/`。
+以下是拆池时的历史验证。
 
 CPU 故障注入覆盖：进程退出、硬超时、预算共享、运行/排队取消、容量拒绝、
 相同尝试的幂等查询、重启不重放、错误哈希/路径、丢失提交响应与过期结果拒绝。
