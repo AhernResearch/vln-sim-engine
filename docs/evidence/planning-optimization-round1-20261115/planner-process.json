@@ -1,0 +1,17 @@
+{
+  "owner": "3a653d4acb5544b09894e7c3441e80c7",
+  "pid": 2718144,
+  "start_ticks": "335594636",
+  "argv": [
+    "/data/nav_storage/lightnav/envs/sim-engine-031/bin/python",
+    "-m",
+    "sim_engine",
+    "serve-planner",
+    "--config",
+    "/data/nav_storage/sim-engine/deployments/planning-opt-native-3a653d4acb55/planner-runtime.json",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "36239"
+  ]
+}

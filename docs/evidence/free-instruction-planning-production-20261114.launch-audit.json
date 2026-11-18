@@ -1,0 +1,113 @@
+{
+  "owner": "07b292f5809149419d11209f5dc9116b",
+  "status": "passed",
+  "sample_size": 5,
+  "records": [
+    {
+      "id": "s54-p00101",
+      "request_id": "8c8024fce3547dd2a05157e567d02e54f0f0f989354b4cb9234e32b235f6d9a7",
+      "frames": 14,
+      "final_distance_m": 0.0043345848098397255,
+      "inside_original_bbox": true,
+      "collision_steps": 0,
+      "recording_valid": true,
+      "per_frame_PointNav_valid": true,
+      "plan_digest_verified": true,
+      "execution_lease_verified": true,
+      "model_input_images_restored": 4
+    },
+    {
+      "id": "s58-p00108",
+      "request_id": "7de763069b883ddf654f7634351b6846d89170557cff28263b3fc0517e8da2df",
+      "frames": 21,
+      "final_distance_m": 0.0008937264210544527,
+      "inside_original_bbox": true,
+      "collision_steps": 0,
+      "recording_valid": true,
+      "per_frame_PointNav_valid": true,
+      "plan_digest_verified": true,
+      "execution_lease_verified": true,
+      "model_input_images_restored": 4
+    },
+    {
+      "id": "s21-p00083",
+      "request_id": "6bcf1f0f90260c25c1ad3467b518f4a0d6212eeecb06b9b5631909ebcd499fb4",
+      "frames": 17,
+      "final_distance_m": 0.0010216055670753121,
+      "inside_original_bbox": true,
+      "collision_steps": 0,
+      "recording_valid": true,
+      "per_frame_PointNav_valid": true,
+      "plan_digest_verified": true,
+      "execution_lease_verified": true,
+      "model_input_images_restored": 4
+    },
+    {
+      "id": "s33-p00095",
+      "request_id": "6c9da5cff6b8be1fc4768199750c6d4a848545ce22eab763d3b82ee78f41e6a5",
+      "frames": 25,
+      "final_distance_m": 0.002060375176370144,
+      "inside_original_bbox": true,
+      "collision_steps": 0,
+      "recording_valid": true,
+      "per_frame_PointNav_valid": true,
+      "plan_digest_verified": true,
+      "execution_lease_verified": true,
+      "model_input_images_restored": 4
+    },
+    {
+      "id": "s25-p00103",
+      "request_id": "01aed35a7bc39e53ee82b1164d47205b34b6821a923e2c98a40a2f59931d0be8",
+      "frames": 50,
+      "final_distance_m": 0.0,
+      "inside_original_bbox": true,
+      "collision_steps": 0,
+      "recording_valid": true,
+      "per_frame_PointNav_valid": true,
+      "plan_digest_verified": true,
+      "execution_lease_verified": true,
+      "model_input_images_restored": 4
+    }
+  ],
+  "sample_frames": 127,
+  "early_uncertain_receipts": [
+    {
+      "request_id": "87792f5a6e59f045c598fb496c2170a4b1369cfd8392860dfb20017088bfa5ca",
+      "phase": "execute",
+      "error": "{\"error\": \"ValueError('invalid depth retained for review')\", \"movement_attempted\": true}",
+      "movement_attempted": null,
+      "planning_outcome": null
+    },
+    {
+      "request_id": "0e1ed57952cc23380ff6456511fb2f617920d0d01c9083f3e3b8e7ca36d641aa",
+      "phase": "execute",
+      "error": "{\"error\": \"ValueError('invalid depth retained for review')\", \"movement_attempted\": true}",
+      "movement_attempted": null,
+      "planning_outcome": null
+    },
+    {
+      "request_id": "320a6ab641b62dfa35618c97145c15de688f75f006f48f0ab3f99184bd7edb3b",
+      "phase": null,
+      "error": null,
+      "movement_attempted": null,
+      "planning_outcome": null
+    },
+    {
+      "request_id": "f3de79b3a605b12cafd8b882034117fb79d8d77134d0f153caecfe174ba786c5",
+      "phase": null,
+      "error": null,
+      "movement_attempted": null,
+      "planning_outcome": null
+    },
+    {
+      "request_id": "ff8a0440553bca838b4570496417661d759bcfe6ee6c3c2bfd2738aa11c2bb4b",
+      "phase": null,
+      "error": null,
+      "movement_attempted": null,
+      "planning_outcome": null
+    }
+  ],
+  "semantic_review": "pending_review",
+  "automatic_retry": false,
+  "training_exports": 0
+}

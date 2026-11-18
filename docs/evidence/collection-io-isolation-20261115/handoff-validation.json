@@ -1,0 +1,35 @@
+{
+  "owner": "6ca6ed773bdb40eea8a023c2127b1e01",
+  "source_match_e2e": {
+    "optimized": {
+      "unchanged_files": 71,
+      "changed": [
+        "src/sim_engine/collection/server.py",
+        "src/sim_engine/planning/client.py",
+        "src/sim_engine/planning/service.py"
+      ],
+      "added": [
+        "src/sim_engine/async_io.py"
+      ]
+    },
+    "client": {
+      "unchanged_files": 153,
+      "changes": {
+        "src/nav_train/collection_client.py": {
+          "before": "7e37cd75312827ffd9cd57a6980e0b74c672738dae01e59ac5abce5b97c05c56",
+          "after": "7fc573a561242783346d9342255df029bb434236bf22edf43ae3c4ba11980245"
+        }
+      }
+    }
+  },
+  "e2e_root": "/data/nav_storage/nav-train/collections/planning-e2e-1e6e8f1d82c8",
+  "e2e_manifest_sha256": "c256d5a74676378a5839a2ddac258e8eda5cecf94483a079d7d95b95830ca437",
+  "e2e_result_sha256": "2964e87cf7646fe1cbfef2a533084e672082aa5b6891003d99f6d27a4f5cb36b",
+  "previous_finished_sha256": "c5dfa97bc22b11c799153a9334b63b62157352cc3cf056f265810597676129fe",
+  "file_size_limit": [
+    -1,
+    -1
+  ],
+  "automatic_retry": false,
+  "automatic_restart": false
+}

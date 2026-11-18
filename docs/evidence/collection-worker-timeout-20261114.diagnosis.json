@@ -1,0 +1,328 @@
+{
+  "owner": "bc27b3b34caa45c5acd5fd056ae7358e",
+  "production_owner": "d7cf8d673fed49e68fa53b8ef469f1b2",
+  "service_owner": "232cbbdd8572460aa2446a90046d557d",
+  "first_worker": {
+    "index": 19,
+    "pid": 2642660,
+    "instance": "75f3de93ef0d47cd88b38f4e07cb543f",
+    "gpu": 3,
+    "scene": "mp3d/ac26ZMwG7aT/ac26ZMwG7aT.glb"
+  },
+  "direct_exit_cause": "parent collection ActorWorker._call timed out at 900s and explicitly terminated child process",
+  "phase_inferred_from_persisted_evidence": "after region candidates generation, before completed region selection, no movement marker",
+  "tasks": [
+    {
+      "request_id": "82a5fa30e9c6c74f9a01b0eb4e6dc92e4ed98ef70a36aee2c4f72e1827198c35",
+      "scene": "mp3d/ac26ZMwG7aT/ac26ZMwG7aT.glb",
+      "target": {
+        "target_view": "back",
+        "bbox": [
+          250.0,
+          650.0,
+          450.0,
+          850.0
+        ]
+      },
+      "executing_utc": "2026-11-14T11:24:30.366340+00:00",
+      "receipt_utc": "2026-11-14T11:39:30.616391+00:00",
+      "operation_wall_s": 900.2500510215759,
+      "candidate_generation_after_start_s": 0.41499996185302734,
+      "candidate_count": 63,
+      "first_goal_euclidean_m": 2.79014759960108,
+      "first_goal_geodesic_m": 30.041029133324837,
+      "movement_marker": false,
+      "region_selection_written": false,
+      "receipt_error": "collection operation timed out; evidence retained"
+    },
+    {
+      "request_id": "5f25429ff0fb26e3492bf5e7e2ff2b5f4190844a96e2f4a2ae3eafc877a4fac9",
+      "scene": "mp3d/1LXtFkjw3qL/1LXtFkjw3qL.glb",
+      "target": {
+        "target_view": "front",
+        "bbox": [
+          100.0,
+          650.0,
+          350.0,
+          850.0
+        ]
+      },
+      "executing_utc": "2026-11-14T11:26:07.509346+00:00",
+      "receipt_utc": "2026-11-14T11:41:07.814397+00:00",
+      "operation_wall_s": 900.3050510883331,
+      "candidate_generation_after_start_s": 1.559000015258789,
+      "candidate_count": 144,
+      "first_goal_euclidean_m": 2.662588908324418,
+      "first_goal_geodesic_m": 32.34399668255348,
+      "movement_marker": false,
+      "region_selection_written": false,
+      "receipt_error": "collection operation timed out; evidence retained"
+    }
+  ],
+  "last_healthy_resource": {
+    "free_disk_bytes": 1394676469760,
+    "gpu": [
+      "0, 67563, 13591, 2",
+      "1, 72831, 8323, 0",
+      "2, 67748, 13406, 0",
+      "3, 71950, 9204, 92",
+      "4, 71316, 9838, 100",
+      "5, 72747, 8407, 100"
+    ],
+    "memory": [
+      "MemTotal:       924325804 kB",
+      "MemAvailable:   694130528 kB"
+    ],
+    "loadavg": "50.90 46.26 38.41 34/10830 2648579"
+  },
+  "first_degraded_resource": {
+    "free_disk_bytes": 1394517315584,
+    "gpu": [
+      "0, 67563, 13591, 0",
+      "1, 72831, 8323, 0",
+      "2, 67748, 13406, 1",
+      "3, 71033, 10121, 1",
+      "4, 71316, 9838, 1",
+      "5, 72747, 8407, 100"
+    ],
+    "memory": [
+      "MemTotal:       924325804 kB",
+      "MemAvailable:   695374120 kB"
+    ],
+    "loadavg": "50.73 46.51 38.62 14/10829 2648622"
+  },
+  "first_degraded_elapsed_s": 1207.4998929551803,
+  "supervisor_error": "RuntimeError('production worker unavailable; preserve attempts, no replay')",
+  "diagnostic": {
+    "status": "diagnostic_budget_reached",
+    "last_stage": {
+      "stage": "plan_begin",
+      "elapsed_s": 33.757557917851955,
+      "goal": [
+        3.4165985584259033,
+        -0.06077800691127777,
+        8.245925903320312
+      ]
+    },
+    "owner": "bc27b3b34caa45c5acd5fd056ae7358e",
+    "wall_s": 60.003030561842024,
+    "event_count": 4,
+    "simulator_instances": 0,
+    "movement_commands": 0,
+    "cache_entries": [
+      3,
+      83334
+    ],
+    "guard_cache_entries": 1317
+  },
+  "diagnostic_hotspots": [
+    {
+      "file": "/data/nav_storage/sim-engine/deployments/free-production-d7cf8d673fed/server/src/sim_engine/collection/region.py",
+      "line": 40,
+      "function": "ground_region",
+      "calls": 1,
+      "self_s": 0.002119965,
+      "cumulative_s": 60.00003889800001
+    },
+    {
+      "file": "/data/nav_storage/sim-engine/deployments/free-production-d7cf8d673fed/server/src/sim_engine/collection/region_selection.py",
+      "line": 73,
+      "function": "select_region_plan",
+      "calls": 1,
+      "self_s": 4.6528000000000006e-05,
+      "cumulative_s": 59.538119632000004
+    },
+    {
+      "file": "/data/nav_storage/sim-engine/deployments/free-production-d7cf8d673fed/server/src/sim_engine/collection/region_selection.py",
+      "line": 118,
+      "function": "evaluate",
+      "calls": 2,
+      "self_s": 7.3119e-05,
+      "cumulative_s": 59.522756990000005
+    },
+    {
+      "file": "/data/nav_storage/sim-engine/deployments/free-production-d7cf8d673fed/server/src/sim_engine/collection/region.py",
+      "line": 105,
+      "function": "<lambda>",
+      "calls": 2,
+      "self_s": 1.3348000000000002e-05,
+      "cumulative_s": 59.521929905
+    },
+    {
+      "file": "/data/nav_storage/sim-engine/deployments/free-production-d7cf8d673fed/server/src/sim_engine/collection/guidance.py",
+      "line": 155,
+      "function": "plan_with_preferences",
+      "calls": 2,
+      "self_s": 0.00026211,
+      "cumulative_s": 59.52166080200001
+    },
+    {
+      "file": "/data/nav_storage/sim-engine/deployments/free-production-d7cf8d673fed/server/src/sim_engine/collection/guidance.py",
+      "line": 115,
+      "function": "prepare_guidance",
+      "calls": 4,
+      "self_s": 4.3110000000000006e-05,
+      "cumulative_s": 59.521332619000006
+    },
+    {
+      "file": "/data/nav_storage/sim-engine/deployments/free-production-d7cf8d673fed/server/src/sim_engine/collection/clearance.py",
+      "line": 211,
+      "function": "prepare",
+      "calls": 2,
+      "self_s": 0.005894805,
+      "cumulative_s": 59.520809637000006
+    },
+    {
+      "file": "/data/nav_storage/sim-engine/deployments/free-production-d7cf8d673fed/server/src/sim_engine/collection/clearance.py",
+      "line": 128,
+      "function": "_search",
+      "calls": 2,
+      "self_s": 4.386203967,
+      "cumulative_s": 36.040635619
+    },
+    {
+      "file": "/data/nav_storage/sim-engine/deployments/free-production-d7cf8d673fed/server/src/sim_engine/collection/clearance.py",
+      "line": 119,
+      "function": "_in_corridor",
+      "calls": 643501,
+      "self_s": 10.179744643000001,
+      "cumulative_s": 28.031044476
+    },
+    {
+      "file": "/data/nav_storage/sim-engine/deployments/free-production-d7cf8d673fed/server/src/sim_engine/collection/clearance.py",
+      "line": 178,
+      "function": "_smooth",
+      "calls": 2,
+      "self_s": 0.19129795600000002,
+      "cumulative_s": 23.384353719
+    },
+    {
+      "file": "/data/nav_storage/sim-engine/deployments/free-production-d7cf8d673fed/server/src/sim_engine/collection/clearance.py",
+      "line": 90,
+      "function": "edge_clear",
+      "calls": 54171,
+      "self_s": 7.3669627,
+      "cumulative_s": 17.960548811000002
+    },
+    {
+      "file": "/data/nav_storage/sim-engine/deployments/free-production-d7cf8d673fed/server/src/sim_engine/collection/clearance.py",
+      "line": 184,
+      "function": "<genexpr>",
+      "calls": 288614,
+      "self_s": 0.197124389,
+      "cumulative_s": 11.756090389
+    },
+    {
+      "file": "/data/nav_storage/sim-engine/deployments/free-production-d7cf8d673fed/server/src/sim_engine/collection/clearance.py",
+      "line": 56,
+      "function": "_resample",
+      "calls": 60739,
+      "self_s": 0.347754416,
+      "cumulative_s": 7.327633093
+    },
+    {
+      "file": "/data/nav_storage/sim-engine/deployments/free-production-d7cf8d673fed/server/src/sim_engine/collection/clearance.py",
+      "line": 60,
+      "function": "<genexpr>",
+      "calls": 1468556,
+      "self_s": 6.340498608000001,
+      "cumulative_s": 6.340506853000001
+    },
+    {
+      "file": "/data/nav_storage/sim-engine/deployments/free-production-d7cf8d673fed/server/src/sim_engine/collection/clearance.py",
+      "line": 49,
+      "function": "_point",
+      "calls": 754789,
+      "self_s": 1.3882470930000002,
+      "cumulative_s": 4.047294341000001
+    },
+    {
+      "file": "/data/nav_storage/sim-engine/deployments/free-production-d7cf8d673fed/server/src/sim_engine/collection/clearance.py",
+      "line": 77,
+      "function": "clearance",
+      "calls": 236992,
+      "self_s": 1.181792808,
+      "cumulative_s": 1.842049118
+    },
+    {
+      "file": "/data/nav_storage/sim-engine/deployments/free-production-d7cf8d673fed/server/src/sim_engine/collection/clearance.py",
+      "line": 78,
+      "function": "<genexpr>",
+      "calls": 947968,
+      "self_s": 0.5247319340000001,
+      "cumulative_s": 0.5247319340000001
+    },
+    {
+      "file": "/data/nav_storage/sim-engine/deployments/free-production-d7cf8d673fed/server/src/sim_engine/collection/safe_image.py",
+      "line": 38,
+      "function": "safe_floor_mask",
+      "calls": 1,
+      "self_s": 0.20399502800000002,
+      "cumulative_s": 0.348208773
+    },
+    {
+      "file": "/data/nav_storage/sim-engine/deployments/free-production-d7cf8d673fed/server/src/sim_engine/collection/clearance.py",
+      "line": 237,
+      "function": "<genexpr>",
+      "calls": 389,
+      "self_s": 0.000399869,
+      "cumulative_s": 0.083727193
+    },
+    {
+      "file": "/data/nav_storage/sim-engine/deployments/free-production-d7cf8d673fed/server/src/sim_engine/collection/visual_region.py",
+      "line": 99,
+      "function": "sample_region",
+      "calls": 1,
+      "self_s": 0.006586750000000001,
+      "cumulative_s": 0.075125645
+    }
+  ],
+  "diagnostic_events": [
+    {
+      "stage": "ground_region_begin",
+      "elapsed_s": 0.00027913181111216545
+    },
+    {
+      "stage": "plan_begin",
+      "elapsed_s": 0.46268719295039773,
+      "goal": [
+        3.513232469558716,
+        0.10374533385038376,
+        8.965664863586426
+      ]
+    },
+    {
+      "stage": "plan_end",
+      "elapsed_s": 33.7416795338504,
+      "status": "infeasible",
+      "reason": "smoothed path failed swept-segment verification"
+    },
+    {
+      "stage": "plan_begin",
+      "elapsed_s": 33.757557917851955,
+      "goal": [
+        3.4165985584259033,
+        -0.06077800691127777,
+        8.245925903320312
+      ]
+    }
+  ],
+  "source_sha256": {
+    "src/sim_engine/collection/server.py": "b5925354b034909bdaf6d21980e0313377b51a54026331c7315abb86aa1c8f9b",
+    "src/sim_engine/collection/clearance.py": "5c08a4e2f814e30fdd7e281b72bb08ed5343fdff574e67284c4c1051d460c764",
+    "src/sim_engine/collection/region_selection.py": "81e6be832e85de81a0b45fca6564e44f221cec8b70c96b4f9ce5e3b1b43710b6",
+    "src/sim_engine/collection/guidance.py": "c9f4a072b0fb058fbecd0721c24394449f43f73b804c34d17083c6c36059aabf"
+  },
+  "limits": [
+    "No original process stack was recorded at the exact termination instant.",
+    "Diagnostic is a fresh CPU PathFinder-only run, cold query caches, with cProfile overhead and a 60s cap; not a re-measurement of original full task wall time.",
+    "Diagnostic did not reach controller preview or instantiate a Simulator.",
+    "dmesg access denied; exit cause is determined from task receipt and parent source branch."
+  ],
+  "runtime_changes": 0,
+  "model_requests": 0,
+  "simulator_instances": 0,
+  "movement_commands": 0,
+  "production_restarted": false,
+  "diagnostic_artifacts": "/data/nav_storage/sim-engine/diagnostics/worker-timeout-20261114-bc27b3b34caa"
+}

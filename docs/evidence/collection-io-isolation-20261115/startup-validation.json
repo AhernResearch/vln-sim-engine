@@ -1,0 +1,997 @@
+{
+  "owner": "6ca6ed773bdb40eea8a023c2127b1e01",
+  "utc": "2026-11-14T21:04:30.031889+00:00",
+  "status": {
+    "owner": "6ca6ed773bdb40eea8a023c2127b1e01",
+    "client_owner": "3ddd99d25a3443d9ba0a36da9a1d00af",
+    "status": "running",
+    "target_successes": 100000,
+    "credited_successes": 46703,
+    "remaining_successes": 53297,
+    "automatic_restart": false,
+    "automatic_retry": false,
+    "training_exports": 0,
+    "planning_workers": 32,
+    "audit_workers": 4,
+    "service_owner": "3c9a46a8cbec426991f10ea5e63d4928",
+    "service_process": {
+      "owner": "6ca6ed773bdb40eea8a023c2127b1e01",
+      "pid": 2802922,
+      "start_ticks": "337395269",
+      "pgid": 2802922
+    },
+    "client_process": {
+      "owner": "6ca6ed773bdb40eea8a023c2127b1e01",
+      "pid": 2803002,
+      "start_ticks": "337396074",
+      "pgid": 2803002
+    },
+    "health_failures": 0,
+    "evidence_io": {
+      "pending": 2,
+      "completed": 7444,
+      "oldest_operation": "install_result",
+      "oldest_wall_s": 0.022270334884524345,
+      "max_wall_s": 0.8371390979737043
+    },
+    "planning_io": {
+      "pending": 1,
+      "completed": 2554,
+      "oldest_operation": "atomic_json",
+      "oldest_wall_s": 0.014638870023190975,
+      "max_wall_s": 0.6000875732861459
+    },
+    "elapsed_s": 113.90834526764229,
+    "progress": {
+      "owner": "3ddd99d25a3443d9ba0a36da9a1d00af",
+      "wall_s": 98.42314590141177,
+      "submitted": 398,
+      "counts": {
+        "failed_or_uncertain": 3,
+        "excluded_before_movement": 50,
+        "completed_audit": 211,
+        "planning_budget_exhausted": 7
+      },
+      "pending": 127,
+      "automatic_retry": false
+    },
+    "confirmed_new_successes": 211,
+    "confirmed_total_successes": 46914,
+    "service_active": 121,
+    "live_workers": 32,
+    "server_new_successes": 221,
+    "server_attempts": 402,
+    "scene_status_counts": {
+      "active": 32,
+      "queued": 29
+    },
+    "scene_schedule": [
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/vyrNrziPKCB/vyrNrziPKCB.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 10194,
+        "claimed": 13,
+        "terminal": 9,
+        "successful": 6,
+        "success_goal": 3398,
+        "status": "active",
+        "worker": "a61e57170dac4c9e821f7203f4034dca"
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/B6ByNegPMKs/B6ByNegPMKs.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 9912,
+        "claimed": 13,
+        "terminal": 9,
+        "successful": 9,
+        "success_goal": 3304,
+        "status": "active",
+        "worker": "0fa4ae11addd4b2ba3b9080c5967d0f0"
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/E9uDoFAP3SH/E9uDoFAP3SH.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 8604,
+        "claimed": 13,
+        "terminal": 9,
+        "successful": 7,
+        "success_goal": 2868,
+        "status": "active",
+        "worker": "2f886935870d475f8bfc2e28504896f1"
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/dhjEzFoUFzH/dhjEzFoUFzH.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 7452,
+        "claimed": 13,
+        "terminal": 10,
+        "successful": 9,
+        "success_goal": 2484,
+        "status": "active",
+        "worker": "1595b1de2372473fb77ed05cb4aa6a87"
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/kEZ7cmS4wCh/kEZ7cmS4wCh.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 5475,
+        "claimed": 13,
+        "terminal": 9,
+        "successful": 8,
+        "success_goal": 1825,
+        "status": "active",
+        "worker": "72dca344e89c4837898207978fcee832"
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/SN83YJsR3w2/SN83YJsR3w2.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 5028,
+        "claimed": 13,
+        "terminal": 10,
+        "successful": 8,
+        "success_goal": 1676,
+        "status": "active",
+        "worker": "8809797dd0a148ab9349b5f35c99a735"
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/VFuaQ6m2Qom/VFuaQ6m2Qom.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 4779,
+        "claimed": 13,
+        "terminal": 9,
+        "successful": 9,
+        "success_goal": 1593,
+        "status": "active",
+        "worker": "e92a7c8f51694923bc40bc2b2210b299"
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/PX4nDJXEHrG/PX4nDJXEHrG.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 3612,
+        "claimed": 13,
+        "terminal": 10,
+        "successful": 7,
+        "success_goal": 1204,
+        "status": "active",
+        "worker": "a63322242925462fa69c64c04c410b9e"
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/gTV8FGcVJC9/gTV8FGcVJC9.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 3111,
+        "claimed": 13,
+        "terminal": 8,
+        "successful": 7,
+        "success_goal": 1037,
+        "status": "active",
+        "worker": "566e59c6a1de41eca547ce1a8d60c9b3"
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/VzqfbhrpDEA/VzqfbhrpDEA.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 3063,
+        "claimed": 12,
+        "terminal": 9,
+        "successful": 7,
+        "success_goal": 1021,
+        "status": "active",
+        "worker": "bb96d073e8ce475a8ca042745a7caa55"
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/Vvot9Ly1tCj/Vvot9Ly1tCj.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 2679,
+        "claimed": 13,
+        "terminal": 9,
+        "successful": 6,
+        "success_goal": 893,
+        "status": "active",
+        "worker": "6b78c0d71d4443e1b8f4d8f1c4c9444e"
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/r1Q1Z4BcV1o/r1Q1Z4BcV1o.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 2547,
+        "claimed": 13,
+        "terminal": 9,
+        "successful": 6,
+        "success_goal": 849,
+        "status": "active",
+        "worker": "c1e2979b47a84638926734201b019bad"
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/ur6pFq6Qu1A/ur6pFq6Qu1A.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 2523,
+        "claimed": 13,
+        "terminal": 9,
+        "successful": 8,
+        "success_goal": 841,
+        "status": "active",
+        "worker": "11852d44c471484eabefa916137e4f0c"
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/VLzqgDo317F/VLzqgDo317F.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 2493,
+        "claimed": 13,
+        "terminal": 8,
+        "successful": 5,
+        "success_goal": 831,
+        "status": "active",
+        "worker": "787cb5857e4d4076b7d2dc5af1359fe2"
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/VVfe2KiqLaN/VVfe2KiqLaN.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 2442,
+        "claimed": 13,
+        "terminal": 8,
+        "successful": 6,
+        "success_goal": 814,
+        "status": "active",
+        "worker": "4dc1f6a2308048d8aec08c3af9dbffaa"
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/PuKPg4mmafe/PuKPg4mmafe.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 2424,
+        "claimed": 13,
+        "terminal": 8,
+        "successful": 8,
+        "success_goal": 808,
+        "status": "active",
+        "worker": "0c5ac7756731464699e1fd33d9fdc7b8"
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/uNb9QFRL6hY/uNb9QFRL6hY.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 2391,
+        "claimed": 13,
+        "terminal": 8,
+        "successful": 5,
+        "success_goal": 797,
+        "status": "active",
+        "worker": "e23433b9dcaf463db9258ebe044eccc2"
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/2n8kARJN3HM/2n8kARJN3HM.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 2379,
+        "claimed": 13,
+        "terminal": 10,
+        "successful": 7,
+        "success_goal": 793,
+        "status": "active",
+        "worker": "42c18b4fb50d49839a7127c3c4dd79b2"
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/qoiz87JEwZ2/qoiz87JEwZ2.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 2379,
+        "claimed": 13,
+        "terminal": 8,
+        "successful": 6,
+        "success_goal": 793,
+        "status": "active",
+        "worker": "7e2ef4891a1f4d1493752f039d98089f"
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/cV4RVeZvu5T/cV4RVeZvu5T.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 2373,
+        "claimed": 12,
+        "terminal": 9,
+        "successful": 8,
+        "success_goal": 791,
+        "status": "active",
+        "worker": "c6c7731891eb43568b1f38131158b7d7"
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/JmbYfDe2QKZ/JmbYfDe2QKZ.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 2358,
+        "claimed": 12,
+        "terminal": 10,
+        "successful": 6,
+        "success_goal": 786,
+        "status": "active",
+        "worker": "c4b9e9c7f5e74913b1908c59e855a398"
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/29hnd4uzFmX/29hnd4uzFmX.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 2319,
+        "claimed": 12,
+        "terminal": 9,
+        "successful": 9,
+        "success_goal": 773,
+        "status": "active",
+        "worker": "0dea54e9a81d482daa1ec002b565e868"
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/D7N2EKCX4Sj/D7N2EKCX4Sj.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 2313,
+        "claimed": 12,
+        "terminal": 8,
+        "successful": 8,
+        "success_goal": 771,
+        "status": "active",
+        "worker": "96f3408d8dc14f9eaaa1bad4fad06711"
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/JF19kD82Mey/JF19kD82Mey.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 2238,
+        "claimed": 12,
+        "terminal": 8,
+        "successful": 5,
+        "success_goal": 746,
+        "status": "active",
+        "worker": "e9b61c98412e49bbbe99f7a535a48fc5"
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/Pm6F8kyY3z2/Pm6F8kyY3z2.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 2190,
+        "claimed": 12,
+        "terminal": 9,
+        "successful": 6,
+        "success_goal": 730,
+        "status": "active",
+        "worker": "f312365d769f4a418548325455be87db"
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/jh4fc5c5qoQ/jh4fc5c5qoQ.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 2187,
+        "claimed": 12,
+        "terminal": 8,
+        "successful": 7,
+        "success_goal": 729,
+        "status": "active",
+        "worker": "f47c6f2c1da3467abe82d8d8b6e58914"
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/V2XKFyX4ASd/V2XKFyX4ASd.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 2184,
+        "claimed": 12,
+        "terminal": 8,
+        "successful": 8,
+        "success_goal": 728,
+        "status": "active",
+        "worker": "11153a1ed2cc48899fb5a1172e1011da"
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/e9zR4mvMWw7/e9zR4mvMWw7.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 2178,
+        "claimed": 12,
+        "terminal": 8,
+        "successful": 8,
+        "success_goal": 726,
+        "status": "active",
+        "worker": "6ecb8f524ba14fe39178d7641bb26e95"
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/s8pcmisQ38h/s8pcmisQ38h.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 2175,
+        "claimed": 12,
+        "terminal": 9,
+        "successful": 6,
+        "success_goal": 725,
+        "status": "active",
+        "worker": "00278731efc84d03a5f912a30bf70a28"
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/759xd9YjKW5/759xd9YjKW5.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 2166,
+        "claimed": 12,
+        "terminal": 9,
+        "successful": 5,
+        "success_goal": 722,
+        "status": "active",
+        "worker": "b424afe18b46468fac3db96a8be1a060"
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/82sE5b5pLXE/82sE5b5pLXE.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 2154,
+        "claimed": 12,
+        "terminal": 9,
+        "successful": 6,
+        "success_goal": 718,
+        "status": "active",
+        "worker": "73c0d627335e4cc3980ca3b7c940a440"
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/aayBHfsNo7d/aayBHfsNo7d.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 2142,
+        "claimed": 12,
+        "terminal": 8,
+        "successful": 5,
+        "success_goal": 714,
+        "status": "active",
+        "worker": "0234aa973d7544b59e90ac3ab447d77f"
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/EDJbREhghzL/EDJbREhghzL.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 2115,
+        "claimed": 0,
+        "terminal": 0,
+        "successful": 0,
+        "success_goal": 705,
+        "status": "queued",
+        "worker": null
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/ac26ZMwG7aT/ac26ZMwG7aT.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 2115,
+        "claimed": 0,
+        "terminal": 0,
+        "successful": 0,
+        "success_goal": 705,
+        "status": "queued",
+        "worker": null
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/pRbA3pwrgk9/pRbA3pwrgk9.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 2103,
+        "claimed": 0,
+        "terminal": 0,
+        "successful": 0,
+        "success_goal": 701,
+        "status": "queued",
+        "worker": null
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/sT4fr6TAbpF/sT4fr6TAbpF.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 2091,
+        "claimed": 0,
+        "terminal": 0,
+        "successful": 0,
+        "success_goal": 697,
+        "status": "queued",
+        "worker": null
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/i5noydFURQK/i5noydFURQK.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 2085,
+        "claimed": 0,
+        "terminal": 0,
+        "successful": 0,
+        "success_goal": 695,
+        "status": "queued",
+        "worker": null
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/17DRP5sb8fy/17DRP5sb8fy.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 1994,
+        "claimed": 0,
+        "terminal": 0,
+        "successful": 0,
+        "success_goal": 670,
+        "status": "queued",
+        "worker": null
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/b8cTxDM8gDG/b8cTxDM8gDG.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 2004,
+        "claimed": 0,
+        "terminal": 0,
+        "successful": 0,
+        "success_goal": 668,
+        "status": "queued",
+        "worker": null
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/JeFG25nYj2p/JeFG25nYj2p.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 1950,
+        "claimed": 0,
+        "terminal": 0,
+        "successful": 0,
+        "success_goal": 650,
+        "status": "queued",
+        "worker": null
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/r47D5H71a5s/r47D5H71a5s.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 1947,
+        "claimed": 0,
+        "terminal": 0,
+        "successful": 0,
+        "success_goal": 649,
+        "status": "queued",
+        "worker": null
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/p5wJjkQkbXX/p5wJjkQkbXX.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 1905,
+        "claimed": 0,
+        "terminal": 0,
+        "successful": 0,
+        "success_goal": 635,
+        "status": "queued",
+        "worker": null
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/S9hNv5qa7GM/S9hNv5qa7GM.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 1893,
+        "claimed": 0,
+        "terminal": 0,
+        "successful": 0,
+        "success_goal": 631,
+        "status": "queued",
+        "worker": null
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/YmJkqBEsHnH/YmJkqBEsHnH.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 1866,
+        "claimed": 0,
+        "terminal": 0,
+        "successful": 0,
+        "success_goal": 622,
+        "status": "queued",
+        "worker": null
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/D7G3Y4RVNrH/D7G3Y4RVNrH.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 1815,
+        "claimed": 0,
+        "terminal": 0,
+        "successful": 0,
+        "success_goal": 605,
+        "status": "queued",
+        "worker": null
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/8WUmhLawc2A/8WUmhLawc2A.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 1776,
+        "claimed": 0,
+        "terminal": 0,
+        "successful": 0,
+        "success_goal": 592,
+        "status": "queued",
+        "worker": null
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/5LpN3gDmAk7/5LpN3gDmAk7.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 1773,
+        "claimed": 0,
+        "terminal": 0,
+        "successful": 0,
+        "success_goal": 591,
+        "status": "queued",
+        "worker": null
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/ULsKaCPVFJR/ULsKaCPVFJR.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 1761,
+        "claimed": 0,
+        "terminal": 0,
+        "successful": 0,
+        "success_goal": 587,
+        "status": "queued",
+        "worker": null
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/GdvgFV5R1Z5/GdvgFV5R1Z5.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 1704,
+        "claimed": 0,
+        "terminal": 0,
+        "successful": 0,
+        "success_goal": 568,
+        "status": "queued",
+        "worker": null
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/gZ6f7yhEvPG/gZ6f7yhEvPG.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 1683,
+        "claimed": 0,
+        "terminal": 0,
+        "successful": 0,
+        "success_goal": 561,
+        "status": "queued",
+        "worker": null
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/HxpKQynjfin/HxpKQynjfin.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 1635,
+        "claimed": 0,
+        "terminal": 0,
+        "successful": 0,
+        "success_goal": 545,
+        "status": "queued",
+        "worker": null
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/7y3sRwLe3Va/7y3sRwLe3Va.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 1611,
+        "claimed": 0,
+        "terminal": 0,
+        "successful": 0,
+        "success_goal": 537,
+        "status": "queued",
+        "worker": null
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/1LXtFkjw3qL/1LXtFkjw3qL.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 1590,
+        "claimed": 0,
+        "terminal": 0,
+        "successful": 0,
+        "success_goal": 530,
+        "status": "queued",
+        "worker": null
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/Uxmj2M2itWa/Uxmj2M2itWa.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 1398,
+        "claimed": 0,
+        "terminal": 0,
+        "successful": 0,
+        "success_goal": 466,
+        "status": "queued",
+        "worker": null
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/5q7pvUzZiYa/5q7pvUzZiYa.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 1287,
+        "claimed": 0,
+        "terminal": 0,
+        "successful": 0,
+        "success_goal": 429,
+        "status": "queued",
+        "worker": null
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/XcA2TqTSSAj/XcA2TqTSSAj.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 1122,
+        "claimed": 0,
+        "terminal": 0,
+        "successful": 0,
+        "success_goal": 374,
+        "status": "queued",
+        "worker": null
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/1pXnuDYAj8r/1pXnuDYAj8r.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 1080,
+        "claimed": 0,
+        "terminal": 0,
+        "successful": 0,
+        "success_goal": 360,
+        "status": "queued",
+        "worker": null
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/mJXqzFtmKg4/mJXqzFtmKg4.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 1038,
+        "claimed": 0,
+        "terminal": 0,
+        "successful": 0,
+        "success_goal": 346,
+        "status": "queued",
+        "worker": null
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/sKLMLpTHeUy/sKLMLpTHeUy.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 921,
+        "claimed": 0,
+        "terminal": 0,
+        "successful": 0,
+        "success_goal": 307,
+        "status": "queued",
+        "worker": null
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/rPc6DW4iMge/rPc6DW4iMge.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 612,
+        "claimed": 0,
+        "terminal": 0,
+        "successful": 0,
+        "success_goal": 204,
+        "status": "queued",
+        "worker": null
+      },
+      {
+        "key": [
+          "train_pilot",
+          "mp3d/ZMojNkEp431/ZMojNkEp431.glb",
+          "visible_88cm_hfov120"
+        ],
+        "attempts": 537,
+        "claimed": 0,
+        "terminal": 0,
+        "successful": 0,
+        "success_goal": 179,
+        "status": "queued",
+        "worker": null
+      }
+    ],
+    "stages": {
+      "queued_observations": 2,
+      "queued_planning": 0,
+      "queued_executions": 1,
+      "queued_audits": 4
+    },
+    "planner": {
+      "live_workers": 32,
+      "workers": 32,
+      "active": 24,
+      "queued": 2
+    },
+    "resources": {
+      "free_disk_bytes": 1183255248896,
+      "memory_bytes": {
+        "MemTotal": 946509623296,
+        "MemAvailable": 720733155328
+      },
+      "gpu": [
+        "0, 66413, 14741, 100",
+        "1, 72831, 8323, 0",
+        "2, 67136, 14018, 100",
+        "3, 71008, 10146, 100",
+        "4, 70318, 10836, 100",
+        "5, 72747, 8407, 34"
+      ],
+      "loadavg": "45.46 39.68 34.82 145/11068 2803673"
+    },
+    "client_exit_code": null
+  },
+  "processes": [
+    {
+      "role": "controller",
+      "pid": 2802919,
+      "identity_verified": true
+    },
+    {
+      "role": "service",
+      "pid": 2802922,
+      "identity_verified": true
+    },
+    {
+      "role": "client",
+      "pid": 2803002,
+      "identity_verified": true
+    }
+  ],
+  "health": {
+    "service_owner": "3c9a46a8cbec426991f10ea5e63d4928",
+    "live_workers": 32,
+    "live_planners": 32,
+    "evidence_io": {
+      "pending": 1,
+      "completed": 8246,
+      "oldest_operation": "write",
+      "oldest_wall_s": 0.2915672776289284,
+      "max_wall_s": 0.8371390979737043
+    },
+    "planning_io": {
+      "pending": 0,
+      "completed": 3132,
+      "oldest_operation": null,
+      "oldest_wall_s": 0,
+      "max_wall_s": 0.6000875732861459
+    }
+  },
+  "original_service": {
+    "owner": "29527adbc69e4b92a8168b88bbc7874d",
+    "active": 0
+  },
+  "launch_audit_sha256": "118d0fc2c9ebecb8e7e854a65c0f9a00a7f93d5ba192ac06193892d1006d7c0d",
+  "old_tasks_replayed": 0,
+  "training_exports": 0
+}

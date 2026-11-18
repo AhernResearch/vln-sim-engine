@@ -1,0 +1,18 @@
+/data/nav_storage/sim-engine/deployments/gs-integration-20261116-v2/deps/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+Traceback (most recent call last):
+  File "/data/nav_storage/sim-engine/deployments/gs-integration-20261116-v2/src/sim_engine/planning/native.py", line 35, in native_search
+    path, expanded = kernel.search(
+                     ^^^^^^^^^^^^^^
+ValueError: no route with requested clearance inside the reference corridor
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/data/nav_storage/sim-engine/deployments/gs-three-scans-20261116-v1/probe_scan.py", line 137, in <module>
+    main()
+  File "/data/nav_storage/sim-engine/deployments/gs-three-scans-20261116-v1/probe_scan.py", line 63, in main
+    native_search(geometry.planner, ep['start_position'], ep['start_position'],
+  File "/data/nav_storage/sim-engine/deployments/gs-integration-20261116-v2/src/sim_engine/planning/native.py", line 42, in native_search
+    raise ClearanceError(str(error)) from error
+sim_engine.collection.clearance.ClearanceError: no route with requested clearance inside the reference corridor

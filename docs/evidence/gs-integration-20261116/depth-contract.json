@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "samples": [
+    {
+      "distance_m": 2.0,
+      "median_m": 1.9999980926513672,
+      "max_absolute_error_m": 1.9073486328125e-06,
+      "passed": true
+    },
+    {
+      "distance_m": 4.0,
+      "median_m": 3.999948501586914,
+      "max_absolute_error_m": 5.14984130859375e-05,
+      "passed": true
+    }
+  ],
+  "depth_convention": "axial_minus_camera_z",
+  "depth_units": "meters",
+  "bindings_sha256": "03f2ae21f82c45abb0d667a41ac5cf486ba5f8feb34be8e53d00f89c8c3b9030",
+  "geometry_accuracy_review": "required"
+}

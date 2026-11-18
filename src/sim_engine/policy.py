@@ -42,9 +42,12 @@ class VllmPolicy:
         self.cache = OrderedDict()
         self.requests = OrderedDict()
         self.in_flight = 0
-        self.queue = AsyncWorkQueue(lambda request: self._generate(request),
+        self.queue = AsyncWorkQueue(
+            lambda request: self._generate(request),
             concurrency=settings.policy.max_num_seqs,
-            capacity=settings.policy.max_pending_requests, name="inference")
+            capacity=settings.policy.max_pending_requests,
+            name="inference",
+        )
         self.engine = self.http = None
 
     async def start(self):
@@ -165,10 +168,14 @@ class VllmPolicy:
             if any(im.width * im.height > self.settings.policy.max_pixels for im in images):
                 raise ValueError("prepared image exceeds configured pixel limit")
         else:
-            images = [prepare_training_image(
-                image, self.settings.policy.max_pixels,
-                self.processor.image_processor.patch_size,
-            ) for image in images]
+            images = [
+                prepare_training_image(
+                    image,
+                    self.settings.policy.max_pixels,
+                    self.processor.image_processor.patch_size,
+                )
+                for image in images
+            ]
         prompt = native_chat_prompt(
             self.processor, [message.model_dump() for message in request.messages], images
         )
@@ -197,7 +204,8 @@ class VllmPolicy:
                 "enforce_eager": self.settings.policy.enforce_eager,
                 "max_images": self.settings.policy.max_images,
                 "lora_adapter": str(self.settings.policy.lora_adapter)
-                if self.settings.policy.lora_adapter else None,
+                if self.settings.policy.lora_adapter
+                else None,
                 "seed": self.settings.policy.seed,
             },
             "queue": self.queue.snapshot(),
@@ -213,13 +221,20 @@ class VllmPolicy:
         )
         indices = [observation.event_index for observation in request.observations]
         prompt = self.builder.native_prompt(
-            self.processor, request.instruction,
-            self.settings.cameras[request.camera], indices, images,
+            self.processor,
+            request.instruction,
+            self.settings.cameras[request.camera],
+            indices,
+            images,
         )
-        return images, prompt, [
-            f"{observation.session_id}:{observation.event_index}"
-            for observation in request.observations
-        ]
+        return (
+            images,
+            prompt,
+            [
+                f"{observation.session_id}:{observation.event_index}"
+                for observation in request.observations
+            ],
+        )
 
     async def _inputs(self, request):
         """Native prompt and stable image identities for either request route."""
@@ -279,9 +294,11 @@ class VllmPolicy:
             "stop": False,
             "trajectory": None,
         }
-        if (isinstance(request, RecordedGenerateRequest)
-                and request.expected_visual_tokens is not None
-                and result["actual_visual_tokens"] != request.expected_visual_tokens):
+        if (
+            isinstance(request, RecordedGenerateRequest)
+            and request.expected_visual_tokens is not None
+            and result["actual_visual_tokens"] != request.expected_visual_tokens
+        ):
             raise ValueError("vLLM changed the prepared visual-token allocation")
         try:
             parsed = parse_prediction(completion.text, self.builder.profile)

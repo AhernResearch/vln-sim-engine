@@ -1,0 +1,93 @@
+{
+  "owner": "6ca6ed773bdb40eea8a023c2127b1e01",
+  "status": "passed",
+  "sample_size": 5,
+  "audit_source_sha256": "b8c862369b2046ab8697ad08dd4c2e76689b2eb5d34a0903818e17e40a93e6f7",
+  "records": [
+    {
+      "id": "s14-p01871",
+      "request_id": "4399cea3e83362a81b3570975fb4659df7a3f84aacb7f0cf072ef757257c1934",
+      "frames": 13,
+      "final_distance_m": 0.052598029375076294,
+      "inside_original_bbox": true,
+      "collision_steps": 0,
+      "recording_valid": true,
+      "per_frame_PointNav_valid": true,
+      "plan_digest_verified": true,
+      "execution_lease_verified": true,
+      "model_input_images_restored": 4
+    },
+    {
+      "id": "s22-p00002",
+      "request_id": "c1e1a2641a56d7e687b71e2278a3327fc0149c8bef40933168358eb69d43c414",
+      "frames": 12,
+      "final_distance_m": 0.070661760866642,
+      "inside_original_bbox": true,
+      "collision_steps": 0,
+      "recording_valid": true,
+      "per_frame_PointNav_valid": true,
+      "plan_digest_verified": true,
+      "execution_lease_verified": true,
+      "model_input_images_restored": 4
+    },
+    {
+      "id": "s25-p01876",
+      "request_id": "a91480a4850e82fc0e55e48a52989a37c2bba823ef431f6e84fa2666df1baba7",
+      "frames": 13,
+      "final_distance_m": 0.04665897786617279,
+      "inside_original_bbox": true,
+      "collision_steps": 0,
+      "recording_valid": true,
+      "per_frame_PointNav_valid": true,
+      "plan_digest_verified": true,
+      "execution_lease_verified": true,
+      "model_input_images_restored": 4
+    },
+    {
+      "id": "s29-p01852",
+      "request_id": "c7f27eab5e7f9713fe9ca2eeb7482b120ed283f00a893619c63a14da36d81665",
+      "frames": 37,
+      "final_distance_m": 0.03806518390774727,
+      "inside_original_bbox": true,
+      "collision_steps": 0,
+      "recording_valid": true,
+      "per_frame_PointNav_valid": true,
+      "plan_digest_verified": true,
+      "execution_lease_verified": true,
+      "model_input_images_restored": 4
+    },
+    {
+      "id": "s40-p00093",
+      "request_id": "83ef6a6edff6254142e0bceba0eac68593f6ab519012d782febd2aa11799bde9",
+      "frames": 30,
+      "final_distance_m": 0.00021143369667697698,
+      "inside_original_bbox": true,
+      "collision_steps": 0,
+      "recording_valid": true,
+      "per_frame_PointNav_valid": true,
+      "plan_digest_verified": true,
+      "execution_lease_verified": true,
+      "model_input_images_restored": 4
+    }
+  ],
+  "sample_frames": 105,
+  "early_uncertain_receipts": [
+    {
+      "request_id": "0e9576bd7b1610612b8a8f64dc08e76f351bb7562f58ab64a3a42d3bbd46ec8b",
+      "phase": null,
+      "error": null,
+      "movement_attempted": null,
+      "planning_outcome": null
+    },
+    {
+      "request_id": "baa8a21cf6f943f4a66869ebd5c3d6074510d8251bde64374ff0a9230136966e",
+      "phase": null,
+      "error": null,
+      "movement_attempted": null,
+      "planning_outcome": null
+    }
+  ],
+  "semantic_review": "pending_review",
+  "automatic_retry": false,
+  "training_exports": 0
+}

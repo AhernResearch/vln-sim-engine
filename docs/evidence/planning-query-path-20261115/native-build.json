@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "g++",
+    "-shared",
+    "-fPIC",
+    "-O3",
+    "-std=c++17",
+    "-ffp-contract=off",
+    "-fno-fast-math",
+    "-DPy_LIMITED_API=0x030A0000",
+    "-I/usr/include/python3.10",
+    "/data/nav_storage/sim-engine/deployments/planning-query-mainline-79220a039e83/src/sim_engine/planning/_astar.cpp",
+    "/data/nav_storage/sim-engine/deployments/planning-query-mainline-79220a039e83/src/sim_engine/planning/_queries.cpp",
+    "/data/nav_storage/sim-engine/deployments/planning-query-mainline-79220a039e83/src/sim_engine/planning/_path.cpp",
+    "-o",
+    "/data/nav_storage/sim-engine/deployments/planning-query-mainline-79220a039e83/src/sim_engine/planning/_astar.abi3.so"
+  ],
+  "binary_sha256": "461236d494f50bb27806f5ab26051a5d1bb82e9361e48012731fc2ffc993611f"
+}

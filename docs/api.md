@@ -2,6 +2,10 @@
 
 The simulator defaults to loopback port 18810; policy serving uses 18811.
 
+Training data generation has a separate persistent service on port 18812. Its
+whole-task API, shared-storage contract and lifecycle are documented in
+[Training collection service](collection-service.md).
+
 | Method | Endpoint | Meaning |
 |---|---|---|
 | GET | `/v1/health` | Service identity and protocol configuration |
@@ -12,6 +16,7 @@ The simulator defaults to loopback port 18810; policy serving uses 18811.
 | GET | `/v1/sessions/{id}/metrics` | Privileged metrics and execution trace |
 | POST | `/v1/sessions/{id}/finish` | Explicit stop, model failure or cancellation |
 | DELETE | `/v1/sessions/{id}` | Release the episode and worker |
+| POST | `/v1/experts` | Run the simulator-side expert on one episode (data generation) |
 | POST | `/v1/policy/generate` | Asynchronous vLLM completion; policy service only |
 | POST | `/v1/policy/generate-recorded` | Prepared causal messages and hashed PNG/JPEG images |
 
@@ -109,6 +114,36 @@ Unknown identifiers return 404; invalid schemas return 422; stale/conflicting
 steps return 409; occupied simulation capacity or a full policy queue returns
 429. Numerical, worker or inference failures propagate as 5xx, without placeholder
 scores. Clients must not retry execution with a new ID after an uncertain outcome.
+
+## Expert rollouts
+
+```json
+{"dataset":"r2r_train","episode_id":"10","camera":"lightnav_fwd120"}
+```
+
+Re-simulates one episode with a privileged expert (`expert.py`): the reference path
+and goal are snapped to the navmesh and joined by geodesics, then a pure-pursuit
+unicycle tracker (profile `path_follow_4hz_v1`: `dt` 0.25 s, 0.6 m/s, 72°/s, in-place
+turns beyond 35°) issues one velocity command per control step through the same
+`VelocityController` as sessions. The dataset's `physics.velocity.time_step_s` must
+equal the profile `dt`, otherwise the job is rejected.
+
+The job holds one worker for the whole episode and writes, server-side, to
+`simulation.expert_root/<dataset>/<episode_id>/`: `frames/{step:05d}.jpg` (JPEG q95,
+frame 0 is the reset view), `states.json` (`resim_states_v1`: pose, command,
+collision, cross-track error and path progress per step) and `receipt.json`
+(`resim_receipt_v1`: termination, steps, controller profile, chained frame hash).
+Output is assembled in a `.partial-*` directory and renamed on success; frames never
+cross the HTTP boundary. The reply carries only `output`, `termination`
+(`expert_stop` or `budget_exhausted` at `max_actions`), `control_steps`,
+`path_length_m`, `max_progress_m`, `goal_distance_m` and `collisions`.
+
+An existing output returns 409 (jobs are resumable, never overwritten). A missing
+`expert_root`, missing velocity physics, a disconnected reference path or a
+cross-track error above 0.3 m returns 422 with the reason, for quarantine; the worker
+stays usable. Jobs use `simulation.expert_timeout_seconds` (default 900) instead of
+`rpc_timeout_seconds`. This endpoint is a data-generation tool: its outputs contain
+privileged poses and must not be served to a policy.
 
 Physics and asset identities are dataset-specific: simulator health exposes
 `protocol.dataset_physics[dataset]` and `protocol.scene_hashes[dataset]`. This

@@ -1,0 +1,232 @@
+[
+  {
+    "case": "ordinary_success",
+    "wall_s": [
+      0.43065334064885974,
+      0.3948949151672423
+    ],
+    "cpu_s": [
+      0.4060905290000001,
+      0.3780342270000001
+    ],
+    "progress": [
+      {
+        "phase": "complete",
+        "queries": 10399,
+        "expansions": 0
+      },
+      {
+        "phase": "complete",
+        "queries": 10399,
+        "expansions": 0
+      }
+    ]
+  },
+  {
+    "case": "slow_success",
+    "wall_s": [
+      14.554015623871237,
+      7.166807498782873
+    ],
+    "cpu_s": [
+      13.642979491,
+      6.769505393
+    ],
+    "progress": [
+      {
+        "phase": "complete",
+        "queries": 634743,
+        "expansions": 39221
+      },
+      {
+        "phase": "complete",
+        "queries": 634743,
+        "expansions": 39221
+      }
+    ]
+  },
+  {
+    "case": "slow_rejection",
+    "wall_s": [
+      18.01147675467655,
+      7.832994196098298
+    ],
+    "cpu_s": [
+      16.618546503,
+      6.053682178000001
+    ],
+    "progress": [
+      {
+        "phase": "astar",
+        "queries": 762757,
+        "expansions": 52761
+      },
+      {
+        "phase": "astar",
+        "queries": 762757,
+        "expansions": 52761
+      }
+    ]
+  },
+  {
+    "case": "budget_exhaustion",
+    "wall_s": [
+      30.162993201985955,
+      13.523109935689718
+    ],
+    "cpu_s": [
+      28.925073005,
+      13.090831294000001
+    ],
+    "progress": [
+      {
+        "phase": "astar",
+        "queries": 1472268,
+        "expansions": 80001
+      },
+      {
+        "phase": "astar",
+        "queries": 1472268,
+        "expansions": 80001
+      }
+    ]
+  },
+  {
+    "case": "additional_s01-p00034",
+    "wall_s": [
+      5.13416301086545,
+      1.5556044853292406
+    ],
+    "cpu_s": [
+      1.279095288,
+      1.056668681
+    ],
+    "progress": [
+      {
+        "phase": "complete",
+        "queries": 24550,
+        "expansions": 695
+      },
+      {
+        "phase": "complete",
+        "queries": 24550,
+        "expansions": 695
+      }
+    ]
+  },
+  {
+    "case": "additional_s02-p00111",
+    "wall_s": [
+      1.0067134462296963,
+      1.818148786202073
+    ],
+    "cpu_s": [
+      0.721230217,
+      0.6530408459999999
+    ],
+    "progress": [
+      {
+        "phase": "complete",
+        "queries": 18521,
+        "expansions": 0
+      },
+      {
+        "phase": "complete",
+        "queries": 18521,
+        "expansions": 0
+      }
+    ]
+  },
+  {
+    "case": "additional_s04-p00116",
+    "wall_s": [
+      0.5816089678555727,
+      0.8029664745554328
+    ],
+    "cpu_s": [
+      0.536785493,
+      0.661853724
+    ],
+    "progress": [
+      {
+        "phase": "complete",
+        "queries": 12317,
+        "expansions": 0
+      },
+      {
+        "phase": "complete",
+        "queries": 12317,
+        "expansions": 0
+      }
+    ]
+  },
+  {
+    "case": "additional_s05-p00082",
+    "wall_s": [
+      1.4827617947012186,
+      2.6508112167939544
+    ],
+    "cpu_s": [
+      1.2324850820000002,
+      1.345303374
+    ],
+    "progress": [
+      {
+        "phase": "complete",
+        "queries": 24478,
+        "expansions": 657
+      },
+      {
+        "phase": "complete",
+        "queries": 24478,
+        "expansions": 657
+      }
+    ]
+  },
+  {
+    "case": "visible_goal_30m_geodesic",
+    "wall_s": [
+      30.80755607690662,
+      26.379986039362848
+    ],
+    "cpu_s": [
+      29.643491768,
+      22.830473864000002
+    ],
+    "progress": [
+      {
+        "phase": "astar",
+        "queries": 1033915,
+        "expansions": 40001
+      },
+      {
+        "phase": "astar",
+        "queries": 1033915,
+        "expansions": 40001
+      }
+    ]
+  },
+  {
+    "case": "r2r_preflight",
+    "wall_s": [
+      3.141291973181069,
+      0.1658563520759344
+    ],
+    "cpu_s": [
+      0.1603695209999998,
+      0.13418468300000008
+    ],
+    "progress": [
+      {
+        "phase": "complete",
+        "queries": 4772,
+        "expansions": 0
+      },
+      {
+        "phase": "complete",
+        "queries": 4772,
+        "expansions": 0
+      }
+    ]
+  }
+]

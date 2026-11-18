@@ -22,6 +22,8 @@ class Executed:
     action: Any
     image: Any
     collided: bool
+    snapshot: Any = None
+    position: Any = None
 
 
 class Controller:
@@ -52,7 +54,9 @@ class WaypointController(Controller):
             if action is None:
                 break
             image, collided = env.step(action)
-            executed.append(Executed(action, image, collided))
+            executed.append(Executed(action, image, collided,
+                                     env.capture() if hasattr(env, "capture") else None,
+                                     env.position()))
         return executed
 
 
@@ -82,7 +86,9 @@ class VelocityController(Controller):
             linear, math.radians(angular_dps), limits.time_step_s, physics.allow_sliding
         )
         action = {"linear_mps": linear, "angular_rps": math.radians(angular_dps)}
-        return [Executed(action, image, collided)]
+        return [Executed(action, image, collided,
+                                     env.capture() if hasattr(env, "capture") else None,
+                                     env.position())]
 
 
 CONTROLLERS: dict[str, Controller] = {

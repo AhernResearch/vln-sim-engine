@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "result": "196 passed in 35.71s",
+  "lint": "ruff checks passed",
+  "regression_before": "Both blocked collection and planning claim health tests time out on the previous frozen code",
+  "server_sources": {
+    "async_io.py": "f5410dde685faaedc41a0f8c8fe343b17a745f8d1ddaf3c665451632f513408e",
+    "collection/server.py": "19a090581dda554efc3d47325f348ec21820d9b4343862c724e9eb5b6e569a11",
+    "planning/client.py": "28ac0a67daf0b7071507bef3587bb5b1c826b98e8ba2f022968eaf9259339879",
+    "planning/service.py": "e20a4a2c0f9c19ea397f68ac4966557eb36d1d89064cb9438693734d658b595c"
+  },
+  "collection_client_sha256": "7fc573a561242783346d9342255df029bb434236bf22edf43ae3c4ba11980245"
+}

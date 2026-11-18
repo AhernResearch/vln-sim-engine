@@ -1,0 +1,23 @@
+{
+  "purpose": "Move collection physics/geometry into sim-engine, independent of nav-train",
+  "source_sha256": {
+    "/home/holo/robots/nav-train/src/nav_train/pose_pipeline/storage.py": "9dbe5658e1e00dbf520803455e61fced59edfb882ae82aca811ad8078cc611ae",
+    "/home/holo/robots/nav-train/src/nav_train/pose_pipeline/guidance.py": "961a0733cad92918b7bfe863931d9fb781dfe89ad056269db5c9ef3f748e024a",
+    "/home/holo/robots/nav-train/src/nav_train/pose_pipeline/tracking.py": "bfe9cc6301d78c3ad96950040f291674edd88beac62feda1d22ee065eb0704d8",
+    "/home/holo/robots/nav-train/src/nav_train/pose_pipeline/reference.py": "4237985547d4718d20c2e8c4abe3fb8dd83c7bb9543b350690b86d54473c0c6a",
+    "/home/holo/robots/nav-train/src/nav_train/pose_pipeline/sampling.py": "30b5d946772cdb9045e59069ed2a16d862c982a17f056b18864664d34947e069",
+    "/home/holo/robots/nav-train/src/nav_train/pose_pipeline/recording.py": "17a7f19d818accee0c61d98d9dca319ff5a398ef07faff3a1e90f9483905b9de",
+    "/home/holo/robots/nav-train/src/nav_train/pose_pipeline/visual_region.py": "74cfc139d6d1a02732e9ebde098c50cd54acfe5c8856ed5596d0981001d0442f",
+    "/home/holo/robots/nav-train/src/nav_train/pose_pipeline/region_selection.py": "ebcc7b2ac90e49cf7b43ea25ad485063595b4a30dab67f57dc2d62326c31cd56",
+    "/home/holo/robots/nav-train/src/nav_train/pose_pipeline/safe_image.py": "a07b0d82a49d71139cc5b029dea814909988e5994bb6d291e9602cd1f7b2b0ed",
+    "/home/holo/robots/nav-train/src/nav_train/pose_pipeline/scene_reset.py": "8dc4e11531fd2fd7a03c741feb1f0cd5149a777e23f750462d55934b62a24d49",
+    "/home/holo/robots/nav-train/src/nav_train/pose_pipeline/simulation.py": "802ff83df6f14a86b33ea53fb1f9b1c8913e0977303ef725065aab803aa7a85f",
+    "/home/holo/robots/nav-train/src/nav_train/pose_pipeline/visual_policy.py": "c4df23eabe19cb2ae6fb54bfef2dde4c6d7239c92fda8fc9c263dc68df8409a2",
+    "/home/holo/robots/nav-train/src/nav_train/pose_pipeline/visual_task.py": "7e8ba7b1ee67588f5602eb3f92b621d94b92a86df1bf9732343e2c28387b5968",
+    "/home/holo/robots/nav-train/src/nav_train/pose_pipeline/planning.py": "bd72602ebcd921b32590dd1ef8786b9bdb496ec6e1a259f865fc4c809e1c6b21",
+    "/home/holo/robots/open-nav-harness-tools/reproduction/lightnav_clearance.py": "8656e7f02a90bdd9d4120c091eff6ce9a14cb5c67171893039238c8568a11347",
+    "/home/holo/robots/nav-train/src/nav_train/pose_pipeline/short_instructions.py": "f0d375e23897a802c000f3ff8f60cf11bbdfc693dded9a235f165dbcd9e0ff9c"
+  },
+  "algorithm_change": "Candidate sampling now uses bounded visible safe mask coverage (visible_safe_mask_stratified_v1); migrated geometry/control checks and thresholds remain unchanged",
+  "license_directory": "licenses"
+}

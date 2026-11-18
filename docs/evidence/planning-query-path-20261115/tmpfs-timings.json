@@ -1,0 +1,462 @@
+[
+  {
+    "case": "ordinary_success",
+    "wall_s": [
+      0.5024157259613276,
+      0.5249265972524881
+    ],
+    "cpu_s": [
+      0.4828390950000001,
+      0.40695933299999987
+    ],
+    "progress": [
+      {
+        "phase": "complete",
+        "queries": 10399,
+        "expansions": 0
+      },
+      {
+        "phase": "complete",
+        "queries": 10399,
+        "expansions": 0
+      }
+    ],
+    "geometry_queries": {
+      "snap": {
+        "entries": 541,
+        "capacity": 65536,
+        "hits": 995,
+        "misses": 541,
+        "evictions": 0
+      },
+      "clearance": {
+        "entries": 2860,
+        "capacity": 65536,
+        "hits": 817,
+        "misses": 2860,
+        "evictions": 0
+      },
+      "island": {
+        "entries": 0,
+        "capacity": 65536,
+        "hits": 0,
+        "misses": 0,
+        "evictions": 0
+      }
+    }
+  },
+  {
+    "case": "slow_success",
+    "wall_s": [
+      7.264114842750132,
+      3.9690622482448816
+    ],
+    "cpu_s": [
+      7.2597430890000005,
+      3.9689978430000004
+    ],
+    "progress": [
+      {
+        "phase": "complete",
+        "queries": 634743,
+        "expansions": 39221
+      },
+      {
+        "phase": "complete",
+        "queries": 634743,
+        "expansions": 39221
+      }
+    ],
+    "geometry_queries": {
+      "snap": {
+        "entries": 20544,
+        "capacity": 65536,
+        "hits": 176899,
+        "misses": 20544,
+        "evictions": 0
+      },
+      "clearance": {
+        "entries": 22126,
+        "capacity": 65536,
+        "hits": 17877,
+        "misses": 22126,
+        "evictions": 0
+      },
+      "island": {
+        "entries": 0,
+        "capacity": 65536,
+        "hits": 0,
+        "misses": 0,
+        "evictions": 0
+      }
+    }
+  },
+  {
+    "case": "slow_rejection",
+    "wall_s": [
+      5.554125047288835,
+      2.484839570708573
+    ],
+    "cpu_s": [
+      5.549032866,
+      2.4848018530000004
+    ],
+    "progress": [
+      {
+        "phase": "astar",
+        "queries": 762757,
+        "expansions": 52761
+      },
+      {
+        "phase": "astar",
+        "queries": 762757,
+        "expansions": 52761
+      }
+    ],
+    "geometry_queries": {
+      "snap": {
+        "entries": 2944,
+        "capacity": 65536,
+        "hits": 252796,
+        "misses": 2944,
+        "evictions": 0
+      },
+      "clearance": {
+        "entries": 3860,
+        "capacity": 65536,
+        "hits": 2242,
+        "misses": 3860,
+        "evictions": 0
+      },
+      "island": {
+        "entries": 0,
+        "capacity": 65536,
+        "hits": 0,
+        "misses": 0,
+        "evictions": 0
+      }
+    }
+  },
+  {
+    "case": "budget_exhaustion",
+    "wall_s": [
+      14.725185303017497,
+      8.355441540013999
+    ],
+    "cpu_s": [
+      14.544288362,
+      8.314111825
+    ],
+    "progress": [
+      {
+        "phase": "astar",
+        "queries": 1472268,
+        "expansions": 80001
+      },
+      {
+        "phase": "astar",
+        "queries": 1472268,
+        "expansions": 80001
+      }
+    ],
+    "geometry_queries": {
+      "snap": {
+        "entries": 36249,
+        "capacity": 65536,
+        "hits": 416671,
+        "misses": 36249,
+        "evictions": 0
+      },
+      "clearance": {
+        "entries": 37422,
+        "capacity": 65536,
+        "hits": 30110,
+        "misses": 37422,
+        "evictions": 0
+      },
+      "island": {
+        "entries": 0,
+        "capacity": 65536,
+        "hits": 0,
+        "misses": 0,
+        "evictions": 0
+      }
+    }
+  },
+  {
+    "case": "additional_s01-p00034",
+    "wall_s": [
+      1.2121979659423232,
+      0.8047275575809181
+    ],
+    "cpu_s": [
+      1.212027649,
+      0.80471333
+    ],
+    "progress": [
+      {
+        "phase": "complete",
+        "queries": 24550,
+        "expansions": 695
+      },
+      {
+        "phase": "complete",
+        "queries": 24550,
+        "expansions": 695
+      }
+    ],
+    "geometry_queries": {
+      "snap": {
+        "entries": 4947,
+        "capacity": 65536,
+        "hits": 7120,
+        "misses": 4947,
+        "evictions": 0
+      },
+      "clearance": {
+        "entries": 5888,
+        "capacity": 65536,
+        "hits": 3412,
+        "misses": 5888,
+        "evictions": 0
+      },
+      "island": {
+        "entries": 0,
+        "capacity": 65536,
+        "hits": 0,
+        "misses": 0,
+        "evictions": 0
+      }
+    }
+  },
+  {
+    "case": "additional_s02-p00111",
+    "wall_s": [
+      0.6718865530565381,
+      0.647064970806241
+    ],
+    "cpu_s": [
+      0.6718767000000001,
+      0.6470529810000001
+    ],
+    "progress": [
+      {
+        "phase": "complete",
+        "queries": 18521,
+        "expansions": 0
+      },
+      {
+        "phase": "complete",
+        "queries": 18521,
+        "expansions": 0
+      }
+    ],
+    "geometry_queries": {
+      "snap": {
+        "entries": 499,
+        "capacity": 65536,
+        "hits": 683,
+        "misses": 499,
+        "evictions": 0
+      },
+      "clearance": {
+        "entries": 7678,
+        "capacity": 65536,
+        "hits": 586,
+        "misses": 7678,
+        "evictions": 0
+      },
+      "island": {
+        "entries": 0,
+        "capacity": 65536,
+        "hits": 0,
+        "misses": 0,
+        "evictions": 0
+      }
+    }
+  },
+  {
+    "case": "additional_s04-p00116",
+    "wall_s": [
+      0.522140939719975,
+      0.48613516986370087
+    ],
+    "cpu_s": [
+      0.5126210630000001,
+      0.48612664299999997
+    ],
+    "progress": [
+      {
+        "phase": "complete",
+        "queries": 12317,
+        "expansions": 0
+      },
+      {
+        "phase": "complete",
+        "queries": 12317,
+        "expansions": 0
+      }
+    ],
+    "geometry_queries": {
+      "snap": {
+        "entries": 378,
+        "capacity": 65536,
+        "hits": 694,
+        "misses": 378,
+        "evictions": 0
+      },
+      "clearance": {
+        "entries": 4421,
+        "capacity": 65536,
+        "hits": 621,
+        "misses": 4421,
+        "evictions": 0
+      },
+      "island": {
+        "entries": 0,
+        "capacity": 65536,
+        "hits": 0,
+        "misses": 0,
+        "evictions": 0
+      }
+    }
+  },
+  {
+    "case": "additional_s05-p00082",
+    "wall_s": [
+      1.1210497976280749,
+      0.7922321762889624
+    ],
+    "cpu_s": [
+      1.1210189210000001,
+      0.7922249920000002
+    ],
+    "progress": [
+      {
+        "phase": "complete",
+        "queries": 24478,
+        "expansions": 657
+      },
+      {
+        "phase": "complete",
+        "queries": 24478,
+        "expansions": 657
+      }
+    ],
+    "geometry_queries": {
+      "snap": {
+        "entries": 4563,
+        "capacity": 65536,
+        "hits": 7863,
+        "misses": 4563,
+        "evictions": 0
+      },
+      "clearance": {
+        "entries": 5891,
+        "capacity": 65536,
+        "hits": 3554,
+        "misses": 5891,
+        "evictions": 0
+      },
+      "island": {
+        "entries": 0,
+        "capacity": 65536,
+        "hits": 0,
+        "misses": 0,
+        "evictions": 0
+      }
+    }
+  },
+  {
+    "case": "visible_goal_30m_geodesic",
+    "wall_s": [
+      22.971193930134177,
+      16.561457560863346
+    ],
+    "cpu_s": [
+      22.935145924,
+      16.461003919
+    ],
+    "progress": [
+      {
+        "phase": "astar",
+        "queries": 1033915,
+        "expansions": 40001
+      },
+      {
+        "phase": "astar",
+        "queries": 1033915,
+        "expansions": 40001
+      }
+    ],
+    "geometry_queries": {
+      "snap": {
+        "entries": 65536,
+        "capacity": 65536,
+        "hits": 218755,
+        "misses": 111200,
+        "evictions": 45664
+      },
+      "clearance": {
+        "entries": 65536,
+        "capacity": 65536,
+        "hits": 39678,
+        "misses": 87130,
+        "evictions": 21594
+      },
+      "island": {
+        "entries": 0,
+        "capacity": 65536,
+        "hits": 0,
+        "misses": 0,
+        "evictions": 0
+      }
+    }
+  },
+  {
+    "case": "r2r_preflight",
+    "wall_s": [
+      0.1305809230543673,
+      0.2618183773010969
+    ],
+    "cpu_s": [
+      0.11610696499999995,
+      0.0992262020000001
+    ],
+    "progress": [
+      {
+        "phase": "complete",
+        "queries": 4772,
+        "expansions": 0
+      },
+      {
+        "phase": "complete",
+        "queries": 4772,
+        "expansions": 0
+      }
+    ],
+    "geometry_queries": {
+      "snap": {
+        "entries": 513,
+        "capacity": 65536,
+        "hits": 950,
+        "misses": 513,
+        "evictions": 0
+      },
+      "clearance": {
+        "entries": 513,
+        "capacity": 65536,
+        "hits": 620,
+        "misses": 513,
+        "evictions": 0
+      },
+      "island": {
+        "entries": 0,
+        "capacity": 65536,
+        "hits": 0,
+        "misses": 0,
+        "evictions": 0
+      }
+    }
+  }
+]

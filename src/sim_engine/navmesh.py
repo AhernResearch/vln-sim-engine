@@ -12,6 +12,8 @@ from .habitat import HABITAT_VERSION, HabitatEnvironment
 
 
 def prepare_navmeshes(settings, name, source_root: Path, output: Path):
+    if settings.simulation.backend != "habitat":
+        raise ValueError("GS packages use bake-scan into a new immutable package")
     if source_root.resolve() == output.resolve() or (output.exists() and any(output.iterdir())):
         raise ValueError("derived navmesh output must be a separate empty directory")
     output.mkdir(parents=True, exist_ok=True)
@@ -67,10 +69,12 @@ def prepare_navmeshes(settings, name, source_root: Path, output: Path):
 def audit_connectivity(settings, name):
     import habitat_sim as hs
 
-    if hs.__version__ != HABITAT_VERSION:
-        raise RuntimeError(f"habitat-sim {HABITAT_VERSION} is required")
+    from .backends import create_environment
+    from .scenes import resolve_scene
+
+    adapter = create_environment(settings)
+    adapter.close()
     dataset = settings.simulation.datasets[name]
-    root = dataset.scenes_root or settings.simulation.scenes_root
     rows = dataset_rows(dataset)
     grouped = {}
     for row in rows:
@@ -78,9 +82,11 @@ def audit_connectivity(settings, name):
     failures = []
     for scene, records in sorted(grouped.items()):
         finder = hs.PathFinder()
-        if not finder.load_nav_mesh(str(scene_path(root, scene).with_suffix(".navmesh"))):
+        if not finder.load_nav_mesh(str(resolve_scene(settings, name, scene).navmesh)):
             raise RuntimeError("cannot load navmesh: " + scene)
         for row in records:
+            if not row.get("goals"):
+                continue
             path = hs.ShortestPath()
             path.requested_start = row["start_position"]
             path.requested_end = row["goals"][0]["position"]

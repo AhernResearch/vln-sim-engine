@@ -1,0 +1,324 @@
+{
+  "case": "s04-p00161",
+  "attempts": 23,
+  "details": [
+    {
+      "rank": 1,
+      "reason": "preview lacks swept execution clearance",
+      "planner": 1,
+      "clearance_required": 0.05,
+      "minimum_preview_clearance": 0.0070209503173828125,
+      "collision_steps": 0,
+      "first_bad_frame": 21,
+      "first_bad_position": [
+        2.3648,
+        -3.4688,
+        2.5547
+      ]
+    },
+    {
+      "rank": 1,
+      "reason": "read-only preview rejected execution",
+      "planner": 1,
+      "clearance_required": 0.05,
+      "minimum_preview_clearance": 0,
+      "collision_steps": 1,
+      "first_bad_frame": 21,
+      "first_bad_position": [
+        2.3714,
+        -3.4688,
+        2.5537
+      ]
+    },
+    {
+      "rank": 1,
+      "reason": "read-only preview rejected execution",
+      "planner": 1,
+      "clearance_required": 0.05,
+      "minimum_preview_clearance": 0,
+      "collision_steps": 1,
+      "first_bad_frame": 21,
+      "first_bad_position": [
+        2.3712,
+        -3.4688,
+        2.5542
+      ]
+    },
+    {
+      "rank": 1,
+      "reason": "read-only preview rejected execution",
+      "planner": 1,
+      "clearance_required": 0.05,
+      "minimum_preview_clearance": 0,
+      "collision_steps": 1,
+      "first_bad_frame": 21,
+      "first_bad_position": [
+        2.3717,
+        -3.4688,
+        2.5542
+      ]
+    },
+    {
+      "rank": 1,
+      "reason": "read-only preview rejected execution",
+      "planner": 1,
+      "clearance_required": 0.05,
+      "minimum_preview_clearance": 0,
+      "collision_steps": 1,
+      "first_bad_frame": 21,
+      "first_bad_position": [
+        2.3699,
+        -3.4688,
+        2.5537
+      ]
+    },
+    {
+      "rank": 2,
+      "reason": "read-only preview rejected execution",
+      "planner": 1,
+      "clearance_required": 0.05,
+      "minimum_preview_clearance": 0,
+      "collision_steps": 1,
+      "first_bad_frame": 21,
+      "first_bad_position": [
+        2.3732,
+        -3.4688,
+        2.5541
+      ]
+    },
+    {
+      "rank": 2,
+      "reason": "read-only preview rejected execution",
+      "planner": 1,
+      "clearance_required": 0.05,
+      "minimum_preview_clearance": 0,
+      "collision_steps": 1,
+      "first_bad_frame": 21,
+      "first_bad_position": [
+        2.3699,
+        -3.4688,
+        2.5536
+      ]
+    },
+    {
+      "rank": 2,
+      "reason": "preview lacks swept execution clearance",
+      "planner": 1,
+      "clearance_required": 0.05,
+      "minimum_preview_clearance": 0.0045583248138427734,
+      "collision_steps": 0,
+      "first_bad_frame": 21,
+      "first_bad_position": [
+        2.3667,
+        -3.4688,
+        2.554
+      ]
+    },
+    {
+      "rank": 3,
+      "reason": "preview lacks swept execution clearance",
+      "planner": 1,
+      "clearance_required": 0.05,
+      "minimum_preview_clearance": 0.004876613616943359,
+      "collision_steps": 0,
+      "first_bad_frame": 21,
+      "first_bad_position": [
+        2.3666,
+        -3.4688,
+        2.5539
+      ]
+    },
+    {
+      "rank": 3,
+      "reason": "read-only preview rejected execution",
+      "planner": 1,
+      "clearance_required": 0.05,
+      "minimum_preview_clearance": 0,
+      "collision_steps": 1,
+      "first_bad_frame": 21,
+      "first_bad_position": [
+        2.3699,
+        -3.4688,
+        2.554
+      ]
+    },
+    {
+      "rank": 3,
+      "reason": "read-only preview rejected execution",
+      "planner": 1,
+      "clearance_required": 0.05,
+      "minimum_preview_clearance": 0,
+      "collision_steps": 1,
+      "first_bad_frame": 21,
+      "first_bad_position": [
+        2.3705,
+        -3.4688,
+        2.5538
+      ]
+    },
+    {
+      "rank": 4,
+      "reason": "preview lacks swept execution clearance",
+      "planner": 1,
+      "clearance_required": 0.05,
+      "minimum_preview_clearance": 0.01758575439453125,
+      "collision_steps": 0,
+      "first_bad_frame": 21,
+      "first_bad_position": [
+        2.3585,
+        -3.4688,
+        2.5543
+      ]
+    },
+    {
+      "rank": 4,
+      "reason": "preview lacks swept execution clearance",
+      "planner": 1,
+      "clearance_required": 0.05,
+      "minimum_preview_clearance": 0.0005617141723632812,
+      "collision_steps": 0,
+      "first_bad_frame": 21,
+      "first_bad_position": [
+        2.3695,
+        -3.4688,
+        2.5537
+      ]
+    },
+    {
+      "rank": 4,
+      "reason": "preview lacks swept execution clearance",
+      "planner": 1,
+      "clearance_required": 0.05,
+      "minimum_preview_clearance": 0.0018985271453857422,
+      "collision_steps": 0,
+      "first_bad_frame": 21,
+      "first_bad_position": [
+        2.3687,
+        -3.4688,
+        2.5537
+      ]
+    },
+    {
+      "rank": 4,
+      "reason": "preview lacks swept execution clearance",
+      "planner": 1,
+      "clearance_required": 0.05,
+      "minimum_preview_clearance": 0.0016794204711914062,
+      "collision_steps": 0,
+      "first_bad_frame": 21,
+      "first_bad_position": [
+        2.3687,
+        -3.4688,
+        2.5538
+      ]
+    },
+    {
+      "rank": 4,
+      "reason": "read-only preview rejected execution",
+      "planner": 1,
+      "clearance_required": 0.05,
+      "minimum_preview_clearance": 0,
+      "collision_steps": 1,
+      "first_bad_frame": 21,
+      "first_bad_position": [
+        2.3717,
+        -3.4688,
+        2.5545
+      ]
+    },
+    {
+      "rank": 5,
+      "reason": "read-only preview rejected execution",
+      "planner": 1,
+      "clearance_required": 0.05,
+      "minimum_preview_clearance": 0,
+      "collision_steps": 1,
+      "first_bad_frame": 21,
+      "first_bad_position": [
+        2.3731,
+        -3.4688,
+        2.5541
+      ]
+    },
+    {
+      "rank": 5,
+      "reason": "preview lacks swept execution clearance",
+      "planner": 1,
+      "clearance_required": 0.05,
+      "minimum_preview_clearance": 0.0006680488586425781,
+      "collision_steps": 0,
+      "first_bad_frame": 21,
+      "first_bad_position": [
+        2.3693,
+        -3.4688,
+        2.554
+      ]
+    },
+    {
+      "rank": 5,
+      "reason": "read-only preview rejected execution",
+      "planner": 1,
+      "clearance_required": 0.05,
+      "minimum_preview_clearance": 0,
+      "collision_steps": 1,
+      "first_bad_frame": 21,
+      "first_bad_position": [
+        2.37,
+        -3.4688,
+        2.5538
+      ]
+    },
+    {
+      "rank": 5,
+      "reason": "preview lacks swept execution clearance",
+      "planner": 1,
+      "clearance_required": 0.05,
+      "minimum_preview_clearance": 0.00602269172668457,
+      "collision_steps": 0,
+      "first_bad_frame": 21,
+      "first_bad_position": [
+        2.3657,
+        -3.4688,
+        2.5546
+      ]
+    },
+    {
+      "rank": 5,
+      "reason": "preview lacks swept execution clearance",
+      "planner": 1,
+      "clearance_required": 0.05,
+      "minimum_preview_clearance": 0.0044403076171875,
+      "collision_steps": 0,
+      "first_bad_frame": 21,
+      "first_bad_position": [
+        2.3668,
+        -3.4688,
+        2.5539
+      ]
+    },
+    {
+      "rank": 6,
+      "reason": "preview lacks swept execution clearance",
+      "planner": 1,
+      "clearance_required": 0.05,
+      "minimum_preview_clearance": 0.03963041305541992,
+      "collision_steps": 0,
+      "first_bad_frame": 15,
+      "first_bad_position": [
+        1.0502,
+        -3.4688,
+        2.6597
+      ]
+    },
+    {
+      "rank": 6,
+      "reason": "passed",
+      "planner": 1,
+      "clearance_required": 0.05,
+      "minimum_preview_clearance": 0.0705559104681015,
+      "collision_steps": 0,
+      "first_bad_frame": null,
+      "first_bad_position": null
+    }
+  ]
+}

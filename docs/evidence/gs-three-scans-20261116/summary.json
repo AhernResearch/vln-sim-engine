@@ -1,0 +1,140 @@
+[
+  {
+    "name": "智元-output",
+    "scene_id": "zhiyuan",
+    "lod": 3,
+    "manifest": "/data/nav_storage/sim-engine/deployments/gs-three-scans-20261116-v2/scenes/zhiyuan/scene.json",
+    "gaussians": 1123730,
+    "mesh_vertices": 183495,
+    "scan_positions": 10866,
+    "source_files": {
+      "ply-result/point_cloud/iteration_100/point_cloud_3.ply": {
+        "sha256": "9a0b3d9a729a1f7dad8126d5bb3cad0f885220fb7117f1d400c863ba2e236911",
+        "bytes": 76414545
+      },
+      "mesh/mesh.ply": {
+        "sha256": "de030720409a224b70b90a85feefced4d12137c5c3ed08d4cc294751dd3fc61e",
+        "bytes": 6186594
+      },
+      "render/assets/poses.json": {
+        "sha256": "4397c28861864ed8a70a33b9f00b32b29b1fb619a04e82091fa9950a807e661c",
+        "bytes": 1246877
+      }
+    },
+    "stages": {
+      "bake": {
+        "exit_code": 0
+      },
+      "probe": {
+        "exit_code": 0
+      }
+    },
+    "started_at": 1794842354.5980616,
+    "finished_at": 1794842375.8144145,
+    "navigable_area_m2": 201.32876586914062,
+    "start_clearance_m": 1.4109028577804565,
+    "depth_valid_fraction": 0.9986574074074074,
+    "execution": {
+      "passed": true,
+      "termination": "expert_stop",
+      "collision_steps": 0,
+      "final_distance_m": 0.0023222872987389565,
+      "steps": 9,
+      "source": "expert_not_vla"
+    },
+    "passed": true,
+    "source_files_unchanged": true
+  },
+  {
+    "name": "智园1-output",
+    "scene_id": "zhiyuan1",
+    "lod": 4,
+    "manifest": "/data/nav_storage/sim-engine/deployments/gs-three-scans-20261116-v2/scenes/zhiyuan1/scene.json",
+    "gaussians": 681577,
+    "mesh_vertices": 218657,
+    "scan_positions": 19367,
+    "source_files": {
+      "ply-result/point_cloud/iteration_100/point_cloud_4.ply": {
+        "sha256": "80519fb26397b1c220926097f9377411ea1cf73b5a795ffefaed87d2a8ddf6a3",
+        "bytes": 46348139
+      },
+      "mesh/mesh.ply": {
+        "sha256": "50a65db8dda3bed2f67c55583416d26ef04e4cc43b89734233767a3e27c82b8f",
+        "bytes": 7643546
+      },
+      "render/assets/poses.json": {
+        "sha256": "269d128e825c70028f9553a470a122242009c753984e80bf6182d47438514c9e",
+        "bytes": 2218430
+      }
+    },
+    "stages": {
+      "bake": {
+        "exit_code": 0
+      },
+      "probe": {
+        "exit_code": 0
+      }
+    },
+    "started_at": 1794842375.815052,
+    "finished_at": 1794842394.7296944,
+    "navigable_area_m2": 565.3319091796875,
+    "start_clearance_m": 1.7460670471191406,
+    "depth_valid_fraction": 1.0,
+    "execution": {
+      "passed": true,
+      "termination": "expert_stop",
+      "collision_steps": 0,
+      "final_distance_m": 0.0736565887928009,
+      "steps": 13,
+      "source": "expert_not_vla"
+    },
+    "passed": true,
+    "source_files_unchanged": true
+  },
+  {
+    "name": "智园2-output",
+    "scene_id": "zhiyuan2",
+    "lod": 3,
+    "manifest": "/data/nav_storage/sim-engine/deployments/gs-three-scans-20261116-v2/scenes/zhiyuan2/scene.json",
+    "gaussians": 1169951,
+    "mesh_vertices": 216274,
+    "scan_positions": 13280,
+    "source_files": {
+      "ply-result/point_cloud/iteration_100/point_cloud_3.ply": {
+        "sha256": "53ad33f8aebb813f06265cd0947903adcf149a1d87c808d94293320762ac44ba",
+        "bytes": 79557574
+      },
+      "mesh/mesh.ply": {
+        "sha256": "b112b7b7f26a4a001272ff4fb26097d6d0cbcd951bcc8da059da252d9cdcc249",
+        "bytes": 7288390
+      },
+      "render/assets/poses.json": {
+        "sha256": "58356fed22a095fa702c16c48eeae1c319778da6ba57a71044648b6207c867b9",
+        "bytes": 1520581
+      }
+    },
+    "stages": {
+      "bake": {
+        "exit_code": 0
+      },
+      "probe": {
+        "exit_code": 0
+      }
+    },
+    "started_at": 1794842394.7304163,
+    "finished_at": 1794842420.0122406,
+    "navigable_area_m2": 224.9347686767578,
+    "start_clearance_m": 1.7391048669815063,
+    "depth_valid_fraction": 1.0,
+    "execution": {
+      "passed": true,
+      "termination": "expert_stop",
+      "collision_steps": 0,
+      "final_distance_m": 0.06906308978796005,
+      "steps": 14,
+      "source": "expert_not_vla"
+    },
+    "passed": true,
+    "source_files_unchanged": true
+  }
+]

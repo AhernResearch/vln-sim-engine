@@ -1,0 +1,793 @@
+{
+  "owner": "4e8959a7486c4dbd91865b3b756c7645",
+  "remote_root": "/data/nav_storage/nav-train/collections/fixed16-scenes-20261114-4e8959a7486c",
+  "service_owner": "6dd006d52c0f407186603e5442559503",
+  "training_exported": 0,
+  "admission": "audit_only_pending_semantic_review",
+  "setup": {
+    "seed": 20261118,
+    "split": "train",
+    "scenes": [
+      {
+        "index": 0,
+        "scene_id": "mp3d/17DRP5sb8fy/17DRP5sb8fy.glb",
+        "glb_bytes": 21109340,
+        "warmup_attempt_budget": 4,
+        "steady_attempt_budget": 64,
+        "distinct_positions": 17,
+        "minimum_position_separation_m": 0.5,
+        "source_shard": "/data/nav_storage/nav-train/planner-pilots/pose-replenish-3325605aa77e/prepared/task-shards/000.json",
+        "gpu": 2
+      },
+      {
+        "index": 1,
+        "scene_id": "mp3d/2n8kARJN3HM/2n8kARJN3HM.glb",
+        "glb_bytes": 92044512,
+        "warmup_attempt_budget": 4,
+        "steady_attempt_budget": 64,
+        "distinct_positions": 17,
+        "minimum_position_separation_m": 0.5,
+        "source_shard": "/data/nav_storage/nav-train/planner-pilots/pose-replenish-3325605aa77e/prepared/task-shards/004.json",
+        "gpu": 3
+      },
+      {
+        "index": 2,
+        "scene_id": "mp3d/7y3sRwLe3Va/7y3sRwLe3Va.glb",
+        "glb_bytes": 62849752,
+        "warmup_attempt_budget": 4,
+        "steady_attempt_budget": 64,
+        "distinct_positions": 17,
+        "minimum_position_separation_m": 0.5,
+        "source_shard": "/data/nav_storage/nav-train/planner-pilots/pose-replenish-3325605aa77e/prepared/task-shards/008.json",
+        "gpu": 2
+      },
+      {
+        "index": 3,
+        "scene_id": "mp3d/D7G3Y4RVNrH/D7G3Y4RVNrH.glb",
+        "glb_bytes": 27496932,
+        "warmup_attempt_budget": 4,
+        "steady_attempt_budget": 64,
+        "distinct_positions": 17,
+        "minimum_position_separation_m": 0.5,
+        "source_shard": "/data/nav_storage/nav-train/planner-pilots/pose-replenish-3325605aa77e/prepared/task-shards/012.json",
+        "gpu": 4
+      },
+      {
+        "index": 4,
+        "scene_id": "mp3d/GdvgFV5R1Z5/GdvgFV5R1Z5.glb",
+        "glb_bytes": 18463728,
+        "warmup_attempt_budget": 4,
+        "steady_attempt_budget": 64,
+        "distinct_positions": 17,
+        "minimum_position_separation_m": 0.5,
+        "source_shard": "/data/nav_storage/nav-train/planner-pilots/pose-replenish-3325605aa77e/prepared/task-shards/016.json",
+        "gpu": 0
+      },
+      {
+        "index": 5,
+        "scene_id": "mp3d/JmbYfDe2QKZ/JmbYfDe2QKZ.glb",
+        "glb_bytes": 42688848,
+        "warmup_attempt_budget": 4,
+        "steady_attempt_budget": 64,
+        "distinct_positions": 17,
+        "minimum_position_separation_m": 0.5,
+        "source_shard": "/data/nav_storage/nav-train/planner-pilots/pose-replenish-3325605aa77e/prepared/task-shards/020.json",
+        "gpu": 3
+      },
+      {
+        "index": 6,
+        "scene_id": "mp3d/S9hNv5qa7GM/S9hNv5qa7GM.glb",
+        "glb_bytes": 47777388,
+        "warmup_attempt_budget": 4,
+        "steady_attempt_budget": 64,
+        "distinct_positions": 17,
+        "minimum_position_separation_m": 0.5,
+        "source_shard": "/data/nav_storage/nav-train/planner-pilots/pose-replenish-3325605aa77e/prepared/task-shards/024.json",
+        "gpu": 3
+      },
+      {
+        "index": 7,
+        "scene_id": "mp3d/V2XKFyX4ASd/V2XKFyX4ASd.glb",
+        "glb_bytes": 84085808,
+        "warmup_attempt_budget": 4,
+        "steady_attempt_budget": 64,
+        "distinct_positions": 17,
+        "minimum_position_separation_m": 0.5,
+        "source_shard": "/data/nav_storage/nav-train/planner-pilots/pose-replenish-3325605aa77e/prepared/task-shards/028.json",
+        "gpu": 4
+      },
+      {
+        "index": 8,
+        "scene_id": "mp3d/Vvot9Ly1tCj/Vvot9Ly1tCj.glb",
+        "glb_bytes": 65871396,
+        "warmup_attempt_budget": 4,
+        "steady_attempt_budget": 64,
+        "distinct_positions": 17,
+        "minimum_position_separation_m": 0.5,
+        "source_shard": "/data/nav_storage/nav-train/planner-pilots/pose-replenish-3325605aa77e/prepared/task-shards/032.json",
+        "gpu": 3
+      },
+      {
+        "index": 9,
+        "scene_id": "mp3d/ZMojNkEp431/ZMojNkEp431.glb",
+        "glb_bytes": 46297908,
+        "warmup_attempt_budget": 4,
+        "steady_attempt_budget": 64,
+        "distinct_positions": 17,
+        "minimum_position_separation_m": 0.5,
+        "source_shard": "/data/nav_storage/nav-train/planner-pilots/pose-replenish-3325605aa77e/prepared/task-shards/036.json",
+        "gpu": 0
+      },
+      {
+        "index": 10,
+        "scene_id": "mp3d/cV4RVeZvu5T/cV4RVeZvu5T.glb",
+        "glb_bytes": 48850000,
+        "warmup_attempt_budget": 4,
+        "steady_attempt_budget": 64,
+        "distinct_positions": 17,
+        "minimum_position_separation_m": 0.5,
+        "source_shard": "/data/nav_storage/nav-train/planner-pilots/pose-replenish-3325605aa77e/prepared/task-shards/040.json",
+        "gpu": 0
+      },
+      {
+        "index": 11,
+        "scene_id": "mp3d/gZ6f7yhEvPG/gZ6f7yhEvPG.glb",
+        "glb_bytes": 23314648,
+        "warmup_attempt_budget": 4,
+        "steady_attempt_budget": 64,
+        "distinct_positions": 10,
+        "minimum_position_separation_m": 0.5,
+        "source_shard": "/data/nav_storage/nav-train/planner-pilots/pose-replenish-3325605aa77e/prepared/task-shards/044.json",
+        "gpu": 2
+      },
+      {
+        "index": 12,
+        "scene_id": "mp3d/mJXqzFtmKg4/mJXqzFtmKg4.glb",
+        "glb_bytes": 75974400,
+        "warmup_attempt_budget": 4,
+        "steady_attempt_budget": 64,
+        "distinct_positions": 17,
+        "minimum_position_separation_m": 0.5,
+        "source_shard": "/data/nav_storage/nav-train/planner-pilots/pose-replenish-3325605aa77e/prepared/task-shards/048.json",
+        "gpu": 4
+      },
+      {
+        "index": 13,
+        "scene_id": "mp3d/r1Q1Z4BcV1o/r1Q1Z4BcV1o.glb",
+        "glb_bytes": 150304840,
+        "warmup_attempt_budget": 4,
+        "steady_attempt_budget": 64,
+        "distinct_positions": 17,
+        "minimum_position_separation_m": 0.5,
+        "source_shard": "/data/nav_storage/nav-train/planner-pilots/pose-replenish-3325605aa77e/prepared/task-shards/052.json",
+        "gpu": 2
+      },
+      {
+        "index": 14,
+        "scene_id": "mp3d/sKLMLpTHeUy/sKLMLpTHeUy.glb",
+        "glb_bytes": 46507188,
+        "warmup_attempt_budget": 4,
+        "steady_attempt_budget": 64,
+        "distinct_positions": 17,
+        "minimum_position_separation_m": 0.5,
+        "source_shard": "/data/nav_storage/nav-train/planner-pilots/pose-replenish-3325605aa77e/prepared/task-shards/056.json",
+        "gpu": 4
+      },
+      {
+        "index": 15,
+        "scene_id": "mp3d/vyrNrziPKCB/vyrNrziPKCB.glb",
+        "glb_bytes": 156216880,
+        "warmup_attempt_budget": 4,
+        "steady_attempt_budget": 64,
+        "distinct_positions": 17,
+        "minimum_position_separation_m": 0.5,
+        "source_shard": "/data/nav_storage/nav-train/planner-pilots/pose-replenish-3325605aa77e/prepared/task-shards/060.json",
+        "gpu": 0
+      }
+    ],
+    "worker_scenes": [
+      {
+        "dataset": "train_pilot",
+        "scene_id": "mp3d/17DRP5sb8fy/17DRP5sb8fy.glb",
+        "camera": "visible_88cm_hfov120"
+      },
+      {
+        "dataset": "train_pilot",
+        "scene_id": "mp3d/2n8kARJN3HM/2n8kARJN3HM.glb",
+        "camera": "visible_88cm_hfov120"
+      },
+      {
+        "dataset": "train_pilot",
+        "scene_id": "mp3d/7y3sRwLe3Va/7y3sRwLe3Va.glb",
+        "camera": "visible_88cm_hfov120"
+      },
+      {
+        "dataset": "train_pilot",
+        "scene_id": "mp3d/D7G3Y4RVNrH/D7G3Y4RVNrH.glb",
+        "camera": "visible_88cm_hfov120"
+      },
+      {
+        "dataset": "train_pilot",
+        "scene_id": "mp3d/GdvgFV5R1Z5/GdvgFV5R1Z5.glb",
+        "camera": "visible_88cm_hfov120"
+      },
+      {
+        "dataset": "train_pilot",
+        "scene_id": "mp3d/JmbYfDe2QKZ/JmbYfDe2QKZ.glb",
+        "camera": "visible_88cm_hfov120"
+      },
+      {
+        "dataset": "train_pilot",
+        "scene_id": "mp3d/S9hNv5qa7GM/S9hNv5qa7GM.glb",
+        "camera": "visible_88cm_hfov120"
+      },
+      {
+        "dataset": "train_pilot",
+        "scene_id": "mp3d/V2XKFyX4ASd/V2XKFyX4ASd.glb",
+        "camera": "visible_88cm_hfov120"
+      },
+      {
+        "dataset": "train_pilot",
+        "scene_id": "mp3d/Vvot9Ly1tCj/Vvot9Ly1tCj.glb",
+        "camera": "visible_88cm_hfov120"
+      },
+      {
+        "dataset": "train_pilot",
+        "scene_id": "mp3d/ZMojNkEp431/ZMojNkEp431.glb",
+        "camera": "visible_88cm_hfov120"
+      },
+      {
+        "dataset": "train_pilot",
+        "scene_id": "mp3d/cV4RVeZvu5T/cV4RVeZvu5T.glb",
+        "camera": "visible_88cm_hfov120"
+      },
+      {
+        "dataset": "train_pilot",
+        "scene_id": "mp3d/gZ6f7yhEvPG/gZ6f7yhEvPG.glb",
+        "camera": "visible_88cm_hfov120"
+      },
+      {
+        "dataset": "train_pilot",
+        "scene_id": "mp3d/mJXqzFtmKg4/mJXqzFtmKg4.glb",
+        "camera": "visible_88cm_hfov120"
+      },
+      {
+        "dataset": "train_pilot",
+        "scene_id": "mp3d/r1Q1Z4BcV1o/r1Q1Z4BcV1o.glb",
+        "camera": "visible_88cm_hfov120"
+      },
+      {
+        "dataset": "train_pilot",
+        "scene_id": "mp3d/sKLMLpTHeUy/sKLMLpTHeUy.glb",
+        "camera": "visible_88cm_hfov120"
+      },
+      {
+        "dataset": "train_pilot",
+        "scene_id": "mp3d/vyrNrziPKCB/vyrNrziPKCB.glb",
+        "camera": "visible_88cm_hfov120"
+      }
+    ],
+    "worker_gpus": [
+      2,
+      3,
+      2,
+      4,
+      0,
+      3,
+      3,
+      4,
+      3,
+      0,
+      0,
+      2,
+      4,
+      2,
+      4,
+      0
+    ],
+    "model_slots": 64,
+    "prefetch_capacity": 128,
+    "source_parent_sha256": {
+      "/data/nav_storage/nav-train/planner-pilots/pose-replenish-3325605aa77e/prepared/manifest.json": "9b430b0420b7392e5c5fc94c9767c67a76b328ee9d8c95b34c18cde80a03612c",
+      "/data/nav_storage/nav-train/planner-pilots/pose-replenish-3325605aa77e/prepared/task-shards/000.json": "2bb5d06c7db2ddbbfaa64c0008e17ce1c0d3b3e53c8c83e55f30f03901e0a26e",
+      "/data/nav_storage/nav-train/planner-pilots/pose-replenish-3325605aa77e/prepared/task-shards/004.json": "4db4a50bca5588a70169621a909d371c201bba481eaac6f154447e22ff32c75c",
+      "/data/nav_storage/nav-train/planner-pilots/pose-replenish-3325605aa77e/prepared/task-shards/008.json": "12d9b69628dd493496a35148c9a5c56bd96a0acdd3a515c8ae5cf4f9c698516a",
+      "/data/nav_storage/nav-train/planner-pilots/pose-replenish-3325605aa77e/prepared/task-shards/012.json": "a1fbdf62c02820aeed1cf49daff3c34cc50509f760cae906133eee161d318908",
+      "/data/nav_storage/nav-train/planner-pilots/pose-replenish-3325605aa77e/prepared/task-shards/016.json": "cd7c625e1656154834f3d51cc444486ddbc9970a4647d6941c2e1d0d6e9ca18e",
+      "/data/nav_storage/nav-train/planner-pilots/pose-replenish-3325605aa77e/prepared/task-shards/020.json": "e5c10b64d2d7a28a4dd9002eed41716ca735e1f5e3da927afa617c012fe9b8da",
+      "/data/nav_storage/nav-train/planner-pilots/pose-replenish-3325605aa77e/prepared/task-shards/024.json": "4b9245e04640e867949d8851426300f4f39bf7a5520788e7ed6ef9b91a84ebe7",
+      "/data/nav_storage/nav-train/planner-pilots/pose-replenish-3325605aa77e/prepared/task-shards/028.json": "cef11b0d9362ca6edb92d68438e8abf111d8e55ebf0b4a90645a827558611268",
+      "/data/nav_storage/nav-train/planner-pilots/pose-replenish-3325605aa77e/prepared/task-shards/032.json": "0232f9c781866f93ed36d96bcfa7dcff8667f6a839c04199e610e969919cd7e2",
+      "/data/nav_storage/nav-train/planner-pilots/pose-replenish-3325605aa77e/prepared/task-shards/036.json": "30c7de010580a414071c74e19b1181788aa6e8c4ea44cd458dd9f44087a567e8",
+      "/data/nav_storage/nav-train/planner-pilots/pose-replenish-3325605aa77e/prepared/task-shards/040.json": "63a4377c7f925201d9686d236a2658c8b292de90467e5e1ec812e76bbe01b9d6",
+      "/data/nav_storage/nav-train/planner-pilots/pose-replenish-3325605aa77e/prepared/task-shards/044.json": "ca90d492bee400c76484bda0bb1c3f6126ce8745c904b214575a02fa3ab630e8",
+      "/data/nav_storage/nav-train/planner-pilots/pose-replenish-3325605aa77e/prepared/task-shards/048.json": "8385f40e2fcafe50fee0e5373613198b108932e5c73a12ea2164629e77ed22c2",
+      "/data/nav_storage/nav-train/planner-pilots/pose-replenish-3325605aa77e/prepared/task-shards/052.json": "7aab86fb7b9782f8ecc401d2e9b8b535b4bcd3448e5f7d82df5c0ae0cc41bf32",
+      "/data/nav_storage/nav-train/planner-pilots/pose-replenish-3325605aa77e/prepared/task-shards/056.json": "117fbc108a47db4607fe557df8bdfc4b237fa8a6ebb519881b79157e9ac95bf1",
+      "/data/nav_storage/nav-train/planner-pilots/pose-replenish-3325605aa77e/prepared/task-shards/060.json": "94c42e0251db6375541c07c2b2d21483a996cd65d5bb4570beec744a0c3a5423"
+    }
+  },
+  "timing": {
+    "prewarm_s": 13.900051441974938,
+    "warmup": {
+      "wall_s": 350.19410788919777,
+      "counts": {
+        "excluded_before_movement": 16,
+        "failed_or_uncertain": 2,
+        "completed_audit": 46
+      },
+      "aborted": null
+    },
+    "steady_s": 1118.0063398829661,
+    "attempts": 1024,
+    "counts": {
+      "completed_audit": 750,
+      "excluded_before_movement": 261,
+      "failed_or_uncertain": 13
+    },
+    "attempts_per_s": 0.9159160940958467,
+    "geometry_completed_per_s": 0.6708369829803564,
+    "geometry_completed_per_hour": 2415.013138729283,
+    "hours_per_100k_geometry_completed": 41.40764221788764,
+    "window_before_first_scene_exhausts_quota": {
+      "start_s": 45.43519577011466,
+      "end_s": 475.59291767003015,
+      "attempt_delta": 796,
+      "completed_geometry_delta": 579,
+      "attempts_per_s": 1.850484042188611,
+      "geometry_completed_per_s": 1.346017915109555,
+      "remaining_attempts_at_window_end": 121
+    },
+    "worker_utilization_whole_phase": 0.4229644640011446,
+    "model_task_wall_s": {
+      "n": 1024,
+      "sum": 4956.105473010801,
+      "mean": 4.83994675098711,
+      "p50": 4.396292066667229,
+      "p95": 8.741287689050658,
+      "max": 29.405683863908052
+    },
+    "warm_reset_s": {
+      "n": 1024,
+      "sum": 4.868098601233214,
+      "mean": 0.004754002540266811,
+      "p50": 0.00478140520863235,
+      "p95": 0.008501420030370353,
+      "max": 0.014981939923018217
+    },
+    "preflight_elapsed_file_mtime_s": {
+      "n": 1013,
+      "sum": 6337.747359752655,
+      "mean": 6.256413978038159,
+      "p50": 1.4080002307891846,
+      "p95": 32.2170018672943,
+      "max": 432.9170243740082
+    },
+    "longest_preflight": [
+      {
+        "id": "s15-t056",
+        "seconds": 432.9170243740082,
+        "status": "excluded_before_movement"
+      },
+      {
+        "id": "s14-t025",
+        "seconds": 304.04701709747314,
+        "status": "excluded_before_movement"
+      },
+      {
+        "id": "s14-t057",
+        "seconds": 263.27501487731934,
+        "status": "excluded_before_movement"
+      },
+      {
+        "id": "s13-t059",
+        "seconds": 246.15701389312744,
+        "status": "excluded_before_movement"
+      },
+      {
+        "id": "s15-t026",
+        "seconds": 193.5150110721588,
+        "status": "excluded_before_movement"
+      },
+      {
+        "id": "s05-t033",
+        "seconds": 130.79600739479065,
+        "status": "excluded_before_movement"
+      },
+      {
+        "id": "s10-t016",
+        "seconds": 118.56600666046143,
+        "status": "excluded_before_movement"
+      },
+      {
+        "id": "s07-t014",
+        "seconds": 114.62300634384155,
+        "status": "excluded_before_movement"
+      },
+      {
+        "id": "s05-t025",
+        "seconds": 104.83700585365295,
+        "status": "excluded_before_movement"
+      },
+      {
+        "id": "s07-t048",
+        "seconds": 99.08900570869446,
+        "status": "excluded_before_movement"
+      }
+    ]
+  },
+  "failures": {
+    "counts": {
+      "incomplete_model_output_before_movement": 3,
+      "oversize_box_rejected_before_movement": 8,
+      "invalid_depth_after_movement": 2
+    },
+    "cases": [
+      {
+        "id": "s02-t058",
+        "category": "incomplete_model_output_before_movement",
+        "error": "ValueError('incomplete model output')",
+        "movement_marker": false
+      },
+      {
+        "id": "s04-t000",
+        "category": "incomplete_model_output_before_movement",
+        "error": "ValueError('incomplete model output')",
+        "movement_marker": false
+      },
+      {
+        "id": "s05-t012",
+        "category": "oversize_box_rejected_before_movement",
+        "error": "<HTTPError 422: 'Unprocessable Entity'>",
+        "movement_marker": false
+      },
+      {
+        "id": "s07-t026",
+        "category": "oversize_box_rejected_before_movement",
+        "error": "<HTTPError 422: 'Unprocessable Entity'>",
+        "movement_marker": false
+      },
+      {
+        "id": "s07-t035",
+        "category": "oversize_box_rejected_before_movement",
+        "error": "<HTTPError 422: 'Unprocessable Entity'>",
+        "movement_marker": false
+      },
+      {
+        "id": "s07-t042",
+        "category": "oversize_box_rejected_before_movement",
+        "error": "<HTTPError 422: 'Unprocessable Entity'>",
+        "movement_marker": false
+      },
+      {
+        "id": "s09-t049",
+        "category": "oversize_box_rejected_before_movement",
+        "error": "<HTTPError 422: 'Unprocessable Entity'>",
+        "movement_marker": false
+      },
+      {
+        "id": "s10-t003",
+        "category": "incomplete_model_output_before_movement",
+        "error": "ValueError('incomplete model output')",
+        "movement_marker": false
+      },
+      {
+        "id": "s10-t018",
+        "category": "oversize_box_rejected_before_movement",
+        "error": "<HTTPError 422: 'Unprocessable Entity'>",
+        "movement_marker": false
+      },
+      {
+        "id": "s10-t062",
+        "category": "oversize_box_rejected_before_movement",
+        "error": "<HTTPError 422: 'Unprocessable Entity'>",
+        "movement_marker": false
+      },
+      {
+        "id": "s11-t008",
+        "category": "oversize_box_rejected_before_movement",
+        "error": "<HTTPError 422: 'Unprocessable Entity'>",
+        "movement_marker": false
+      },
+      {
+        "id": "s11-t015",
+        "category": "invalid_depth_after_movement",
+        "error": "{\"error\": \"ValueError('invalid depth retained for review')\", \"movement_attempted\": true}",
+        "movement_marker": true
+      },
+      {
+        "id": "s11-t028",
+        "category": "invalid_depth_after_movement",
+        "error": "{\"error\": \"ValueError('invalid depth retained for review')\", \"movement_attempted\": true}",
+        "movement_marker": true
+      }
+    ]
+  },
+  "exclusions": {
+    "ValueError('no candidate passed bounded planning and controller preview')": 261
+  },
+  "audit": {
+    "checks": {
+      "scene_matches_binding": 1024,
+      "no_automatic_retry": 1024,
+      "recording_complete": 750,
+      "geometry_pass_zero_collision": 750,
+      "terminal_inside_original_box": 750,
+      "pointnav_goal_matches_pre_movement": 750,
+      "label_frame_count_matches_recording": 750,
+      "pointnav_outcome_complete": 750,
+      "all_frame_pointnav_transform_within_1e_5m": 750,
+      "excluded_without_movement_marker": 261
+    },
+    "total_recorded_frames": 16248,
+    "frames_per_success": {
+      "n": 750,
+      "sum": 16248.0,
+      "mean": 21.664,
+      "p50": 18.0,
+      "p95": 39.0,
+      "max": 104.0
+    },
+    "steps_per_success": {
+      "n": 750,
+      "sum": 15498.0,
+      "mean": 20.664,
+      "p50": 17.0,
+      "p95": 38.0,
+      "max": 103.0
+    },
+    "final_geodesic_distance_m": {
+      "n": 750,
+      "sum": 22.651228713992168,
+      "mean": 0.03020163828532289,
+      "p50": 0.022336702793836594,
+      "p95": 0.0768775574862957,
+      "max": 0.10767959803342819
+    },
+    "max_pointnav_transform_error_m": 5.329070518200751e-15
+  },
+  "scenes": [
+    {
+      "scene": "mp3d/17DRP5sb8fy/17DRP5sb8fy.glb",
+      "gpu": 2,
+      "busy_s": 461.1671616001986,
+      "scene_loads": 1,
+      "completed": 64,
+      "counts": {
+        "completed_audit": 53,
+        "excluded_before_movement": 11
+      },
+      "finished_s": 489.63552341237664
+    },
+    {
+      "scene": "mp3d/2n8kARJN3HM/2n8kARJN3HM.glb",
+      "gpu": 3,
+      "busy_s": 451.99999868683517,
+      "scene_loads": 1,
+      "completed": 64,
+      "counts": {
+        "completed_audit": 48,
+        "excluded_before_movement": 16
+      },
+      "finished_s": 476.60047868220136
+    },
+    {
+      "scene": "mp3d/7y3sRwLe3Va/7y3sRwLe3Va.glb",
+      "gpu": 2,
+      "busy_s": 328.48072112118825,
+      "scene_loads": 1,
+      "completed": 64,
+      "counts": {
+        "excluded_before_movement": 30,
+        "completed_audit": 33,
+        "failed_or_uncertain": 1
+      },
+      "finished_s": 476.60822927812114
+    },
+    {
+      "scene": "mp3d/D7G3Y4RVNrH/D7G3Y4RVNrH.glb",
+      "gpu": 4,
+      "busy_s": 565.1213614433073,
+      "scene_loads": 1,
+      "completed": 64,
+      "counts": {
+        "completed_audit": 37,
+        "excluded_before_movement": 27
+      },
+      "finished_s": 585.7425104491413
+    },
+    {
+      "scene": "mp3d/GdvgFV5R1Z5/GdvgFV5R1Z5.glb",
+      "gpu": 0,
+      "busy_s": 203.66700551938266,
+      "scene_loads": 1,
+      "completed": 64,
+      "counts": {
+        "failed_or_uncertain": 1,
+        "completed_audit": 35,
+        "excluded_before_movement": 28
+      },
+      "finished_s": 475.567036872264
+    },
+    {
+      "scene": "mp3d/JmbYfDe2QKZ/JmbYfDe2QKZ.glb",
+      "gpu": 3,
+      "busy_s": 614.2211911645718,
+      "scene_loads": 1,
+      "completed": 64,
+      "counts": {
+        "completed_audit": 44,
+        "excluded_before_movement": 19,
+        "failed_or_uncertain": 1
+      },
+      "finished_s": 630.8922003763728
+    },
+    {
+      "scene": "mp3d/S9hNv5qa7GM/S9hNv5qa7GM.glb",
+      "gpu": 3,
+      "busy_s": 313.0819795890711,
+      "scene_loads": 1,
+      "completed": 64,
+      "counts": {
+        "completed_audit": 50,
+        "excluded_before_movement": 14
+      },
+      "finished_s": 508.1438775942661
+    },
+    {
+      "scene": "mp3d/V2XKFyX4ASd/V2XKFyX4ASd.glb",
+      "gpu": 4,
+      "busy_s": 418.2848422760144,
+      "scene_loads": 1,
+      "completed": 64,
+      "counts": {
+        "completed_audit": 45,
+        "excluded_before_movement": 16,
+        "failed_or_uncertain": 3
+      },
+      "finished_s": 485.25751628912985
+    },
+    {
+      "scene": "mp3d/Vvot9Ly1tCj/Vvot9Ly1tCj.glb",
+      "gpu": 3,
+      "busy_s": 198.18435883102939,
+      "scene_loads": 1,
+      "completed": 64,
+      "counts": {
+        "completed_audit": 56,
+        "excluded_before_movement": 8
+      },
+      "finished_s": 480.9496400123462
+    },
+    {
+      "scene": "mp3d/ZMojNkEp431/ZMojNkEp431.glb",
+      "gpu": 0,
+      "busy_s": 451.31489119865,
+      "scene_loads": 1,
+      "completed": 64,
+      "counts": {
+        "completed_audit": 54,
+        "excluded_before_movement": 9,
+        "failed_or_uncertain": 1
+      },
+      "finished_s": 482.0074177561328
+    },
+    {
+      "scene": "mp3d/cV4RVeZvu5T/cV4RVeZvu5T.glb",
+      "gpu": 0,
+      "busy_s": 355.8214760636911,
+      "scene_loads": 1,
+      "completed": 64,
+      "counts": {
+        "completed_audit": 33,
+        "failed_or_uncertain": 3,
+        "excluded_before_movement": 28
+      },
+      "finished_s": 479.76430904120207
+    },
+    {
+      "scene": "mp3d/gZ6f7yhEvPG/gZ6f7yhEvPG.glb",
+      "gpu": 2,
+      "busy_s": 372.1243622424081,
+      "scene_loads": 3,
+      "completed": 64,
+      "counts": {
+        "completed_audit": 45,
+        "excluded_before_movement": 16,
+        "failed_or_uncertain": 3
+      },
+      "finished_s": 479.764061906375
+    },
+    {
+      "scene": "mp3d/mJXqzFtmKg4/mJXqzFtmKg4.glb",
+      "gpu": 4,
+      "busy_s": 234.1602226193063,
+      "scene_loads": 1,
+      "completed": 64,
+      "counts": {
+        "completed_audit": 58,
+        "excluded_before_movement": 6
+      },
+      "finished_s": 480.95690460829064
+    },
+    {
+      "scene": "mp3d/r1Q1Z4BcV1o/r1Q1Z4BcV1o.glb",
+      "gpu": 2,
+      "busy_s": 540.7004458182491,
+      "scene_loads": 1,
+      "completed": 64,
+      "counts": {
+        "completed_audit": 59,
+        "excluded_before_movement": 5
+      },
+      "finished_s": 718.3948991931975
+    },
+    {
+      "scene": "mp3d/sKLMLpTHeUy/sKLMLpTHeUy.glb",
+      "gpu": 4,
+      "busy_s": 969.002648149617,
+      "scene_loads": 1,
+      "completed": 64,
+      "counts": {
+        "completed_audit": 49,
+        "excluded_before_movement": 15
+      },
+      "finished_s": 983.8625387479551
+    },
+    {
+      "scene": "mp3d/vyrNrziPKCB/vyrNrziPKCB.glb",
+      "gpu": 0,
+      "busy_s": 1088.6985704521649,
+      "scene_loads": 1,
+      "completed": 64,
+      "counts": {
+        "excluded_before_movement": 13,
+        "completed_audit": 51
+      },
+      "finished_s": 1119.281952590216
+    }
+  ],
+  "scene_switches": 0,
+  "same_scene_backend_rebuilds": 2,
+  "final_service_active": 0,
+  "live_workers": 16,
+  "limitations": [
+    "16/61 systematic train scene sample; recorded training positions with random headings; not uniform NavMesh sampling",
+    "64 attempted cases per scene; no semantic review of this full batch",
+    "prefetched scenes interleaved; static pinned window; rolling replacement not implemented",
+    "preflight timing inferred from immutable file mtimes, not profiler samples",
+    "historical 16-case baseline uses different cohort and model concurrency; not causal speedup evidence"
+  ],
+  "experimental_service_shutdown": {
+    "owner": "4e8959a7486c4dbd91865b3b756c7645",
+    "process": {
+      "owner": "4e8959a7486c4dbd91865b3b756c7645",
+      "pid": 2605747,
+      "start_ticks": "333181389"
+    },
+    "service_owner": "6dd006d52c0f407186603e5442559503",
+    "active_before_stop": 0,
+    "signal": "SIGTERM",
+    "stopped": true,
+    "mainline": {
+      "status": "ok",
+      "service_owner": "29527adbc69e4b92a8168b88bbc7874d",
+      "live_workers": 16,
+      "active": 0
+    },
+    "mainline_controlled": false
+  },
+  "analysis_source_sha256": "c1e72829ef4ec3473f39841659d1a26aaac3b3f389b55e314f09fc5cfcf0df6b",
+  "validation": {
+    "sim_engine_pytest_passed": 109,
+    "sim_engine_ruff": "passed",
+    "nav_train_collection_client_pytest_passed": 4,
+    "harness_pytest_passed": 311,
+    "harness_subtests_passed": 4,
+    "harness_ruff": "passed",
+    "harness_mypy": "passed",
+    "navgpt_ruff_F821_F823": "passed",
+    "frontend_build": "passed",
+    "ui_changed": false
+  }
+}

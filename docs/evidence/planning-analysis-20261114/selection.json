@@ -1,0 +1,46 @@
+{
+  "population": 3764,
+  "rules": "deterministic medians within outcome and >=20s slow subsets; not a random success-rate evaluation",
+  "cases": [
+    {
+      "case": "s23-p00171",
+      "task": "/data/nav_storage/sim-engine/collections/free-planning-07b292f58091/tasks/4d307523a4d5e035e002d418e44bc6e9196101bb5ef37bb92cd051d2052ed01b",
+      "attempt": "/data/nav_storage/sim-engine/collections/free-planning-07b292f58091/instances/69c67adec29748f08f4f938cb61f19b4/planner/attempts/2e134d0e9af34d87a36f97402ef424aa",
+      "outcome": "completed_audit",
+      "duration_s": 2.745000123977661,
+      "ground_s": 2.432000160217285,
+      "post_candidates_s": 0.312999963760376,
+      "label": "ordinary_success"
+    },
+    {
+      "case": "s04-p00161",
+      "task": "/data/nav_storage/sim-engine/collections/free-planning-07b292f58091/tasks/8fb704942ed37ded6adfa14680a6b82bbfbdf0876aa5a72c23f3778598b69fbb",
+      "attempt": "/data/nav_storage/sim-engine/collections/free-planning-07b292f58091/instances/69c67adec29748f08f4f938cb61f19b4/planner/attempts/957451de26d245b1b2aa35794097287d",
+      "outcome": "completed_audit",
+      "duration_s": 42.698002338409424,
+      "ground_s": 1.8040001392364502,
+      "post_candidates_s": 40.894002199172974,
+      "label": "slow_success"
+    },
+    {
+      "case": "s34-p00074",
+      "task": "/data/nav_storage/sim-engine/collections/free-planning-07b292f58091/tasks/e80920f4f68db69710ee73e9679046c14cd3e3410bde17bdf0c0e229e7cdf4a9",
+      "attempt": "/data/nav_storage/sim-engine/collections/free-planning-07b292f58091/instances/69c67adec29748f08f4f938cb61f19b4/planner/attempts/fe83b61db393438dbbc0defc374ec177",
+      "outcome": "excluded_before_movement",
+      "duration_s": 49.73100280761719,
+      "ground_s": 0.38499999046325684,
+      "post_candidates_s": 49.34600281715393,
+      "label": "slow_rejection"
+    },
+    {
+      "case": "s13-p00197",
+      "task": "/data/nav_storage/sim-engine/collections/free-planning-07b292f58091/tasks/6099f9a2c21736c82ecacc501b87271ed580b6f0d2da58b2bca84b97c208ba43",
+      "attempt": "/data/nav_storage/sim-engine/collections/free-planning-07b292f58091/instances/69c67adec29748f08f4f938cb61f19b4/planner/attempts/6c08bec733d74a47a9e094c2f81f9610",
+      "outcome": "planning_budget_exhausted",
+      "duration_s": 92.7360053062439,
+      "ground_s": 2.5,
+      "post_candidates_s": 90.2360053062439,
+      "label": "budget_exhaustion"
+    }
+  ]
+}

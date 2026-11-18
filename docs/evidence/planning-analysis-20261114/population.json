@@ -1,0 +1,1220 @@
+{
+  "population": 3764,
+  "duration": {
+    "n": 3764,
+    "mean": 7.188103224215168,
+    "median": 2.6045000553131104,
+    "p95": 41.84600234031677,
+    "sum": 27056.020535945892
+  },
+  "by_outcome": {
+    "completed_audit": {
+      "n": 3008,
+      "mean": 3.915504211837307,
+      "median": 2.7440000772476196,
+      "p95": 8.282000541687012,
+      "sum": 11777.83666920662
+    },
+    "excluded_before_movement": {
+      "n": 660,
+      "mean": 10.964606682098273,
+      "median": 0.681999921798706,
+      "p95": 62.67300343513489,
+      "sum": 7236.64041018486
+    },
+    "failed_or_uncertain": {
+      "n": 10,
+      "mean": 5.727200341224671,
+      "median": 3.854000210762024,
+      "p95": 15.584000825881958,
+      "sum": 57.272003412246704
+    },
+    "planning_budget_exhausted": {
+      "n": 86,
+      "mean": 92.84036573421123,
+      "median": 92.50650525093079,
+      "p95": 118.49500679969788,
+      "sum": 7984.271453142166
+    }
+  },
+  "ground": {
+    "n": 3764,
+    "mean": 1.5969453625673948,
+    "median": 1.5345001220703125,
+    "p95": 3.081000328063965,
+    "sum": 6010.902344703674
+  },
+  "post_candidates": {
+    "n": 3764,
+    "mean": 5.5911578616477735,
+    "median": 0.6160000562667847,
+    "p95": 40.894002199172974,
+    "sum": 21045.118191242218
+  },
+  "mask_sample": [
+    {
+      "case": "s01-p00034",
+      "eligible_full": 17085,
+      "eligible_in_box": 2479,
+      "safe_full": 8875,
+      "safe_in_box": 628,
+      "box_fraction": 0.06296296296296296,
+      "ground_s": 1.5790002346038818
+    },
+    {
+      "case": "s01-p00064",
+      "eligible_full": 17639,
+      "eligible_in_box": 6348,
+      "safe_full": 10716,
+      "safe_in_box": 5670,
+      "box_fraction": 0.06296296296296296,
+      "ground_s": 1.3470001220703125
+    },
+    {
+      "case": "s01-p00094",
+      "eligible_full": 26777,
+      "eligible_in_box": 5296,
+      "safe_full": 22026,
+      "safe_in_box": 4234,
+      "box_fraction": 0.06,
+      "ground_s": 1.9470000267028809
+    },
+    {
+      "case": "s01-p00123",
+      "eligible_full": 24069,
+      "eligible_in_box": 6038,
+      "safe_full": 17563,
+      "safe_in_box": 5079,
+      "box_fraction": 0.05,
+      "ground_s": 1.635000228881836
+    },
+    {
+      "case": "s01-p00153",
+      "eligible_full": 6517,
+      "eligible_in_box": 1143,
+      "safe_full": 2696,
+      "safe_in_box": 277,
+      "box_fraction": 0.05,
+      "ground_s": 0.4930000305175781
+    },
+    {
+      "case": "s02-p00140",
+      "eligible_full": 14514,
+      "eligible_in_box": 2427,
+      "safe_full": 11328,
+      "safe_in_box": 1933,
+      "box_fraction": 0.05,
+      "ground_s": 1.2070000171661377
+    },
+    {
+      "case": "s02-p00169",
+      "eligible_full": 19501,
+      "eligible_in_box": 4139,
+      "safe_full": 828,
+      "safe_in_box": 343,
+      "box_fraction": 0.06,
+      "ground_s": 0.8880000114440918
+    },
+    {
+      "case": "s02-p00201",
+      "eligible_full": 17335,
+      "eligible_in_box": 5317,
+      "safe_full": 15243,
+      "safe_in_box": 5103,
+      "box_fraction": 0.06,
+      "ground_s": 1.448000192642212
+    },
+    {
+      "case": "s04-p00117",
+      "eligible_full": 20686,
+      "eligible_in_box": 1466,
+      "safe_full": 14306,
+      "safe_in_box": 1220,
+      "box_fraction": 0.04,
+      "ground_s": 1.9830000400543213
+    },
+    {
+      "case": "s04-p00146",
+      "eligible_full": 10258,
+      "eligible_in_box": 3043,
+      "safe_full": 7285,
+      "safe_in_box": 2131,
+      "box_fraction": 0.04,
+      "ground_s": 0.6110000610351562
+    },
+    {
+      "case": "s04-p00176",
+      "eligible_full": 27810,
+      "eligible_in_box": 8413,
+      "safe_full": 25921,
+      "safe_in_box": 8005,
+      "box_fraction": 0.07,
+      "ground_s": 3.1080000400543213
+    },
+    {
+      "case": "s04-p00205",
+      "eligible_full": 38848,
+      "eligible_in_box": 4767,
+      "safe_full": 34454,
+      "safe_in_box": 3078,
+      "box_fraction": 0.05,
+      "ground_s": 3.0330002307891846
+    },
+    {
+      "case": "s05-p00082",
+      "eligible_full": 12811,
+      "eligible_in_box": 1310,
+      "safe_full": 9250,
+      "safe_in_box": 1002,
+      "box_fraction": 0.04,
+      "ground_s": 1.0
+    },
+    {
+      "case": "s05-p00112",
+      "eligible_full": 28600,
+      "eligible_in_box": 1798,
+      "safe_full": 22255,
+      "safe_in_box": 435,
+      "box_fraction": 0.06,
+      "ground_s": 1.7460002899169922
+    },
+    {
+      "case": "s05-p00142",
+      "eligible_full": 29204,
+      "eligible_in_box": 3928,
+      "safe_full": 24855,
+      "safe_in_box": 3515,
+      "box_fraction": 0.03037037037037037,
+      "ground_s": 1.7940001487731934
+    },
+    {
+      "case": "s05-p00172",
+      "eligible_full": 11140,
+      "eligible_in_box": 3351,
+      "safe_full": 7947,
+      "safe_in_box": 1307,
+      "box_fraction": 0.12,
+      "ground_s": 0.6880002021789551
+    },
+    {
+      "case": "s06-p00118",
+      "eligible_full": 30701,
+      "eligible_in_box": 6364,
+      "safe_full": 27366,
+      "safe_in_box": 6041,
+      "box_fraction": 0.05,
+      "ground_s": 3.56000018119812
+    },
+    {
+      "case": "s06-p00147",
+      "eligible_full": 13896,
+      "eligible_in_box": 4543,
+      "safe_full": 11346,
+      "safe_in_box": 2910,
+      "box_fraction": 0.06,
+      "ground_s": 0.999000072479248
+    },
+    {
+      "case": "s06-p00177",
+      "eligible_full": 25111,
+      "eligible_in_box": 2149,
+      "safe_full": 20816,
+      "safe_in_box": 1797,
+      "box_fraction": 0.03037037037037037,
+      "ground_s": 1.9840002059936523
+    },
+    {
+      "case": "s06-p00206",
+      "eligible_full": 14115,
+      "eligible_in_box": 3477,
+      "safe_full": 10237,
+      "safe_in_box": 2758,
+      "box_fraction": 0.04,
+      "ground_s": 0.9170000553131104
+    },
+    {
+      "case": "s08-p00039",
+      "eligible_full": 24594,
+      "eligible_in_box": 11556,
+      "safe_full": 21134,
+      "safe_in_box": 10077,
+      "box_fraction": 0.09925925925925926,
+      "ground_s": 2.079000234603882
+    },
+    {
+      "case": "s08-p00070",
+      "eligible_full": 26730,
+      "eligible_in_box": 7518,
+      "safe_full": 22842,
+      "safe_in_box": 6177,
+      "box_fraction": 0.09,
+      "ground_s": 1.690000057220459
+    },
+    {
+      "case": "s08-p00099",
+      "eligible_full": 29033,
+      "eligible_in_box": 5184,
+      "safe_full": 20139,
+      "safe_in_box": 5144,
+      "box_fraction": 0.04,
+      "ground_s": 1.7860000133514404
+    },
+    {
+      "case": "s08-p00129",
+      "eligible_full": 17608,
+      "eligible_in_box": 2678,
+      "safe_full": 14419,
+      "safe_in_box": 2166,
+      "box_fraction": 0.04,
+      "ground_s": 1.369999885559082
+    },
+    {
+      "case": "s11-p00099",
+      "eligible_full": 50809,
+      "eligible_in_box": 4587,
+      "safe_full": 50009,
+      "safe_in_box": 4420,
+      "box_fraction": 0.04,
+      "ground_s": 2.623000144958496
+    },
+    {
+      "case": "s11-p00128",
+      "eligible_full": 20870,
+      "eligible_in_box": 2306,
+      "safe_full": 14395,
+      "safe_in_box": 1203,
+      "box_fraction": 0.04,
+      "ground_s": 1.0880000591278076
+    },
+    {
+      "case": "s11-p00158",
+      "eligible_full": 46260,
+      "eligible_in_box": 2321,
+      "safe_full": 42881,
+      "safe_in_box": 1550,
+      "box_fraction": 0.04,
+      "ground_s": 2.827000141143799
+    },
+    {
+      "case": "s11-p00188",
+      "eligible_full": 39609,
+      "eligible_in_box": 2819,
+      "safe_full": 28768,
+      "safe_in_box": 788,
+      "box_fraction": 0.03037037037037037,
+      "ground_s": 1.940000057220459
+    },
+    {
+      "case": "s13-p00114",
+      "eligible_full": 42375,
+      "eligible_in_box": 11257,
+      "safe_full": 34431,
+      "safe_in_box": 10147,
+      "box_fraction": 0.09,
+      "ground_s": 2.2160000801086426
+    },
+    {
+      "case": "s13-p00145",
+      "eligible_full": 15417,
+      "eligible_in_box": 1949,
+      "safe_full": 11452,
+      "safe_in_box": 1114,
+      "box_fraction": 0.04,
+      "ground_s": 1.371000051498413
+    },
+    {
+      "case": "s13-p00174",
+      "eligible_full": 36649,
+      "eligible_in_box": 3446,
+      "safe_full": 28640,
+      "safe_in_box": 2004,
+      "box_fraction": 0.03037037037037037,
+      "ground_s": 2.259999990463257
+    },
+    {
+      "case": "s13-p00205",
+      "eligible_full": 28457,
+      "eligible_in_box": 3480,
+      "safe_full": 25467,
+      "safe_in_box": 2908,
+      "box_fraction": 0.05,
+      "ground_s": 2.433000087738037
+    },
+    {
+      "case": "s14-p00098",
+      "eligible_full": 48784,
+      "eligible_in_box": 471,
+      "safe_full": 46349,
+      "safe_in_box": 419,
+      "box_fraction": 0.03925925925925926,
+      "ground_s": 2.7820003032684326
+    },
+    {
+      "case": "s14-p00127",
+      "eligible_full": 50226,
+      "eligible_in_box": 7771,
+      "safe_full": 46160,
+      "safe_in_box": 7771,
+      "box_fraction": 0.06,
+      "ground_s": 2.4079999923706055
+    },
+    {
+      "case": "s14-p00158",
+      "eligible_full": 39465,
+      "eligible_in_box": 1122,
+      "safe_full": 37488,
+      "safe_in_box": 951,
+      "box_fraction": 0.016041666666666666,
+      "ground_s": 1.9740002155303955
+    },
+    {
+      "case": "s14-p00188",
+      "eligible_full": 24521,
+      "eligible_in_box": 1667,
+      "safe_full": 22920,
+      "safe_in_box": 1115,
+      "box_fraction": 0.04555555555555556,
+      "ground_s": 2.0350000858306885
+    },
+    {
+      "case": "s21-p00086",
+      "eligible_full": 30313,
+      "eligible_in_box": 2644,
+      "safe_full": 14350,
+      "safe_in_box": 655,
+      "box_fraction": 0.03037037037037037,
+      "ground_s": 2.7090001106262207
+    },
+    {
+      "case": "s21-p00117",
+      "eligible_full": 15598,
+      "eligible_in_box": 9715,
+      "safe_full": 12144,
+      "safe_in_box": 8282,
+      "box_fraction": 0.10074074074074074,
+      "ground_s": 0.9919998645782471
+    },
+    {
+      "case": "s21-p00146",
+      "eligible_full": 43986,
+      "eligible_in_box": 9792,
+      "safe_full": 41893,
+      "safe_in_box": 9792,
+      "box_fraction": 0.07555555555555556,
+      "ground_s": 3.432000160217285
+    },
+    {
+      "case": "s21-p00176",
+      "eligible_full": 35131,
+      "eligible_in_box": 2221,
+      "safe_full": 31530,
+      "safe_in_box": 1907,
+      "box_fraction": 0.04,
+      "ground_s": 2.577000141143799
+    },
+    {
+      "case": "s23-p00062",
+      "eligible_full": 42144,
+      "eligible_in_box": 13608,
+      "safe_full": 39056,
+      "safe_in_box": 13608,
+      "box_fraction": 0.105,
+      "ground_s": 3.3540000915527344
+    },
+    {
+      "case": "s23-p00091",
+      "eligible_full": 37182,
+      "eligible_in_box": 3936,
+      "safe_full": 32301,
+      "safe_in_box": 3917,
+      "box_fraction": 0.03037037037037037,
+      "ground_s": 2.88100004196167
+    },
+    {
+      "case": "s23-p00124",
+      "eligible_full": 29719,
+      "eligible_in_box": 462,
+      "safe_full": 26351,
+      "safe_in_box": 153,
+      "box_fraction": 0.03,
+      "ground_s": 2.0360000133514404
+    },
+    {
+      "case": "s23-p00155",
+      "eligible_full": 44463,
+      "eligible_in_box": 7128,
+      "safe_full": 35586,
+      "safe_in_box": 5431,
+      "box_fraction": 0.06,
+      "ground_s": 3.2690000534057617
+    },
+    {
+      "case": "s25-p00105",
+      "eligible_full": 18891,
+      "eligible_in_box": 488,
+      "safe_full": 14087,
+      "safe_in_box": 0,
+      "box_fraction": 0.03037037037037037,
+      "ground_s": 0.937999963760376
+    },
+    {
+      "case": "s25-p00135",
+      "eligible_full": 866,
+      "eligible_in_box": 8,
+      "safe_full": 0,
+      "safe_in_box": 0,
+      "box_fraction": 0.06791666666666667,
+      "ground_s": 0.12599992752075195
+    },
+    {
+      "case": "s25-p00165",
+      "eligible_full": 40209,
+      "eligible_in_box": 1249,
+      "safe_full": 36848,
+      "safe_in_box": 1017,
+      "box_fraction": 0.015185185185185185,
+      "ground_s": 2.4690001010894775
+    },
+    {
+      "case": "s25-p00195",
+      "eligible_full": 27127,
+      "eligible_in_box": 2570,
+      "safe_full": 21827,
+      "safe_in_box": 2073,
+      "box_fraction": 0.04,
+      "ground_s": 1.508000135421753
+    },
+    {
+      "case": "s27-p00119",
+      "eligible_full": 24497,
+      "eligible_in_box": 8485,
+      "safe_full": 8812,
+      "safe_in_box": 4032,
+      "box_fraction": 0.12,
+      "ground_s": 1.246000051498413
+    },
+    {
+      "case": "s27-p00148",
+      "eligible_full": 16243,
+      "eligible_in_box": 830,
+      "safe_full": 12968,
+      "safe_in_box": 806,
+      "box_fraction": 0.03037037037037037,
+      "ground_s": 1.2230000495910645
+    },
+    {
+      "case": "s27-p00179",
+      "eligible_full": 12941,
+      "eligible_in_box": 639,
+      "safe_full": 9741,
+      "safe_in_box": 419,
+      "box_fraction": 0.0687037037037037,
+      "ground_s": 0.8320000171661377
+    },
+    {
+      "case": "s27-p00209",
+      "eligible_full": 34558,
+      "eligible_in_box": 110,
+      "safe_full": 31291,
+      "safe_in_box": 49,
+      "box_fraction": 0.03037037037037037,
+      "ground_s": 1.9290001392364502
+    },
+    {
+      "case": "s29-p00081",
+      "eligible_full": 35211,
+      "eligible_in_box": 6477,
+      "safe_full": 28530,
+      "safe_in_box": 5694,
+      "box_fraction": 0.05,
+      "ground_s": 2.127000093460083
+    },
+    {
+      "case": "s29-p00111",
+      "eligible_full": 39763,
+      "eligible_in_box": 9273,
+      "safe_full": 32458,
+      "safe_in_box": 6351,
+      "box_fraction": 0.07444444444444444,
+      "ground_s": 2.4140002727508545
+    },
+    {
+      "case": "s29-p00142",
+      "eligible_full": 46248,
+      "eligible_in_box": 3813,
+      "safe_full": 30735,
+      "safe_in_box": 3565,
+      "box_fraction": 0.03037037037037037,
+      "ground_s": 2.7740001678466797
+    },
+    {
+      "case": "s29-p00171",
+      "eligible_full": 23029,
+      "eligible_in_box": 937,
+      "safe_full": 18072,
+      "safe_in_box": 357,
+      "box_fraction": 0.02962962962962963,
+      "ground_s": 1.1359999179840088
+    },
+    {
+      "case": "s30-p00112",
+      "eligible_full": 14180,
+      "eligible_in_box": 3838,
+      "safe_full": 11201,
+      "safe_in_box": 3136,
+      "box_fraction": 0.07555555555555556,
+      "ground_s": 1.6370000839233398
+    },
+    {
+      "case": "s30-p00142",
+      "eligible_full": 23378,
+      "eligible_in_box": 2254,
+      "safe_full": 17486,
+      "safe_in_box": 1711,
+      "box_fraction": 0.03037037037037037,
+      "ground_s": 1.3900001049041748
+    },
+    {
+      "case": "s30-p00172",
+      "eligible_full": 23764,
+      "eligible_in_box": 10442,
+      "safe_full": 20665,
+      "safe_in_box": 10161,
+      "box_fraction": 0.1,
+      "ground_s": 1.6549999713897705
+    },
+    {
+      "case": "s30-p00202",
+      "eligible_full": 23947,
+      "eligible_in_box": 3157,
+      "safe_full": 16257,
+      "safe_in_box": 1888,
+      "box_fraction": 0.05,
+      "ground_s": 1.380000114440918
+    },
+    {
+      "case": "s32-p00092",
+      "eligible_full": 46048,
+      "eligible_in_box": 5037,
+      "safe_full": 44849,
+      "safe_in_box": 4981,
+      "box_fraction": 0.04,
+      "ground_s": 3.633000135421753
+    },
+    {
+      "case": "s32-p00122",
+      "eligible_full": 46266,
+      "eligible_in_box": 8378,
+      "safe_full": 27395,
+      "safe_in_box": 3105,
+      "box_fraction": 0.08,
+      "ground_s": 2.120000123977661
+    },
+    {
+      "case": "s32-p00152",
+      "eligible_full": 14819,
+      "eligible_in_box": 0,
+      "safe_full": 3202,
+      "safe_in_box": 0,
+      "box_fraction": 0.04,
+      "ground_s": 1.3340001106262207
+    },
+    {
+      "case": "s32-p00181",
+      "eligible_full": 24246,
+      "eligible_in_box": 5598,
+      "safe_full": 20878,
+      "safe_in_box": 4916,
+      "box_fraction": 0.06,
+      "ground_s": 1.5460000038146973
+    },
+    {
+      "case": "s33-p00100",
+      "eligible_full": 22030,
+      "eligible_in_box": 41,
+      "safe_full": 16633,
+      "safe_in_box": 29,
+      "box_fraction": 0.00962962962962963,
+      "ground_s": 1.2220001220703125
+    },
+    {
+      "case": "s33-p00130",
+      "eligible_full": 10523,
+      "eligible_in_box": 0,
+      "safe_full": 6435,
+      "safe_in_box": 0,
+      "box_fraction": 0.014814814814814815,
+      "ground_s": 0.6480000019073486
+    },
+    {
+      "case": "s33-p00160",
+      "eligible_full": 36587,
+      "eligible_in_box": 3936,
+      "safe_full": 34015,
+      "safe_in_box": 3936,
+      "box_fraction": 0.03037037037037037,
+      "ground_s": 2.065000057220459
+    },
+    {
+      "case": "s33-p00190",
+      "eligible_full": 3611,
+      "eligible_in_box": 0,
+      "safe_full": 3201,
+      "safe_in_box": 0,
+      "box_fraction": 0.06,
+      "ground_s": 0.29600000381469727
+    },
+    {
+      "case": "s34-p00008",
+      "eligible_full": 12438,
+      "eligible_in_box": 455,
+      "safe_full": 2581,
+      "safe_in_box": 289,
+      "box_fraction": 0.04,
+      "ground_s": 0.75
+    },
+    {
+      "case": "s34-p00040",
+      "eligible_full": 7984,
+      "eligible_in_box": 575,
+      "safe_full": 3246,
+      "safe_in_box": 95,
+      "box_fraction": 0.04,
+      "ground_s": 0.5360000133514404
+    },
+    {
+      "case": "s34-p00072",
+      "eligible_full": 32272,
+      "eligible_in_box": 2537,
+      "safe_full": 29271,
+      "safe_in_box": 1637,
+      "box_fraction": 0.04,
+      "ground_s": 2.4770002365112305
+    },
+    {
+      "case": "s34-p00101",
+      "eligible_full": 38336,
+      "eligible_in_box": 2238,
+      "safe_full": 30524,
+      "safe_in_box": 1693,
+      "box_fraction": 0.04,
+      "ground_s": 2.25600004196167
+    },
+    {
+      "case": "s36-p00012",
+      "eligible_full": 22743,
+      "eligible_in_box": 7776,
+      "safe_full": 14059,
+      "safe_in_box": 7532,
+      "box_fraction": 0.06,
+      "ground_s": 1.2790000438690186
+    },
+    {
+      "case": "s36-p00042",
+      "eligible_full": 23216,
+      "eligible_in_box": 3553,
+      "safe_full": 15121,
+      "safe_in_box": 1870,
+      "box_fraction": 0.04,
+      "ground_s": 1.1690001487731934
+    },
+    {
+      "case": "s36-p00072",
+      "eligible_full": 36692,
+      "eligible_in_box": 6704,
+      "safe_full": 17171,
+      "safe_in_box": 3860,
+      "box_fraction": 0.06,
+      "ground_s": 2.1040000915527344
+    },
+    {
+      "case": "s36-p00102",
+      "eligible_full": 23398,
+      "eligible_in_box": 4911,
+      "safe_full": 17443,
+      "safe_in_box": 3826,
+      "box_fraction": 0.04,
+      "ground_s": 1.2699999809265137
+    },
+    {
+      "case": "s38-p00050",
+      "eligible_full": 22161,
+      "eligible_in_box": 6243,
+      "safe_full": 15300,
+      "safe_in_box": 4703,
+      "box_fraction": 0.06,
+      "ground_s": 1.948000192642212
+    },
+    {
+      "case": "s38-p00080",
+      "eligible_full": 19252,
+      "eligible_in_box": 5228,
+      "safe_full": 14607,
+      "safe_in_box": 3216,
+      "box_fraction": 0.05,
+      "ground_s": 1.13100004196167
+    },
+    {
+      "case": "s38-p00110",
+      "eligible_full": 37239,
+      "eligible_in_box": 3511,
+      "safe_full": 23894,
+      "safe_in_box": 2746,
+      "box_fraction": 0.05,
+      "ground_s": 1.874000072479248
+    },
+    {
+      "case": "s38-p00139",
+      "eligible_full": 24564,
+      "eligible_in_box": 2441,
+      "safe_full": 22236,
+      "safe_in_box": 1793,
+      "box_fraction": 0.04,
+      "ground_s": 2.749000310897827
+    },
+    {
+      "case": "s39-p00094",
+      "eligible_full": 21614,
+      "eligible_in_box": 51,
+      "safe_full": 17738,
+      "safe_in_box": 11,
+      "box_fraction": 0.022222222222222223,
+      "ground_s": 1.5350000858306885
+    },
+    {
+      "case": "s39-p00125",
+      "eligible_full": 21734,
+      "eligible_in_box": 3892,
+      "safe_full": 18725,
+      "safe_in_box": 3171,
+      "box_fraction": 0.06,
+      "ground_s": 1.4160001277923584
+    },
+    {
+      "case": "s39-p00154",
+      "eligible_full": 38226,
+      "eligible_in_box": 4989,
+      "safe_full": 27479,
+      "safe_in_box": 3366,
+      "box_fraction": 0.05,
+      "ground_s": 1.9240000247955322
+    },
+    {
+      "case": "s39-p00184",
+      "eligible_full": 25488,
+      "eligible_in_box": 4026,
+      "safe_full": 12121,
+      "safe_in_box": 2061,
+      "box_fraction": 0.04,
+      "ground_s": 1.7350001335144043
+    },
+    {
+      "case": "s41-p00079",
+      "eligible_full": 34440,
+      "eligible_in_box": 2769,
+      "safe_full": 27885,
+      "safe_in_box": 2144,
+      "box_fraction": 0.04,
+      "ground_s": 1.5759999752044678
+    },
+    {
+      "case": "s41-p00109",
+      "eligible_full": 25141,
+      "eligible_in_box": 952,
+      "safe_full": 18451,
+      "safe_in_box": 477,
+      "box_fraction": 0.03925925925925926,
+      "ground_s": 1.3580002784729004
+    },
+    {
+      "case": "s41-p00139",
+      "eligible_full": 29237,
+      "eligible_in_box": 6782,
+      "safe_full": 10973,
+      "safe_in_box": 890,
+      "box_fraction": 0.06,
+      "ground_s": 1.1410000324249268
+    },
+    {
+      "case": "s41-p00169",
+      "eligible_full": 24596,
+      "eligible_in_box": 4308,
+      "safe_full": 19197,
+      "safe_in_box": 3932,
+      "box_fraction": 0.04,
+      "ground_s": 1.9189999103546143
+    },
+    {
+      "case": "s43-p00137",
+      "eligible_full": 31908,
+      "eligible_in_box": 7061,
+      "safe_full": 12224,
+      "safe_in_box": 49,
+      "box_fraction": 0.12314814814814815,
+      "ground_s": 1.4950001239776611
+    },
+    {
+      "case": "s43-p00167",
+      "eligible_full": 13614,
+      "eligible_in_box": 2856,
+      "safe_full": 9885,
+      "safe_in_box": 1082,
+      "box_fraction": 0.06,
+      "ground_s": 0.8420000076293945
+    },
+    {
+      "case": "s43-p00196",
+      "eligible_full": 31213,
+      "eligible_in_box": 6228,
+      "safe_full": 23969,
+      "safe_in_box": 1536,
+      "box_fraction": 0.06,
+      "ground_s": 1.75600004196167
+    },
+    {
+      "case": "s43-p00226",
+      "eligible_full": 18213,
+      "eligible_in_box": 6518,
+      "safe_full": 15111,
+      "safe_in_box": 5999,
+      "box_fraction": 0.06,
+      "ground_s": 1.5069999694824219
+    },
+    {
+      "case": "s47-p00102",
+      "eligible_full": 29452,
+      "eligible_in_box": 6985,
+      "safe_full": 20412,
+      "safe_in_box": 5587,
+      "box_fraction": 0.09,
+      "ground_s": 1.686000108718872
+    },
+    {
+      "case": "s47-p00133",
+      "eligible_full": 21851,
+      "eligible_in_box": 3820,
+      "safe_full": 17386,
+      "safe_in_box": 2908,
+      "box_fraction": 0.04,
+      "ground_s": 1.313000202178955
+    },
+    {
+      "case": "s47-p00163",
+      "eligible_full": 14506,
+      "eligible_in_box": 4936,
+      "safe_full": 5226,
+      "safe_in_box": 355,
+      "box_fraction": 0.07555555555555556,
+      "ground_s": 1.0390000343322754
+    },
+    {
+      "case": "s47-p00196",
+      "eligible_full": 41160,
+      "eligible_in_box": 1659,
+      "safe_full": 33054,
+      "safe_in_box": 1542,
+      "box_fraction": 0.04555555555555556,
+      "ground_s": 3.3950002193450928
+    },
+    {
+      "case": "s48-p00126",
+      "eligible_full": 39503,
+      "eligible_in_box": 311,
+      "safe_full": 33716,
+      "safe_in_box": 199,
+      "box_fraction": 0.022222222222222223,
+      "ground_s": 1.9970002174377441
+    },
+    {
+      "case": "s48-p00156",
+      "eligible_full": 27965,
+      "eligible_in_box": 5932,
+      "safe_full": 20288,
+      "safe_in_box": 5254,
+      "box_fraction": 0.06,
+      "ground_s": 1.8470001220703125
+    },
+    {
+      "case": "s48-p00185",
+      "eligible_full": 9143,
+      "eligible_in_box": 1794,
+      "safe_full": 2403,
+      "safe_in_box": 184,
+      "box_fraction": 0.04,
+      "ground_s": 0.4609999656677246
+    },
+    {
+      "case": "s48-p00215",
+      "eligible_full": 13850,
+      "eligible_in_box": 4725,
+      "safe_full": 9835,
+      "safe_in_box": 4017,
+      "box_fraction": 0.04,
+      "ground_s": 0.8110001087188721
+    },
+    {
+      "case": "s49-p00142",
+      "eligible_full": 26430,
+      "eligible_in_box": 7203,
+      "safe_full": 9294,
+      "safe_in_box": 55,
+      "box_fraction": 0.08,
+      "ground_s": 1.7920000553131104
+    },
+    {
+      "case": "s49-p00172",
+      "eligible_full": 27905,
+      "eligible_in_box": 1051,
+      "safe_full": 19657,
+      "safe_in_box": 519,
+      "box_fraction": 0.04583333333333333,
+      "ground_s": 2.647000312805176
+    },
+    {
+      "case": "s49-p00202",
+      "eligible_full": 2095,
+      "eligible_in_box": 1717,
+      "safe_full": 0,
+      "safe_in_box": 0,
+      "box_fraction": 0.04555555555555556,
+      "ground_s": 0.14700007438659668
+    },
+    {
+      "case": "s49-p00231",
+      "eligible_full": 17828,
+      "eligible_in_box": 34,
+      "safe_full": 15053,
+      "safe_in_box": 2,
+      "box_fraction": 0.02962962962962963,
+      "ground_s": 1.0199999809265137
+    },
+    {
+      "case": "s52-p00135",
+      "eligible_full": 28828,
+      "eligible_in_box": 4100,
+      "safe_full": 26286,
+      "safe_in_box": 3599,
+      "box_fraction": 0.04,
+      "ground_s": 1.5600001811981201
+    },
+    {
+      "case": "s52-p00165",
+      "eligible_full": 28658,
+      "eligible_in_box": 6900,
+      "safe_full": 20934,
+      "safe_in_box": 5665,
+      "box_fraction": 0.06,
+      "ground_s": 1.3520002365112305
+    },
+    {
+      "case": "s52-p00195",
+      "eligible_full": 19148,
+      "eligible_in_box": 7256,
+      "safe_full": 14283,
+      "safe_in_box": 6192,
+      "box_fraction": 0.06296296296296296,
+      "ground_s": 1.252000093460083
+    },
+    {
+      "case": "s52-p00225",
+      "eligible_full": 41809,
+      "eligible_in_box": 5989,
+      "safe_full": 37573,
+      "safe_in_box": 5678,
+      "box_fraction": 0.05,
+      "ground_s": 2.753000259399414
+    },
+    {
+      "case": "s54-p00118",
+      "eligible_full": 18002,
+      "eligible_in_box": 148,
+      "safe_full": 9370,
+      "safe_in_box": 12,
+      "box_fraction": 0.01,
+      "ground_s": 1.0770001411437988
+    },
+    {
+      "case": "s54-p00147",
+      "eligible_full": 15235,
+      "eligible_in_box": 3207,
+      "safe_full": 12858,
+      "safe_in_box": 2863,
+      "box_fraction": 0.04,
+      "ground_s": 1.3040001392364502
+    },
+    {
+      "case": "s54-p00177",
+      "eligible_full": 29110,
+      "eligible_in_box": 9281,
+      "safe_full": 25241,
+      "safe_in_box": 8643,
+      "box_fraction": 0.07555555555555556,
+      "ground_s": 1.5810000896453857
+    },
+    {
+      "case": "s54-p00207",
+      "eligible_full": 24690,
+      "eligible_in_box": 2230,
+      "safe_full": 22238,
+      "safe_in_box": 1963,
+      "box_fraction": 0.03037037037037037,
+      "ground_s": 1.8990001678466797
+    },
+    {
+      "case": "s56-p00125",
+      "eligible_full": 15810,
+      "eligible_in_box": 4108,
+      "safe_full": 11725,
+      "safe_in_box": 3606,
+      "box_fraction": 0.04,
+      "ground_s": 1.0370001792907715
+    },
+    {
+      "case": "s56-p00156",
+      "eligible_full": 42542,
+      "eligible_in_box": 3331,
+      "safe_full": 37049,
+      "safe_in_box": 2266,
+      "box_fraction": 0.05,
+      "ground_s": 3.9640002250671387
+    },
+    {
+      "case": "s56-p00185",
+      "eligible_full": 20729,
+      "eligible_in_box": 3936,
+      "safe_full": 15112,
+      "safe_in_box": 3926,
+      "box_fraction": 0.03037037037037037,
+      "ground_s": 2.504000186920166
+    },
+    {
+      "case": "s56-p00216",
+      "eligible_full": 13840,
+      "eligible_in_box": 4802,
+      "safe_full": 10986,
+      "safe_in_box": 3663,
+      "box_fraction": 0.05555555555555555,
+      "ground_s": 1.3900001049041748
+    },
+    {
+      "case": "s58-p00127",
+      "eligible_full": 6363,
+      "eligible_in_box": 17,
+      "safe_full": 2038,
+      "safe_in_box": 0,
+      "box_fraction": 0.02277777777777778,
+      "ground_s": 0.628000020980835
+    },
+    {
+      "case": "s58-p00156",
+      "eligible_full": 18955,
+      "eligible_in_box": 4153,
+      "safe_full": 91,
+      "safe_in_box": 0,
+      "box_fraction": 0.04,
+      "ground_s": 0.9830000400543213
+    },
+    {
+      "case": "s58-p00186",
+      "eligible_full": 35946,
+      "eligible_in_box": 12960,
+      "safe_full": 16368,
+      "safe_in_box": 3130,
+      "box_fraction": 0.1,
+      "ground_s": 1.685999870300293
+    },
+    {
+      "case": "s58-p00215",
+      "eligible_full": 21811,
+      "eligible_in_box": 4314,
+      "safe_full": 12488,
+      "safe_in_box": 2716,
+      "box_fraction": 0.05,
+      "ground_s": 1.1489999294281006
+    },
+    {
+      "case": "s59-p00136",
+      "eligible_full": 25126,
+      "eligible_in_box": 597,
+      "safe_full": 18170,
+      "safe_in_box": 321,
+      "box_fraction": 0.03925925925925926,
+      "ground_s": 1.2620000839233398
+    },
+    {
+      "case": "s59-p00166",
+      "eligible_full": 18571,
+      "eligible_in_box": 201,
+      "safe_full": 8074,
+      "safe_in_box": 96,
+      "box_fraction": 0.02962962962962963,
+      "ground_s": 1.314000129699707
+    },
+    {
+      "case": "s59-p00195",
+      "eligible_full": 40452,
+      "eligible_in_box": 634,
+      "safe_full": 37874,
+      "safe_in_box": 387,
+      "box_fraction": 0.04,
+      "ground_s": 2.619000196456909
+    },
+    {
+      "case": "s59-p00227",
+      "eligible_full": 26381,
+      "eligible_in_box": 4867,
+      "safe_full": 20067,
+      "safe_in_box": 3969,
+      "box_fraction": 0.06,
+      "ground_s": 3.140000343322754
+    },
+    {
+      "case": "s60-p00145",
+      "eligible_full": 30682,
+      "eligible_in_box": 8895,
+      "safe_full": 26787,
+      "safe_in_box": 8240,
+      "box_fraction": 0.07555555555555556,
+      "ground_s": 2.6050002574920654
+    },
+    {
+      "case": "s60-p00178",
+      "eligible_full": 41387,
+      "eligible_in_box": 12703,
+      "safe_full": 39514,
+      "safe_in_box": 11848,
+      "box_fraction": 0.12,
+      "ground_s": 2.618000030517578
+    },
+    {
+      "case": "s60-p00208",
+      "eligible_full": 25155,
+      "eligible_in_box": 1083,
+      "safe_full": 24436,
+      "safe_in_box": 1055,
+      "box_fraction": 0.04,
+      "ground_s": 1.2820000648498535
+    },
+    {
+      "case": "s60-p00241",
+      "eligible_full": 7498,
+      "eligible_in_box": 4238,
+      "safe_full": 903,
+      "safe_in_box": 0,
+      "box_fraction": 0.05,
+      "ground_s": 0.33899998664855957
+    }
+  ],
+  "selection_attempt_counts": {
+    "n": 127,
+    "mean": 2.5669291338582676,
+    "median": 1,
+    "p95": 2,
+    "sum": 326
+  },
+  "candidate_failure_reasons": {
+    "preview lacks swept execution clearance": 177,
+    "read-only preview rejected execution": 1,
+    "endpoint planning infeasible: final surface path fails execution clearance": 35
+  }
+}

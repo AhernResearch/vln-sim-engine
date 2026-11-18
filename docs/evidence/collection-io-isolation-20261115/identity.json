@@ -1,0 +1,14 @@
+{
+  "owner": "6ca6ed773bdb40eea8a023c2127b1e01",
+  "client_owner": "3ddd99d25a3443d9ba0a36da9a1d00af",
+  "name": "free-instructions-100k-v5-io-20261115-6ca6ed773bdb",
+  "local": "/home/holo/robots/nav-train/outputs/collections/free-instructions-100k-v5-io-20261115-6ca6ed773bdb",
+  "remote": "/data/nav_storage/nav-train/collections/free-instructions-100k-v5-io-20261115-6ca6ed773bdb",
+  "deployment": "/data/nav_storage/sim-engine/deployments/free-v5-io-6ca6ed773bdb",
+  "shared_root": "/data/nav_storage/sim-engine/collections/free-v5-io-6ca6ed773bdb",
+  "service_url": "http://127.0.0.1:18813",
+  "previous_root": "/data/nav_storage/nav-train/collections/free-instructions-100k-v5-resume-20261115-eff250bfbefc",
+  "previous_deployment": "/data/nav_storage/sim-engine/deployments/free-v5-resume-eff250bfbefc",
+  "optimized_source": "/data/nav_storage/sim-engine/deployments/planning-query-mainline-79220a039e83",
+  "planning_profile_version": "collection-v5"
+}

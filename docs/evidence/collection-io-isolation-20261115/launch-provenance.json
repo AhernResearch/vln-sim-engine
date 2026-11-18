@@ -1,0 +1,15 @@
+{
+  "owner": "6ca6ed773bdb40eea8a023c2127b1e01",
+  "controller_sha256": "e30d678a4675459580bcfb947a9be3d50e4a88d7f91f7e311ef5ae56d2633209",
+  "preparation_sha256": "5f5d5f19cdcf84bfc826e5c9e00fab9bc60d69d40026b86460ffce5ebf28ae3d",
+  "launcher_sha256": "19d5d8e04f59c4cc6882034c6c01b0f6c36ee74d70756f9ddf6e193810acd8a5",
+  "production_plan_file": "production-plan.json",
+  "continuation_adjustments_sha256": "867c0d5115b5ed2ef6f5887c30e67f2034573982763e8214882f8cd8558072a7",
+  "production_plan_sha256": "aad7b28d602c192e4ec91c27e0553fb68f7eb7dc8f1da2c1aa8a47e66c84f341",
+  "handoff_validation_sha256": "e7aeb25ba05f309f5eeb42a269d599649bd5ca2545b62d7df77059b6f55477d9",
+  "frozen_source_sha256": "f9bf8595ab5b974fd217bafc4bd1ff36c55f9882dcca62632b32cf6017e3afef",
+  "automatic_retry": false,
+  "automatic_restart": false,
+  "formal_benchmark": false,
+  "training_exports": 0
+}

@@ -1,0 +1,200 @@
+--- previous/planning/service.py
++++ fixed/planning/service.py
+@@ -18,6 +18,7 @@
+ from fastapi import FastAPI
+ from fastapi.responses import JSONResponse
+ 
++from sim_engine.async_io import AsyncDisk
+ from sim_engine.atomic import atomic_json
+ from sim_engine.collection.storage import read, write
+ from sim_engine.pool import WorkerError
+@@ -171,6 +172,8 @@
+         self.queue = deque()
+         self.work_available = asyncio.Event()
+         self.active = {}
++        self.disk = AsyncDisk()
++        self.lock = asyncio.Lock()
+         self.closed = False
+         self.workers = [PlanningWorker(settings, engine_factory,
+                         self.instance_root / "workers" / str(i), self.owner)
+@@ -182,12 +185,16 @@
+             raise WorkerError(422, "invalid planning attempt identity")
+         return self.root / "attempts" / cid
+ 
+-    def status(self, cid):
++    async def status(self, cid):
+         if cid in self.active:
+             state = self.active[cid]
+             worker = next((w for w in self.workers if w.current == cid), None)
+             return dict(state["view"], progress=list(worker.progress[:]) if worker else None)
+         folder = self.folder(cid)
++        return await self.disk.run(self._stored_status, cid, folder)
++
++    @staticmethod
++    def _stored_status(cid, folder):
+         if (folder / "result.json").exists():
+             return read(folder / "result.json")
+         if folder.exists():
+@@ -196,87 +203,105 @@
+         raise WorkerError(404, "unknown planning attempt")
+ 
+     async def submit(self, job):
++        async with self.lock:
++            return await self._submit(job)
++
++    async def _submit(self, job):
+         folder = self.folder(job.attempt_id)
+-        if folder.exists():
+-            old = read(folder / "input.json")
++        if await self.disk.run(folder.exists):
++            old = await self.disk.run(read, folder / "input.json")
+             if old["input_digest"] != job.digest():
+                 raise WorkerError(409, "planning identity reused with different input")
+-            return self.status(job.attempt_id)
++            return await self.status(job.attempt_id)
+         if self.closed:
+             raise WorkerError(503, "planner closed")
+         if len(self.active) >= self.settings.capacity:
+             raise WorkerError(429, "planning capacity exhausted; no claim created")
+         if self.assets.get((job.task.dataset, job.task.scene_id)) != job.navmesh_sha256:
+             raise WorkerError(422, "scene is outside pinned training NavMesh registry")
+-        folder.mkdir(parents=True)
+-        write(folder / "input.json", {"input_digest": job.digest(), "request": job.model_dump(mode="json")})
+         view = {"attempt_id": job.attempt_id, "task_id": job.task.request_id,
+-                "input_digest": job.digest(), "status": "queued", "service_owner": self.owner,
++                "input_digest": job.digest(), "status": "claiming", "service_owner": self.owner,
+                 "implementation_digest": self.implementation_digest, "automatic_replay": False}
+         self.active[job.attempt_id] = {"job": job, "view": view}
+-        atomic_json(folder / "status.json", view)
++        try:
++            await self.disk.run(lambda: folder.mkdir(parents=True))
++            await self.disk.run(write, folder / "input.json", {"input_digest": job.digest(), "request": job.model_dump(mode="json")})
++        except BaseException:
++            self.active.pop(job.attempt_id, None)
++            raise
++        view["status"] = "queued"
++        await self.disk.run(atomic_json, folder / "status.json", view)
+         self.queue.append(job.attempt_id)
+         self.work_available.set()
+         return view
+ 
+-    def finish(self, state, result):
++    async def finish(self, state, result):
+         cid = state["job"].attempt_id
+         result = dict(result)
+         outcome = result.pop("outcome")
+         receipt = dict(state["view"], **result)
+         receipt.update(status=outcome, navmesh_sha256=state["job"].navmesh_sha256)
+         receipt["result_digest"] = fingerprint(receipt)
+-        write(self.folder(cid) / "result.json", receipt)
++        await self.disk.run(write, self.folder(cid) / "result.json", receipt)
+         self.active.pop(cid, None)
+         self.queue = deque(i for i in self.queue if i != cid)
+         return receipt
+ 
+     async def cancel(self, cid):
++        async with self.lock:
++            return await self._cancel(cid)
++
++    async def _cancel(self, cid):
+         state = self.active.get(cid)
+         if state is None:
+-            return self.status(cid)
++            return await self.status(cid)
+         state["cancel_requested"] = True
+         worker = next((w for w in self.workers if w.current == cid), None)
+         if worker is not None:
+             worker.stop.set()
+-            return self.status(cid)
+-        return self.finish(state, {"outcome": "cancelled", "artifacts": {}})
++            return await self.status(cid)
++        return await self.finish(state, {"outcome": "cancelled", "artifacts": {}})
+ 
+     async def consume(self, worker):
+         while not self.closed:
+             await self.work_available.wait()
+-            if not self.queue:
+-                self.work_available.clear()
+-                continue
+-            cid = self.queue.popleft()
+-            state = self.active.get(cid)
+-            if state is None:
+-                continue
+-            job = state["job"]
+-            if not worker.process.is_alive():
+-                # Replace capacity for FUTURE claims only. The failed attempt stays terminal.
+-                worker.connection.close()
+-                worker.start()
+-            worker.stop.clear()
+-            if hasattr(worker, "cancel_began"):
+-                del worker.cancel_began
+-            worker.progress[:] = [0, 0, 0]
+-            worker.current = cid
+-            state["view"]["status"] = "planning"
+-            state["view"]["worker_instance"] = worker.instance
+-            atomic_json(self.folder(cid) / "status.json", state["view"])
+-            scratch = self.folder(cid) / "artifacts"
+-            scratch.mkdir()
++            async with self.lock:
++                if self.closed:
++                    return
++                if not self.queue:
++                    self.work_available.clear()
++                    continue
++                cid = self.queue.popleft()
++                state = self.active.get(cid)
++                if state is None:
++                    continue
++                job = state["job"]
++                worker.current = cid
++                if not worker.process.is_alive():
++                    # Replace capacity for FUTURE claims only. The failed attempt stays terminal.
++                    worker.connection.close()
++                    await self.disk.run(worker.start)
++                worker.stop.clear()
++                if hasattr(worker, "cancel_began"):
++                    del worker.cancel_began
++                worker.progress[:] = [0, 0, 0]
++                state["view"]["status"] = "planning"
++                state["view"]["worker_instance"] = worker.instance
++                await self.disk.run(atomic_json, self.folder(cid) / "status.json", state["view"])
++                scratch = self.folder(cid) / "artifacts"
++                await self.disk.run(scratch.mkdir)
+             try:
+                 result = await asyncio.to_thread(worker.call, job, scratch)
+-                if state.get("cancel_requested"):
+-                    result["outcome"] = "cancelled"
+-                self.finish(state, result)
++                async with self.lock:
++                    if state.get("cancel_requested"):
++                        result["outcome"] = "cancelled"
++                    await self.finish(state, result)
+             finally:
+                 worker.current = None
+ 
+     def health(self):
+         return {"status": "ok" if not self.closed else "closed", "service_owner": self.owner,
++                "evidence_io": self.disk.health(),
+                 "capacity": self.settings.capacity, "active": len(self.active),
+                 "queued": len(self.queue), "workers": len(self.workers),
+                 "live_workers": sum(w.process.is_alive() for w in self.workers),
+@@ -296,8 +321,9 @@
+             runner.cancel()
+         await asyncio.gather(*self.runners, return_exceptions=True)
+         for state in list(self.active.values()):
+-            self.finish(state, {"outcome": "worker_failed", "error": "planner stopped; no replay",
++            await self.finish(state, {"outcome": "worker_failed", "error": "planner stopped; no replay",
+                                 "artifacts": {}})
++        await self.disk.close()
+ 
+ 
+ def create_app(settings, *, engine_factory=PlanningEngine):
+@@ -325,7 +351,7 @@
+ 
+     @app.get("/v1/plans/{cid}")
+     async def status(cid: str):
+-        return app.state.planner.status(cid)
++        return await app.state.planner.status(cid)
+ 
+     @app.delete("/v1/plans/{cid}")
+     async def cancel(cid: str):

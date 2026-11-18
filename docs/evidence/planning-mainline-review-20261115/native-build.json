@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "g++",
+    "-shared",
+    "-fPIC",
+    "-O3",
+    "-std=c++17",
+    "-ffp-contract=off",
+    "-fno-fast-math",
+    "-DPy_LIMITED_API=0x030A0000",
+    "-I/usr/include/python3.10",
+    "/data/nav_storage/sim-engine/deployments/planning-mainline-9130320591a9/src/sim_engine/planning/_astar.cpp",
+    "-o",
+    "/data/nav_storage/sim-engine/deployments/planning-mainline-9130320591a9/src/sim_engine/planning/_astar.abi3.so"
+  ],
+  "binary_sha256": "f08d549b055addaf1186c9c22f97f0ed39faf0b2ddf839534d52b6326eb77936"
+}

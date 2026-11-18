@@ -1,0 +1,64 @@
+{
+  "simulation": {
+    "scenes_root": "/data/nav_storage/data/scene_datasets/mp3d_r2r61_rxr59_20261105/scene_datasets",
+    "gpu": 3,
+    "workers": 1,
+    "max_actions": 400,
+    "datasets": {
+      "train_pilot": {
+        "episodes": "/data/nav_storage/organized/v0002/ce_r2r_expanded_candidates/evidence/train.json.gz",
+        "physics": {
+          "agent_height_m": 1.5,
+          "agent_radius_m": 0.1,
+          "allow_sliding": true,
+          "velocity": {
+            "time_step_s": 0.25
+          }
+        }
+      }
+    }
+  },
+  "policy": {
+    "model": "/unused/no-policy-loaded"
+  },
+  "cameras": {
+    "visible_88cm_hfov120": {
+      "height_m": 0.88,
+      "pitch_down_rad": 0,
+      "width": 480,
+      "height": 270,
+      "hfov": 120,
+      "view": "88cm_level_hfov120"
+    }
+  },
+  "collection": {
+    "root": "/data/nav_storage/sim-engine/collections/train-v1",
+    "training_datasets": [
+      "train_pilot"
+    ],
+    "worker_gpus": [
+      0,
+      0,
+      0,
+      0,
+      2,
+      2,
+      2,
+      2,
+      3,
+      3,
+      3,
+      3,
+      4,
+      4,
+      4,
+      4
+    ],
+    "capacity": 128,
+    "scene_cache_entries": 1,
+    "operation_timeout_s": 900,
+    "minimum_free_disk_bytes": 107374182400,
+    "base_steps": 160,
+    "planning_profile_version": "collection-v5"
+  }
+}

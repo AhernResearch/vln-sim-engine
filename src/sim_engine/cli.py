@@ -8,7 +8,7 @@ from pathlib import Path
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Stateful Habitat and asynchronous vLLM services")
     commands = parser.add_subparsers(dest="command", required=True)
-    for name, port in [("serve-sim", 18810), ("serve-policy", 18811)]:
+    for name, port in [("serve-sim", 18810), ("serve-policy", 18811), ("serve-collection", 18812), ("serve-planner", 18814)]:
         sub = commands.add_parser(name)
         sub.add_argument("--config", type=Path, required=True)
         sub.add_argument("--host", default="127.0.0.1")
@@ -25,14 +25,31 @@ def main(argv=None):
     run.add_argument("--seed", type=int, default=0)
     run.add_argument("--max-plans", type=int)
     run.add_argument("--output", type=Path, required=True)
-    for name in ("prepare-navmeshes", "audit-navmesh"):
+    for name in ("prepare-navmeshes", "audit-navmesh", "export-planner-assets"):
         sub = commands.add_parser(name)
         sub.add_argument("--config", type=Path, required=True)
-        sub.add_argument("--dataset", required=True)
+        if name != "export-planner-assets":
+            sub.add_argument("--dataset", required=True)
         sub.add_argument("--output", type=Path, required=True)
         if name == "prepare-navmeshes":
             sub.add_argument("--source-root", type=Path, required=True)
+    prepare = commands.add_parser("prepare-scan")
+    prepare.add_argument("--archive", type=Path, required=True)
+    prepare.add_argument("--output", type=Path, required=True)
+    prepare.add_argument("--lod", type=int, default=3)
+    bake = commands.add_parser("bake-scan")
+    bake.add_argument("--manifest", type=Path, required=True)
+    bake.add_argument("--agent-radius-m", type=float, default=0.18)
+    bake.add_argument("--agent-height-m", type=float, default=1.5)
     args = parser.parse_args(argv)
+    if args.command == "prepare-scan":
+        from .scan_assets import prepare
+        print(prepare(args.archive, args.output, args.lod))
+        return
+    if args.command == "bake-scan":
+        from .scan_bake import bake
+        print(json.dumps(bake(args.manifest, args.agent_radius_m, args.agent_height_m), indent=2))
+        return
     if args.command == "rollout":
         from .client import rollout
 
@@ -51,9 +68,22 @@ def main(argv=None):
         )
         print(json.dumps(result, indent=2))
         return
+    if args.command == "serve-planner":
+        os.environ.update(OPENBLAS_NUM_THREADS="1", OMP_NUM_THREADS="1", MKL_NUM_THREADS="1")
+        import uvicorn
+
+        from .planning.contracts import PlannerSettings
+        from .planning.service import create_app
+        config = PlannerSettings.read(args.config)
+        uvicorn.run(create_app(config), host=args.host, port=args.port, workers=1)
+        return
     from .config import Settings
 
     settings = Settings.read(args.config)
+    if args.command == "export-planner-assets":
+        from .planning.assets import export_assets
+        print(json.dumps(export_assets(settings, args.output), indent=2))
+        return
     if args.command in ("prepare-navmeshes", "audit-navmesh"):
         from .client import atomic_json
         from .navmesh import audit_connectivity, prepare_navmeshes
@@ -76,6 +106,16 @@ def main(argv=None):
             TOKENIZERS_PARALLELISM="false",
         )
         from .policy_server import create_app
+    elif args.command == "serve-collection":
+        # Spawned collection workers inherit this before importing NumPy. Small
+        # geometry operations should not create a BLAS thread pool per CPU core.
+        os.environ.update(
+            OPENBLAS_NUM_THREADS="1",
+            OMP_NUM_THREADS="1",
+            MKL_NUM_THREADS="1",
+            NUMEXPR_NUM_THREADS="1",
+        )
+        from .collection.server import create_app
     else:
         from .sim_server import create_app
     import uvicorn

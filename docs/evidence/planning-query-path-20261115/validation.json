@@ -1,0 +1,64 @@
+{
+  "status": "passed",
+  "mainline": "collection-v5",
+  "kernel_api": 2,
+  "benchmarks": {
+    "paired": {
+      "wall_s": [
+        54.89378555631265,
+        48.67811459163204
+      ],
+      "cpu_s": [
+        52.384210528000004,
+        36.165224312
+      ],
+      "wall_speedup": 1.127689229889547,
+      "cpu_speedup": 1.4484691170743929,
+      "cases": 10,
+      "all_progress_equal": true
+    },
+    "tmpfs": {
+      "wall_s": [
+        54.67489102855325,
+        34.88770576892421
+      ],
+      "cpu_s": [
+        54.404700634,
+        34.465218921
+      ],
+      "wall_speedup": 1.5671678553668105,
+      "cpu_speedup": 1.5785392444105635,
+      "cases": 10,
+      "all_progress_equal": true
+    }
+  },
+  "runtime_source_files_matched_excluding_binary": 73,
+  "paired_source_change_after_test": "default profile constant v4 -> v5 only; all tested jobs explicitly requested v5",
+  "freespace_and_controller_sources_unchanged": [
+    "collection/safe_image.py",
+    "collection/region.py",
+    "collection/visual_geometry.py",
+    "collection/visual_region.py",
+    "collection/tracking.py"
+  ],
+  "production_updated": false,
+  "checks": {
+    "sim_engine_pytest": 192,
+    "new_query_path_cases": 33,
+    "sim_engine_ruff": "passed",
+    "nav_train_pytest": {
+      "passed": 1147,
+      "skipped": 12
+    },
+    "harness_pytest": {
+      "passed": 311,
+      "subtests_passed": 4
+    },
+    "harness_ruff": "passed",
+    "harness_mypy": "passed",
+    "navgpt_undefined_names": "passed",
+    "frontend_build": "passed",
+    "mandatory_kernel_api2_wheel_with_all_cpp_and_header": "passed"
+  },
+  "scope": "CPU planning pairs, default native integration; no model semantic review or production throughput claim"
+}

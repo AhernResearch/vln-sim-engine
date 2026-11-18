@@ -1,0 +1,57 @@
+{
+  "status": "passed",
+  "paired_cases": 10,
+  "all_queries_and_expansions_equal": true,
+  "runtime_source_files_matched_excluding_target_binary": 69,
+  "paired_and_integration_full_snapshot_equal": true,
+  "binary_sha256": "f08d549b055addaf1186c9c22f97f0ed39faf0b2ddf839534d52b6326eb77936",
+  "wall_s": [
+    105.31323419092223,
+    62.291179900057614
+  ],
+  "wall_speedup": 1.6906604491982793,
+  "cpu_s": [
+    93.166146897,
+    52.97357826400001
+  ],
+  "cpu_speedup": 1.7587285954650003,
+  "checks": {
+    "sim_engine_pytest": 158,
+    "native_astar_tests": 13,
+    "sim_engine_ruff": "passed",
+    "nav_train_pytest": {
+      "passed": 1147,
+      "skipped": 12
+    },
+    "harness_pytest": {
+      "passed": 311,
+      "subtests_passed": 4
+    },
+    "harness_ruff": "passed",
+    "harness_mypy": "passed",
+    "navgpt_undefined_names": "passed",
+    "frontend_build": "passed",
+    "wheel_source_binary_and_import": "passed"
+  },
+  "default_profile": "collection-v3",
+  "native_opt_in": "collection-v4",
+  "production_updated": false,
+  "limitations": [
+    "selected CPU-only pairs under live production load, some overlap with isolated integration",
+    "short-case wall time varies; not all cases faster",
+    "not an end-to-end throughput or semantic quality measurement"
+  ],
+  "ignored_build_metadata": [
+    "vln_sim_engine.egg-info/PKG-INFO",
+    "vln_sim_engine.egg-info/SOURCES.txt",
+    "vln_sim_engine.egg-info/entry_points.txt",
+    "vln_sim_engine.egg-info/requires.txt",
+    "vln_sim_engine.egg-info/top_level.txt",
+    "vln_sim_engine.egg-info/dependency_links.txt"
+  ],
+  "build_input_sha256": {
+    "setup.py": "2c4e951cbc542bc969a9343739b153ad183a36bdfca87e53dc16061538f51f8e",
+    "pyproject.toml": "85c787ae06518ee19ba33aa602bbf67124dc72a8e91f2407812b46a10530b07d",
+    "tests/test_native_astar.py": "f1656d76985bc1dc481356c3bd027c22a06e7ee4c1c3314449d0a0442c194c42"
+  }
+}

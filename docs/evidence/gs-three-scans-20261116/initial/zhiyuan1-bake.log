@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/data/nav_storage/sim-engine/deployments/gs-integration-20261116-v2/src/sim_engine/__main__.py", line 4, in <module>
+    main()
+  File "/data/nav_storage/sim-engine/deployments/gs-integration-20261116-v2/src/sim_engine/cli.py", line 49, in main
+    print(json.dumps(bake(args.manifest), indent=2))
+                     ^^^^^^^^^^^^^^^^^^^
+  File "/data/nav_storage/sim-engine/deployments/gs-integration-20261116-v2/src/sim_engine/scan_bake.py", line 43, in bake
+    snapped = np.asarray(sim.pathfinder.snap_point(position), dtype=float)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: snap_point(): incompatible function arguments. The following argument types are supported:
+    1. (self: habitat_sim._ext.habitat_sim_bindings.PathFinder, point: _magnum.Vector3, island_index: int = -1) -> _magnum.Vector3
+    2. (self: habitat_sim._ext.habitat_sim_bindings.PathFinder, point: _magnum.Vector3, island_index: int = -1) -> _magnum.Vector3
+
+Invoked with: <habitat_sim._ext.habitat_sim_bindings.PathFinder object at 0x74503038be30>, [0.000628, 0, -0.000191]

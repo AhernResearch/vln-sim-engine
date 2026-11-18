@@ -1,0 +1,26 @@
+{
+  "checked_at": "2026-11-14T16:06:21.128015+00:00",
+  "temporary_pids": [
+    2718165,
+    2718166,
+    2718147,
+    2718148,
+    2718145,
+    2718144
+  ],
+  "temporary_pids_remaining": [],
+  "production": {
+    "status": "ok",
+    "service_owner": "69c67adec29748f08f4f938cb61f19b4",
+    "live_workers": 32,
+    "active": 99,
+    "queued_planning": 40
+  },
+  "production_planner": {
+    "status": "ok",
+    "service_owner": "8277b78c7d204d90a020c5ec3b17ea8d",
+    "workers": 24,
+    "live_workers": 24,
+    "implementation_digest": "cbc1460186e56cec0ad8521ff608cbaae83e68734507ed6baea324ba30beb4ea"
+  }
+}

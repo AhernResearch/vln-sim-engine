@@ -1,0 +1,50 @@
+{
+  "simulation": {
+    "backend": "habitat_gs",
+    "sensors": "rgbd",
+    "scenes_root": "${GS_SCENE_ROOT}",
+    "gpu": 2,
+    "workers": 1,
+    "datasets": {
+      "scan_development": {
+        "episodes": "${GS_SCENE_ROOT}/navigation/episodes.json",
+        "scenes": {
+          "m_floor": "${GS_SCENE_ROOT}/scene.json"
+        },
+        "task": "development",
+        "physics": {
+          "agent_radius_m": 0.18,
+          "agent_height_m": 1.5,
+          "velocity": {
+            "time_step_s": 0.25
+          }
+        }
+      }
+    }
+  },
+  "policy": {
+    "model": "${POLICY_MODEL}"
+  },
+  "cameras": {
+    "trained_ce30": {
+      "width": 640,
+      "height": 480
+    },
+    "gs_probe": {
+      "width": 128,
+      "height": 128,
+      "pitch_down_rad": 0
+    }
+  },
+  "collection": {
+    "root": "${GS_COLLECTION_ROOT}",
+    "training_datasets": [
+      "scan_development"
+    ],
+    "worker_gpus": [
+      2
+    ],
+    "scene_cache_entries": 1,
+    "minimum_free_disk_bytes": 10737418240
+  }
+}

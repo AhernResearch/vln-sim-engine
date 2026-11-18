@@ -1,0 +1,447 @@
+--- previous/collection/server.py
++++ fixed/collection/server.py
+@@ -20,6 +20,7 @@
+ 
+ from fastapi import FastAPI
+ 
++from sim_engine.async_io import AsyncDisk
+ from sim_engine.atomic import atomic_json
+ from sim_engine.data import EpisodeStore, scene_path
+ from sim_engine.planning.client import (
+@@ -121,11 +122,11 @@
+         self.last_cache = {}
+         self.warm = deque(maxlen=settings.collection.scene_cache_entries)
+ 
+-    def rebind(self, binding):
++    async def rebind(self, binding, disk):
+         if self.current is not None:
+             raise RuntimeError("cannot rebind a busy collection worker")
+         generation = self.binding_generation + 1
+-        write(
++        await disk.run(write,
+             self.folder / "bindings" / f"{generation:06d}.json",
+             {
+                 "instance": self.instance,
+@@ -265,6 +266,7 @@
+         self.audit_executor = ThreadPoolExecutor(
+             max_workers=settings.collection.audit_workers, thread_name_prefix="collection-audit")
+         self.active = {}
++        self.disk = AsyncDisk()
+         self.observations, self.executions = deque(), deque()
+         self.condition = asyncio.Condition()
+         self.closed = False
+@@ -290,7 +292,7 @@
+             )
+         self.scene_budgets = {s["key"]: s for s in self.scene_schedule}
+ 
+-    def _advance_scenes(self):
++    async def _advance_scenes(self, finishing=None):
+         if self.closed:
+             return
+         for scene in self.scene_schedule:
+@@ -310,15 +312,17 @@
+                 or worker.current is not None
+             ):
+                 continue
+-            if any(collection_key(s["request"]) == scene["key"] for s in self.active.values()):
++            if any(cid != finishing and collection_key(s["request"]) == scene["key"]
++                   for cid, s in self.active.items()):
+                 continue
++            following = next((s for s in self.scene_schedule if s["status"] == "queued"), None)
++            if following is not None:
++                await worker.rebind(following["key"], self.disk)
+             scene["status"] = "complete"
+             scene["completion_reason"] = (
+                 "success_goal_reached" if reached_goal else "attempt_budget_exhausted"
+             )
+-            following = next((s for s in self.scene_schedule if s["status"] == "queued"), None)
+             if following is not None:
+-                worker.rebind(following["key"])
+                 following.update(status="active", worker=worker.instance)
+ 
+     def _folder(self, cid):
+@@ -326,10 +330,14 @@
+             raise WorkerError(422, "invalid collection identity")
+         return self.root / "tasks" / cid
+ 
+-    def status(self, cid):
++    async def status(self, cid):
+         if cid in self.active:
+             return self._view(self.active[cid])
+         folder = self._folder(cid)
++        return await self.disk.run(self._stored_status, cid, folder)
++
++    @staticmethod
++    def _stored_status(cid, folder):
+         if not folder.exists():
+             raise WorkerError(404, "unknown collection task")
+         if (folder / "receipt.json").exists():
+@@ -354,10 +362,10 @@
+             result["public"] = state["public"]
+         return result
+ 
+-    def _persist(self, state):
+-        atomic_json(state["folder"] / "status.json", self._view(state))
+-
+-    def _finish(self, state, result):
++    async def _persist(self, state):
++        await self.disk.run(atomic_json, state["folder"] / "status.json", self._view(state))
++
++    async def _finish(self, state, result):
+         cid = state["request"]["request_id"]
+         receipt = dict(
+             self._view(state),
+@@ -365,8 +373,7 @@
+             training_admission="pending_review",
+             cancel_requested=state.get("cancel_requested", False),
+         )
+-        write(state["folder"] / "receipt.json", receipt)
+-        self.active.pop(cid, None)
++        await self.disk.run(write, state["folder"] / "receipt.json", receipt)
+         self.observations = deque(i for i in self.observations if i != cid)
+         self.executions = deque(i for i in self.executions if i != cid)
+         self.planning = deque(i for i in self.planning if i != cid)
+@@ -374,23 +381,24 @@
+             budget = self.scene_budgets[collection_key(state["request"])]
+             budget["terminal"] += 1
+             budget["successful"] += int(result.get("status") == "completed_audit")
+-            self._advance_scenes()
++            await self._advance_scenes(finishing=cid)
++        self.active.pop(cid, None)
+         return receipt
+ 
+     async def submit(self, request):
+         value = request.model_dump(mode="json")
+         cid, folder = value["request_id"], self._folder(value["request_id"])
+         async with self.condition:
+-            if folder.exists():
++            if await self.disk.run(folder.exists):
+                 try:
+-                    old = read(folder / "request.json")
++                    old = await self.disk.run(read, folder / "request.json")
+                 except (OSError, ValueError) as error:
+                     raise WorkerError(
+                         409, "partial collection claim; manual inspection required"
+                     ) from error
+                 if old != value:
+                     raise WorkerError(409, "request_id already used with different task")
+-                return self.status(cid)
++                return await self.status(cid)
+             if self.closed or not any(w.process.is_alive() for w in self.workers):
+                 raise WorkerError(503, "collection service has no live workers")
+             planning_active = sum(s["status"] in {"planning", "queued_planning"}
+@@ -399,7 +407,7 @@
+                 raise WorkerError(429, "planning backpressure; no collection claim created")
+             if len(self.active) >= self.settings.collection.capacity:
+                 raise WorkerError(429, "collection prefetch capacity exhausted")
+-            if shutil.disk_usage(self.root).free < self.settings.collection.minimum_free_disk_bytes:
++            if (await self.disk.run(shutil.disk_usage, self.root)).free < self.settings.collection.minimum_free_disk_bytes:
+                 raise WorkerError(507, "collection disk reserve reached")
+             if value["dataset"] not in self.settings.collection.training_datasets:
+                 raise WorkerError(422, "only explicitly configured training datasets may be collected")
+@@ -431,26 +439,30 @@
+             if not any(w.process.is_alive() and self._supports(w, value) for w in self.workers):
+                 raise WorkerError(503, "no live worker for this scene; no automatic replay")
+             dataset = self.settings.simulation.datasets[value["dataset"]]
+-            scene_path(dataset.scenes_root or self.settings.simulation.scenes_root, value["scene_id"])
+-            folder.mkdir(parents=True)
+-            write(folder / "request.json", value)
+-            write(
+-                folder / "lease.json",
+-                {
+-                    "owner": value["owner"],
+-                    "service_owner": self.owner,
+-                    "request_id": cid,
+-                    "started_unix": time.time(),
+-                    "automatic_retry": False,
+-                },
+-            )
++            await self.disk.run(scene_path, dataset.scenes_root or self.settings.simulation.scenes_root, value["scene_id"])
++            state = {"request": value, "folder": folder, "status": "claiming"}
++            self.active[cid] = state
++            try:
++                await self.disk.run(lambda: folder.mkdir(parents=True))
++                await self.disk.run(write, folder / "request.json", value)
++                await self.disk.run(write,
++                    folder / "lease.json",
++                    {
++                        "owner": value["owner"],
++                        "service_owner": self.owner,
++                        "request_id": cid,
++                        "started_unix": time.time(),
++                        "automatic_retry": False,
++                    },
++                )
++            except BaseException:
++                self.active.pop(cid, None)
++                raise
+             needs_plan = value["kind"] != "short_instructions"
+-            state = {"request": value, "folder": folder,
+-                     "status": "queued_planning" if needs_plan else "queued_observation"}
+-            self.active[cid] = state
++            state["status"] = "queued_planning" if needs_plan else "queued_observation"
+             if self.scene_schedule:
+                 self.scene_budgets[collection_key(value)]["claimed"] += 1
+-            self._persist(state)
++            await self._persist(state)
+             (self.planning if needs_plan else self.observations).append(cid)
+             self.peak_active = max(self.peak_active, len(self.active))
+             self.condition.notify_all()
+@@ -461,10 +473,10 @@
+             folder = self._folder(cid)
+             path = folder / "target.json"
+             value = target.model_dump(mode="json")
+-            if path.exists():
+-                if read(path) != value:
++            if await self.disk.run(path.exists):
++                if await self.disk.run(read, path) != value:
+                     raise WorkerError(409, "collection target is already frozen")
+-                return self.status(cid)
++                return await self.status(cid)
+             state = self.active.get(cid)
+             if (
+                 state is None
+@@ -472,9 +484,9 @@
+                 or state["request"]["kind"] != "short_instructions"
+             ):
+                 raise WorkerError(409, "task is not awaiting a free-region target")
+-            write(path, value)
++            await self.disk.run(write, path, value)
+             state.update(status="queued_planning", target=value)
+-            self._persist(state)
++            await self._persist(state)
+             self.planning.append(cid)
+             self.condition.notify_all()
+             return self._view(state)
+@@ -483,7 +495,7 @@
+         async with self.condition:
+             state = self.active.get(cid)
+             if state is None:
+-                return self.status(cid)
++                return await self.status(cid)
+             state["cancel_requested"] = True
+             if state["status"] in {"planning", "auditing", "queued_audit"}:
+                 return dict(self._view(state), cancel_requested=True)
+@@ -493,7 +505,7 @@
+             if running is not None:
+                 running.stop.set()
+                 return dict(self._view(state), cancel_requested=True)
+-            return self._finish(state, {"status": "cancelled_before_movement"})
++            return await self._finish(state, {"status": "cancelled_before_movement"})
+ 
+     async def _next(self, worker):
+         async with self.condition:
+@@ -535,7 +547,7 @@
+                     state = self.active[selected]
+                     state["status"] = "executing" if phase == "execute" else "observing"
+                     state["assigned_worker"] = worker.instance
+-                    self._persist(state)
++                    await self._persist(state)
+                     # A cached worker becoming busy lets cold workers take more
+                     # tasks for that scene when parallelism is useful.
+                     self.condition.notify_all()
+@@ -564,52 +576,53 @@
+                 if key in worker.warm:
+                     worker.warm.remove(key)
+                 worker.warm.append(key)
+-                if phase == "observe":
+-                    if state["request"]["kind"] == "reference_geometry":
+-                        self._finish(state, dict(result, status="reference_complete"))
+-                        async with self.condition:
++                async with self.condition:
++                    if phase == "observe":
++                        if state["request"]["kind"] == "reference_geometry":
++                            await self._finish(state, dict(result, status="reference_complete"))
+                             self.condition.notify_all()
+-                        continue
+-                    state["public"] = result["public"]
+-                    write(state["folder"] / "observation-ready.json", result)
+-                    if state.get("cancel_requested"):
+-                        self._finish(state, {"status": "cancelled_before_movement"})
+-                    elif state["request"]["kind"] == "r2r_chunks":
+-                        state["status"] = "queued_execution"
+-                        self.executions.append(state["request"]["request_id"])
++                            continue
++                        state["public"] = result["public"]
++                        await self.disk.run(write, state["folder"] / "observation-ready.json", result)
++                        if state.get("cancel_requested"):
++                            await self._finish(state, {"status": "cancelled_before_movement"})
++                        elif state["request"]["kind"] == "r2r_chunks":
++                            state["status"] = "queued_execution"
++                            self.executions.append(state["request"]["request_id"])
++                        else:
++                            state["status"] = "observation_ready"
++                        if state["request"]["request_id"] in self.active:
++                            await self._persist(state)
+                     else:
+-                        state["status"] = "observation_ready"
+-                    if state["request"]["request_id"] in self.active:
+-                        self._persist(state)
+-                else:
+-                    state.update(status="queued_audit", execution_result=result)
+-                    self._persist(state)
+-                    self.audit_queue.put_nowait(state["request"]["request_id"])
++                        state.update(status="queued_audit", execution_result=result)
++                        await self._persist(state)
++                        self.audit_queue.put_nowait(state["request"]["request_id"])
+             except Exception as error:
+-                self._finish(
+-                    state,
+-                    {
+-                        "status": "excluded_before_movement"
+-                        if isinstance(error, WorkerError) and error.status == 422
+-                        else "failed_or_uncertain",
+-                        "error": str(error),
+-                        "phase": phase,
+-                    },
+-                )
++                async with self.condition:
++                    await self._finish(
++                        state,
++                        {
++                            "status": "excluded_before_movement"
++                            if isinstance(error, WorkerError) and error.status == 422
++                            else "failed_or_uncertain",
++                            "error": str(error),
++                            "phase": phase,
++                        },
++                    )
+             async with self.condition:
+                 for pending in list(self.active.values()):
+                     if pending["status"] not in {"planning", "auditing", "queued_audit"} and not any(
+                         w.process.is_alive() and self._supports(w, pending["request"])
+                         for w in self.workers
+                     ):
+-                        self._finish(
++                        await self._finish(
+                             pending,
+                             {
+                                 "status": "failed_or_uncertain",
+                                 "error": "no live worker for scene; evidence retained, no replay",
+                             },
+                         )
+-                self._advance_scenes()
++                await self._advance_scenes()
+                 self.condition.notify_all()
+ 
+     async def _consume_planning(self):
+@@ -623,60 +636,61 @@
+                 if state is None:
+                     continue
+                 state["status"] = "planning"
+-                self._persist(state)
++                await self._persist(state)
+             try:
+                 job = await asyncio.to_thread(build_job, self.settings, state["request"],
+                                               state["folder"], state.get("target"))
+                 state["planning_job"] = job
+                 self.planner.prepare(job, state["folder"])
+-                write(state["folder"] / "planning-claim.json", {
++                await self.disk.run(write, state["folder"] / "planning-claim.json", {
+                     "attempt_id": job.attempt_id, "input_digest": job.digest(),
+                     "automatic_replay": False,
+                 })
+                 result = await wait_for_plan(self.planner, job,
+                                              lambda: state.get("cancel_requested", False))
+-                await asyncio.to_thread(install_result, state["folder"], job, result)
++                await self.disk.run(install_result, state["folder"], job, result)
+                 async with self.condition:
+                     if state.get("cancel_requested"):
+-                        self._finish(state, {"status": "cancelled_before_movement",
++                        await self._finish(state, {"status": "cancelled_before_movement",
+                                              "planning_outcome": result["status"]})
+                     elif result["status"] != "feasible":
+                         status = {"infeasible": "excluded_before_movement",
+                                   "budget_exhausted": "planning_budget_exhausted",
+                                   "cancelled": "cancelled_before_movement"}.get(
+                                       result["status"], "failed_or_uncertain")
+-                        self._finish(state, {"status": status, "planning_outcome": result["status"],
++                        await self._finish(state, {"status": status, "planning_outcome": result["status"],
+                                              "movement_attempted": False, "error": result.get("error")})
+                     elif state["request"]["kind"] == "reference_geometry":
+-                        self._finish(state, {"status": "reference_complete",
++                        await self._finish(state, {"status": "reference_complete",
+                                              "reference_legs": result["reference_legs"],
+                                              "source": "navmesh_geometry_not_executed_states"})
+                     elif not any(w.process.is_alive() and self._supports(w, state["request"])
+                                  for w in self.workers):
+-                        self._finish(state, {"status": "failed_or_uncertain", "phase": "planning",
++                        await self._finish(state, {"status": "failed_or_uncertain", "phase": "planning",
+                                              "movement_attempted": False,
+                                              "error": "plan retained; no live simulation worker, no replay"})
+                     else:
+                         r2r = state["request"]["kind"] == "r2r_chunks"
+                         state["status"] = "queued_observation" if r2r else "queued_execution"
+                         (self.observations if r2r else self.executions).append(cid)
+-                        self._persist(state)
++                        await self._persist(state)
+                     self.condition.notify_all()
+             except Exception as error:
+                 async with self.condition:
+                     if cid in self.active:
+-                        self._finish(state, {"status": "failed_or_uncertain", "phase": "planning",
++                        await self._finish(state, {"status": "failed_or_uncertain", "phase": "planning",
+                                              "movement_attempted": False, "error": repr(error)})
+                     self.condition.notify_all()
+ 
+     async def _consume_audit(self):
+         while not self.closed:
+             cid = await self.audit_queue.get()
+-            state = self.active.get(cid)
+-            if state is None:
+-                continue
+-            state["status"] = "auditing"
+-            self._persist(state)
++            async with self.condition:
++                state = self.active.get(cid)
++                if state is None:
++                    continue
++                state["status"] = "auditing"
++                await self._persist(state)
+             try:
+                 result = await asyncio.get_running_loop().run_in_executor(
+                     self.audit_executor, audit_recording, state["request"], state["folder"],
+@@ -684,7 +698,7 @@
+             except Exception as error:
+                 result = {"status": "failed_or_uncertain", "phase": "audit", "error": repr(error)}
+             async with self.condition:
+-                self._finish(state, result)
++                await self._finish(state, result)
+                 self.condition.notify_all()
+ 
+     def health(self):
+@@ -692,6 +706,7 @@
+         return {
+             "status": "ok" if live == len(self.workers) else "degraded",
+             "service_owner": self.owner,
++            "evidence_io": self.disk.health(),
+             "live_workers": live,
+             "workers": len(self.workers),
+             "capacity": min(self.settings.collection.capacity, self.settings.collection.planning_capacity),
+@@ -759,10 +774,11 @@
+         await asyncio.gather(*self.audit_runners, return_exceptions=True)
+         await asyncio.to_thread(self.audit_executor.shutdown, wait=True, cancel_futures=True)
+         for state in list(self.active.values()):
+-            self._finish(
++            await self._finish(
+                 state,
+                 {"status": "failed_or_uncertain", "error": "collection service stopped; no replay"},
+             )
++        await self.disk.close()
+ 
+ 
+ def create_app(settings, *, store=None, actor_factory=CollectionActor):
+@@ -794,11 +810,11 @@
+ 
+     @app.post("/v1/collections/status")
+     async def statuses(request: StatusRequest):
+-        return [app.state.collection.status(cid) for cid in request.request_ids]
++        return await asyncio.gather(*(app.state.collection.status(cid) for cid in request.request_ids))
+ 
+     @app.get("/v1/collections/{cid}")
+     async def status(cid: str):
+-        return app.state.collection.status(cid)
++        return await app.state.collection.status(cid)
+ 
+     @app.post("/v1/collections/{cid}/target")
+     async def target(cid: str, request: RegionRequest):

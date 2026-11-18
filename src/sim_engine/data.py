@@ -52,7 +52,6 @@ class EpisodeStore:
         self.metadata = {}
         self.scene_hashes = {}
         for name, dataset in settings.simulation.datasets.items():
-            root = dataset.scenes_root or settings.simulation.scenes_root
             scene_hashes = self.scene_hashes[name] = {}
             references = json_file(dataset.reference_paths) if dataset.reference_paths else None
             records = {}
@@ -65,15 +64,25 @@ class EpisodeStore:
                 if references is not None:
                     row["reference_path"] = references[key]["locations"]
                     row["_metric_reference_path"] = references[key]["locations"]
-                geometry = scene_path(root, row["scene_id"])
-                if not geometry.is_file() or not geometry.with_suffix(".navmesh").is_file():
-                    raise FileNotFoundError(f"missing scene geometry/navmesh: {geometry}")
-                for asset in (row["scene_id"], str(Path(row["scene_id"]).with_suffix(".navmesh"))):
-                    if asset not in scene_hashes:
-                        scene_hashes[asset] = sha256(scene_path(root, asset))
+                from .scenes import resolve_scene
+
+                if row["scene_id"] not in scene_hashes:
+                    scene = resolve_scene(settings, name, row["scene_id"])
+                    if scene.manifest:
+                        scene_hashes[row["scene_id"]] = scene.assets
+                    else:
+                        scene_hashes.update({row["scene_id"]: sha256(scene.render),
+                                             str(Path(row["scene_id"]).with_suffix(".navmesh")):
+                                             sha256(scene.navmesh)})
+                row["_task"] = dataset.task
+                if dataset.task == "development" and row.get("goals"):
+                    raise ValueError("development episodes must not contain scoring goals")
+                if dataset.task == "development" and settings.simulation.reward_mode != "none":
+                    raise ValueError("development tasks cannot enable goal rewards")
                 records[key] = row
             self.rows[name] = records
             self.metadata[name] = {
+                "task": dataset.task,
                 "episodes": len(records),
                 "annotations_sha256": sha256(dataset.episodes),
                 "reference_sha256": sha256(dataset.reference_paths) if references else None,

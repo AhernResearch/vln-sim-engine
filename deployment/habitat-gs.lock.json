@@ -1,0 +1,20 @@
+{
+  "repository": "https://github.com/zju3dv/habitat-gs",
+  "commit": "cb01b2fdf850ce3cab28ad00461a68ac7719f23f",
+  "imath_commit": "d690a3fcff4e877ead5ae56c7e964595ade8a35e",
+  "patches": [
+    "deployment/patches/habitat-gs-cuda-architectures.patch",
+    "deployment/patches/habitat-gs-cuda13-properties.patch",
+    "deployment/patches/habitat-gs-cuda13-surface.patch"
+  ],
+  "runtime": "independent virtual environment; Python 3.11",
+  "build": {
+    "HABITAT_WITH_CUDA": "ON",
+    "HABITAT_WITH_BULLET": "OFF",
+    "HABITAT_BUILD_GUI_VIEWERS": "OFF",
+    "cmake.build-type": "Release",
+    "CMAKE_CUDA_ARCHITECTURES": "80"
+  },
+  "purpose": "development",
+  "formal_benchmark": false
+}

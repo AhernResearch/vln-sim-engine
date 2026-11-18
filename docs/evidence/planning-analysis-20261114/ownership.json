@@ -1,0 +1,13 @@
+{
+  "owner": "db2e5a1902d64a1ab301eb9eb9c65cf7",
+  "pid": 2705294,
+  "start_ticks": "335319938",
+  "source_run": "/data/nav_storage/nav-train/collections/free-instructions-100k-planning-20261114-07b292f58091",
+  "source_code": "/tmp/analyze-planning-db2e5a1902d6.py",
+  "script_sha256": "aa83b25a61360e99fa4e58ee1e379eb38a318010f15d2f946052260ed604f29b",
+  "cpu_processes": 1,
+  "nice": 10,
+  "simulator_instances": 0,
+  "model_calls": 0,
+  "movement_commands": 0
+}

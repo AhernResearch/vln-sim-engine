@@ -1,0 +1,280 @@
+{
+  "total_s": 12.094096176000019,
+  "functions": [
+    {
+      "function": [
+        "/data/nav_storage/sim-engine/diagnostics/planning-native-search-26d0b461a2e7/paired-06de65ce1c39/frozen/src/sim_engine/planning/native.py",
+        23,
+        "snap"
+      ],
+      "primitive_calls": 150880,
+      "calls": 150880,
+      "self_s": 1.390535816,
+      "cumulative_s": 1.514101326
+    },
+    {
+      "function": [
+        "/data/nav_storage/sim-engine/diagnostics/planning-native-search-26d0b461a2e7/paired-06de65ce1c39/frozen/src/sim_engine/collection/clearance.py",
+        126,
+        "_edge_uncached"
+      ],
+      "primitive_calls": 8876,
+      "calls": 8876,
+      "self_s": 1.344584497,
+      "cumulative_s": 3.0902804500000003
+    },
+    {
+      "function": [
+        "/data/nav_storage/sim-engine/diagnostics/planning-native-search-26d0b461a2e7/paired-06de65ce1c39/frozen/src/sim_engine/planning/context.py",
+        24,
+        "check"
+      ],
+      "primitive_calls": 573768,
+      "calls": 573768,
+      "self_s": 0.871831773,
+      "cumulative_s": 1.175813065
+    },
+    {
+      "function": [
+        "~",
+        0,
+        "<method 'write' of '_io.TextIOWrapper' objects>"
+      ],
+      "primitive_calls": 54890,
+      "calls": 54890,
+      "self_s": 0.699855175,
+      "cumulative_s": 0.699855175
+    },
+    {
+      "function": [
+        "~",
+        0,
+        "<method 'reduce' of 'numpy.ufunc' objects>"
+      ],
+      "primitive_calls": 261874,
+      "calls": 261874,
+      "self_s": 0.46349899200000005,
+      "cumulative_s": 0.46349899200000005
+    },
+    {
+      "function": [
+        "~",
+        0,
+        "<built-in method numpy.asarray>"
+      ],
+      "primitive_calls": 665162,
+      "calls": 665162,
+      "self_s": 0.43988122300000004,
+      "cumulative_s": 0.43988122300000004
+    },
+    {
+      "function": [
+        "/data/nav_storage/sim-engine/diagnostics/planning-native-search-26d0b461a2e7/paired-06de65ce1c39/frozen/src/sim_engine/planning/context.py",
+        50,
+        "checkpoint"
+      ],
+      "primitive_calls": 573768,
+      "calls": 573768,
+      "self_s": 0.40374733700000004,
+      "cumulative_s": 1.636580039
+    },
+    {
+      "function": [
+        "/data/nav_storage/sim-engine/diagnostics/planning-native-search-26d0b461a2e7/paired-06de65ce1c39/frozen/src/sim_engine/collection/clearance.py",
+        54,
+        "_point"
+      ],
+      "primitive_calls": 238147,
+      "calls": 238147,
+      "self_s": 0.400202377,
+      "cumulative_s": 1.18197785
+    },
+    {
+      "function": [
+        "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/linalg/linalg.py",
+        2383,
+        "norm"
+      ],
+      "primitive_calls": 109771,
+      "calls": 109771,
+      "self_s": 0.35513952800000004,
+      "cumulative_s": 0.5951715120000001
+    },
+    {
+      "function": [
+        "/data/nav_storage/sim-engine/diagnostics/planning-native-search-26d0b461a2e7/paired-06de65ce1c39/frozen/src/sim_engine/collection/clearance.py",
+        96,
+        "clearance"
+      ],
+      "primitive_calls": 40003,
+      "calls": 40003,
+      "self_s": 0.32721974200000004,
+      "cumulative_s": 0.615721806
+    },
+    {
+      "function": [
+        "~",
+        0,
+        "<built-in method sim_engine.planning._astar.search>"
+      ],
+      "primitive_calls": 23,
+      "calls": 23,
+      "self_s": 0.307052504,
+      "cumulative_s": 5.0420897920000005
+    },
+    {
+      "function": [
+        "/data/nav_storage/sim-engine/diagnostics/planning-native-search-26d0b461a2e7/paired-06de65ce1c39/frozen/src/sim_engine/collection/clearance.py",
+        231,
+        "_smooth"
+      ],
+      "primitive_calls": 23,
+      "calls": 23,
+      "self_s": 0.297278439,
+      "cumulative_s": 3.235686518
+    },
+    {
+      "function": [
+        "/data/nav_storage/sim-engine/diagnostics/planning-native-search-26d0b461a2e7/paired-06de65ce1c39/frozen/src/sim_engine/collection/clearance.py",
+        65,
+        "<genexpr>"
+      ],
+      "primitive_calls": 57582,
+      "calls": 57582,
+      "self_s": 0.236743576,
+      "cumulative_s": 0.236743576
+    },
+    {
+      "function": [
+        "/data/nav_storage/sim-engine/diagnostics/planning-native-search-26d0b461a2e7/paired-06de65ce1c39/frozen/src/sim_engine/collection/clearance.py",
+        110,
+        "edge_clear"
+      ],
+      "primitive_calls": 76247,
+      "calls": 76247,
+      "self_s": 0.21157856700000002,
+      "cumulative_s": 4.883485225
+    },
+    {
+      "function": [
+        "/data/nav_storage/sim-engine/diagnostics/planning-native-search-26d0b461a2e7/paired-06de65ce1c39/frozen/src/sim_engine/planning/service.py",
+        41,
+        "is_set"
+      ],
+      "primitive_calls": 573768,
+      "calls": 573768,
+      "self_s": 0.144750244,
+      "cumulative_s": 0.144750244
+    },
+    {
+      "function": [
+        "/data/nav_storage/sim-engine/diagnostics/planning-native-search-26d0b461a2e7/paired-06de65ce1c39/frozen/src/sim_engine/collection/query_cache.py",
+        16,
+        "get"
+      ],
+      "primitive_calls": 103142,
+      "calls": 103142,
+      "self_s": 0.13943059100000002,
+      "cumulative_s": 0.402480481
+    },
+    {
+      "function": [
+        "/data/nav_storage/sim-engine/diagnostics/planning-native-search-26d0b461a2e7/paired-06de65ce1c39/frozen/src/sim_engine/collection/clearance.py",
+        61,
+        "_resample"
+      ],
+      "primitive_calls": 9202,
+      "calls": 9202,
+      "self_s": 0.13518402000000002,
+      "cumulative_s": 0.45640307500000005
+    },
+    {
+      "function": [
+        "/data/nav_storage/sim-engine/diagnostics/planning-native-search-26d0b461a2e7/paired-06de65ce1c39/frozen/src/sim_engine/planning/native.py",
+        26,
+        "check"
+      ],
+      "primitive_calls": 341276,
+      "calls": 341276,
+      "self_s": 0.12973404300000002,
+      "cumulative_s": 1.0385715050000002
+    },
+    {
+      "function": [
+        "~",
+        0,
+        "<method 'all' of 'numpy.ndarray' objects>"
+      ],
+      "primitive_calls": 248476,
+      "calls": 248476,
+      "self_s": 0.128218079,
+      "cumulative_s": 0.6565054450000001
+    },
+    {
+      "function": [
+        "/data/nav_storage/sim-engine/diagnostics/planning-native-search-26d0b461a2e7/paired-06de65ce1c39/frozen/src/sim_engine/collection/safe_image.py",
+        40,
+        "safe_floor_mask"
+      ],
+      "primitive_calls": 1,
+      "calls": 1,
+      "self_s": 0.110511178,
+      "cumulative_s": 0.230329679
+    },
+    {
+      "function": [
+        "/usr/lib/python3.10/json/encoder.py",
+        333,
+        "_iterencode_dict"
+      ],
+      "primitive_calls": 54892,
+      "calls": 185950,
+      "self_s": 0.10896135600000001,
+      "cumulative_s": 0.22698409400000003
+    },
+    {
+      "function": [
+        "~",
+        0,
+        "<method 'dot' of 'numpy.ndarray' objects>"
+      ],
+      "primitive_calls": 105398,
+      "calls": 105398,
+      "self_s": 0.10812745900000001,
+      "cumulative_s": 0.10812745900000001
+    },
+    {
+      "function": [
+        "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/core/_methods.py",
+        61,
+        "_all"
+      ],
+      "primitive_calls": 248816,
+      "calls": 248816,
+      "self_s": 0.10358618600000001,
+      "cumulative_s": 0.529278296
+    },
+    {
+      "function": [
+        "~",
+        0,
+        "<built-in method marshal.loads>"
+      ],
+      "primitive_calls": 1007,
+      "calls": 1007,
+      "self_s": 0.099412818,
+      "cumulative_s": 0.099412818
+    },
+    {
+      "function": [
+        "/data/nav_storage/sim-engine/diagnostics/planning-native-search-26d0b461a2e7/paired-06de65ce1c39/frozen/src/sim_engine/collection/clearance.py",
+        98,
+        "<genexpr>"
+      ],
+      "primitive_calls": 160012,
+      "calls": 160012,
+      "self_s": 0.09596787700000001,
+      "cumulative_s": 0.09596787700000001
+    }
+  ]
+}

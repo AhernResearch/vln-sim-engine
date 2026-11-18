@@ -49,6 +49,7 @@ def reached(current: Pose, target: Pose, forward_m=0.25, turn_degrees=15) -> boo
     # Quaternion conversion and angle wrapping perturb exact half-action boundaries.
     # At a boundary neither native action strictly reduces error, so it must count
     # as reached rather than leaving the controller with no admissible action.
-    return math.hypot(current.x - target.x, current.y - target.y) <= forward_m / 2 + 1e-6 and abs(
-        wrap(current.yaw - target.yaw)
-    ) <= math.radians(turn_degrees / 2) + 1e-6
+    return (
+        math.hypot(current.x - target.x, current.y - target.y) <= forward_m / 2 + 1e-6
+        and abs(wrap(current.yaw - target.yaw)) <= math.radians(turn_degrees / 2) + 1e-6
+    )

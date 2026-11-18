@@ -1,0 +1,54 @@
+{
+  "utc": "2026-11-14T20:56:23.437180+00:00",
+  "owner": "eff250bfbefc41c786e99ce17bea0bca",
+  "pid": 2797911,
+  "start_ticks": "337289799",
+  "observed_main_thread_waits": [
+    {
+      "unix": 1794689783.437314,
+      "wchan": "jbd2_log_wait_commit"
+    },
+    {
+      "unix": 1794689783.6876752,
+      "wchan": "rq_qos_wait"
+    },
+    {
+      "unix": 1794689783.9380774,
+      "wchan": "rq_qos_wait"
+    },
+    {
+      "unix": 1794689784.1885214,
+      "wchan": "0"
+    },
+    {
+      "unix": 1794689784.4389522,
+      "wchan": "folio_wait_bit_common"
+    },
+    {
+      "unix": 1794689784.6893694,
+      "wchan": "jbd2_log_wait_commit"
+    },
+    {
+      "unix": 1794689784.9397397,
+      "wchan": "jbd2_log_wait_commit"
+    },
+    {
+      "unix": 1794689785.1901038,
+      "wchan": "jbd2_log_wait_commit"
+    }
+  ],
+  "status": {
+    "status": "running",
+    "confirmed_total_successes": 46139,
+    "live_workers": 32,
+    "planner": {
+      "live_workers": 32,
+      "workers": 32,
+      "active": 6,
+      "queued": 0
+    },
+    "health_failures": 1,
+    "health_error": "TimeoutError('timed out')"
+  },
+  "io_pressure": "some avg10=9.31 avg60=12.96 avg300=13.84 total=42449934006\nfull avg10=7.07 avg60=11.79 avg300=12.86 total=41592051286\n"
+}

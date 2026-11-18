@@ -1,0 +1,289 @@
+{
+  "owner": "6ca6ed773bdb40eea8a023c2127b1e01",
+  "previous_root": "/data/nav_storage/nav-train/collections/free-instructions-100k-v5-resume-20261115-eff250bfbefc",
+  "previous_owner": "eff250bfbefc41c786e99ce17bea0bca",
+  "previous_finished_sha256": "c5dfa97bc22b11c799153a9334b63b62157352cc3cf056f265810597676129fe",
+  "previous_reconciliation_sha256": "7289dc6af2cfafe75e51dc64d0d4cc5db072b0543527f805bd1f76b5a5763476",
+  "inherited_completed_PointNav": 44539,
+  "previous_run_completed_PointNav": 2164,
+  "credited_completed_PointNav": 46703,
+  "remaining_successes": 53297,
+  "previous_raw_claims": 2840,
+  "previous_client_leases": 2840,
+  "diagnostic_requests": 144,
+  "excluded_unique_poses": 2940,
+  "uncredited_server_completions": [
+    {
+      "id": "s60-p01893",
+      "request_id": "b0cfcba435a2f45bf462102153c66dd16d05784c11bad915d7b59c4e159c2a6c",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s11-p01866",
+      "request_id": "60a0e95ebc1fabb651d639d822c187bab162a6b5ee98400e8750be637e1f45fd",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s14-p01865",
+      "request_id": "277ab73d2d8c1e886f584840e2e2da3a106a04bf8a470723676d1173d3c4233d",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s41-p01836",
+      "request_id": "bd5c2acedb1752ce563f1c81dcab1d2d2382accad7c410b27335347c8ffea4ef",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s41-p01837",
+      "request_id": "13eac255c4069ea9e57e243fa3bc9461dae9a3d5e5a192822774e3e174f235a3",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s47-p01858",
+      "request_id": "dc1f44153ea8e833e492400c6e7a3dde4e4fdcec733bcfcabe6e6e50101df49c",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s47-p01860",
+      "request_id": "084124830c75352a8a756a4caf72fbc52329ce68b1a68499d72425f25a275270",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s47-p01861",
+      "request_id": "1ac290959c9d1d7258f8f32af66af81a9946e2a303538c88e05917a3c618836c",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s25-p01867",
+      "request_id": "48be33f6a119c2bc36586893f831c0017e509bd142e9f60acef141b2723a5868",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s25-p01868",
+      "request_id": "0428d05c9af453bec123b597e155f3d31c848c783e1f8d3e79453949211a4e59",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s25-p01869",
+      "request_id": "2b0270faeffe76178bb9d89ed8a6af885253ac2b6d827811d7bb0b42e9a44977",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s21-p01854",
+      "request_id": "b946911eed2e04d1d6904f116126242296858844a1025d3abca422129e7fcefe",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s33-p01862",
+      "request_id": "6a700d0a3fd2ad98c899057613f164a88064d3098ba0ae7743764eb6ff0bb81c",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s33-p01863",
+      "request_id": "ed97b75a0b31f98b368f6e18280d9f7b83baf9f8ae1e304b416c1fa414203214",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s43-p01892",
+      "request_id": "a45becdf3a5536cf70e64f85eff1a4103558e16e5baa9da292e98dc21e0c1b01",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s43-p01893",
+      "request_id": "9bfcdd75b31db258b800ea54d2f4f6a8988cd0e42727c67058929be294dba929",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s32-p01856",
+      "request_id": "9ec4793ce035fcd95bec4fa9a64d7f6a12ccac454a6afce178d2ee1e21084416",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s52-p01887",
+      "request_id": "635271121bd7d7888edbd58760d025e32de12657e6cc013cf597b7fbe3376159",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s52-p01888",
+      "request_id": "f1e94afe0f57d04fad481a03ea87fe0e6f0d23880d10df70ccae9a4d14e51ed8",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s59-p01885",
+      "request_id": "9128237f22faf6bd162926a8b5469ab12350a831bbdf6bcc543ef682e2386ccd",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s59-p01886",
+      "request_id": "6a64cea68380ab599cdf0909faa0ce11957677c6627a39b56e1a5dcb9b25fbce",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s30-p01386",
+      "request_id": "0267b322863be3f1fc4ec94e9f9c9a120e1f0b21654d6cb7521c7bf296369a96",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s30-p01387",
+      "request_id": "ee2bbeae5aad84a3551c38782f120105037443641b41db1691ad480659ff5236",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s31-p00086",
+      "request_id": "1a2abf3b03df4988268153c1519d1791f18292cff1bd4487f68c21e5c3567e24",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s23-p01828",
+      "request_id": "f3e1e31511af4078093ff1cb876ce1fed556c4e6603b8621965548609c9ca471",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s04-p01399",
+      "request_id": "c063c1df87e7b3f78a84840601dddadac46717f416da89db4bfa600a39b63fdd",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s40-p00086",
+      "request_id": "18b0c21166e86a895fa677718597841c40d0025a7c4e1fcb5159aa60a2f3b3a3",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s58-p01876",
+      "request_id": "2ee009c1c7dab993ab51df267ec38ddde0af6b0e53a12b0d09890a20c5119187",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s03-p00086",
+      "request_id": "c4ef95eda52eda64d48d694e319cfae0852102ac6b0177d753450ac86623b94f",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s51-p00572",
+      "request_id": "f89f29689635db236b563cca39623ebc3f642df0348694f63d4c6c1c03116808",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s51-p00573",
+      "request_id": "8356fe9bde25d597fc7bdb66b0184af54faa21a98d09667fe18cea2d41023ac3",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s20-p00086",
+      "request_id": "513c8d79b677002e5e6d6121b643727c8be3aae175acacc3673c41a310b084c6",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s13-p01881",
+      "request_id": "2fdf21eaa58b1e78b3a0d09bf75d8585a33347f04cac58d802ba5577d7c0d8e3",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s13-p01882",
+      "request_id": "3ff041a049db21f8cbc75b9617af56c263f68ed7bc847647c4778557f3cf8348",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s18-p00085",
+      "request_id": "263447226b2d1de05016c5b5e0b79d0230aa4e01549f3131ade7fd97c7648308",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s18-p00086",
+      "request_id": "b442dc3ae42997011a1c6ed634a65c45826cb06417dd8128e7c808a144d39762",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s46-p00086",
+      "request_id": "1971cb0c81388f8edd66ead453303e9524f88d751d04e991376b328df13d14a0",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s28-p00674",
+      "request_id": "ccb9e758c06d83e4318f4eecd9e3c19af87bc64c0482947474f715305bd25b9e",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s37-p00572",
+      "request_id": "9db1332f032113bfa9aa556e93f9928725a78df9bf0651d111b4b393efb3e35d",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s57-p00572",
+      "request_id": "e1005244d2c73f9af56ee2cfd8379a5958e4c6db0c71dc514074a8aa92f69171",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s45-p00084",
+      "request_id": "f6050f180b4ca43d1a5d747b915d869c3789a29b13a3b26b0a26fc869ef3b690",
+      "reason": "client_PointNav_completion_not_confirmed"
+    },
+    {
+      "id": "s45-p00085",
+      "request_id": "50f3495115d8fe5cfc5e0e97c31b948ac0e3da3b4505a93896fbd268299b9181",
+      "reason": "client_PointNav_completion_not_confirmed"
+    }
+  ],
+  "fulfilled_scenes": [],
+  "scene_credits": {
+    "mp3d/B6ByNegPMKs/B6ByNegPMKs.glb": 1638,
+    "mp3d/vyrNrziPKCB/vyrNrziPKCB.glb": 1475,
+    "mp3d/E9uDoFAP3SH/E9uDoFAP3SH.glb": 1654,
+    "mp3d/dhjEzFoUFzH/dhjEzFoUFzH.glb": 1483,
+    "mp3d/SN83YJsR3w2/SN83YJsR3w2.glb": 1472,
+    "mp3d/kEZ7cmS4wCh/kEZ7cmS4wCh.glb": 1274,
+    "mp3d/VFuaQ6m2Qom/VFuaQ6m2Qom.glb": 1395,
+    "mp3d/PX4nDJXEHrG/PX4nDJXEHrG.glb": 1481,
+    "mp3d/VzqfbhrpDEA/VzqfbhrpDEA.glb": 1581,
+    "mp3d/r1Q1Z4BcV1o/r1Q1Z4BcV1o.glb": 1597,
+    "mp3d/ur6pFq6Qu1A/ur6pFq6Qu1A.glb": 1591,
+    "mp3d/Vvot9Ly1tCj/Vvot9Ly1tCj.glb": 1512,
+    "mp3d/gTV8FGcVJC9/gTV8FGcVJC9.glb": 1346,
+    "mp3d/PuKPg4mmafe/PuKPg4mmafe.glb": 1494,
+    "mp3d/D7N2EKCX4Sj/D7N2EKCX4Sj.glb": 1474,
+    "mp3d/p5wJjkQkbXX/p5wJjkQkbXX.glb": 1425,
+    "mp3d/uNb9QFRL6hY/uNb9QFRL6hY.glb": 1253,
+    "mp3d/2n8kARJN3HM/2n8kARJN3HM.glb": 1123,
+    "mp3d/VLzqgDo317F/VLzqgDo317F.glb": 932,
+    "mp3d/ac26ZMwG7aT/ac26ZMwG7aT.glb": 1008,
+    "mp3d/5LpN3gDmAk7/5LpN3gDmAk7.glb": 1029,
+    "mp3d/b8cTxDM8gDG/b8cTxDM8gDG.glb": 912,
+    "mp3d/7y3sRwLe3Va/7y3sRwLe3Va.glb": 1034,
+    "mp3d/5q7pvUzZiYa/5q7pvUzZiYa.glb": 1070,
+    "mp3d/Uxmj2M2itWa/Uxmj2M2itWa.glb": 982,
+    "mp3d/1pXnuDYAj8r/1pXnuDYAj8r.glb": 1060,
+    "mp3d/1LXtFkjw3qL/1LXtFkjw3qL.glb": 875,
+    "mp3d/mJXqzFtmKg4/mJXqzFtmKg4.glb": 1040,
+    "mp3d/sKLMLpTHeUy/sKLMLpTHeUy.glb": 1049,
+    "mp3d/rPc6DW4iMge/rPc6DW4iMge.glb": 1064,
+    "mp3d/V2XKFyX4ASd/V2XKFyX4ASd.glb": 528,
+    "mp3d/759xd9YjKW5/759xd9YjKW5.glb": 502,
+    "mp3d/XcA2TqTSSAj/XcA2TqTSSAj.glb": 847,
+    "mp3d/ZMojNkEp431/ZMojNkEp431.glb": 1004,
+    "mp3d/qoiz87JEwZ2/qoiz87JEwZ2.glb": 385,
+    "mp3d/aayBHfsNo7d/aayBHfsNo7d.glb": 460,
+    "mp3d/sT4fr6TAbpF/sT4fr6TAbpF.glb": 453,
+    "mp3d/e9zR4mvMWw7/e9zR4mvMWw7.glb": 422,
+    "mp3d/s8pcmisQ38h/s8pcmisQ38h.glb": 377,
+    "mp3d/pRbA3pwrgk9/pRbA3pwrgk9.glb": 373,
+    "mp3d/82sE5b5pLXE/82sE5b5pLXE.glb": 338,
+    "mp3d/S9hNv5qa7GM/S9hNv5qa7GM.glb": 413,
+    "mp3d/JeFG25nYj2p/JeFG25nYj2p.glb": 387,
+    "mp3d/r47D5H71a5s/r47D5H71a5s.glb": 355,
+    "mp3d/EDJbREhghzL/EDJbREhghzL.glb": 289,
+    "mp3d/ULsKaCPVFJR/ULsKaCPVFJR.glb": 391,
+    "mp3d/8WUmhLawc2A/8WUmhLawc2A.glb": 379,
+    "mp3d/VVfe2KiqLaN/VVfe2KiqLaN.glb": 68,
+    "mp3d/cV4RVeZvu5T/cV4RVeZvu5T.glb": 64,
+    "mp3d/29hnd4uzFmX/29hnd4uzFmX.glb": 80,
+    "mp3d/JmbYfDe2QKZ/JmbYfDe2QKZ.glb": 62,
+    "mp3d/JF19kD82Mey/JF19kD82Mey.glb": 68,
+    "mp3d/jh4fc5c5qoQ/jh4fc5c5qoQ.glb": 74,
+    "mp3d/i5noydFURQK/i5noydFURQK.glb": 61
+  },
+  "automatic_retry": false,
+  "training_exports": 0,
+  "checks": "inherited result/receipt/PointNav hashes; all new complete receipts, frozen goals, 4Hz and per-frame finite aligned labels",
+  "verified_records": 46703,
+  "reconciliation_sha256": "8b46cd8f6b1ac4c87d81b49eefec419d7d12db45bd7dc00f51352935a0aa9144"
+}

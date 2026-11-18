@@ -1,0 +1,89 @@
+{
+  "owner": "db2e5a1902d64a1ab301eb9eb9c65cf7",
+  "records": [
+    {
+      "label": "ordinary_success",
+      "outcome": "feasible",
+      "diagnostic_s": 2.5933794379234314,
+      "counts": {
+        "clearance_calls": 41840,
+        "native_clearance_misses": 38139,
+        "existing_clearance_cache_hits": 3701,
+        "native_clearance_misses_repeated_physical_query": 125,
+        "edge_calls": 1166,
+        "corridor_calls": 542,
+        "repeated_exact_directed_edge_same_profile": 963,
+        "repeated_exact_point_same_corridor": 420
+      },
+      "unique_native_clearance_queries": 38014,
+      "unique_corridors": 1,
+      "counters_add_overhead": true,
+      "corridor_microbenchmark": {
+        "queries": 542,
+        "same_booleans": true,
+        "seconds": {
+          "original": 0.01723680691793561,
+          "precomputed": 0.01075460808351636,
+          "precomputed_exact_memo": 0.0027250871062278748
+        },
+        "scope": "frozen query sequence only; no end-to-end speedup claim; setup cost and extra memo memory not included"
+      }
+    },
+    {
+      "label": "slow_success",
+      "outcome": "diagnostic_wall_limit",
+      "diagnostic_s": 12.008037488441914,
+      "counts": {
+        "clearance_calls": 91857,
+        "native_clearance_misses": 33420,
+        "existing_clearance_cache_hits": 58437,
+        "native_clearance_misses_repeated_physical_query": 277,
+        "edge_calls": 17205,
+        "corridor_calls": 81457,
+        "repeated_exact_point_same_corridor": 65799,
+        "repeated_exact_directed_edge_same_profile": 13362
+      },
+      "unique_native_clearance_queries": 33143,
+      "unique_corridors": 5,
+      "counters_add_overhead": true,
+      "corridor_microbenchmark": {
+        "queries": 10000,
+        "same_booleans": true,
+        "seconds": {
+          "original": 0.2651538597419858,
+          "precomputed": 0.23154757404699922,
+          "precomputed_exact_memo": 0.043408671859651804
+        },
+        "scope": "frozen query sequence only; no end-to-end speedup claim; setup cost and extra memo memory not included"
+      }
+    },
+    {
+      "label": "slow_rejection",
+      "outcome": "diagnostic_wall_limit",
+      "diagnostic_s": 12.00706930598244,
+      "counts": {
+        "clearance_calls": 53977,
+        "native_clearance_misses": 3229,
+        "existing_clearance_cache_hits": 50748,
+        "native_clearance_misses_repeated_physical_query": 27,
+        "edge_calls": 14324,
+        "corridor_calls": 108264,
+        "repeated_exact_point_same_corridor": 89720,
+        "repeated_exact_directed_edge_same_profile": 13179
+      },
+      "unique_native_clearance_queries": 3202,
+      "unique_corridors": 13,
+      "counters_add_overhead": true,
+      "corridor_microbenchmark": {
+        "queries": 10000,
+        "same_booleans": true,
+        "seconds": {
+          "original": 0.29822937212884426,
+          "precomputed": 0.23297439003363252,
+          "precomputed_exact_memo": 0.04479362070560455
+        },
+        "scope": "frozen query sequence only; no end-to-end speedup claim; setup cost and extra memo memory not included"
+      }
+    }
+  ]
+}

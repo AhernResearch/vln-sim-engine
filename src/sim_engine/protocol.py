@@ -17,6 +17,14 @@ class ResetRequest(StrictModel):
     seed: StrictInt = 0
 
 
+class ExpertRequest(StrictModel):
+    """Run the simulator-side expert on one episode; outputs stay on the server's disk."""
+
+    dataset: Identifier
+    episode_id: Identifier
+    camera: Identifier = "trained_ce30"
+
+
 FiniteFloat = Annotated[float, Field(allow_inf_nan=False)]
 
 

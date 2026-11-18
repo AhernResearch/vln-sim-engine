@@ -1,0 +1,58 @@
+{
+  "checked_at": "2026-11-14T16:46:43.309097+00:00",
+  "temporary_pids": [
+    2728964,
+    2728965,
+    2728936,
+    2728937,
+    2728929,
+    2728928
+  ],
+  "temporary_pids_remaining": [],
+  "production": {
+    "status": "ok",
+    "service_owner": "69c67adec29748f08f4f938cb61f19b4",
+    "live_workers": 32,
+    "active": 113,
+    "queued_planning": 72
+  },
+  "production_planner": {
+    "status": "ok",
+    "service_owner": "8277b78c7d204d90a020c5ec3b17ea8d",
+    "live_workers": 24,
+    "workers": 24,
+    "implementation_digest": "cbc1460186e56cec0ad8521ff608cbaae83e68734507ed6baea324ba30beb4ea"
+  },
+  "isolated_geometry_profiles": {
+    "short_instructions": {
+      "seed": 0,
+      "split": "train",
+      "max_steps": 160,
+      "minimum_planning_clearance_m": 0.05,
+      "guide_adjustment_radius_m": 0.25,
+      "endpoint_adjustment_radius_m": 0.15,
+      "expert_goal_radius_m": 0.08,
+      "goal_tolerance_m": 0.12,
+      "pose_sampling_attempts": 32,
+      "start_radius_m": 0.5,
+      "yaw_degrees": 45.0,
+      "planning_optimizations": true,
+      "search_backend": "native"
+    },
+    "r2r_chunks": {
+      "seed": 0,
+      "split": "train",
+      "max_steps": 400,
+      "minimum_planning_clearance_m": 0.05,
+      "guide_adjustment_radius_m": 0.25,
+      "endpoint_adjustment_radius_m": 0.15,
+      "expert_goal_radius_m": 0.08,
+      "goal_tolerance_m": 0.3,
+      "pose_sampling_attempts": 32,
+      "start_radius_m": 0.5,
+      "yaw_degrees": 45.0,
+      "planning_optimizations": true,
+      "search_backend": "native"
+    }
+  }
+}

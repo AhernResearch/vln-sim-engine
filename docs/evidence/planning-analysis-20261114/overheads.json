@@ -1,0 +1,30 @@
+{
+  "observed_at": "2026-11-14T23:24:26.211075+08:00",
+  "after_region_selection_to_result": {
+    "n": 5163,
+    "mean_s": 0.5716885841102903,
+    "median_s": 0.10100007057189941,
+    "p95_s": 2.7980000972747803,
+    "max_s": 6.7900004386901855
+  },
+  "target_to_planning_claim": {
+    "n": 5302,
+    "mean_s": 18.191370514778317,
+    "median_s": 19.167001128196716,
+    "p95_s": 30.018001556396484,
+    "max_s": 39.068002223968506
+  },
+  "limits": "mtime-derived; latter includes dispatcher waiting and input building; former includes remaining writes, encoding, IPC and result persistence",
+  "production": {
+    "status": "running",
+    "completed_new": 4204,
+    "sim_live": 32,
+    "planner": {
+      "live_workers": 24,
+      "workers": 24,
+      "active": 20,
+      "queued": 0
+    }
+  },
+  "diagnostic_process_still_alive": false
+}

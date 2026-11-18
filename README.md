@@ -139,3 +139,6 @@ for one-image, eight-image and STOP examples. The [native STOP contract checks](
 record both a successful model-generated STOP and an out-of-range STOP correctly
 counted as failure. These examples validate the interface and do not constitute
 an aggregate checkpoint-quality score.
+
+See [Habitat-GS backend](docs/gs-backend.md) for independent GS deployments, scene
+packages, RGB-D observation, planning and pending-review expert collection.

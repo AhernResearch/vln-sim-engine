@@ -1,0 +1,1194 @@
+{
+  "owner": "db2e5a1902d64a1ab301eb9eb9c65cf7",
+  "results": [
+    {
+      "outcome": "feasible",
+      "progress": {
+        "phase": "complete",
+        "queries": 82295,
+        "expansions": 0
+      },
+      "prepared_path_points": 62,
+      "case": "s23-p00171",
+      "label": "ordinary_success",
+      "original_duration_s": 2.745000123977661,
+      "diagnostic_s": 3.2968498677946627,
+      "profile_overhead": true,
+      "wall_cap_s": 20,
+      "top": [
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/planning/engine.py",
+          "line": 41,
+          "function": "run",
+          "calls": 1,
+          "self_s": 0.00010225300000000001,
+          "cumulative_s": 3.2907657
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/planning/engine.py",
+          "line": 86,
+          "function": "free_region",
+          "calls": 1,
+          "self_s": 0.00019749400000000002,
+          "cumulative_s": 3.2729591620000003
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/region.py",
+          "line": 40,
+          "function": "ground_region",
+          "calls": 1,
+          "self_s": 0.005962098000000001,
+          "cumulative_s": 3.2391037390000004
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/safe_image.py",
+          "line": 40,
+          "function": "safe_floor_mask",
+          "calls": 1,
+          "self_s": 1.1055225690000001,
+          "cumulative_s": 2.531088284
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 79,
+          "function": "clearance",
+          "calls": 41840,
+          "self_s": 0.339993871,
+          "cumulative_s": 0.633082023
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/linalg/linalg.py",
+          "line": 2383,
+          "function": "norm",
+          "calls": 88304,
+          "self_s": 0.266309737,
+          "cumulative_s": 0.447694688
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/region_selection.py",
+          "line": 76,
+          "function": "select_region_plan",
+          "calls": 1,
+          "self_s": 1.5689000000000002e-05,
+          "cumulative_s": 0.347353974
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/region_selection.py",
+          "line": 121,
+          "function": "evaluate",
+          "calls": 1,
+          "self_s": 4.364e-05,
+          "cumulative_s": 0.347331485
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/region.py",
+          "line": 105,
+          "function": "<lambda>",
+          "calls": 1,
+          "self_s": 3.6050000000000002e-06,
+          "cumulative_s": 0.32429144600000004
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/guidance.py",
+          "line": 158,
+          "function": "plan_with_preferences",
+          "calls": 1,
+          "self_s": 1.7176e-05,
+          "cumulative_s": 0.32428729500000003
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/guidance.py",
+          "line": 118,
+          "function": "prepare_guidance",
+          "calls": 2,
+          "self_s": 4.2487e-05,
+          "cumulative_s": 0.324269876
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/planning/context.py",
+          "line": 50,
+          "function": "checkpoint",
+          "calls": 83488,
+          "self_s": 0.070802469,
+          "cumulative_s": 0.290472141
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 93,
+          "function": "edge_clear",
+          "calls": 1166,
+          "self_s": 0.10315252200000001,
+          "cumulative_s": 0.28656246
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 219,
+          "function": "prepare",
+          "calls": 1,
+          "self_s": 5.3830000000000005e-05,
+          "cumulative_s": 0.2827584
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 184,
+          "function": "_smooth",
+          "calls": 1,
+          "self_s": 0.010544988,
+          "cumulative_s": 0.25786926600000004
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/planning/context.py",
+          "line": 24,
+          "function": "check",
+          "calls": 83488,
+          "self_s": 0.154344047,
+          "cumulative_s": 0.20909533200000002
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/storage.py",
+          "line": 21,
+          "function": "write",
+          "calls": 9,
+          "self_s": 0.00015045800000000002,
+          "cumulative_s": 0.141823797
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/core/_methods.py",
+          "line": 61,
+          "function": "_all",
+          "calls": 52299,
+          "self_s": 0.023255648,
+          "cumulative_s": 0.13394575
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/lib/npyio.py",
+          "line": 647,
+          "function": "savez_compressed",
+          "calls": 1,
+          "self_s": 1.6002e-05,
+          "cumulative_s": 0.130061281
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/lib/npyio.py",
+          "line": 713,
+          "function": "_savez",
+          "calls": 1,
+          "self_s": 4.7389e-05,
+          "cumulative_s": 0.13004151
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/lib/format.py",
+          "line": 666,
+          "function": "write_array",
+          "calls": 3,
+          "self_s": 5.5359e-05,
+          "cumulative_s": 0.12895441300000002
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/visual_region.py",
+          "line": 101,
+          "function": "sample_region",
+          "calls": 1,
+          "self_s": 0.009862798,
+          "cumulative_s": 0.10977520700000001
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 81,
+          "function": "<genexpr>",
+          "calls": 167360,
+          "self_s": 0.08790884700000001,
+          "cumulative_s": 0.08790884700000001
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 51,
+          "function": "_point",
+          "calls": 11071,
+          "self_s": 0.019140679,
+          "cumulative_s": 0.05733838300000001
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/core/numeric.py",
+          "line": 1468,
+          "function": "cross",
+          "calls": 683,
+          "self_s": 0.021907105,
+          "cumulative_s": 0.055864886
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/visual_geometry.py",
+          "line": 6,
+          "function": "backproject",
+          "calls": 169,
+          "self_s": 0.005926283,
+          "cumulative_s": 0.044224446
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/linalg/linalg.py",
+          "line": 140,
+          "function": "isComplexType",
+          "calls": 87758,
+          "self_s": 0.025921498,
+          "cumulative_s": 0.036884026
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/limits.py",
+          "line": 23,
+          "function": "distance_allowed",
+          "calls": 37645,
+          "self_s": 0.027687772000000003,
+          "cumulative_s": 0.034239527
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 58,
+          "function": "_resample",
+          "calls": 1169,
+          "self_s": 0.006545159,
+          "cumulative_s": 0.031742280000000005
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 123,
+          "function": "_in_corridor",
+          "calls": 542,
+          "self_s": 0.009593493,
+          "cumulative_s": 0.028762464
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/visual_region.py",
+          "line": 25,
+          "function": "project_world",
+          "calls": 171,
+          "self_s": 0.004698622,
+          "cumulative_s": 0.02699152
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/planning/service.py",
+          "line": 41,
+          "function": "is_set",
+          "calls": 83488,
+          "self_s": 0.02592877,
+          "cumulative_s": 0.02592877
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/core/numeric.py",
+          "line": 1393,
+          "function": "moveaxis",
+          "calls": 2049,
+          "self_s": 0.008030777000000001,
+          "cumulative_s": 0.023503246000000002
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/guidance.py",
+          "line": 140,
+          "function": "<genexpr>",
+          "calls": 62,
+          "self_s": 8.871100000000001e-05,
+          "cumulative_s": 0.022133979
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/guidance.py",
+          "line": 54,
+          "function": "dense_surface_path",
+          "calls": 1,
+          "self_s": 0.000357125,
+          "cumulative_s": 0.019045179000000002
+        }
+      ]
+    },
+    {
+      "outcome": "diagnostic_wall_limit",
+      "progress": [
+        258135.0,
+        13324.0,
+        1794669417.0619156
+      ],
+      "case": "s04-p00161",
+      "label": "slow_success",
+      "original_duration_s": 42.698002338409424,
+      "diagnostic_s": 20.00552157079801,
+      "profile_overhead": true,
+      "wall_cap_s": 20,
+      "top": [
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/planning/engine.py",
+          "line": 41,
+          "function": "run",
+          "calls": 1,
+          "self_s": 4.9970000000000004e-05,
+          "cumulative_s": 20.002316369000003
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/planning/engine.py",
+          "line": 86,
+          "function": "free_region",
+          "calls": 1,
+          "self_s": 5.0505000000000005e-05,
+          "cumulative_s": 19.995752689
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/region.py",
+          "line": 40,
+          "function": "ground_region",
+          "calls": 1,
+          "self_s": 0.002255443,
+          "cumulative_s": 19.990315816000003
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/region_selection.py",
+          "line": 76,
+          "function": "select_region_plan",
+          "calls": 1,
+          "self_s": 6.8457e-05,
+          "cumulative_s": 17.665508689000003
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/region_selection.py",
+          "line": 121,
+          "function": "evaluate",
+          "calls": 7,
+          "self_s": 0.000275994,
+          "cumulative_s": 17.622772258
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/region.py",
+          "line": 105,
+          "function": "<lambda>",
+          "calls": 7,
+          "self_s": 2.4527e-05,
+          "cumulative_s": 17.567389952000003
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/guidance.py",
+          "line": 158,
+          "function": "plan_with_preferences",
+          "calls": 7,
+          "self_s": 0.000125811,
+          "cumulative_s": 17.567359864
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/guidance.py",
+          "line": 118,
+          "function": "prepare_guidance",
+          "calls": 14,
+          "self_s": 0.000349657,
+          "cumulative_s": 17.56723273
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 219,
+          "function": "prepare",
+          "calls": 7,
+          "self_s": 0.001936582,
+          "cumulative_s": 17.218898089
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 133,
+          "function": "_search",
+          "calls": 7,
+          "self_s": 1.5325891090000001,
+          "cumulative_s": 13.793640689
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 93,
+          "function": "edge_clear",
+          "calls": 23959,
+          "self_s": 4.01804113,
+          "cumulative_s": 8.611123575
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 123,
+          "function": "_in_corridor",
+          "calls": 109997,
+          "self_s": 2.002005324,
+          "cumulative_s": 5.8621284220000005
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 184,
+          "function": "_smooth",
+          "calls": 6,
+          "self_s": 0.091395398,
+          "cumulative_s": 3.2256384980000004
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/linalg/linalg.py",
+          "line": 2383,
+          "function": "norm",
+          "calls": 503298,
+          "self_s": 1.880764812,
+          "cumulative_s": 3.1031887530000004
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/safe_image.py",
+          "line": 40,
+          "function": "safe_floor_mask",
+          "calls": 1,
+          "self_s": 1.0992266160000002,
+          "cumulative_s": 2.154377864
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 51,
+          "function": "_point",
+          "calls": 289500,
+          "self_s": 0.583222345,
+          "cumulative_s": 1.7044411940000002
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 79,
+          "function": "clearance",
+          "calls": 118639,
+          "self_s": 0.6569810810000001,
+          "cumulative_s": 1.473984948
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/core/fromnumeric.py",
+          "line": 2177,
+          "function": "sum",
+          "calls": 219996,
+          "self_s": 0.29005256300000004,
+          "cumulative_s": 1.311627348
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/planning/context.py",
+          "line": 50,
+          "function": "checkpoint",
+          "calls": 296484,
+          "self_s": 0.290533093,
+          "cumulative_s": 1.200186369
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/core/fromnumeric.py",
+          "line": 71,
+          "function": "_wrapreduction",
+          "calls": 220336,
+          "self_s": 0.364871116,
+          "cumulative_s": 0.977819391
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/planning/context.py",
+          "line": 24,
+          "function": "check",
+          "calls": 296484,
+          "self_s": 0.642425947,
+          "cumulative_s": 0.8676021190000001
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 58,
+          "function": "_resample",
+          "calls": 24067,
+          "self_s": 0.14644383900000002,
+          "cumulative_s": 0.7912518890000001
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/core/_methods.py",
+          "line": 61,
+          "function": "_all",
+          "calls": 322158,
+          "self_s": 0.152218084,
+          "cumulative_s": 0.781247684
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/core/fromnumeric.py",
+          "line": 2100,
+          "function": "clip",
+          "calls": 109997,
+          "self_s": 0.11793686800000001,
+          "cumulative_s": 0.735069446
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/core/fromnumeric.py",
+          "line": 53,
+          "function": "_wrapfunc",
+          "calls": 110169,
+          "self_s": 0.10253996900000001,
+          "cumulative_s": 0.618728978
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 62,
+          "function": "<genexpr>",
+          "calls": 103663,
+          "self_s": 0.44888924900000005,
+          "cumulative_s": 0.44888924900000005
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/core/_methods.py",
+          "line": 90,
+          "function": "_clip",
+          "calls": 109997,
+          "self_s": 0.42165106900000004,
+          "cumulative_s": 0.42165106900000004
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 81,
+          "function": "<genexpr>",
+          "calls": 474556,
+          "self_s": 0.28531736500000004,
+          "cumulative_s": 0.28531736500000004
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 192,
+          "function": "<genexpr>",
+          "calls": 5610,
+          "self_s": 0.0048418390000000006,
+          "cumulative_s": 0.28455345200000004
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/core/_methods.py",
+          "line": 43,
+          "function": "_amin",
+          "calls": 110022,
+          "self_s": 0.051189741000000004,
+          "cumulative_s": 0.281867769
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/linalg/linalg.py",
+          "line": 140,
+          "function": "isComplexType",
+          "calls": 393268,
+          "self_s": 0.130251215,
+          "cumulative_s": 0.18676250800000002
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/guidance.py",
+          "line": 140,
+          "function": "<genexpr>",
+          "calls": 416,
+          "self_s": 0.000608852,
+          "cumulative_s": 0.18264000600000002
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/guidance.py",
+          "line": 54,
+          "function": "dense_surface_path",
+          "calls": 6,
+          "self_s": 0.002542485,
+          "cumulative_s": 0.163175869
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/core/fromnumeric.py",
+          "line": 72,
+          "function": "<dictcomp>",
+          "calls": 220336,
+          "self_s": 0.132695063,
+          "cumulative_s": 0.132695063
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/planning/service.py",
+          "line": 41,
+          "function": "is_set",
+          "calls": 296484,
+          "self_s": 0.10944400200000001,
+          "cumulative_s": 0.10944400200000001
+        }
+      ]
+    },
+    {
+      "outcome": "diagnostic_wall_limit",
+      "progress": [
+        225479.0,
+        15407.0,
+        1794669437.0448573
+      ],
+      "case": "s34-p00074",
+      "label": "slow_rejection",
+      "original_duration_s": 49.73100280761719,
+      "diagnostic_s": 20.002721102908254,
+      "profile_overhead": true,
+      "wall_cap_s": 20,
+      "top": [
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/planning/engine.py",
+          "line": 41,
+          "function": "run",
+          "calls": 1,
+          "self_s": 4.7831e-05,
+          "cumulative_s": 20.000326438000002
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/planning/engine.py",
+          "line": 86,
+          "function": "free_region",
+          "calls": 1,
+          "self_s": 5.1971e-05,
+          "cumulative_s": 19.995463179
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/region.py",
+          "line": 40,
+          "function": "ground_region",
+          "calls": 1,
+          "self_s": 0.002265065,
+          "cumulative_s": 19.989912745
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/region_selection.py",
+          "line": 76,
+          "function": "select_region_plan",
+          "calls": 1,
+          "self_s": 0.00019735500000000002,
+          "cumulative_s": 19.761735616000003
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/region_selection.py",
+          "line": 121,
+          "function": "evaluate",
+          "calls": 18,
+          "self_s": 0.000683736,
+          "cumulative_s": 19.552499956000002
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/region.py",
+          "line": 105,
+          "function": "<lambda>",
+          "calls": 18,
+          "self_s": 6.2952e-05,
+          "cumulative_s": 19.54529767
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/guidance.py",
+          "line": 158,
+          "function": "plan_with_preferences",
+          "calls": 18,
+          "self_s": 0.002913019,
+          "cumulative_s": 19.545221423
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/guidance.py",
+          "line": 118,
+          "function": "prepare_guidance",
+          "calls": 36,
+          "self_s": 0.00034381600000000004,
+          "cumulative_s": 19.541449982
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 219,
+          "function": "prepare",
+          "calls": 18,
+          "self_s": 0.000504798,
+          "cumulative_s": 19.536022609
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 133,
+          "function": "_search",
+          "calls": 18,
+          "self_s": 2.346118294,
+          "cumulative_s": 19.516277845
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 123,
+          "function": "_in_corridor",
+          "calls": 149268,
+          "self_s": 2.8055076700000003,
+          "cumulative_s": 8.172479957
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 93,
+          "function": "edge_clear",
+          "calls": 19709,
+          "self_s": 3.421099206,
+          "cumulative_s": 7.095839591000001
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/linalg/linalg.py",
+          "line": 2383,
+          "function": "norm",
+          "calls": 488958,
+          "self_s": 1.9892384980000002,
+          "cumulative_s": 3.2804313570000003
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/core/fromnumeric.py",
+          "line": 2177,
+          "function": "sum",
+          "calls": 298537,
+          "self_s": 0.39971805200000005,
+          "cumulative_s": 1.8126146730000001
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 51,
+          "function": "_point",
+          "calls": 255608,
+          "self_s": 0.548002167,
+          "cumulative_s": 1.590800943
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/core/fromnumeric.py",
+          "line": 71,
+          "function": "_wrapreduction",
+          "calls": 298763,
+          "self_s": 0.48999864600000004,
+          "cumulative_s": 1.3512149530000002
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/planning/context.py",
+          "line": 50,
+          "function": "checkpoint",
+          "calls": 261828,
+          "self_s": 0.266863889,
+          "cumulative_s": 1.112581654
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/core/fromnumeric.py",
+          "line": 2100,
+          "function": "clip",
+          "calls": 149268,
+          "self_s": 0.162523725,
+          "cumulative_s": 1.020283131
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/core/fromnumeric.py",
+          "line": 53,
+          "function": "_wrapfunc",
+          "calls": 149383,
+          "self_s": 0.139204945,
+          "cumulative_s": 0.8588823200000001
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/planning/context.py",
+          "line": 24,
+          "function": "check",
+          "calls": 261828,
+          "self_s": 0.5999978180000001,
+          "cumulative_s": 0.807111788
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 79,
+          "function": "clearance",
+          "calls": 74062,
+          "self_s": 0.259367719,
+          "cumulative_s": 0.7784086680000001
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 58,
+          "function": "_resample",
+          "calls": 19709,
+          "self_s": 0.136463985,
+          "cumulative_s": 0.663019896
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/core/_methods.py",
+          "line": 61,
+          "function": "_all",
+          "calls": 261510,
+          "self_s": 0.130133268,
+          "cumulative_s": 0.653510633
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/core/_methods.py",
+          "line": 90,
+          "function": "_clip",
+          "calls": 149268,
+          "self_s": 0.5886054660000001,
+          "cumulative_s": 0.5886054660000001
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/core/_methods.py",
+          "line": 43,
+          "function": "_amin",
+          "calls": 149428,
+          "self_s": 0.06915636600000001,
+          "cumulative_s": 0.39000604400000005
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 62,
+          "function": "<genexpr>",
+          "calls": 76304,
+          "self_s": 0.356728806,
+          "cumulative_s": 0.356728806
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/region_selection.py",
+          "line": 14,
+          "function": "local_adjustments",
+          "calls": 4,
+          "self_s": 0.005060595,
+          "cumulative_s": 0.209027983
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 81,
+          "function": "<genexpr>",
+          "calls": 296248,
+          "self_s": 0.202920802,
+          "cumulative_s": 0.202920802
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/core/fromnumeric.py",
+          "line": 72,
+          "function": "<dictcomp>",
+          "calls": 298763,
+          "self_s": 0.19077248100000002,
+          "cumulative_s": 0.19077248100000002
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/linalg/linalg.py",
+          "line": 140,
+          "function": "isComplexType",
+          "calls": 339528,
+          "self_s": 0.115206794,
+          "cumulative_s": 0.16562095000000002
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/safe_image.py",
+          "line": 40,
+          "function": "safe_floor_mask",
+          "calls": 1,
+          "self_s": 0.071664512,
+          "cumulative_s": 0.140181531
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/visual_region.py",
+          "line": 25,
+          "function": "project_world",
+          "calls": 965,
+          "self_s": 0.022327278000000002,
+          "cumulative_s": 0.13894296
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/core/numeric.py",
+          "line": 1468,
+          "function": "cross",
+          "calls": 2157,
+          "self_s": 0.051376165,
+          "cumulative_s": 0.13568755300000002
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/region.py",
+          "line": 98,
+          "function": "<lambda>",
+          "calls": 853,
+          "self_s": 0.001555078,
+          "cumulative_s": 0.12465448400000001
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/linalg/linalg.py",
+          "line": 2379,
+          "function": "_norm_dispatcher",
+          "calls": 488958,
+          "self_s": 0.10299857800000001,
+          "cumulative_s": 0.10299857800000001
+        }
+      ]
+    },
+    {
+      "outcome": "diagnostic_wall_limit",
+      "progress": [
+        284676.0,
+        10933.0,
+        1794669457.1262093
+      ],
+      "case": "s13-p00197",
+      "label": "budget_exhaustion",
+      "original_duration_s": 92.7360053062439,
+      "diagnostic_s": 20.009319356177002,
+      "profile_overhead": true,
+      "wall_cap_s": 20,
+      "top": [
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/planning/engine.py",
+          "line": 41,
+          "function": "run",
+          "calls": 1,
+          "self_s": 5.1675e-05,
+          "cumulative_s": 20.004524586000002
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/planning/engine.py",
+          "line": 86,
+          "function": "free_region",
+          "calls": 1,
+          "self_s": 4.4080000000000005e-05,
+          "cumulative_s": 19.996071781
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/region.py",
+          "line": 40,
+          "function": "ground_region",
+          "calls": 1,
+          "self_s": 0.002433357,
+          "cumulative_s": 19.991344536
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/region_selection.py",
+          "line": 76,
+          "function": "select_region_plan",
+          "calls": 1,
+          "self_s": 7.2304e-05,
+          "cumulative_s": 16.626521245
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/region_selection.py",
+          "line": 121,
+          "function": "evaluate",
+          "calls": 6,
+          "self_s": 0.000303621,
+          "cumulative_s": 16.574378423000002
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/region.py",
+          "line": 105,
+          "function": "<lambda>",
+          "calls": 6,
+          "self_s": 2.5129000000000003e-05,
+          "cumulative_s": 16.43969595
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/guidance.py",
+          "line": 158,
+          "function": "plan_with_preferences",
+          "calls": 6,
+          "self_s": 0.000119921,
+          "cumulative_s": 16.439665950000002
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/guidance.py",
+          "line": 118,
+          "function": "prepare_guidance",
+          "calls": 12,
+          "self_s": 0.00032957600000000004,
+          "cumulative_s": 16.439544452
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 219,
+          "function": "prepare",
+          "calls": 6,
+          "self_s": 0.002056441,
+          "cumulative_s": 16.12283576
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 133,
+          "function": "_search",
+          "calls": 6,
+          "self_s": 1.45555422,
+          "cumulative_s": 12.853124172000001
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 93,
+          "function": "edge_clear",
+          "calls": 20850,
+          "self_s": 3.2255789110000004,
+          "cumulative_s": 7.492270566
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 123,
+          "function": "_in_corridor",
+          "calls": 111427,
+          "self_s": 2.054819037,
+          "cumulative_s": 6.00691236
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/linalg/linalg.py",
+          "line": 2383,
+          "function": "norm",
+          "calls": 517254,
+          "self_s": 1.938385451,
+          "cumulative_s": 3.2031294580000003
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/safe_image.py",
+          "line": 40,
+          "function": "safe_floor_mask",
+          "calls": 1,
+          "self_s": 1.52435188,
+          "cumulative_s": 3.127795256
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 184,
+          "function": "_smooth",
+          "calls": 5,
+          "self_s": 0.085058057,
+          "cumulative_s": 3.073390034
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 51,
+          "function": "_point",
+          "calls": 267221,
+          "self_s": 0.55068074,
+          "cumulative_s": 1.6177919820000002
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 79,
+          "function": "clearance",
+          "calls": 124850,
+          "self_s": 0.740334932,
+          "cumulative_s": 1.615767269
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/core/fromnumeric.py",
+          "line": 2177,
+          "function": "sum",
+          "calls": 222856,
+          "self_s": 0.29795354300000004,
+          "cumulative_s": 1.334868049
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/planning/context.py",
+          "line": 50,
+          "function": "checkpoint",
+          "calls": 316855,
+          "self_s": 0.30734173800000003,
+          "cumulative_s": 1.271459756
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/core/fromnumeric.py",
+          "line": 71,
+          "function": "_wrapreduction",
+          "calls": 223196,
+          "self_s": 0.362496292,
+          "cumulative_s": 0.992808997
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/planning/context.py",
+          "line": 24,
+          "function": "check",
+          "calls": 316855,
+          "self_s": 0.6814795330000001,
+          "cumulative_s": 0.919163122
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/core/_methods.py",
+          "line": 61,
+          "function": "_all",
+          "calls": 318194,
+          "self_s": 0.15160421000000002,
+          "cumulative_s": 0.796774674
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/core/fromnumeric.py",
+          "line": 2100,
+          "function": "clip",
+          "calls": 111427,
+          "self_s": 0.11881158500000001,
+          "cumulative_s": 0.763410531
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 58,
+          "function": "_resample",
+          "calls": 20945,
+          "self_s": 0.131888785,
+          "cumulative_s": 0.7374463720000001
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/core/fromnumeric.py",
+          "line": 53,
+          "function": "_wrapfunc",
+          "calls": 111598,
+          "self_s": 0.104181986,
+          "cumulative_s": 0.646283891
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/core/_methods.py",
+          "line": 90,
+          "function": "_clip",
+          "calls": 111427,
+          "self_s": 0.44627502500000005,
+          "cumulative_s": 0.44627502500000005
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 62,
+          "function": "<genexpr>",
+          "calls": 94943,
+          "self_s": 0.43054902500000003,
+          "cumulative_s": 0.43054902500000003
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 81,
+          "function": "<genexpr>",
+          "calls": 499400,
+          "self_s": 0.301120771,
+          "cumulative_s": 0.301120771
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/clearance.py",
+          "line": 192,
+          "function": "<genexpr>",
+          "calls": 5701,
+          "self_s": 0.0051062270000000005,
+          "cumulative_s": 0.29519253100000004
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/core/_methods.py",
+          "line": 43,
+          "function": "_amin",
+          "calls": 111468,
+          "self_s": 0.051879085000000005,
+          "cumulative_s": 0.289803801
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/linalg/linalg.py",
+          "line": 140,
+          "function": "isComplexType",
+          "calls": 405779,
+          "self_s": 0.13216792600000002,
+          "cumulative_s": 0.18873499500000002
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/guidance.py",
+          "line": 140,
+          "function": "<genexpr>",
+          "calls": 392,
+          "self_s": 0.000584678,
+          "cumulative_s": 0.163852414
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/collection/guidance.py",
+          "line": 54,
+          "function": "dense_surface_path",
+          "calls": 5,
+          "self_s": 0.002435932,
+          "cumulative_s": 0.15045138700000002
+        },
+        {
+          "file": "/data/nav_storage/lightnav/envs/sim-engine-031/lib/python3.10/site-packages/numpy/core/fromnumeric.py",
+          "line": 72,
+          "function": "<dictcomp>",
+          "calls": 223196,
+          "self_s": 0.135925778,
+          "cumulative_s": 0.135925778
+        },
+        {
+          "file": "/data/nav_storage/sim-engine/deployments/free-planning-07b292f58091/server/src/sim_engine/planning/service.py",
+          "line": 41,
+          "function": "is_set",
+          "calls": 316855,
+          "self_s": 0.114828519,
+          "cumulative_s": 0.114828519
+        }
+      ]
+    }
+  ],
+  "no_simulator": true,
+  "no_model": true,
+  "no_movement": true,
+  "note": "cProfile overhead and 20-second diagnostic caps; outcomes of capped profiles do not revise production receipts"
+}

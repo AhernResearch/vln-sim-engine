@@ -4,7 +4,7 @@ import math
 
 import numpy as np
 
-from sim_engine.config import Physics, Settings
+from sim_engine.config import Physics, Settings, VelocityLimits
 from sim_engine.geometry import Pose
 
 
@@ -55,6 +55,22 @@ class TestEnvironment:
 
     def close(self):
         pass
+
+
+class ExpertTestEnvironment(TestEnvironment):
+    """Open floor with velocity physics at the expert's 4 Hz time step."""
+
+    __test__ = False
+
+    def __init__(self, settings):
+        super().__init__(settings)
+        self.physics = Physics(velocity=VelocityLimits(time_step_s=0.25))
+
+    def snap(self, point):
+        return list(point)
+
+    def shortest_path(self, start, end):
+        return [list(start), list(end)]
 
 
 def settings(tmp_path, workers=2):

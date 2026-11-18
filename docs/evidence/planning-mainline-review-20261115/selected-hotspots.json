@@ -1,0 +1,61 @@
+{
+  "case": "slow_success",
+  "source_profile": "collection-v4 prior-to-default-promotion, identical geometry kernel",
+  "functions": [
+    {
+      "function": "_edge_uncached",
+      "calls": 8876,
+      "self_s": 1.344584497,
+      "cumulative_s": 3.0902804500000003
+    },
+    {
+      "function": "_smooth",
+      "calls": 23,
+      "self_s": 0.297278439,
+      "cumulative_s": 3.235686518
+    },
+    {
+      "function": "target_valid",
+      "calls": 89,
+      "self_s": 0.0015777410000000001,
+      "cumulative_s": 0.004480159
+    },
+    {
+      "function": "local_adjustments",
+      "calls": 6,
+      "self_s": 0.005866533,
+      "cumulative_s": 0.134570092
+    },
+    {
+      "function": "project_world",
+      "calls": 757,
+      "self_s": 0.018848444000000002,
+      "cumulative_s": 0.113641794
+    },
+    {
+      "function": "sample_region",
+      "calls": 1,
+      "self_s": 0.013497436000000002,
+      "cumulative_s": 0.12833454900000002
+    },
+    {
+      "function": "depth_world",
+      "calls": 1,
+      "self_s": 0.006344415000000001,
+      "cumulative_s": 0.020057521000000002
+    },
+    {
+      "function": "safe_floor_mask",
+      "calls": 1,
+      "self_s": 0.110511178,
+      "cumulative_s": 0.230329679
+    },
+    {
+      "function": "preview",
+      "calls": 23,
+      "self_s": 0.026726002000000002,
+      "cumulative_s": 0.091930569
+    }
+  ],
+  "warning": "profiled cumulative timings overlap; not stage wall latency"
+}

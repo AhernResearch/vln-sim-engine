@@ -1,0 +1,33 @@
+{
+  "status": "passed",
+  "mainline": "collection-v4",
+  "runtime_source_files_matched_excluding_binary": 69,
+  "production_updated": false,
+  "native_default_integration": "passed",
+  "required_native_wheel": "passed",
+  "compiler_failure_blocks_wheel": true,
+  "startup_missing_native_rejected_before_attempt": true,
+  "checks": {
+    "sim_engine_pytest": 159,
+    "sim_engine_ruff": "passed",
+    "nav_train_pytest": {
+      "passed": 1147,
+      "skipped": 12
+    },
+    "harness_pytest": {
+      "passed": 311,
+      "subtests_passed": 4
+    },
+    "harness_ruff": "passed",
+    "harness_mypy": "passed",
+    "navgpt_undefined_names": "passed",
+    "frontend_build": "passed"
+  },
+  "build_inputs_sha256": {
+    "setup.py": "75559863648cd5bbcbb50ff887dc086682ca0abb2d7e2fd667c808c4bca69ab0",
+    "pyproject.toml": "85c787ae06518ee19ba33aa602bbf67124dc72a8e91f2407812b46a10530b07d",
+    "examples/collection.train.v1.json": "6028bf7603e3b50237aa569eff056681ff49c2c8fffb9e5054ad83796bec3b77",
+    "tests/test_native_astar.py": "370276734940c6dc1bf31f5abe2140b5ea59bb9939f0fe66e2bade57c5be0e66"
+  },
+  "audit_scope": "single-case geometry diagnostics and source review; optimization proposals not merged into mainline"
+}

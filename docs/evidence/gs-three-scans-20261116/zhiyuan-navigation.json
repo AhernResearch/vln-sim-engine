@@ -1,0 +1,43 @@
+{
+  "schema": "open_nav_scan_navigation_v1",
+  "source_manifest_sha256": "b48223875068a6a52bbb411cad21d29e481cd7e3bcfcd1a6eb35e952b3783816",
+  "owner": "cfda1b5da5684b71998329f48c49c4ba",
+  "purpose": "development",
+  "geometry_review": "required",
+  "settings": {
+    "cellSize": 0.05,
+    "cellHeight": 0.025,
+    "agentHeight": 1.5,
+    "agentRadius": 0.18,
+    "agentMaxClimb": 0.2,
+    "agentMaxSlope": 45.0,
+    "regionMinSize": 20.0,
+    "regionMergeSize": 20.0,
+    "edgeMaxLen": 12.0,
+    "edgeMaxError": 1.2999999,
+    "vertsPerPoly": 6.0,
+    "detailSampleDist": 6.0,
+    "detailSampleMaxError": 1.0,
+    "filterLowHangingObstacles": true,
+    "filterLedgeSpans": true,
+    "filterWalkableLowHeightSpans": true
+  },
+  "habitat_version": "0.3.3",
+  "navigable_area_m2": 201.32876586914062,
+  "scan_positions_sampled": 1087,
+  "supported_start_candidates": 920,
+  "horizontal_snap_p90_m": 0.21728895531917605,
+  "start_selection": "maximum_navmesh_clearance_scan_supported",
+  "start_clearance_m": 1.4109028577804565,
+  "clearance_query_radius_m": 2.0,
+  "assets": {
+    "navmesh": {
+      "path": "scene.navmesh",
+      "sha256": "986e54d5dac00e1a26754dc30baa7b494ada747616135d05b2e5c07977554641"
+    },
+    "episodes": {
+      "path": "episodes.json",
+      "sha256": "9b66a9c2ee33df1ec07c9b8ad7b12801fc52e604201e156d8033eeef8bb3156f"
+    }
+  }
+}

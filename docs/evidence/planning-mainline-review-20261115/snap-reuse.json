@@ -1,0 +1,269 @@
+{
+  "owner": "2148e4af73a640e28c57067c6f8caa16",
+  "case": "slow_success",
+  "calls": 150880,
+  "unique_float32_queries": 1323,
+  "repeat_fraction": 0.9912314422057265,
+  "within_search_repeated_calls": 127891,
+  "cross_search_additional_repeated_calls": 21666,
+  "searches": [
+    {
+      "profile": [
+        0.05,
+        0.25,
+        0.05,
+        0.75,
+        20000
+      ],
+      "calls": 7996,
+      "unique_float32_queries": 1176
+    },
+    {
+      "profile": [
+        0.05,
+        0.25,
+        0.05,
+        0.75,
+        20000
+      ],
+      "calls": 7588,
+      "unique_float32_queries": 1126
+    },
+    {
+      "profile": [
+        0.05,
+        0.25,
+        0.05,
+        0.75,
+        20000
+      ],
+      "calls": 7639,
+      "unique_float32_queries": 1132
+    },
+    {
+      "profile": [
+        0.05,
+        0.25,
+        0.05,
+        0.75,
+        20000
+      ],
+      "calls": 7619,
+      "unique_float32_queries": 1130
+    },
+    {
+      "profile": [
+        0.05,
+        0.25,
+        0.05,
+        0.75,
+        20000
+      ],
+      "calls": 7622,
+      "unique_float32_queries": 1129
+    },
+    {
+      "profile": [
+        0.05,
+        0.25,
+        0.05,
+        0.75,
+        20000
+      ],
+      "calls": 6624,
+      "unique_float32_queries": 1018
+    },
+    {
+      "profile": [
+        0.05,
+        0.25,
+        0.05,
+        0.75,
+        20000
+      ],
+      "calls": 6624,
+      "unique_float32_queries": 1016
+    },
+    {
+      "profile": [
+        0.05,
+        0.25,
+        0.05,
+        0.75,
+        20000
+      ],
+      "calls": 6952,
+      "unique_float32_queries": 1059
+    },
+    {
+      "profile": [
+        0.05,
+        0.25,
+        0.05,
+        0.75,
+        20000
+      ],
+      "calls": 6720,
+      "unique_float32_queries": 1028
+    },
+    {
+      "profile": [
+        0.05,
+        0.25,
+        0.05,
+        0.75,
+        20000
+      ],
+      "calls": 6432,
+      "unique_float32_queries": 992
+    },
+    {
+      "profile": [
+        0.05,
+        0.25,
+        0.05,
+        0.75,
+        20000
+      ],
+      "calls": 6632,
+      "unique_float32_queries": 1017
+    },
+    {
+      "profile": [
+        0.05,
+        0.25,
+        0.05,
+        0.75,
+        20000
+      ],
+      "calls": 6848,
+      "unique_float32_queries": 1042
+    },
+    {
+      "profile": [
+        0.05,
+        0.25,
+        0.05,
+        0.75,
+        20000
+      ],
+      "calls": 6320,
+      "unique_float32_queries": 976
+    },
+    {
+      "profile": [
+        0.05,
+        0.25,
+        0.05,
+        0.75,
+        20000
+      ],
+      "calls": 6304,
+      "unique_float32_queries": 974
+    },
+    {
+      "profile": [
+        0.05,
+        0.25,
+        0.05,
+        0.75,
+        20000
+      ],
+      "calls": 6408,
+      "unique_float32_queries": 987
+    },
+    {
+      "profile": [
+        0.05,
+        0.25,
+        0.05,
+        0.75,
+        20000
+      ],
+      "calls": 5856,
+      "unique_float32_queries": 912
+    },
+    {
+      "profile": [
+        0.05,
+        0.25,
+        0.05,
+        0.75,
+        20000
+      ],
+      "calls": 6392,
+      "unique_float32_queries": 987
+    },
+    {
+      "profile": [
+        0.05,
+        0.25,
+        0.05,
+        0.75,
+        20000
+      ],
+      "calls": 6464,
+      "unique_float32_queries": 996
+    },
+    {
+      "profile": [
+        0.05,
+        0.25,
+        0.05,
+        0.75,
+        20000
+      ],
+      "calls": 6648,
+      "unique_float32_queries": 1019
+    },
+    {
+      "profile": [
+        0.05,
+        0.25,
+        0.05,
+        0.75,
+        20000
+      ],
+      "calls": 6688,
+      "unique_float32_queries": 1024
+    },
+    {
+      "profile": [
+        0.05,
+        0.25,
+        0.05,
+        0.75,
+        20000
+      ],
+      "calls": 6768,
+      "unique_float32_queries": 1034
+    },
+    {
+      "profile": [
+        0.05,
+        0.25,
+        0.05,
+        0.75,
+        20000
+      ],
+      "calls": 4064,
+      "unique_float32_queries": 636
+    },
+    {
+      "profile": [
+        0.05,
+        0.25,
+        0.05,
+        0.75,
+        20000
+      ],
+      "calls": 3672,
+      "unique_float32_queries": 579
+    }
+  ],
+  "exact_plan_and_progress": true,
+  "model_calls": 0,
+  "movement_commands": 0,
+  "simulator_instances": 0,
+  "note": "same task and immutable NavMesh; cache benefit ceiling counts calls only, not timing or implementation gain"
+}

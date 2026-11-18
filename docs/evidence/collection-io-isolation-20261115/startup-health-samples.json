@@ -1,0 +1,701 @@
+{
+  "owner": "6ca6ed773bdb40eea8a023c2127b1e01",
+  "utc": "2026-11-14T21:03:55.982707+00:00",
+  "samples": [
+    {
+      "index": 0,
+      "unix": 1794690174.797617,
+      "ok": true,
+      "wall_s": 0.025296173989772797,
+      "service_owner": "3c9a46a8cbec426991f10ea5e63d4928",
+      "active": 128,
+      "evidence_io": {
+        "pending": 0,
+        "completed": 1119,
+        "oldest_operation": null,
+        "oldest_wall_s": 0,
+        "max_wall_s": 0.04718520678579807
+      },
+      "planning_io": {
+        "pending": 0,
+        "completed": 0,
+        "oldest_operation": null,
+        "oldest_wall_s": 0,
+        "max_wall_s": 0
+      },
+      "main_thread_wait": "0"
+    },
+    {
+      "index": 1,
+      "unix": 1794690176.8250003,
+      "ok": true,
+      "wall_s": 0.02776440978050232,
+      "service_owner": "3c9a46a8cbec426991f10ea5e63d4928",
+      "active": 128,
+      "evidence_io": {
+        "pending": 1,
+        "completed": 1187,
+        "oldest_operation": "atomic_json",
+        "oldest_wall_s": 0.006277862004935741,
+        "max_wall_s": 0.04718520678579807
+      },
+      "planning_io": {
+        "pending": 0,
+        "completed": 0,
+        "oldest_operation": null,
+        "oldest_wall_s": 0,
+        "max_wall_s": 0
+      },
+      "main_thread_wait": "ep_poll"
+    },
+    {
+      "index": 2,
+      "unix": 1794690178.8559926,
+      "ok": true,
+      "wall_s": 0.01753928419202566,
+      "service_owner": "3c9a46a8cbec426991f10ea5e63d4928",
+      "active": 128,
+      "evidence_io": {
+        "pending": 1,
+        "completed": 1279,
+        "oldest_operation": "exists",
+        "oldest_wall_s": 0.0018507749773561954,
+        "max_wall_s": 0.260070419870317
+      },
+      "planning_io": {
+        "pending": 1,
+        "completed": 14,
+        "oldest_operation": "write",
+        "oldest_wall_s": 0.019375055097043514,
+        "max_wall_s": 0.059539700858294964
+      },
+      "main_thread_wait": "ep_poll"
+    },
+    {
+      "index": 3,
+      "unix": 1794690180.8780122,
+      "ok": true,
+      "wall_s": 0.047214731108397245,
+      "service_owner": "3c9a46a8cbec426991f10ea5e63d4928",
+      "active": 127,
+      "evidence_io": {
+        "pending": 1,
+        "completed": 1376,
+        "oldest_operation": "install_result",
+        "oldest_wall_s": 0.060714547988027334,
+        "max_wall_s": 0.260070419870317
+      },
+      "planning_io": {
+        "pending": 2,
+        "completed": 144,
+        "oldest_operation": "_stored_status",
+        "oldest_wall_s": 0.012517468072474003,
+        "max_wall_s": 0.0696451859548688
+      },
+      "main_thread_wait": "futex_wait_queue"
+    },
+    {
+      "index": 4,
+      "unix": 1794690182.9270122,
+      "ok": true,
+      "wall_s": 0.03121453570201993,
+      "service_owner": "3c9a46a8cbec426991f10ea5e63d4928",
+      "active": 128,
+      "evidence_io": {
+        "pending": 2,
+        "completed": 1587,
+        "oldest_operation": "install_result",
+        "oldest_wall_s": 0.030109246727079153,
+        "max_wall_s": 0.260070419870317
+      },
+      "planning_io": {
+        "pending": 1,
+        "completed": 310,
+        "oldest_operation": "write",
+        "oldest_wall_s": 0.03189095621928573,
+        "max_wall_s": 0.07602535700425506
+      },
+      "main_thread_wait": "0"
+    },
+    {
+      "index": 5,
+      "unix": 1794690184.9629908,
+      "ok": true,
+      "wall_s": 0.027018153108656406,
+      "service_owner": "3c9a46a8cbec426991f10ea5e63d4928",
+      "active": 126,
+      "evidence_io": {
+        "pending": 2,
+        "completed": 1733,
+        "oldest_operation": "install_result",
+        "oldest_wall_s": 0.11924925819039345,
+        "max_wall_s": 0.2657533809542656
+      },
+      "planning_io": {
+        "pending": 1,
+        "completed": 419,
+        "oldest_operation": "atomic_json",
+        "oldest_wall_s": 0.00163976289331913,
+        "max_wall_s": 0.1502451952546835
+      },
+      "main_thread_wait": "futex_wait_queue"
+    },
+    {
+      "index": 6,
+      "unix": 1794690186.9920094,
+      "ok": true,
+      "wall_s": 0.011032328009605408,
+      "service_owner": "3c9a46a8cbec426991f10ea5e63d4928",
+      "active": 119,
+      "evidence_io": {
+        "pending": 4,
+        "completed": 1882,
+        "oldest_operation": "install_result",
+        "oldest_wall_s": 0.1768731470219791,
+        "max_wall_s": 0.2657533809542656
+      },
+      "planning_io": {
+        "pending": 1,
+        "completed": 536,
+        "oldest_operation": "write",
+        "oldest_wall_s": 0.051386864855885506,
+        "max_wall_s": 0.1502451952546835
+      },
+      "main_thread_wait": "ep_poll"
+    },
+    {
+      "index": 7,
+      "unix": 1794690189.0052783,
+      "ok": true,
+      "wall_s": 0.04073274414986372,
+      "service_owner": "3c9a46a8cbec426991f10ea5e63d4928",
+      "active": 117,
+      "evidence_io": {
+        "pending": 2,
+        "completed": 2038,
+        "oldest_operation": "install_result",
+        "oldest_wall_s": 0.02229955419898033,
+        "max_wall_s": 0.6678703618235886
+      },
+      "planning_io": {
+        "pending": 1,
+        "completed": 643,
+        "oldest_operation": "mkdir",
+        "oldest_wall_s": 0.01100274221971631,
+        "max_wall_s": 0.5432824050076306
+      },
+      "main_thread_wait": "0"
+    },
+    {
+      "index": 8,
+      "unix": 1794690191.0483427,
+      "ok": true,
+      "wall_s": 0.03841379703953862,
+      "service_owner": "3c9a46a8cbec426991f10ea5e63d4928",
+      "active": 107,
+      "evidence_io": {
+        "pending": 2,
+        "completed": 2218,
+        "oldest_operation": "write",
+        "oldest_wall_s": 0.013158351182937622,
+        "max_wall_s": 0.6678703618235886
+      },
+      "planning_io": {
+        "pending": 1,
+        "completed": 770,
+        "oldest_operation": "atomic_json",
+        "oldest_wall_s": 0.007108977064490318,
+        "max_wall_s": 0.5432824050076306
+      },
+      "main_thread_wait": "futex_wait_queue"
+    },
+    {
+      "index": 9,
+      "unix": 1794690193.0889485,
+      "ok": true,
+      "wall_s": 0.03379587782546878,
+      "service_owner": "3c9a46a8cbec426991f10ea5e63d4928",
+      "active": 105,
+      "evidence_io": {
+        "pending": 2,
+        "completed": 2389,
+        "oldest_operation": "install_result",
+        "oldest_wall_s": 0.23440774995833635,
+        "max_wall_s": 0.6678703618235886
+      },
+      "planning_io": {
+        "pending": 1,
+        "completed": 910,
+        "oldest_operation": "atomic_json",
+        "oldest_wall_s": 0.14770567696541548,
+        "max_wall_s": 0.5432824050076306
+      },
+      "main_thread_wait": "ep_poll"
+    },
+    {
+      "index": 10,
+      "unix": 1794690195.125054,
+      "ok": true,
+      "wall_s": 0.039010885171592236,
+      "service_owner": "3c9a46a8cbec426991f10ea5e63d4928",
+      "active": 105,
+      "evidence_io": {
+        "pending": 1,
+        "completed": 2567,
+        "oldest_operation": "install_result",
+        "oldest_wall_s": 0.05921674333512783,
+        "max_wall_s": 0.6678703618235886
+      },
+      "planning_io": {
+        "pending": 0,
+        "completed": 966,
+        "oldest_operation": null,
+        "oldest_wall_s": 0,
+        "max_wall_s": 0.5432824050076306
+      },
+      "main_thread_wait": "ep_poll"
+    },
+    {
+      "index": 11,
+      "unix": 1794690197.1663017,
+      "ok": true,
+      "wall_s": 0.04550441075116396,
+      "service_owner": "3c9a46a8cbec426991f10ea5e63d4928",
+      "active": 101,
+      "evidence_io": {
+        "pending": 1,
+        "completed": 2801,
+        "oldest_operation": "atomic_json",
+        "oldest_wall_s": 0.003973212093114853,
+        "max_wall_s": 0.6678703618235886
+      },
+      "planning_io": {
+        "pending": 0,
+        "completed": 970,
+        "oldest_operation": null,
+        "oldest_wall_s": 0,
+        "max_wall_s": 0.5432824050076306
+      },
+      "main_thread_wait": "0"
+    },
+    {
+      "index": 12,
+      "unix": 1794690199.2140121,
+      "ok": true,
+      "wall_s": 0.02829530881717801,
+      "service_owner": "3c9a46a8cbec426991f10ea5e63d4928",
+      "active": 102,
+      "evidence_io": {
+        "pending": 0,
+        "completed": 3076,
+        "oldest_operation": null,
+        "oldest_wall_s": 0,
+        "max_wall_s": 0.6678703618235886
+      },
+      "planning_io": {
+        "pending": 0,
+        "completed": 996,
+        "oldest_operation": null,
+        "oldest_wall_s": 0,
+        "max_wall_s": 0.5432824050076306
+      },
+      "main_thread_wait": "ep_poll"
+    },
+    {
+      "index": 13,
+      "unix": 1794690201.2490003,
+      "ok": true,
+      "wall_s": 0.03187670325860381,
+      "service_owner": "3c9a46a8cbec426991f10ea5e63d4928",
+      "active": 101,
+      "evidence_io": {
+        "pending": 1,
+        "completed": 3342,
+        "oldest_operation": "atomic_json",
+        "oldest_wall_s": 0.0026868567802011967,
+        "max_wall_s": 0.6678703618235886
+      },
+      "planning_io": {
+        "pending": 0,
+        "completed": 1012,
+        "oldest_operation": null,
+        "oldest_wall_s": 0,
+        "max_wall_s": 0.5432824050076306
+      },
+      "main_thread_wait": "ep_poll"
+    },
+    {
+      "index": 14,
+      "unix": 1794690203.28568,
+      "ok": true,
+      "wall_s": 0.02687088679522276,
+      "service_owner": "3c9a46a8cbec426991f10ea5e63d4928",
+      "active": 98,
+      "evidence_io": {
+        "pending": 1,
+        "completed": 3375,
+        "oldest_operation": "write",
+        "oldest_wall_s": 0.1836387850344181,
+        "max_wall_s": 0.6678703618235886
+      },
+      "planning_io": {
+        "pending": 1,
+        "completed": 1012,
+        "oldest_operation": "write",
+        "oldest_wall_s": 0.13060113927349448,
+        "max_wall_s": 0.5432824050076306
+      },
+      "main_thread_wait": "ep_poll"
+    },
+    {
+      "index": 15,
+      "unix": 1794690205.3139968,
+      "ok": true,
+      "wall_s": 0.062483834102749825,
+      "service_owner": "3c9a46a8cbec426991f10ea5e63d4928",
+      "active": 94,
+      "evidence_io": {
+        "pending": 2,
+        "completed": 3494,
+        "oldest_operation": "install_result",
+        "oldest_wall_s": 0.13633614173159003,
+        "max_wall_s": 0.6678703618235886
+      },
+      "planning_io": {
+        "pending": 1,
+        "completed": 1027,
+        "oldest_operation": "atomic_json",
+        "oldest_wall_s": 0.017925217747688293,
+        "max_wall_s": 0.6000517080537975
+      },
+      "main_thread_wait": "futex_wait_queue"
+    },
+    {
+      "index": 16,
+      "unix": 1794690207.3786588,
+      "ok": true,
+      "wall_s": 0.03957001818343997,
+      "service_owner": "3c9a46a8cbec426991f10ea5e63d4928",
+      "active": 86,
+      "evidence_io": {
+        "pending": 2,
+        "completed": 3765,
+        "oldest_operation": "install_result",
+        "oldest_wall_s": 0.07801145501434803,
+        "max_wall_s": 0.6678703618235886
+      },
+      "planning_io": {
+        "pending": 1,
+        "completed": 1279,
+        "oldest_operation": "write",
+        "oldest_wall_s": 0.010367882903665304,
+        "max_wall_s": 0.6000517080537975
+      },
+      "main_thread_wait": "futex_wait_queue"
+    },
+    {
+      "index": 17,
+      "unix": 1794690209.420537,
+      "ok": true,
+      "wall_s": 0.03853671532124281,
+      "service_owner": "3c9a46a8cbec426991f10ea5e63d4928",
+      "active": 85,
+      "evidence_io": {
+        "pending": 1,
+        "completed": 3963,
+        "oldest_operation": "write",
+        "oldest_wall_s": 0.002938940655440092,
+        "max_wall_s": 0.6678703618235886
+      },
+      "planning_io": {
+        "pending": 1,
+        "completed": 1432,
+        "oldest_operation": "write",
+        "oldest_wall_s": 0.02316986909136176,
+        "max_wall_s": 0.6000517080537975
+      },
+      "main_thread_wait": "ep_poll"
+    },
+    {
+      "index": 18,
+      "unix": 1794690211.4613733,
+      "ok": true,
+      "wall_s": 0.11559249088168144,
+      "service_owner": "3c9a46a8cbec426991f10ea5e63d4928",
+      "active": 82,
+      "evidence_io": {
+        "pending": 3,
+        "completed": 4040,
+        "oldest_operation": "install_result",
+        "oldest_wall_s": 0.1262293797917664,
+        "max_wall_s": 0.6678703618235886
+      },
+      "planning_io": {
+        "pending": 1,
+        "completed": 1507,
+        "oldest_operation": "write",
+        "oldest_wall_s": 0.03237787773832679,
+        "max_wall_s": 0.6000517080537975
+      },
+      "main_thread_wait": "0"
+    },
+    {
+      "index": 19,
+      "unix": 1794690213.5792773,
+      "ok": true,
+      "wall_s": 0.04093792196363211,
+      "service_owner": "3c9a46a8cbec426991f10ea5e63d4928",
+      "active": 76,
+      "evidence_io": {
+        "pending": 0,
+        "completed": 4246,
+        "oldest_operation": null,
+        "oldest_wall_s": 0,
+        "max_wall_s": 0.6678703618235886
+      },
+      "planning_io": {
+        "pending": 0,
+        "completed": 1520,
+        "oldest_operation": null,
+        "oldest_wall_s": 0,
+        "max_wall_s": 0.6000517080537975
+      },
+      "main_thread_wait": "futex_wait_queue"
+    },
+    {
+      "index": 20,
+      "unix": 1794690215.6225133,
+      "ok": true,
+      "wall_s": 0.029552331194281578,
+      "service_owner": "3c9a46a8cbec426991f10ea5e63d4928",
+      "active": 76,
+      "evidence_io": {
+        "pending": 2,
+        "completed": 4495,
+        "oldest_operation": "install_result",
+        "oldest_wall_s": 0.10420753108337522,
+        "max_wall_s": 0.6678703618235886
+      },
+      "planning_io": {
+        "pending": 0,
+        "completed": 1526,
+        "oldest_operation": null,
+        "oldest_wall_s": 0,
+        "max_wall_s": 0.6000517080537975
+      },
+      "main_thread_wait": "ep_poll"
+    },
+    {
+      "index": 21,
+      "unix": 1794690217.6543455,
+      "ok": true,
+      "wall_s": 0.017330636736005545,
+      "service_owner": "3c9a46a8cbec426991f10ea5e63d4928",
+      "active": 75,
+      "evidence_io": {
+        "pending": 1,
+        "completed": 4573,
+        "oldest_operation": "atomic_json",
+        "oldest_wall_s": 0.03765174187719822,
+        "max_wall_s": 0.6678703618235886
+      },
+      "planning_io": {
+        "pending": 0,
+        "completed": 1528,
+        "oldest_operation": null,
+        "oldest_wall_s": 0,
+        "max_wall_s": 0.6000517080537975
+      },
+      "main_thread_wait": "ep_poll"
+    },
+    {
+      "index": 22,
+      "unix": 1794690219.6730099,
+      "ok": true,
+      "wall_s": 0.03351599304005504,
+      "service_owner": "3c9a46a8cbec426991f10ea5e63d4928",
+      "active": 80,
+      "evidence_io": {
+        "pending": 1,
+        "completed": 4748,
+        "oldest_operation": "atomic_json",
+        "oldest_wall_s": 0.008142984006553888,
+        "max_wall_s": 0.6678703618235886
+      },
+      "planning_io": {
+        "pending": 1,
+        "completed": 1574,
+        "oldest_operation": "write",
+        "oldest_wall_s": 0.017807469703257084,
+        "max_wall_s": 0.6000517080537975
+      },
+      "main_thread_wait": "0"
+    },
+    {
+      "index": 23,
+      "unix": 1794690221.7088075,
+      "ok": true,
+      "wall_s": 0.05884880991652608,
+      "service_owner": "3c9a46a8cbec426991f10ea5e63d4928",
+      "active": 78,
+      "evidence_io": {
+        "pending": 1,
+        "completed": 4969,
+        "oldest_operation": "atomic_json",
+        "oldest_wall_s": 0.0013283956795930862,
+        "max_wall_s": 0.6678703618235886
+      },
+      "planning_io": {
+        "pending": 1,
+        "completed": 1634,
+        "oldest_operation": "write",
+        "oldest_wall_s": 0.049612678587436676,
+        "max_wall_s": 0.6000517080537975
+      },
+      "main_thread_wait": "0"
+    },
+    {
+      "index": 24,
+      "unix": 1794690223.7698307,
+      "ok": true,
+      "wall_s": 0.03700223006308079,
+      "service_owner": "3c9a46a8cbec426991f10ea5e63d4928",
+      "active": 68,
+      "evidence_io": {
+        "pending": 0,
+        "completed": 5078,
+        "oldest_operation": null,
+        "oldest_wall_s": 0,
+        "max_wall_s": 0.6678703618235886
+      },
+      "planning_io": {
+        "pending": 0,
+        "completed": 1710,
+        "oldest_operation": null,
+        "oldest_wall_s": 0,
+        "max_wall_s": 0.6000517080537975
+      },
+      "main_thread_wait": "0"
+    },
+    {
+      "index": 25,
+      "unix": 1794690225.8090308,
+      "ok": true,
+      "wall_s": 0.023424080107361078,
+      "service_owner": "3c9a46a8cbec426991f10ea5e63d4928",
+      "active": 73,
+      "evidence_io": {
+        "pending": 1,
+        "completed": 5153,
+        "oldest_operation": "write",
+        "oldest_wall_s": 0.21305526606738567,
+        "max_wall_s": 0.6678703618235886
+      },
+      "planning_io": {
+        "pending": 0,
+        "completed": 1710,
+        "oldest_operation": null,
+        "oldest_wall_s": 0,
+        "max_wall_s": 0.6000517080537975
+      },
+      "main_thread_wait": "ep_poll"
+    },
+    {
+      "index": 26,
+      "unix": 1794690227.8346338,
+      "ok": true,
+      "wall_s": 0.012561124749481678,
+      "service_owner": "3c9a46a8cbec426991f10ea5e63d4928",
+      "active": 72,
+      "evidence_io": {
+        "pending": 1,
+        "completed": 5172,
+        "oldest_operation": "write",
+        "oldest_wall_s": 0.010042949113994837,
+        "max_wall_s": 0.6678703618235886
+      },
+      "planning_io": {
+        "pending": 0,
+        "completed": 1710,
+        "oldest_operation": null,
+        "oldest_wall_s": 0,
+        "max_wall_s": 0.6000517080537975
+      },
+      "main_thread_wait": "ep_poll"
+    },
+    {
+      "index": 27,
+      "unix": 1794690229.849351,
+      "ok": true,
+      "wall_s": 0.0252611692994833,
+      "service_owner": "3c9a46a8cbec426991f10ea5e63d4928",
+      "active": 72,
+      "evidence_io": {
+        "pending": 2,
+        "completed": 5181,
+        "oldest_operation": "install_result",
+        "oldest_wall_s": 0.6212333319708705,
+        "max_wall_s": 0.6678703618235886
+      },
+      "planning_io": {
+        "pending": 0,
+        "completed": 1712,
+        "oldest_operation": null,
+        "oldest_wall_s": 0,
+        "max_wall_s": 0.6000517080537975
+      },
+      "main_thread_wait": "0"
+    },
+    {
+      "index": 28,
+      "unix": 1794690231.8768787,
+      "ok": true,
+      "wall_s": 0.02481349976733327,
+      "service_owner": "3c9a46a8cbec426991f10ea5e63d4928",
+      "active": 70,
+      "evidence_io": {
+        "pending": 1,
+        "completed": 5197,
+        "oldest_operation": "atomic_json",
+        "oldest_wall_s": 0.033684246242046356,
+        "max_wall_s": 0.6678703618235886
+      },
+      "planning_io": {
+        "pending": 0,
+        "completed": 1712,
+        "oldest_operation": null,
+        "oldest_wall_s": 0,
+        "max_wall_s": 0.6000517080537975
+      },
+      "main_thread_wait": "ep_poll"
+    },
+    {
+      "index": 29,
+      "unix": 1794690233.9040108,
+      "ok": true,
+      "wall_s": 0.07762550190091133,
+      "service_owner": "3c9a46a8cbec426991f10ea5e63d4928",
+      "active": 69,
+      "evidence_io": {
+        "pending": 4,
+        "completed": 5394,
+        "oldest_operation": "install_result",
+        "oldest_wall_s": 0.10414918093010783,
+        "max_wall_s": 0.6678703618235886
+      },
+      "planning_io": {
+        "pending": 1,
+        "completed": 1777,
+        "oldest_operation": "atomic_json",
+        "oldest_wall_s": 0.028137524146586657,
+        "max_wall_s": 0.6000517080537975
+      },
+      "main_thread_wait": "futex_wait_queue"
+    }
+  ],
+  "successes": 30,
+  "timeouts": 0,
+  "maximum_wall_s": 0.11559249088168144,
+  "automatic_retry": false,
+  "scope": "independent read-only health samples during production startup"
+}

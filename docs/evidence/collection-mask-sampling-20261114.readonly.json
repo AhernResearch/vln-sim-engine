@@ -1,0 +1,516 @@
+{
+  "owner": "36c9551ce98f4a65bbbde472a1c918a7",
+  "scope": "training_dev_readonly_fixed_box_regression",
+  "source": "/data/nav_storage/nav-train/collections/concurrent-e2e-20261114-9357fe50243b",
+  "rows": [
+    {
+      "id": "loc01-front",
+      "old_status": "completed_audit",
+      "source_receipt_sha256": "fb5e26a883483c7ac6a0217333c9763d91e1e41bb5096b629453ccf1cbd69ad8",
+      "bbox": [
+        350,
+        550,
+        550,
+        750
+      ],
+      "status": "feasible",
+      "goal": [
+        -4.180552005767822,
+        0.10065700113773346,
+        0.8526139259338379
+      ],
+      "forecast_termination": "expert_stop",
+      "forecast_collisions": 0,
+      "forecast_final_position": [
+        -4.239518642425537,
+        0.10065700113773346,
+        0.8653836846351624
+      ],
+      "goal_clearance_m": 0.15495403110980988,
+      "samples": 169,
+      "safe_pixels_in_bbox": 1670,
+      "candidates": 165,
+      "candidate_rejection_counts": {
+        "duplicate surface sample": 4
+      },
+      "previews": 2,
+      "wall_s": 2.8553644800558686,
+      "sampling_policy": "visible_safe_mask_stratified_v1"
+    },
+    {
+      "id": "loc01-right",
+      "old_status": "excluded_before_movement",
+      "source_receipt_sha256": "ab09cab1c572cc5b73bdea1a2813ca08b1b51a1d9bb0fe33f5467a6bda8836a8",
+      "bbox": [
+        350,
+        750,
+        650,
+        950
+      ],
+      "status": "infeasible",
+      "error": "no candidate passed bounded planning and controller preview",
+      "samples": 6,
+      "safe_pixels_in_bbox": 6,
+      "candidates": 4,
+      "candidate_rejection_counts": {
+        "duplicate surface sample": 2
+      },
+      "previews": 8,
+      "wall_s": 3.3785271015949547,
+      "sampling_policy": "visible_safe_mask_stratified_v1"
+    },
+    {
+      "id": "loc01-back",
+      "old_status": "excluded_before_movement",
+      "source_receipt_sha256": "974c70f23dd292fa3d1d53c6b8eed8f838f81e736ca9aba33a5e8ed5caf77093",
+      "bbox": [
+        450,
+        750,
+        750,
+        950
+      ],
+      "status": "infeasible",
+      "error": "no candidate passed bounded planning and controller preview",
+      "samples": 0,
+      "safe_pixels_in_bbox": 0,
+      "candidates": 0,
+      "candidate_rejection_counts": {},
+      "previews": 0,
+      "wall_s": 0.23994432901963592,
+      "sampling_policy": "visible_safe_mask_stratified_v1"
+    },
+    {
+      "id": "loc01-left",
+      "old_status": "completed_audit",
+      "source_receipt_sha256": "23e1dfd3fcf7293aef40dfd199d5d9563b7c49775272745deb152be8ad7bcbc8",
+      "bbox": [
+        350,
+        750,
+        600,
+        950
+      ],
+      "status": "feasible",
+      "goal": [
+        -3.1968019008636475,
+        0.10065700113773346,
+        2.7789721488952637
+      ],
+      "forecast_termination": "expert_stop",
+      "forecast_collisions": 0,
+      "forecast_final_position": [
+        -3.1896862983703613,
+        0.10065700113773346,
+        2.8455867767333984
+      ],
+      "goal_clearance_m": 0.05248618125915527,
+      "samples": 169,
+      "safe_pixels_in_bbox": 2443,
+      "candidates": 91,
+      "candidate_rejection_counts": {
+        "duplicate surface sample": 66,
+        "projected NavMesh point leaves original box": 12
+      },
+      "previews": 1,
+      "wall_s": 0.870410461910069,
+      "sampling_policy": "visible_safe_mask_stratified_v1"
+    },
+    {
+      "id": "loc02-front",
+      "old_status": "completed_audit",
+      "source_receipt_sha256": "5ab817bff760170b19a023f497430a03cfc86e5438b77d18acd34075f332d42f",
+      "bbox": [
+        600,
+        500,
+        900,
+        800
+      ],
+      "status": "feasible",
+      "goal": [
+        -3.0725443363189697,
+        -0.004513107240200043,
+        -0.8164774179458618
+      ],
+      "forecast_termination": "expert_stop",
+      "forecast_collisions": 0,
+      "forecast_final_position": [
+        -3.0716896057128906,
+        -0.0035914257168769836,
+        -0.7857184410095215
+      ],
+      "goal_clearance_m": 1.4375230073928833,
+      "samples": 169,
+      "safe_pixels_in_bbox": 6628,
+      "candidates": 161,
+      "candidate_rejection_counts": {
+        "duplicate surface sample": 8
+      },
+      "previews": 1,
+      "wall_s": 2.0077607021667063,
+      "sampling_policy": "visible_safe_mask_stratified_v1"
+    },
+    {
+      "id": "loc02-right",
+      "old_status": "excluded_before_movement",
+      "source_receipt_sha256": "9565e639b6db21a4c546b931443bc178194431c09e8a71a5095e6e51aa07dbd4",
+      "bbox": [
+        200,
+        600,
+        450,
+        800
+      ],
+      "status": "infeasible",
+      "error": "no candidate passed bounded planning and controller preview",
+      "samples": 0,
+      "safe_pixels_in_bbox": 0,
+      "candidates": 0,
+      "candidate_rejection_counts": {},
+      "previews": 0,
+      "wall_s": 0.4530623569153249,
+      "sampling_policy": "visible_safe_mask_stratified_v1"
+    },
+    {
+      "id": "loc02-back",
+      "old_status": "completed_audit",
+      "source_receipt_sha256": "d58fec91462be966cffdbe30f45663b601a6c365505b485d6e3c1a9f16a85356",
+      "bbox": [
+        350,
+        750,
+        650,
+        950
+      ],
+      "status": "feasible",
+      "goal": [
+        -3.940004348754883,
+        0.08632707595825195,
+        2.458085060119629
+      ],
+      "forecast_termination": "expert_stop",
+      "forecast_collisions": 0,
+      "forecast_final_position": [
+        -3.946638345718384,
+        0.08632707595825195,
+        2.464067220687866
+      ],
+      "goal_clearance_m": 0.10765249282121658,
+      "samples": 169,
+      "safe_pixels_in_bbox": 4764,
+      "candidates": 131,
+      "candidate_rejection_counts": {
+        "duplicate surface sample": 38
+      },
+      "previews": 1,
+      "wall_s": 1.5262955902144313,
+      "sampling_policy": "visible_safe_mask_stratified_v1"
+    },
+    {
+      "id": "loc02-left",
+      "old_status": "completed_audit",
+      "source_receipt_sha256": "ed10b5de8016d15edd732ae32ff7633dc54cdb38d50437948af5c4a2e549dcd5",
+      "bbox": [
+        100,
+        600,
+        400,
+        900
+      ],
+      "status": "feasible",
+      "goal": [
+        -2.6606526374816895,
+        0.013869121670722961,
+        0.9429789781570435
+      ],
+      "forecast_termination": "expert_stop",
+      "forecast_collisions": 0,
+      "forecast_final_position": [
+        -2.659130811691284,
+        0.013754703104496002,
+        0.9431852698326111
+      ],
+      "goal_clearance_m": 0.9158116579055786,
+      "samples": 169,
+      "safe_pixels_in_bbox": 10536,
+      "candidates": 163,
+      "candidate_rejection_counts": {
+        "duplicate surface sample": 2,
+        "projected NavMesh point leaves original box": 4
+      },
+      "previews": 1,
+      "wall_s": 1.6403591940179467,
+      "sampling_policy": "visible_safe_mask_stratified_v1"
+    },
+    {
+      "id": "loc03-front",
+      "old_status": "completed_audit",
+      "source_receipt_sha256": "d11f6aa0236656e98030d3c608adb9224350edd66a5fc82052e40466eb2abd35",
+      "bbox": [
+        650,
+        600,
+        900,
+        850
+      ],
+      "status": "feasible",
+      "goal": [
+        4.474588394165039,
+        0.11333376914262772,
+        -3.3209664821624756
+      ],
+      "forecast_termination": "expert_stop",
+      "forecast_collisions": 0,
+      "forecast_final_position": [
+        4.476779460906982,
+        0.11367969214916229,
+        -3.3216912746429443
+      ],
+      "goal_clearance_m": 0.05075812339782715,
+      "samples": 169,
+      "safe_pixels_in_bbox": 3876,
+      "candidates": 141,
+      "candidate_rejection_counts": {
+        "duplicate surface sample": 28
+      },
+      "previews": 1,
+      "wall_s": 1.4891971498727798,
+      "sampling_policy": "visible_safe_mask_stratified_v1"
+    },
+    {
+      "id": "loc03-right",
+      "old_status": "completed_audit",
+      "source_receipt_sha256": "0fee87fd62cf3add619427f5c73bdbf631f727452d622380a9950fb23c7d4286",
+      "bbox": [
+        450,
+        650,
+        650,
+        850
+      ],
+      "status": "feasible",
+      "goal": [
+        4.285019874572754,
+        0.007922172546386719,
+        -7.355159759521484
+      ],
+      "forecast_termination": "expert_stop",
+      "forecast_collisions": 0,
+      "forecast_final_position": [
+        4.251910209655762,
+        0.007922172546386719,
+        -7.289619445800781
+      ],
+      "goal_clearance_m": 0.0507199801504612,
+      "samples": 169,
+      "safe_pixels_in_bbox": 585,
+      "candidates": 76,
+      "candidate_rejection_counts": {
+        "duplicate surface sample": 93
+      },
+      "previews": 1,
+      "wall_s": 1.8271436742506921,
+      "sampling_policy": "visible_safe_mask_stratified_v1"
+    },
+    {
+      "id": "loc03-back",
+      "old_status": "completed_audit",
+      "source_receipt_sha256": "f6b3a6e92de456dd1c418cb174e58b02bcef681a372e7f834fb1c43be1393eff",
+      "bbox": [
+        450,
+        750,
+        650,
+        950
+      ],
+      "status": "feasible",
+      "goal": [
+        2.77998423576355,
+        0.007922172546386719,
+        -4.871978759765625
+      ],
+      "forecast_termination": "expert_stop",
+      "forecast_collisions": 0,
+      "forecast_final_position": [
+        2.8188633918762207,
+        0.007922172546386719,
+        -4.9104719161987305
+      ],
+      "goal_clearance_m": 1.1501396894454956,
+      "samples": 169,
+      "safe_pixels_in_bbox": 5184,
+      "candidates": 169,
+      "candidate_rejection_counts": {},
+      "previews": 1,
+      "wall_s": 2.5763884019106627,
+      "sampling_policy": "visible_safe_mask_stratified_v1"
+    },
+    {
+      "id": "loc03-left",
+      "old_status": "completed_audit",
+      "source_receipt_sha256": "1f9bf8736eb2ec4f19350f6445b2f547f55407c687c6a5915588f405e5990632",
+      "bbox": [
+        350,
+        650,
+        650,
+        850
+      ],
+      "status": "feasible",
+      "goal": [
+        2.73073673248291,
+        0.007922172546386719,
+        -4.2933855056762695
+      ],
+      "forecast_termination": "expert_stop",
+      "forecast_collisions": 0,
+      "forecast_final_position": [
+        2.760300636291504,
+        0.007922172546386719,
+        -4.34816312789917
+      ],
+      "goal_clearance_m": 0.5731773376464844,
+      "samples": 169,
+      "safe_pixels_in_bbox": 6193,
+      "candidates": 158,
+      "candidate_rejection_counts": {
+        "duplicate surface sample": 11
+      },
+      "previews": 1,
+      "wall_s": 2.25154460221529,
+      "sampling_policy": "visible_safe_mask_stratified_v1"
+    },
+    {
+      "id": "extra01-right",
+      "old_status": "completed_audit",
+      "source_receipt_sha256": "c2d694b6b9f40f4fe2905ea072838919e918fa50fbc6a845b75eda0fcffab6d4",
+      "bbox": [
+        450,
+        550,
+        650,
+        750
+      ],
+      "status": "feasible",
+      "goal": [
+        -7.573572158813477,
+        0.10065700113773346,
+        2.031944751739502
+      ],
+      "forecast_termination": "expert_stop",
+      "forecast_collisions": 0,
+      "forecast_final_position": [
+        -7.572472095489502,
+        0.10065700113773346,
+        2.039515733718872
+      ],
+      "goal_clearance_m": 0.2319042980670929,
+      "samples": 169,
+      "safe_pixels_in_bbox": 1766,
+      "candidates": 162,
+      "candidate_rejection_counts": {
+        "duplicate surface sample": 7
+      },
+      "previews": 1,
+      "wall_s": 0.9955795421265066,
+      "sampling_policy": "visible_safe_mask_stratified_v1"
+    },
+    {
+      "id": "extra02-left",
+      "old_status": "completed_audit",
+      "source_receipt_sha256": "f76938f76ea13f45dc1f77c208ba4847cf2adcf397a60d83d0602b6b9c9da74e",
+      "bbox": [
+        400,
+        600,
+        600,
+        800
+      ],
+      "status": "feasible",
+      "goal": [
+        -5.185922145843506,
+        0.10065700113773346,
+        -1.249043345451355
+      ],
+      "forecast_termination": "expert_stop",
+      "forecast_collisions": 0,
+      "forecast_final_position": [
+        -5.163175106048584,
+        0.10065700113773346,
+        -1.283024787902832
+      ],
+      "goal_clearance_m": 0.2509363889694214,
+      "samples": 169,
+      "safe_pixels_in_bbox": 2004,
+      "candidates": 143,
+      "candidate_rejection_counts": {
+        "duplicate surface sample": 20,
+        "projected NavMesh point leaves original box": 6
+      },
+      "previews": 1,
+      "wall_s": 1.1425079121254385,
+      "sampling_policy": "visible_safe_mask_stratified_v1"
+    },
+    {
+      "id": "extra03-right",
+      "old_status": "completed_audit",
+      "source_receipt_sha256": "8bcd79ac75c0c69d2594022b21c514ce4029a2b4c0f01cec286462a86e4aa8a5",
+      "bbox": [
+        600,
+        600,
+        900,
+        800
+      ],
+      "status": "feasible",
+      "goal": [
+        -3.7518274784088135,
+        7.421756744384766,
+        11.307950973510742
+      ],
+      "forecast_termination": "expert_stop",
+      "forecast_collisions": 0,
+      "forecast_final_position": [
+        -3.7282004356384277,
+        7.412470817565918,
+        11.226238250732422
+      ],
+      "goal_clearance_m": 0.15325205028057098,
+      "samples": 169,
+      "safe_pixels_in_bbox": 883,
+      "candidates": 104,
+      "candidate_rejection_counts": {
+        "duplicate surface sample": 65
+      },
+      "previews": 2,
+      "wall_s": 1.9404991469345987,
+      "sampling_policy": "visible_safe_mask_stratified_v1"
+    },
+    {
+      "id": "extra04-front",
+      "old_status": "completed_audit",
+      "source_receipt_sha256": "f5c34ea30fc4cc608066e8fac6dcc187cf890962b894efe5ba2d3492d22fb4b3",
+      "bbox": [
+        350,
+        550,
+        550,
+        750
+      ],
+      "status": "feasible",
+      "goal": [
+        10.962307929992676,
+        3.598568916320801,
+        11.45241641998291
+      ],
+      "forecast_termination": "expert_stop",
+      "forecast_collisions": 0,
+      "forecast_final_position": [
+        10.984966278076172,
+        3.598568916320801,
+        11.423876762390137
+      ],
+      "goal_clearance_m": 0.2368801236152649,
+      "samples": 169,
+      "safe_pixels_in_bbox": 1530,
+      "candidates": 159,
+      "candidate_rejection_counts": {
+        "duplicate surface sample": 10
+      },
+      "previews": 1,
+      "wall_s": 1.1506265602074564,
+      "sampling_policy": "visible_safe_mask_stratified_v1"
+    }
+  ],
+  "wall_s": 27.32390204211697,
+  "movement_commands": 0,
+  "model_requests": 0,
+  "training_exports": 0
+}

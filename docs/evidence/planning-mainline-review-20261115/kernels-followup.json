@@ -1,0 +1,54 @@
+{
+  "owner": "61fc112ecb7c44f583d3f894358bbc29",
+  "input_case": "slow_success",
+  "shape": [
+    270,
+    480
+  ],
+  "support_points": 546,
+  "queries": 96,
+  "model_calls": 0,
+  "simulator_instances": 0,
+  "movement_commands": 0,
+  "projection_original": {
+    "median_s": 0.019628630951046944,
+    "min_s": 0.018630431033670902,
+    "repeats": 15
+  },
+  "projection_cached_offsets": {
+    "median_s": 0.016945694107562304,
+    "min_s": 0.01621526340022683,
+    "repeats": 15
+  },
+  "projection_exact_on_case": true,
+  "support_brute": {
+    "median_s": 0.002734868787229061,
+    "min_s": 0.002713445108383894,
+    "repeats": 15
+  },
+  "support_matrix_32768_pairs": {
+    "median_s": 0.0020531630143523216,
+    "min_s": 0.0020134570077061653,
+    "repeats": 15
+  },
+  "support_matrix_exact_on_case": true,
+  "overlay_numpy": {
+    "median_s": 0.0007293000817298889,
+    "min_s": 0.0007169498130679131,
+    "repeats": 15
+  },
+  "note": "single saved frame microbenchmarks; no integration or quality gain claim; cached projection assumes already validated immutable calibration/pose/validity mask",
+  "scipy_version": "1.15.3",
+  "support_tree_build_s": 0.0003062821924686432,
+  "support_tree_build_warm": {
+    "median_s": 9.170500561594963e-05,
+    "min_s": 8.852500468492508e-05,
+    "repeats": 15
+  },
+  "support_tree_query": {
+    "median_s": 7.996009662747383e-05,
+    "min_s": 7.784413173794746e-05,
+    "repeats": 15
+  },
+  "support_tree_exact_on_case": true
+}

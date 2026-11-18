@@ -25,6 +25,7 @@ class Session:
         self.collisions = self.stalled = 0
         self.termination = None
         self.replies = {}
+        self.sensor_frames = []
 
     @classmethod
     def open(cls, session_id, environment, episode, camera_name, camera, seed, settings):
@@ -35,12 +36,15 @@ class Session:
         session.positions.append(environment.position())
         return session
 
-    def _store(self, image):
+    def _store(self, image, snapshot=None):
         if image.shape != (self.camera.height, self.camera.width, 3):
             raise RuntimeError("renderer returned unexpected image shape")
         # Immutable snapshot, independent of renderer buffer reuse.
         raw = image.tobytes()
         self.frames.append((raw, hashlib.sha256(raw).hexdigest()))
+        if snapshot is None and hasattr(self.env, "capture"):
+            snapshot = self.env.capture()
+        self.sensor_frames.append(snapshot)
 
     def observation(self, index):
         return {
@@ -89,9 +93,9 @@ class Session:
             self.env, self.physics, command, self.settings.simulation.max_actions - start
         )
         for item in executed:
-            self._store(item.image)
+            self._store(item.image, item.snapshot)
             self.actions.append(item.action)
-            self.positions.append(self.env.position())
+            self.positions.append(item.position or self.env.position())
             self.collisions += int(item.collided)
         end = len(self.actions)
         self.stalled = self.stalled + 1 if start == end else 0
@@ -136,9 +140,13 @@ class Session:
         return reply
 
     def metrics(self):
-        result = self.env.metrics(
-            self.episode, self.positions, stopped=self.termination in STOP_REASONS
-        )
+        from .tasks import metrics
+
+        # Retain injected legacy test/integration adapters during migration.
+        evaluator = getattr(self.env, "metrics", None)
+        result = (evaluator(self.episode, self.positions, stopped=self.termination in STOP_REASONS)
+                  if evaluator else metrics(self.env, self.episode, self.positions,
+                                            stopped=self.termination in STOP_REASONS))
         result["collisions"] = self.collisions
         return {
             "episode_id": str(self.episode["episode_id"]),

@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "scope": "independent CPU planning implementation and isolated training integration",
+  "deployment_owner": "7b3dff08a05741fe8976f63f737448ab",
+  "source_files_matching_frozen_deployment": 64,
+  "verification": {
+    "deployment": "/data/nav_storage/sim-engine/deployments/planning-split-7b3dff08a057",
+    "parents": [
+      {
+        "name": "planner",
+        "pid": 2694795,
+        "exists": false,
+        "exit_code": -15
+      },
+      {
+        "name": "collection",
+        "pid": 2694796,
+        "exists": false,
+        "exit_code": -15
+      }
+    ],
+    "children": [
+      {
+        "pid": 2694895,
+        "exists": false
+      },
+      {
+        "pid": 2694894,
+        "exists": false
+      },
+      {
+        "pid": 2694801,
+        "exists": false
+      },
+      {
+        "pid": 2694800,
+        "exists": false
+      }
+    ],
+    "physical_navmesh_count": 61,
+    "former_tail_candidates_exact_match": true,
+    "successes_zero_collision": true,
+    "successes_inside_original_bbox": true,
+    "worst_free_final_distance_m": 0.0750289037823677,
+    "recording_checks_complete": true,
+    "original_service": {
+      "status": "ok",
+      "service_owner": "29527adbc69e4b92a8168b88bbc7874d",
+      "live_workers": 16,
+      "active": 0
+    }
+  },
+  "tests": {
+    "sim_engine": {
+      "passed": 130
+    },
+    "nav_train": {
+      "passed": 1147,
+      "skipped": 12
+    },
+    "harness": {
+      "passed": 311,
+      "subtests_passed": 4
+    },
+    "sim_engine_ruff": "passed",
+    "nav_train_changed_files_ruff": "passed",
+    "harness_ruff": "passed",
+    "harness_mypy": "passed",
+    "navgpt_f821_f823": "passed",
+    "frontend_build": "passed"
+  },
+  "previous_native_runs": [
+    {
+      "owner": "33fb4493b3514f2ca3652894b9e16fdf",
+      "status": "fixture_rejected",
+      "reason": "test bbox exceeded existing size limit; preserved; no movement retries"
+    },
+    {
+      "owner": "7cde934ced914f258ac29d6036a2c1b4",
+      "status": "passed",
+      "free_counts": {
+        "completed_audit": 5,
+        "excluded_before_movement": 2,
+        "failed_or_uncertain": 1
+      },
+      "uncertain_reason": "invalid depth retained for review; never replayed"
+    },
+    {
+      "owner": "c465a43f86984830882fc8e0c626998c",
+      "status": "passed",
+      "free_counts": {
+        "completed_audit": 5,
+        "excluded_before_movement": 2,
+        "failed_or_uncertain": 1
+      },
+      "uncertain_reason": "invalid depth retained for review; never replayed"
+    }
+  ],
+  "deployment_state": {
+    "native_services_closed": true,
+    "existing_18812_service_preserved": true,
+    "old_production_restarted": false,
+    "ubuntu_deployed": false
+  },
+  "limits": [
+    "Native validation used deterministic test boxes and no model calls; semantic quality and production throughput were not evaluated.",
+    "Remote HTTP was exercised on A100 with separate asset roots. Cross-host Ubuntu throughput and dependencies are not yet validated.",
+    "Planning budgets are initial compute budgets; exhausted tasks are not labeled geometrically unreachable."
+  ]
+}

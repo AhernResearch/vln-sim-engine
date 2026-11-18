@@ -1,0 +1,43 @@
+[
+  {
+    "label": "ordinary_success",
+    "input": "/data/nav_storage/sim-engine/collections/free-planning-07b292f58091/instances/69c67adec29748f08f4f938cb61f19b4/planner/attempts/2e134d0e9af34d87a36f97402ef424aa/input.json"
+  },
+  {
+    "label": "slow_success",
+    "input": "/data/nav_storage/sim-engine/collections/free-planning-07b292f58091/instances/69c67adec29748f08f4f938cb61f19b4/planner/attempts/957451de26d245b1b2aa35794097287d/input.json"
+  },
+  {
+    "label": "slow_rejection",
+    "input": "/data/nav_storage/sim-engine/collections/free-planning-07b292f58091/instances/69c67adec29748f08f4f938cb61f19b4/planner/attempts/fe83b61db393438dbbc0defc374ec177/input.json"
+  },
+  {
+    "label": "budget_exhaustion",
+    "input": "/data/nav_storage/sim-engine/collections/free-planning-07b292f58091/instances/69c67adec29748f08f4f938cb61f19b4/planner/attempts/6c08bec733d74a47a9e094c2f81f9610/input.json"
+  },
+  {
+    "label": "additional_s01-p00034",
+    "input": "/data/nav_storage/sim-engine/collections/free-planning-07b292f58091/instances/69c67adec29748f08f4f938cb61f19b4/planner/attempts/eac7ebdb416949da9942e14f9392e392/input.json"
+  },
+  {
+    "label": "additional_s02-p00111",
+    "input": "/data/nav_storage/sim-engine/collections/free-planning-07b292f58091/instances/69c67adec29748f08f4f938cb61f19b4/planner/attempts/c13f3b26104e465080707b406a6020b1/input.json"
+  },
+  {
+    "label": "additional_s04-p00116",
+    "input": "/data/nav_storage/sim-engine/collections/free-planning-07b292f58091/instances/69c67adec29748f08f4f938cb61f19b4/planner/attempts/d2628d2fdb6349b79b1aeeb0b4a17556/input.json"
+  },
+  {
+    "label": "additional_s05-p00082",
+    "input": "/data/nav_storage/sim-engine/collections/free-planning-07b292f58091/instances/69c67adec29748f08f4f938cb61f19b4/planner/attempts/682fa8061e3f4bd58362142b3e761c3b/input.json"
+  },
+  {
+    "label": "visible_goal_30m_geodesic",
+    "input": "/data/nav_storage/sim-engine/deployments/planning-split-7b3dff08a057/planner-jobs/attempts/fc1324178e0e4d4a8f2ea6cdfae9caed/input.json",
+    "long_route": true
+  },
+  {
+    "label": "r2r_preflight",
+    "input": "/data/nav_storage/sim-engine/deployments/planning-split-7b3dff08a057/planner-jobs/attempts/5c4d308a5e8944ad86b6d90ac3898b3a/input.json"
+  }
+]

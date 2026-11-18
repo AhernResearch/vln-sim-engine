@@ -1,0 +1,489 @@
+{
+  "scope": "training_dev_fresh_model_end_to_end_sampling_regression",
+  "root": "/data/nav_storage/nav-train/collections/mask-sampling-e2e-20261114-6edf0c6d798d",
+  "counts": {
+    "excluded_before_movement": 4,
+    "completed_audit": 12
+  },
+  "wall_s": 32.082802346907556,
+  "rows": [
+    {
+      "id": "loc01-front",
+      "status": "completed_audit",
+      "request_id": "adf8fffd492a906f9fe5d87fcd5ea33373e11df715fc337f86bcdc309647f6ef",
+      "samples": 169,
+      "safe_pixels_in_bbox": 1670,
+      "candidate_count": 165,
+      "sampling_policy": "visible_safe_mask_stratified_v1",
+      "candidate_rejections": {
+        "duplicate surface sample": 4
+      },
+      "movement_attempted": true,
+      "bbox": [
+        350,
+        550,
+        550,
+        750
+      ],
+      "target_view": "front",
+      "model_needs_review": false,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.060333408415317535,
+        "steps": 25,
+        "source": "expert_not_vla"
+      },
+      "frames": 26,
+      "pointnav_complete": true,
+      "goal_recorded_before_movement": true
+    },
+    {
+      "id": "loc01-right",
+      "status": "excluded_before_movement",
+      "request_id": "1862beac11e844531de3eba9cdc97b70ef0b3273294c1f6f53366b8ccf7552d2",
+      "samples": 6,
+      "safe_pixels_in_bbox": 6,
+      "candidate_count": 0,
+      "sampling_policy": "visible_safe_mask_stratified_v1",
+      "candidate_rejections": {
+        "projected NavMesh point leaves original box": 6
+      },
+      "movement_attempted": false,
+      "bbox": [
+        350,
+        850,
+        650,
+        1000
+      ],
+      "target_view": "front",
+      "model_needs_review": false
+    },
+    {
+      "id": "loc01-back",
+      "status": "excluded_before_movement",
+      "request_id": "e31a9a24557d93d7ce56e66b7fa2d27e7b1d7b94d26f1fe1d4e69c81b243a5b4",
+      "samples": 0,
+      "safe_pixels_in_bbox": 0,
+      "candidate_count": 0,
+      "sampling_policy": "visible_safe_mask_stratified_v1",
+      "candidate_rejections": {},
+      "movement_attempted": false,
+      "bbox": [
+        450,
+        750,
+        750,
+        950
+      ],
+      "target_view": "right",
+      "model_needs_review": false
+    },
+    {
+      "id": "loc01-left",
+      "status": "excluded_before_movement",
+      "request_id": "8a8357d1d1ea6d04c8a683d4488b9360a44bcab4af0797336bf22c66fc1beb11",
+      "samples": 0,
+      "safe_pixels_in_bbox": 0,
+      "candidate_count": 0,
+      "sampling_policy": "visible_safe_mask_stratified_v1",
+      "candidate_rejections": {},
+      "movement_attempted": false,
+      "bbox": [
+        400,
+        850,
+        700,
+        1000
+      ],
+      "target_view": "back",
+      "model_needs_review": false
+    },
+    {
+      "id": "loc02-front",
+      "status": "completed_audit",
+      "request_id": "cbc00c50ab27dfbcce808924564d07360579cef597f86b6c74a1cfa7d6c2023a",
+      "samples": 169,
+      "safe_pixels_in_bbox": 6628,
+      "candidate_count": 161,
+      "sampling_policy": "visible_safe_mask_stratified_v1",
+      "candidate_rejections": {
+        "duplicate surface sample": 8
+      },
+      "movement_attempted": true,
+      "bbox": [
+        600,
+        500,
+        900,
+        800
+      ],
+      "target_view": "front",
+      "model_needs_review": false,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.030784649774432182,
+        "steps": 30,
+        "source": "expert_not_vla"
+      },
+      "frames": 31,
+      "pointnav_complete": true,
+      "goal_recorded_before_movement": true
+    },
+    {
+      "id": "loc02-right",
+      "status": "excluded_before_movement",
+      "request_id": "4b08a2d647c62da83c84f7830bd1fda91810b494040a7d50775fac4937f0fdb8",
+      "samples": 0,
+      "safe_pixels_in_bbox": 0,
+      "candidate_count": 0,
+      "sampling_policy": "visible_safe_mask_stratified_v1",
+      "candidate_rejections": {},
+      "movement_attempted": false,
+      "bbox": [
+        200,
+        600,
+        450,
+        800
+      ],
+      "target_view": "front",
+      "model_needs_review": false
+    },
+    {
+      "id": "loc02-back",
+      "status": "completed_audit",
+      "request_id": "e2effdac666baa281586a5ac1eb47e15ebf9be698a509297b097e8cb1e893604",
+      "samples": 169,
+      "safe_pixels_in_bbox": 3781,
+      "candidate_count": 115,
+      "sampling_policy": "visible_safe_mask_stratified_v1",
+      "candidate_rejections": {
+        "duplicate surface sample": 50,
+        "projected NavMesh point leaves original box": 4
+      },
+      "movement_attempted": true,
+      "bbox": [
+        250,
+        750,
+        550,
+        950
+      ],
+      "target_view": "back",
+      "model_needs_review": false,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.05799879878759384,
+        "steps": 18,
+        "source": "expert_not_vla"
+      },
+      "frames": 19,
+      "pointnav_complete": true,
+      "goal_recorded_before_movement": true
+    },
+    {
+      "id": "loc02-left",
+      "status": "completed_audit",
+      "request_id": "5b80352e1d286e30bbdd9dea4a27d04a14ce868214a08f5f384a50f0aac0002a",
+      "samples": 169,
+      "safe_pixels_in_bbox": 10536,
+      "candidate_count": 163,
+      "sampling_policy": "visible_safe_mask_stratified_v1",
+      "candidate_rejections": {
+        "duplicate surface sample": 2,
+        "projected NavMesh point leaves original box": 4
+      },
+      "movement_attempted": true,
+      "bbox": [
+        100,
+        600,
+        400,
+        900
+      ],
+      "target_view": "front",
+      "model_needs_review": false,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.0015400005504488945,
+        "steps": 19,
+        "source": "expert_not_vla"
+      },
+      "frames": 20,
+      "pointnav_complete": true,
+      "goal_recorded_before_movement": true
+    },
+    {
+      "id": "loc03-front",
+      "status": "completed_audit",
+      "request_id": "a4a885c2f25b1e018becd2f2c923a50a54d18c781db86bb004966da771500d99",
+      "samples": 169,
+      "safe_pixels_in_bbox": 8226,
+      "candidate_count": 154,
+      "sampling_policy": "visible_safe_mask_stratified_v1",
+      "candidate_rejections": {
+        "duplicate surface sample": 11,
+        "projected NavMesh point leaves original box": 4
+      },
+      "movement_attempted": true,
+      "bbox": [
+        600,
+        650,
+        900,
+        900
+      ],
+      "target_view": "right",
+      "model_needs_review": false,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.019757980480790138,
+        "steps": 21,
+        "source": "expert_not_vla"
+      },
+      "frames": 22,
+      "pointnav_complete": true,
+      "goal_recorded_before_movement": true
+    },
+    {
+      "id": "loc03-right",
+      "status": "completed_audit",
+      "request_id": "56b43a44dd51771f0a691f9bd2562a6f15424ec7093898e963763034176765b7",
+      "samples": 169,
+      "safe_pixels_in_bbox": 5184,
+      "candidate_count": 169,
+      "sampling_policy": "visible_safe_mask_stratified_v1",
+      "candidate_rejections": {},
+      "movement_attempted": true,
+      "bbox": [
+        450,
+        750,
+        650,
+        950
+      ],
+      "target_view": "back",
+      "model_needs_review": false,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.05381045117974281,
+        "steps": 17,
+        "source": "expert_not_vla"
+      },
+      "frames": 18,
+      "pointnav_complete": true,
+      "goal_recorded_before_movement": true
+    },
+    {
+      "id": "loc03-back",
+      "status": "completed_audit",
+      "request_id": "b6b12a94ee09baa30f69d02dcfddde183d8109683464d800514c3f6dd35a4550",
+      "samples": 169,
+      "safe_pixels_in_bbox": 5184,
+      "candidate_count": 169,
+      "sampling_policy": "visible_safe_mask_stratified_v1",
+      "candidate_rejections": {},
+      "movement_attempted": true,
+      "bbox": [
+        450,
+        750,
+        650,
+        950
+      ],
+      "target_view": "left",
+      "model_needs_review": false,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.05471116676926613,
+        "steps": 12,
+        "source": "expert_not_vla"
+      },
+      "frames": 13,
+      "pointnav_complete": true,
+      "goal_recorded_before_movement": true
+    },
+    {
+      "id": "loc03-left",
+      "status": "completed_audit",
+      "request_id": "dd143fc76eed4d52c16306a5b0dc59c7845dda88d1a6ed3306a4db834f198645",
+      "samples": 169,
+      "safe_pixels_in_bbox": 6193,
+      "candidate_count": 158,
+      "sampling_policy": "visible_safe_mask_stratified_v1",
+      "candidate_rejections": {
+        "duplicate surface sample": 11
+      },
+      "movement_attempted": true,
+      "bbox": [
+        350,
+        650,
+        650,
+        850
+      ],
+      "target_view": "front",
+      "model_needs_review": false,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.06224638223648071,
+        "steps": 12,
+        "source": "expert_not_vla"
+      },
+      "frames": 13,
+      "pointnav_complete": true,
+      "goal_recorded_before_movement": true
+    },
+    {
+      "id": "extra01-right",
+      "status": "completed_audit",
+      "request_id": "0a9b5cb998e2dd514b3a35355ce36e62f69d70d6aa3adf8f0acd42673cbd4783",
+      "samples": 169,
+      "safe_pixels_in_bbox": 1766,
+      "candidate_count": 162,
+      "sampling_policy": "visible_safe_mask_stratified_v1",
+      "candidate_rejections": {
+        "duplicate surface sample": 7
+      },
+      "movement_attempted": true,
+      "bbox": [
+        450,
+        550,
+        650,
+        750
+      ],
+      "target_view": "front",
+      "model_needs_review": false,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.0076502482406795025,
+        "steps": 23,
+        "source": "expert_not_vla"
+      },
+      "frames": 24,
+      "pointnav_complete": true,
+      "goal_recorded_before_movement": true
+    },
+    {
+      "id": "extra02-left",
+      "status": "completed_audit",
+      "request_id": "9344aed844334fa4dc9110dc97a255401ba817733f54e499a8c952fc32bf4389",
+      "samples": 169,
+      "safe_pixels_in_bbox": 2004,
+      "candidate_count": 143,
+      "sampling_policy": "visible_safe_mask_stratified_v1",
+      "candidate_rejections": {
+        "duplicate surface sample": 20,
+        "projected NavMesh point leaves original box": 6
+      },
+      "movement_attempted": true,
+      "bbox": [
+        400,
+        600,
+        600,
+        800
+      ],
+      "target_view": "left",
+      "model_needs_review": false,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.04089213162660599,
+        "steps": 23,
+        "source": "expert_not_vla"
+      },
+      "frames": 24,
+      "pointnav_complete": true,
+      "goal_recorded_before_movement": true
+    },
+    {
+      "id": "extra03-right",
+      "status": "completed_audit",
+      "request_id": "5002a4fc36e245d114a7094d01426d4edb54381688fbb2805f604b37cc17846a",
+      "samples": 169,
+      "safe_pixels_in_bbox": 883,
+      "candidate_count": 104,
+      "sampling_policy": "visible_safe_mask_stratified_v1",
+      "candidate_rejections": {
+        "duplicate surface sample": 65
+      },
+      "movement_attempted": true,
+      "bbox": [
+        600,
+        600,
+        900,
+        800
+      ],
+      "target_view": "front",
+      "model_needs_review": false,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.08556538075208664,
+        "steps": 15,
+        "source": "expert_not_vla"
+      },
+      "frames": 16,
+      "pointnav_complete": true,
+      "goal_recorded_before_movement": true
+    },
+    {
+      "id": "extra04-front",
+      "status": "completed_audit",
+      "request_id": "f5abd153cb36a1bbaff725e3f9f94180fed029c5c9b72610f16132f16fd19a10",
+      "samples": 169,
+      "safe_pixels_in_bbox": 1530,
+      "candidate_count": 159,
+      "sampling_policy": "visible_safe_mask_stratified_v1",
+      "candidate_rejections": {
+        "duplicate surface sample": 10
+      },
+      "movement_attempted": true,
+      "bbox": [
+        350,
+        550,
+        550,
+        750
+      ],
+      "target_view": "front",
+      "model_needs_review": false,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.036439199000597,
+        "steps": 22,
+        "source": "expert_not_vla"
+      },
+      "frames": 23,
+      "pointnav_complete": true,
+      "goal_recorded_before_movement": true
+    }
+  ],
+  "recorded_frames": 249,
+  "pointnav_frames": 249,
+  "collisions": 0,
+  "model_requests": 16,
+  "model_failures": 0,
+  "model_proposals_reused": false,
+  "sampling_budget": 169,
+  "audits_passed": true,
+  "automatic_retry": false,
+  "training_exports": 0,
+  "formal_benchmark": false,
+  "not_a_paired_yield_or_throughput_comparison": true,
+  "service_owner": "29527adbc69e4b92a8168b88bbc7874d",
+  "server_status": "ok",
+  "workers": 16,
+  "active_after": 0
+}

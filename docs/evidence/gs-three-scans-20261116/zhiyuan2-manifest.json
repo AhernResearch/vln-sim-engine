@@ -1,0 +1,86 @@
+{
+  "schema": "open_nav_scan_v1",
+  "backend": "habitat_gs",
+  "purpose": "development",
+  "scene_id": "zhiyuan2",
+  "lod": 3,
+  "units": "metre",
+  "scan_to_habitat": [
+    [
+      1,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      1,
+      0
+    ],
+    [
+      0,
+      -1,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      1
+    ]
+  ],
+  "upstream": {
+    "repository": "https://github.com/zju3dv/habitat-gs",
+    "commit": "cb01b2fdf850ce3cab28ad00461a68ac7719f23f"
+  },
+  "source": {
+    "archive": "zhiyuan2-selected.zip",
+    "sha256": "7ea5d30524295a3f3bc7d7e86897dd69c365be0f5f89f0dc43ea9205199916b7",
+    "directory": "/home/holo/智园2-output",
+    "selected_files": {
+      "ply-result/point_cloud/iteration_100/point_cloud_3.ply": {
+        "sha256": "53ad33f8aebb813f06265cd0947903adcf149a1d87c808d94293320762ac44ba",
+        "bytes": 79557574
+      },
+      "mesh/mesh.ply": {
+        "sha256": "b112b7b7f26a4a001272ff4fb26097d6d0cbcd951bcc8da059da252d9cdcc249",
+        "bytes": 7288390
+      },
+      "render/assets/poses.json": {
+        "sha256": "58356fed22a095fa702c16c48eeae1c319778da6ba57a71044648b6207c867b9",
+        "bytes": 1520581
+      }
+    }
+  },
+  "assets": {
+    "render": {
+      "path": "stages/m_floor.gs.ply",
+      "sha256": "e983f90a5bb06e20c946be715c0a8e36afe7201459ca68b40f960a633c994558",
+      "source_member": "智园2-output/ply-result/point_cloud/iteration_100/point_cloud_3.ply",
+      "vertices": 1169951
+    },
+    "mesh": {
+      "path": "stages/m_floor.mesh.ply",
+      "sha256": "d4a308d51c164a78a7e3c2a77f3cc7138fe308316f58591908f36fb1a41cec5b",
+      "source_member": "智园2-output/mesh/mesh.ply",
+      "vertices": 216274
+    },
+    "scan_poses": {
+      "path": "scan_positions.json",
+      "sha256": "8bfffe645619446dcf97ee06255309a02bae119ef1ec88e6a3f49c981cbb3b15",
+      "source_member": "智园2-output/render/assets/poses.json"
+    },
+    "stage": {
+      "path": "stage.stage_config.json",
+      "sha256": "9dc09277d61f86b788fb49e54431b70ac7374df020f52284e8634d27432b9f6f"
+    },
+    "geometry_stage": {
+      "path": "geometry_stage.stage_config.json",
+      "sha256": "f76747cbae04a619f96732f5d96dd134480806c126547307495f817f0f0c14ef"
+    }
+  },
+  "geometry_review": "required",
+  "evaluation_available": false
+}

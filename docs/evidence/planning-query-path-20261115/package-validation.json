@@ -1,0 +1,11 @@
+{
+  "owner": "00b7ee18f3644d67b24d1ab153ccbb2e",
+  "root": "/tmp/planning-mainline-package-00b7ee18f364",
+  "status": "passed",
+  "wheel": "/tmp/planning-mainline-package-00b7ee18f364/wheels/vln_sim_engine-0.1.0-cp310-abi3-linux_x86_64.whl",
+  "wheel_sha256": "b85e9a680ab6be37c019d1539253ab368b00d5ede9d0b4da82fc570f476c8cb6",
+  "installed_defaults": "collection-v5",
+  "native_load": "/tmp/planning-mainline-package-00b7ee18f364/installed/sim_engine/planning/_astar.abi3.so",
+  "missing_compiler_build_exit": 2,
+  "missing_compiler_no_wheel": true
+}

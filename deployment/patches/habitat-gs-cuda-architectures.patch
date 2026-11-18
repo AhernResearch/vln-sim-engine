@@ -1,0 +1,11 @@
+--- a/src/esp/CMakeLists.txt
++++ b/src/esp/CMakeLists.txt
+@@ -600,7 +600,7 @@
+   set_target_properties(gaussian_rasterizer_kernels PROPERTIES 
+     CUDA_SEPARABLE_COMPILATION ON
+     CUDA_RESOLVE_DEVICE_SYMBOLS ON
+-    CUDA_ARCHITECTURES "70;75;80;86;90"
++    CUDA_ARCHITECTURES "${CMAKE_CUDA_ARCHITECTURES}"
+   )
+ 
+   target_link_libraries(habitat_sim PUBLIC noise_model_kernels gaussian_rasterizer_kernels ${CUDART_LIBRARY})

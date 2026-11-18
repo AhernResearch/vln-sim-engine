@@ -1,0 +1,315 @@
+{
+  "passed": true,
+  "runtime": {
+    "backend": "habitat_gs",
+    "habitat_version": "0.3.3",
+    "bindings_sha256": "03f2ae21f82c45abb0d667a41ac5cf486ba5f8feb34be8e53d00f89c8c3b9030",
+    "depth_source": "gaussian_unvalidated",
+    "depth_convention": "unvalidated"
+  },
+  "health": {
+    "status": "ok",
+    "backend": "habitat_gs",
+    "runtime": {
+      "backend": "habitat_gs",
+      "habitat_version": "0.3.3",
+      "bindings_sha256": "03f2ae21f82c45abb0d667a41ac5cf486ba5f8feb34be8e53d00f89c8c3b9030",
+      "depth_source": "gaussian_unvalidated",
+      "depth_convention": "unvalidated"
+    },
+    "habitat_version": "0.3.3",
+    "worker_runtimes": [
+      {
+        "backend": "habitat_gs",
+        "habitat_version": "0.3.3",
+        "bindings_sha256": "03f2ae21f82c45abb0d667a41ac5cf486ba5f8feb34be8e53d00f89c8c3b9030",
+        "depth_source": "gaussian_unvalidated",
+        "depth_convention": "unvalidated"
+      }
+    ],
+    "capabilities": {
+      "sensors": "rgbd",
+      "commands": [
+        "waypoints",
+        "velocity"
+      ],
+      "task_types": [
+        "navigation",
+        "development"
+      ]
+    },
+    "version": "0.1.0",
+    "startup_id": "3bcc565d681c45359681f234ba3c0a5d",
+    "workers": 1,
+    "live_workers": 1,
+    "protocol": {
+      "max_actions": 500,
+      "dataset_physics": {
+        "zhiyuan": {
+          "agent_height_m": 1.5,
+          "agent_radius_m": 0.18,
+          "forward_m": 0.25,
+          "turn_degrees": 15,
+          "allow_sliding": true,
+          "velocity": null
+        }
+      },
+      "reward_mode": "none",
+      "cameras": {
+        "gs_probe": {
+          "height_m": 0.88,
+          "pitch_down_rad": 0.0,
+          "view": "125cm_30deg",
+          "width": 480,
+          "height": 270,
+          "hfov": 120.0
+        }
+      },
+      "scene_hashes": {
+        "zhiyuan": {
+          "zhiyuan": {
+            "manifest": "b48223875068a6a52bbb411cad21d29e481cd7e3bcfcd1a6eb35e952b3783816",
+            "navigation": "27f7cd216f9c045ed790785118dd8818deb4e9f9f1dc3690f2c6566fa4e1e94f",
+            "render": "1a9ab25d7f7bc6b0bc9fcb206d0eb79635bda913bc17f99bd95965fc72c83310",
+            "mesh": "5ac1a59e5da0df94eff314fbab366be93ef238faa9dd4fd6e0a28a512f27e922",
+            "scan_poses": "a6b582f4068b8e30c841c5e432cfddf9658faad2f72310fcadd04c6b19f85499",
+            "stage": "9dc09277d61f86b788fb49e54431b70ac7374df020f52284e8634d27432b9f6f",
+            "geometry_stage": "f76747cbae04a619f96732f5d96dd134480806c126547307495f817f0f0c14ef",
+            "navmesh": "986e54d5dac00e1a26754dc30baa7b494ada747616135d05b2e5c07977554641"
+          }
+        }
+      },
+      "implementation_sha256": {
+        "__init__.py": "a57fb5f8ad6c8f2afbf12af2890228321b1f790496c3aef3e92a67fb911e1508",
+        "__main__.py": "3129adff95e0f38b87ab34cddfc27082c7892bcaec267ff5d40f160fdf55b44a",
+        "async_io.py": "f5410dde685faaedc41a0f8c8fe343b17a745f8d1ddaf3c665451632f513408e",
+        "atomic.py": "1b7d64bce28f4fc9886caf2e38f72bbb715dbf56a52ae41f99b8f9f9e8fd9637",
+        "backends/__init__.py": "8a9b1f3bf36452584fc6fa35b8108cbba8f88a08c4cc179135dfd725a791c25c",
+        "backends/contracts.py": "8ddff0682d6115218dfa67464f99bce01e0be0b43314bf22229073d3ada45f4c",
+        "backends/habitat.py": "470dd1f7699acc8195cbd51e45c5c4af747346a3e999edcca00793819c3a3373",
+        "cli.py": "8aaf23f662ccb6083d5dd28350742d09350c200e40ce67cf71ac055268911326",
+        "client.py": "87abfbd0e4f49db3a82018b65ea446031f0b71f5736427641bb2b5dfaeeccaf5",
+        "collection/__init__.py": "94ed720ce825fd7a1cb9866ed01b9d2a34c91f0256e0a8a152422511e6650577",
+        "collection/audit.py": "e63dc4a9582e69f62efdf7bfaf3eabdf500e4f644efc298149ee0d6030a4b721",
+        "collection/backend.py": "6f9a16cd2cd2a3bb0d94989745590fd07d679055758cc1794057cb06da8404e8",
+        "collection/clearance.py": "7aa2acea30376d462ec10328cec5ea9520122a113740f088a54b63bfa5d4f1eb",
+        "collection/corridor.py": "0ccc339cde8fddd18853d1611c91ccffedbbfa16dc93119012ae1cf40e1ffe9e",
+        "collection/determinism.py": "953ad060a1275ca85a7855fda387c6a0dc9d97f5f8cfc8cf72041e446121ff14",
+        "collection/guidance.py": "743322874359f75420c93f924e9ca33766715a22c728d6f5ae60b58351ffbf18",
+        "collection/limits.py": "78b3a3dab000c9cfa2a8b50388be3bea8ebbfd84116d93fcb057fd9b5c820623",
+        "collection/protocol.py": "4f2cf3fe1070f144e3d8787133f64dbc11c9eaf5e85a2a2d50f6dcd1e47d68fa",
+        "collection/query_cache.py": "2f1e84a4e2c785cd0656aa7bd51e477fd414d6dc14e32a53d99e7604b7b74299",
+        "collection/recording.py": "81debdf374a2a25910b34df52ba22d7a30f2ca0f03aae0ed103659c92e830984",
+        "collection/reference.py": "d4bc49eef1a9a5f90d595557183c8aaae2b40a9d100f04e3525334d54b154cf9",
+        "collection/region.py": "89e71a5283b67616cc82d8274c978e80e6bd4390148a1d51bf481574a85f0934",
+        "collection/region_selection.py": "c08cda796a68ba73ce8a3e99ac577b857d82edc5a2546ac4a9cebfb480d3eb85",
+        "collection/safe_image.py": "a28dc448341b10bf267fa94ab64c91013a24be0946efb308d0d4b14035887054",
+        "collection/sampling.py": "4d56f5dfb90757b39a3d8310edaf94ca03dd07cc101184543e4f8dbc6ee62f76",
+        "collection/scene_reset.py": "0f237484408d2ff9d1c7562b86778e460e8506b0d9bfc1c7c228f554cc6bd9e5",
+        "collection/server.py": "9cce0fe4346e7aeacfc5447635d2c40a1c6c225602986d3510077afd92630cac",
+        "collection/simulation.py": "93a8963f259ce124bd1b068a7f055301236ffaae2857ddc407f11506030acf2c",
+        "collection/start_pool.py": "331623be3ab9adb7b0db8a6da131d669c53c9cce74537dacb7dc7ceabcd995a9",
+        "collection/storage.py": "0aef0b06dc268b33f4fab9ddc0dbb1de2b8fed02a23d60860c9f4f8bb60895b3",
+        "collection/tracking.py": "3c5a94cc99d0a3289462941f1d7839ea12604ae7445a690535ff8a8386d78bb8",
+        "collection/visual_geometry.py": "1e65a5d86e888512f8ec6cc0dcb2136d604c300e9a612f7fb144d63a21c58281",
+        "collection/visual_region.py": "7e06521993a107eef3dc7a1172ad6ba492ad72d133c21c42986954009ffe0d6a",
+        "config.py": "49b483a1611b5ead58f258cdefdf5c6df7cfd3762f057932dbfcc989510f307b",
+        "controllers.py": "eed222d68bb70c945235d3f770befe461ef7f43b7a2292804a8c768c63a9bb88",
+        "data.py": "237f31a0eecc976d3cac2817202a804796d58a7a14074cbd912612724f6dc728",
+        "expert.py": "703bfbd9c82353669eee5c3fba36f6d25e0a610c6a6945ca4f3a7b0b1a6d8378",
+        "geometry.py": "8965587b1f91a1ab883346395468fd8474b7f33a1edd6c72dc8a1c925e4b73fa",
+        "habitat.py": "1c1cfebf86a1e92d2d5685b135a4f0582b3c488973d84f0474187baf5ee375d2",
+        "metrics.py": "b4c1cdc53b99bcdf2ae88349a90f88cbee1bd728678a0fa0bc929d6d86c7bb85",
+        "navmesh.py": "5d0f8566c9d8eeca291fde025efc4d08a614d2df20805c350a66fe053b890845",
+        "outputs.py": "b7d1d9062d649832413960af554a3eb35464f06f5ef15a550b8eee91b399014e",
+        "planning/__init__.py": "cfa4c8ab3c04b3dcef236b34e5f84dc2998f9f3330688838a7752fecf047d9c4",
+        "planning/_astar.abi3.so": "ba2e714307bd496e30b6a400f1a13c6e85b37911ee33ac079c6dda7e73f260a9",
+        "planning/_astar.cpp": "6d43621186f7dddea1833d96f02dd3fbb911868837336fe831dfc85e54e41128",
+        "planning/_geometry.h": "80f7ce818ba5d0820519d2f6d448693890d3c5d701ef80760c843b0188414e3c",
+        "planning/_path.cpp": "2477f947da95563c2c1c40a99a7a4828d10258d94eb27c2739222232f54c88b3",
+        "planning/_queries.cpp": "35e19aecdb570e13c4b8fd0308c9ab79b2dbb710b24459310f9ab6dee3a74d77",
+        "planning/assets.py": "e8fc060f0ee4d01660b1fb3cf94d59a901c1044e5740ac4ebbfc652e64e59bec",
+        "planning/client.py": "28ac0a67daf0b7071507bef3587bb5b1c826b98e8ba2f022968eaf9259339879",
+        "planning/context.py": "79ced66777751cec4a6de8056235fb17b7f1546c8f3ba3cd2f9cc2f44a56ea79",
+        "planning/contracts.py": "b898bb7e5e0ba44e7a689b698b7d94c64d507053ec6a75490a6144cf6a3952c3",
+        "planning/engine.py": "be83218bbb84f5ca219b0db555fd8824a1aead98945005395a48ba49f9153e26",
+        "planning/geometry.py": "393b5fb61f14f014abb1e631f22dc51fc4b5ee65727405d0e364935f1650068a",
+        "planning/implementation.py": "9b57b678b132da80ba9ff919395528047ade6fe9fbaf61e3e1da50a99b01f21a",
+        "planning/native.py": "b474719fada72b61342881d1e7ab1f2d41396696fec63cc21f905d0842c36275",
+        "planning/queries.py": "daeed0477a2000cec6a823d001ce9f95b2b7e9d6da8cdc48fa84b7a5b7f4e163",
+        "planning/service.py": "e20a4a2c0f9c19ea397f68ac4966557eb36d1d89064cb9438693734d658b595c",
+        "policy.py": "3c748988c1616d2156aa6806de817d64cb0d405aef2c637f6bc604ec80515575",
+        "policy_server.py": "2e58339a5765e5cf0521c9a3581a89307840c7aced43a4e61fa0128679c10ff3",
+        "pool.py": "2a18c6a250fa4a37efdce97fbac7d049f2e944e6fd2bdafc5ef6cdd7ed3eb977",
+        "prompt.py": "342627f14949b1cc0ec03ed6a672c102bb7245f837d807b5f69afd7a01f5ce58",
+        "protocol.py": "6877ad9a74f2d09b37077099d1e0e3175ec89537e767b238f84e694ef49eb568",
+        "scan_assets.py": "81a3e3549aa46f025e8b5b8de7c0021abc9c8cf2a99b6c0a8c84f2762d9593f8",
+        "scan_bake.py": "0fd064a1e56fa1213b82cc23811d0aad51cecca05c929ec5b8bfeb878a91f449",
+        "scenes.py": "3c4a4d74e47302e30b841ba4b9462aa6471064c15ec289d617d16f35126b763e",
+        "schedule.py": "13108423c9bf1137821495485cb7969a113f8e2ef5b3444ae39d80af0e43842a",
+        "session.py": "5742efb655aecfe2c2925427e88a623fbfb77ce0661994ce6516d1e8d6f06d21",
+        "sim_server.py": "ed358c5de94080f7641be0ae881395a9eff5e3f3458e8e87eb0c9d42f489f6b1",
+        "tasks.py": "034313a93812867fe562047def3b9a35b311e0d9bbc1112ca3a49c59fd43e3b6",
+        "work_queue.py": "a95b0e63645e9d8e67b8a053fd7edcdda9bd6a07fb64634d7012cdb298293751"
+      }
+    },
+    "active_sessions": 0,
+    "queues": [
+      {
+        "name": "simulation",
+        "capacity": 32,
+        "concurrency": 1,
+        "queued": 0,
+        "active": 0,
+        "completed": 1,
+        "failed": 0,
+        "rejected": 0,
+        "peak_active": 1,
+        "peak_queued": 1,
+        "queue_seconds": 6.463518366217613e-05,
+        "service_seconds": 1.027102090884
+      }
+    ]
+  },
+  "stop": {
+    "episode_id": "scan-dev-0",
+    "scene_id": "zhiyuan",
+    "session_id": "597de9daab4d41588af028b8b90097b4",
+    "done": true,
+    "termination": "policy_stop",
+    "metrics": {
+      "evaluation_available": false,
+      "success": null,
+      "spl": null,
+      "ndtw": null,
+      "distance_to_goal": null,
+      "collisions": 0
+    },
+    "positions": [
+      [
+        -3.803417921066284,
+        -0.8769601583480835,
+        -3.4951388835906982
+      ],
+      [
+        -3.803417921066284,
+        -0.872322142124176,
+        -3.7451388835906982
+      ]
+    ],
+    "actions": [
+      "MOVE_FORWARD"
+    ],
+    "predictions": [
+      {
+        "request_id": "e222e2fbfadf4fd9a845f895414bc33d",
+        "origin": {
+          "x": 3.4951388835906982,
+          "y": 3.803417921066284,
+          "yaw": -0.0
+        },
+        "start_event_index": 0,
+        "end_event_index": 1,
+        "command": {
+          "kind": "waypoints",
+          "trajectory": [
+            [
+              0.25,
+              0.0,
+              0.0
+            ],
+            [
+              0.5,
+              0.0,
+              0.0
+            ],
+            [
+              0.75,
+              0.0,
+              0.0
+            ],
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              1.25,
+              0.0,
+              0.0
+            ],
+            [
+              1.5,
+              0.0,
+              0.0
+            ],
+            [
+              1.75,
+              0.0,
+              0.0
+            ],
+            [
+              2.0,
+              0.0,
+              0.0
+            ]
+          ],
+          "action_budget": 1
+        },
+        "policy_version": "",
+        "trajectory": [
+          [
+            0.25,
+            0.0,
+            0.0
+          ],
+          [
+            0.5,
+            0.0,
+            0.0
+          ],
+          [
+            0.75,
+            0.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            1.25,
+            0.0,
+            0.0
+          ],
+          [
+            1.5,
+            0.0,
+            0.0
+          ],
+          [
+            1.75,
+            0.0,
+            0.0
+          ],
+          [
+            2.0,
+            0.0,
+            0.0
+          ]
+        ]
+      }
+    ]
+  },
+  "depth_valid_fraction": 0.9986574074074074,
+  "model_inference": false,
+  "collection": {
+    "passed": true,
+    "termination": "expert_stop",
+    "collision_steps": 0,
+    "final_distance_m": 0.0023222872987389565,
+    "steps": 9,
+    "source": "expert_not_vla"
+  }
+}

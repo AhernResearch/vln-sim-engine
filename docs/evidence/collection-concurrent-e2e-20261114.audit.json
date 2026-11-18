@@ -1,0 +1,1640 @@
+{
+  "owner": "9357fe50243b445a8c7dc5262603a7c9",
+  "scope": "training_dev_concurrent_end_to_end_validation",
+  "run_root": "/data/nav_storage/nav-train/collections/concurrent-e2e-20261114-9357fe50243b",
+  "controller_wall_s": 31.529242256190628,
+  "lane_results": {
+    "free": {
+      "lane": "free",
+      "success": true,
+      "counts": {
+        "excluded_before_movement": 3,
+        "completed_audit": 13
+      },
+      "wall_s": 31.42627394804731
+    },
+    "r2r": {
+      "lane": "r2r",
+      "success": true,
+      "counts": {
+        "completed_audit": 16
+      },
+      "wall_s": 17.902678553946316
+    }
+  },
+  "counts": {
+    "completed_audit": 29,
+    "excluded_before_movement": 3
+  },
+  "counts_per_lane": {
+    "free": {
+      "completed_audit": 13,
+      "excluded_before_movement": 3
+    },
+    "r2r": {
+      "completed_audit": 16
+    }
+  },
+  "peaks_sampled": {
+    "simulator_active": 16,
+    "executing": 10,
+    "observing": 16,
+    "model_active": 18,
+    "overlap_samples": 132
+  },
+  "model_http_interval_peak": 18,
+  "expert_rollout_interval_peak": 6,
+  "model_and_expert_overlap_s": 13.349000453948975,
+  "gpu_min_free_gib_sampled": {
+    "0": 19.3935546875,
+    "2": 20.8837890625,
+    "3": 17.6416015625,
+    "4": 17.6650390625
+  },
+  "recorded_frames": 684,
+  "pointnav_frames": 252,
+  "collision_steps": 0,
+  "model_requests": 32,
+  "model_failures": 0,
+  "model_needs_review": 0,
+  "movement_attempts": 29,
+  "automatic_retry": false,
+  "training_exports": 0,
+  "admission": "audit_only",
+  "formal_benchmark": false,
+  "warm_scene_regression_sample": true,
+  "source_training_scenes": 4,
+  "paired_serial_baseline": false,
+  "all_recording_and_label_audits_passed": true,
+  "rows": [
+    {
+      "lane": "free",
+      "id": "loc01-front",
+      "request_id": "6661b6540587a42c2b05b6ef68c2e2040d7b288537e4e71e25365bd0f4a80e6f",
+      "folder": "/data/nav_storage/nav-train/collections/concurrent-e2e-20261114-9357fe50243b/free/loc01-front",
+      "status": "completed_audit",
+      "server_status": "completed_audit",
+      "receipt_sha256": "fb5e26a883483c7ac6a0217333c9763d91e1e41bb5096b629453ccf1cbd69ad8",
+      "model_profile": "fp4-0",
+      "model_needs_review": false,
+      "instruction": "Move forward and slightly left to the floor area just inside the open doorway, which leads to the hallway.",
+      "movement_attempted": true,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.03377573937177658,
+        "steps": 23,
+        "source": "expert_not_vla"
+      },
+      "frames": 24,
+      "recording_complete": true,
+      "goal_recorded_before_movement": true,
+      "selected_goal": [
+        -4.120491027832031,
+        0.10065700113773346,
+        1.0479450225830078
+      ],
+      "cache": {
+        "scene_loads": 2,
+        "cache_hits": 4,
+        "cached_scenes": 1
+      },
+      "pointnav_frames": 24,
+      "inside_original_bbox": true,
+      "bbox": [
+        350,
+        550,
+        550,
+        750
+      ],
+      "target_view": "front"
+    },
+    {
+      "lane": "free",
+      "id": "loc01-right",
+      "request_id": "8fdef02ac587726f2c35f0f5285a4b4991d0c3e99cafe3b52e337f2e93aa3ed1",
+      "folder": "/data/nav_storage/nav-train/collections/concurrent-e2e-20261114-9357fe50243b/free/loc01-right",
+      "status": "excluded_before_movement",
+      "server_status": "excluded_before_movement",
+      "receipt_sha256": "ab09cab1c572cc5b73bdea1a2813ca08b1b51a1d9bb0fe33f5467a6bda8836a8",
+      "model_profile": "fp4-0",
+      "model_needs_review": false,
+      "instruction": "Move forward and slightly to the left to stop on the floor in front of the white desk and bench.",
+      "movement_attempted": false,
+      "error": "{\"error\": \"ValueError('no candidate passed bounded planning and controller preview')\", \"movement_attempted\": false}",
+      "candidate_count": 0,
+      "candidate_rejection_counts": {
+        "outside visible safe floor mask": 168,
+        "selected point has invalid depth": 1
+      },
+      "safe_pixels_in_original_bbox": 6,
+      "grid_size": 13,
+      "bbox": [
+        350,
+        750,
+        650,
+        950
+      ],
+      "target_view": "front"
+    },
+    {
+      "lane": "free",
+      "id": "loc01-back",
+      "request_id": "95d741dbe615ec148a25909797444d483eeeb9f8dca0ea29497cc9f289aab877",
+      "folder": "/data/nav_storage/nav-train/collections/concurrent-e2e-20261114-9357fe50243b/free/loc01-back",
+      "status": "excluded_before_movement",
+      "server_status": "excluded_before_movement",
+      "receipt_sha256": "974c70f23dd292fa3d1d53c6b8eed8f838f81e736ca9aba33a5e8ed5caf77093",
+      "model_profile": "fp4-0",
+      "model_needs_review": false,
+      "instruction": "Move forward and slightly to the right to stop on the floor in front of the white desk and bench.",
+      "movement_attempted": false,
+      "error": "{\"error\": \"ValueError('no candidate passed bounded planning and controller preview')\", \"movement_attempted\": false}",
+      "candidate_count": 0,
+      "candidate_rejection_counts": {
+        "outside visible safe floor mask": 165,
+        "selected point has invalid depth": 4
+      },
+      "safe_pixels_in_original_bbox": 0,
+      "grid_size": 13,
+      "bbox": [
+        450,
+        750,
+        750,
+        950
+      ],
+      "target_view": "right"
+    },
+    {
+      "lane": "free",
+      "id": "loc01-left",
+      "request_id": "d5018197695d9d6a50e8a6e68800021665943c48bd94c1ce57856af0783edc45",
+      "folder": "/data/nav_storage/nav-train/collections/concurrent-e2e-20261114-9357fe50243b/free/loc01-left",
+      "status": "completed_audit",
+      "server_status": "completed_audit",
+      "receipt_sha256": "23e1dfd3fcf7293aef40dfd199d5d9563b7c49775272745deb152be8ad7bcbc8",
+      "model_profile": "fp4-2",
+      "model_needs_review": false,
+      "instruction": "Navigate to the floor area in the hallway, visible through the open doorway to your left.",
+      "movement_attempted": true,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.05806899443268776,
+        "steps": 14,
+        "source": "expert_not_vla"
+      },
+      "frames": 15,
+      "recording_complete": true,
+      "goal_recorded_before_movement": true,
+      "selected_goal": [
+        -3.2205610275268555,
+        0.10065700113773346,
+        2.8001961708068848
+      ],
+      "cache": {
+        "scene_loads": 2,
+        "cache_hits": 5,
+        "cached_scenes": 1
+      },
+      "pointnav_frames": 15,
+      "inside_original_bbox": true,
+      "bbox": [
+        350,
+        750,
+        600,
+        950
+      ],
+      "target_view": "left"
+    },
+    {
+      "lane": "free",
+      "id": "loc02-front",
+      "request_id": "3a7fda2f6d9febe6e0f4a447f44851dadcd946c674bd66c025d123fe534112fc",
+      "folder": "/data/nav_storage/nav-train/collections/concurrent-e2e-20261114-9357fe50243b/free/loc02-front",
+      "status": "completed_audit",
+      "server_status": "completed_audit",
+      "receipt_sha256": "5ab817bff760170b19a023f497430a03cfc86e5438b77d18acd34075f332d42f",
+      "model_profile": "fp4-0",
+      "model_needs_review": false,
+      "instruction": "Move forward and slightly to the right, towards the open area near the staircase.",
+      "movement_attempted": true,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.030784649774432182,
+        "steps": 30,
+        "source": "expert_not_vla"
+      },
+      "frames": 31,
+      "recording_complete": true,
+      "goal_recorded_before_movement": true,
+      "selected_goal": [
+        -3.0725443363189697,
+        -0.004513107240200043,
+        -0.8164774179458618
+      ],
+      "cache": {
+        "scene_loads": 2,
+        "cache_hits": 3,
+        "cached_scenes": 1
+      },
+      "pointnav_frames": 31,
+      "inside_original_bbox": true,
+      "bbox": [
+        600,
+        500,
+        900,
+        800
+      ],
+      "target_view": "front"
+    },
+    {
+      "lane": "free",
+      "id": "loc02-right",
+      "request_id": "204414fdac1d376b706c983f3e6086dae11db1ccbc96a3c4ca70fab2317ff946",
+      "folder": "/data/nav_storage/nav-train/collections/concurrent-e2e-20261114-9357fe50243b/free/loc02-right",
+      "status": "excluded_before_movement",
+      "server_status": "excluded_before_movement",
+      "receipt_sha256": "9565e639b6db21a4c546b931443bc178194431c09e8a71a5095e6e51aa07dbd4",
+      "model_profile": "fp4-1",
+      "model_needs_review": false,
+      "instruction": "Move forward and slightly to the left to stop on the carpeted floor in the open space between the rows of lounge chairs.",
+      "movement_attempted": false,
+      "error": "{\"error\": \"ValueError('no candidate passed bounded planning and controller preview')\", \"movement_attempted\": false}",
+      "candidate_count": 0,
+      "candidate_rejection_counts": {
+        "outside visible safe floor mask": 169
+      },
+      "safe_pixels_in_original_bbox": 0,
+      "grid_size": 13,
+      "bbox": [
+        200,
+        600,
+        450,
+        800
+      ],
+      "target_view": "front"
+    },
+    {
+      "lane": "free",
+      "id": "loc02-back",
+      "request_id": "eddbab5224a02850f48a2af07206afac12fc33264068e7ba7cff311eb5deaee2",
+      "folder": "/data/nav_storage/nav-train/collections/concurrent-e2e-20261114-9357fe50243b/free/loc02-back",
+      "status": "completed_audit",
+      "server_status": "completed_audit",
+      "receipt_sha256": "d58fec91462be966cffdbe30f45663b601a6c365505b485d6e3c1a9f16a85356",
+      "model_profile": "fp4-1",
+      "model_needs_review": false,
+      "instruction": "Navigate to the open floor area in the main living space, stopping in front of the bar counter.",
+      "movement_attempted": true,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.008932869881391525,
+        "steps": 19,
+        "source": "expert_not_vla"
+      },
+      "frames": 20,
+      "recording_complete": true,
+      "goal_recorded_before_movement": true,
+      "selected_goal": [
+        -3.940004348754883,
+        0.08632707595825195,
+        2.458085060119629
+      ],
+      "cache": {
+        "scene_loads": 3,
+        "cache_hits": 3,
+        "cached_scenes": 1
+      },
+      "pointnav_frames": 20,
+      "inside_original_bbox": true,
+      "bbox": [
+        350,
+        750,
+        650,
+        950
+      ],
+      "target_view": "back"
+    },
+    {
+      "lane": "free",
+      "id": "loc02-left",
+      "request_id": "482c5a6cfa1203d0266dd72e800e16e71a59c5cec70f6ec3b684a95b679efe65",
+      "folder": "/data/nav_storage/nav-train/collections/concurrent-e2e-20261114-9357fe50243b/free/loc02-left",
+      "status": "completed_audit",
+      "server_status": "completed_audit",
+      "receipt_sha256": "ed10b5de8016d15edd732ae32ff7633dc54cdb38d50437948af5c4a2e549dcd5",
+      "model_profile": "fp4-2",
+      "model_needs_review": false,
+      "instruction": "Move forward and slightly to the left, towards the open area with the staircase and the bar counter.",
+      "movement_attempted": true,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.0015400005504488945,
+        "steps": 19,
+        "source": "expert_not_vla"
+      },
+      "frames": 20,
+      "recording_complete": true,
+      "goal_recorded_before_movement": true,
+      "selected_goal": [
+        -2.6606526374816895,
+        0.013869121670722961,
+        0.9429789781570435
+      ],
+      "cache": {
+        "scene_loads": 2,
+        "cache_hits": 4,
+        "cached_scenes": 1
+      },
+      "pointnav_frames": 20,
+      "inside_original_bbox": true,
+      "bbox": [
+        100,
+        600,
+        400,
+        900
+      ],
+      "target_view": "front"
+    },
+    {
+      "lane": "free",
+      "id": "loc03-front",
+      "request_id": "c4980c209e9ddc62c5520d7ba3cf22dabbbd11e43d8f3f779d126aa9f5adf69a",
+      "folder": "/data/nav_storage/nav-train/collections/concurrent-e2e-20261114-9357fe50243b/free/loc03-front",
+      "status": "completed_audit",
+      "server_status": "completed_audit",
+      "receipt_sha256": "d11f6aa0236656e98030d3c608adb9224350edd66a5fc82052e40466eb2abd35",
+      "model_profile": "fp4-2",
+      "model_needs_review": false,
+      "instruction": "Move forward and slightly to the right, towards the open area past the blue armchair.",
+      "movement_attempted": true,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.05901885777711868,
+        "steps": 18,
+        "source": "expert_not_vla"
+      },
+      "frames": 19,
+      "recording_complete": true,
+      "goal_recorded_before_movement": true,
+      "selected_goal": [
+        4.403815269470215,
+        0.10083705931901932,
+        -3.5042545795440674
+      ],
+      "cache": {
+        "scene_loads": 2,
+        "cache_hits": 4,
+        "cached_scenes": 1
+      },
+      "pointnav_frames": 19,
+      "inside_original_bbox": true,
+      "bbox": [
+        650,
+        600,
+        900,
+        850
+      ],
+      "target_view": "front"
+    },
+    {
+      "lane": "free",
+      "id": "loc03-right",
+      "request_id": "5bfd18d9c383b3dc39634b15b5e995b4d415e937f29186c544c943e3635f0561",
+      "folder": "/data/nav_storage/nav-train/collections/concurrent-e2e-20261114-9357fe50243b/free/loc03-right",
+      "status": "completed_audit",
+      "server_status": "completed_audit",
+      "receipt_sha256": "0fee87fd62cf3add619427f5c73bdbf631f727452d622380a9950fb23c7d4286",
+      "model_profile": "fp4-2",
+      "model_needs_review": false,
+      "instruction": "Move forward and stop on the wooden floor in front of the blue armchair.",
+      "movement_attempted": true,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.03608570620417595,
+        "steps": 10,
+        "source": "expert_not_vla"
+      },
+      "frames": 11,
+      "recording_complete": true,
+      "goal_recorded_before_movement": true,
+      "selected_goal": [
+        4.269021987915039,
+        0.007922172546386719,
+        -7.321386337280273
+      ],
+      "cache": {
+        "scene_loads": 2,
+        "cache_hits": 3,
+        "cached_scenes": 1
+      },
+      "pointnav_frames": 11,
+      "inside_original_bbox": true,
+      "bbox": [
+        450,
+        650,
+        650,
+        850
+      ],
+      "target_view": "front"
+    },
+    {
+      "lane": "free",
+      "id": "loc03-back",
+      "request_id": "730853024acafd8170be18a387d9f748798fe793e1beefcae201974e57a5aee1",
+      "folder": "/data/nav_storage/nav-train/collections/concurrent-e2e-20261114-9357fe50243b/free/loc03-back",
+      "status": "completed_audit",
+      "server_status": "completed_audit",
+      "receipt_sha256": "f6b3a6e92de456dd1c418cb174e58b02bcef681a372e7f834fb1c43be1393eff",
+      "model_profile": "fp4-3",
+      "model_needs_review": false,
+      "instruction": "Move forward and slightly to the left, towards the large stone fireplace.",
+      "movement_attempted": true,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.05471116676926613,
+        "steps": 12,
+        "source": "expert_not_vla"
+      },
+      "frames": 13,
+      "recording_complete": true,
+      "goal_recorded_before_movement": true,
+      "selected_goal": [
+        2.77998423576355,
+        0.007922172546386719,
+        -4.871978759765625
+      ],
+      "cache": {
+        "scene_loads": 2,
+        "cache_hits": 4,
+        "cached_scenes": 1
+      },
+      "pointnav_frames": 13,
+      "inside_original_bbox": true,
+      "bbox": [
+        450,
+        750,
+        650,
+        950
+      ],
+      "target_view": "left"
+    },
+    {
+      "lane": "free",
+      "id": "loc03-left",
+      "request_id": "94d245c7027ed5171ac7fd1b1ee19408c7ff1a2ed546eb833cdc9581ba70540f",
+      "folder": "/data/nav_storage/nav-train/collections/concurrent-e2e-20261114-9357fe50243b/free/loc03-left",
+      "status": "completed_audit",
+      "server_status": "completed_audit",
+      "receipt_sha256": "1f9bf8736eb2ec4f19350f6445b2f547f55407c687c6a5915588f405e5990632",
+      "model_profile": "fp4-3",
+      "model_needs_review": false,
+      "instruction": "Move forward and slightly to the left to stop on the floor in front of the large stone fireplace.",
+      "movement_attempted": true,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.062080398201942444,
+        "steps": 12,
+        "source": "expert_not_vla"
+      },
+      "frames": 13,
+      "recording_complete": true,
+      "goal_recorded_before_movement": true,
+      "selected_goal": [
+        2.718999147415161,
+        0.007922172546386719,
+        -4.29993200302124
+      ],
+      "cache": {
+        "scene_loads": 2,
+        "cache_hits": 5,
+        "cached_scenes": 1
+      },
+      "pointnav_frames": 13,
+      "inside_original_bbox": true,
+      "bbox": [
+        350,
+        650,
+        650,
+        850
+      ],
+      "target_view": "front"
+    },
+    {
+      "lane": "free",
+      "id": "extra01-right",
+      "request_id": "4aa8f0e061d9affa55baf972d7094869d369dd2efe6203071fbe0bb528c7ed8a",
+      "folder": "/data/nav_storage/nav-train/collections/concurrent-e2e-20261114-9357fe50243b/free/extra01-right",
+      "status": "completed_audit",
+      "server_status": "completed_audit",
+      "receipt_sha256": "c2d694b6b9f40f4fe2905ea072838919e918fa50fbc6a845b75eda0fcffab6d4",
+      "model_profile": "fp4-1",
+      "model_needs_review": false,
+      "instruction": "Move forward and stop on the floor just inside the doorway to the bedroom.",
+      "movement_attempted": true,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.0076502482406795025,
+        "steps": 23,
+        "source": "expert_not_vla"
+      },
+      "frames": 24,
+      "recording_complete": true,
+      "goal_recorded_before_movement": true,
+      "selected_goal": [
+        -7.573572158813477,
+        0.10065700113773346,
+        2.031944751739502
+      ],
+      "cache": {
+        "scene_loads": 2,
+        "cache_hits": 4,
+        "cached_scenes": 1
+      },
+      "pointnav_frames": 24,
+      "inside_original_bbox": true,
+      "bbox": [
+        450,
+        550,
+        650,
+        750
+      ],
+      "target_view": "front"
+    },
+    {
+      "lane": "free",
+      "id": "extra02-left",
+      "request_id": "c91276ad55191ef1f04d2f0db2858e895d998204e47a03c3c13950afad5a5482",
+      "folder": "/data/nav_storage/nav-train/collections/concurrent-e2e-20261114-9357fe50243b/free/extra02-left",
+      "status": "completed_audit",
+      "server_status": "completed_audit",
+      "receipt_sha256": "f76938f76ea13f45dc1f77c208ba4847cf2adcf397a60d83d0602b6b9c9da74e",
+      "model_profile": "fp4-1",
+      "model_needs_review": false,
+      "instruction": "Turn left and walk down the long hallway to the end.",
+      "movement_attempted": true,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.06239473447203636,
+        "steps": 21,
+        "source": "expert_not_vla"
+      },
+      "frames": 22,
+      "recording_complete": true,
+      "goal_recorded_before_movement": true,
+      "selected_goal": [
+        -5.067958831787109,
+        0.10065700113773346,
+        -1.3038640022277832
+      ],
+      "cache": {
+        "scene_loads": 2,
+        "cache_hits": 2,
+        "cached_scenes": 1
+      },
+      "pointnav_frames": 22,
+      "inside_original_bbox": true,
+      "bbox": [
+        400,
+        600,
+        600,
+        800
+      ],
+      "target_view": "left"
+    },
+    {
+      "lane": "free",
+      "id": "extra03-right",
+      "request_id": "2509852526b21ed69a4e3ed943c82d084a8b9d20069ffb03e5a9c51bb9994489",
+      "folder": "/data/nav_storage/nav-train/collections/concurrent-e2e-20261114-9357fe50243b/free/extra03-right",
+      "status": "completed_audit",
+      "server_status": "completed_audit",
+      "receipt_sha256": "8bcd79ac75c0c69d2594022b21c514ce4029a2b4c0f01cec286462a86e4aa8a5",
+      "model_profile": "fp4-3",
+      "model_needs_review": false,
+      "instruction": "Move forward and slightly to the right, towards the dining area, and stop on the floor in front of the dining table.",
+      "movement_attempted": true,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.01745588704943657,
+        "steps": 16,
+        "source": "expert_not_vla"
+      },
+      "frames": 17,
+      "recording_complete": true,
+      "goal_recorded_before_movement": true,
+      "selected_goal": [
+        -3.7462968826293945,
+        7.442663669586182,
+        11.408246040344238
+      ],
+      "cache": {
+        "scene_loads": 2,
+        "cache_hits": 5,
+        "cached_scenes": 1
+      },
+      "pointnav_frames": 17,
+      "inside_original_bbox": true,
+      "bbox": [
+        600,
+        600,
+        900,
+        800
+      ],
+      "target_view": "front"
+    },
+    {
+      "lane": "free",
+      "id": "extra04-front",
+      "request_id": "ed535e1ba2ff6c6cbf0fb63a2f6371bf19dca6c4e6af7920d24a9818f8e3fa3b",
+      "folder": "/data/nav_storage/nav-train/collections/concurrent-e2e-20261114-9357fe50243b/free/extra04-front",
+      "status": "completed_audit",
+      "server_status": "completed_audit",
+      "receipt_sha256": "f5c34ea30fc4cc608066e8fac6dcc187cf890962b894efe5ba2d3492d22fb4b3",
+      "model_profile": "fp4-3",
+      "model_needs_review": false,
+      "instruction": "Move forward along the hallway, keeping the decorative railing on your right, and stop at the floor area just before the doorway at the end of the hall.",
+      "movement_attempted": true,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.036439199000597,
+        "steps": 22,
+        "source": "expert_not_vla"
+      },
+      "frames": 23,
+      "recording_complete": true,
+      "goal_recorded_before_movement": true,
+      "selected_goal": [
+        10.962307929992676,
+        3.598568916320801,
+        11.45241641998291
+      ],
+      "cache": {
+        "scene_loads": 3,
+        "cache_hits": 3,
+        "cached_scenes": 1
+      },
+      "pointnav_frames": 23,
+      "inside_original_bbox": true,
+      "bbox": [
+        350,
+        550,
+        550,
+        750
+      ],
+      "target_view": "front"
+    },
+    {
+      "lane": "r2r",
+      "id": "ep2862-group2-start-0",
+      "request_id": "4aac5be2646931a74c3011a68e329045f2c5c7c7fc884165b960e390c6927583",
+      "folder": "/data/nav_storage/nav-train/collections/concurrent-e2e-20261114-9357fe50243b/r2r/attempt/candidates/ep2862-group2-start-0",
+      "status": "completed_audit",
+      "server_status": "completed_audit",
+      "receipt_sha256": "08a14f2ed109eee517d668c96ce7989a13c8a5cf078daa18061df7c4d4187dc4",
+      "model_profile": "fp4-0",
+      "model_needs_review": false,
+      "instruction": "Move forward through the open doorway and stop in the hallway outside.",
+      "movement_attempted": true,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.006259727757424116,
+        "steps": 17,
+        "source": "expert_not_vla"
+      },
+      "frames": 18,
+      "recording_complete": true,
+      "goal_recorded_before_movement": true,
+      "selected_goal": [
+        -3.4459099769592285,
+        0.10065700113773346,
+        1.8572800159454346
+      ],
+      "cache": {
+        "scene_loads": 1,
+        "cache_hits": 3,
+        "cached_scenes": 1
+      }
+    },
+    {
+      "lane": "r2r",
+      "id": "ep2862-group2-start-1",
+      "request_id": "8fe7043927c4a6458109579a43f4c3cbbabd7ddf7ca17dde3555145a7ba89b5c",
+      "folder": "/data/nav_storage/nav-train/collections/concurrent-e2e-20261114-9357fe50243b/r2r/attempt/candidates/ep2862-group2-start-1",
+      "status": "completed_audit",
+      "server_status": "completed_audit",
+      "receipt_sha256": "c0e5aa3e2f4cf28234fb6ce75d9e269029f7abbbafaf4388fe680072a7ff9601",
+      "model_profile": "fp4-0",
+      "model_needs_review": false,
+      "instruction": "Move forward through the open doorway and stop in the hallway outside.",
+      "movement_attempted": true,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.010616850107908249,
+        "steps": 17,
+        "source": "expert_not_vla"
+      },
+      "frames": 18,
+      "recording_complete": true,
+      "goal_recorded_before_movement": true,
+      "selected_goal": [
+        -3.4459099769592285,
+        0.10065700113773346,
+        1.8572800159454346
+      ],
+      "cache": {
+        "scene_loads": 1,
+        "cache_hits": 3,
+        "cached_scenes": 1
+      }
+    },
+    {
+      "lane": "r2r",
+      "id": "ep2862-group2-mid-0",
+      "request_id": "657dae5faa3f8b4069cfa1dc4da0699dac8f0e31a0079fa886bcef6602271cc4",
+      "folder": "/data/nav_storage/nav-train/collections/concurrent-e2e-20261114-9357fe50243b/r2r/attempt/candidates/ep2862-group2-mid-0",
+      "status": "completed_audit",
+      "server_status": "completed_audit",
+      "receipt_sha256": "279bf2d041e0960331744ec3d655f6671c641ba8e59d053bafb273723c566851",
+      "model_profile": "fp4-0",
+      "model_needs_review": false,
+      "instruction": "Move forward through the open doorway into the hallway and stop.",
+      "movement_attempted": true,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.07810395956039429,
+        "steps": 13,
+        "source": "expert_not_vla"
+      },
+      "frames": 14,
+      "recording_complete": true,
+      "goal_recorded_before_movement": true,
+      "selected_goal": [
+        -3.4459099769592285,
+        0.10065700113773346,
+        1.8572800159454346
+      ],
+      "cache": {
+        "scene_loads": 1,
+        "cache_hits": 3,
+        "cached_scenes": 1
+      }
+    },
+    {
+      "lane": "r2r",
+      "id": "ep2862-group2-mid-1",
+      "request_id": "f09f8be324449c7304da561bb4313dc9f167d725ca616618a4fcf208f1c0f84e",
+      "folder": "/data/nav_storage/nav-train/collections/concurrent-e2e-20261114-9357fe50243b/r2r/attempt/candidates/ep2862-group2-mid-1",
+      "status": "completed_audit",
+      "server_status": "completed_audit",
+      "receipt_sha256": "19ff6f48f960c3c162b82bed35f6522e579d7644772b388c2e681ec78c29400b",
+      "model_profile": "fp4-2",
+      "model_needs_review": false,
+      "instruction": "Move forward through the open doorway and stop in the hallway outside.",
+      "movement_attempted": true,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.007792614866048098,
+        "steps": 10,
+        "source": "expert_not_vla"
+      },
+      "frames": 11,
+      "recording_complete": true,
+      "goal_recorded_before_movement": true,
+      "selected_goal": [
+        -3.4459099769592285,
+        0.10065700113773346,
+        1.8572800159454346
+      ],
+      "cache": {
+        "scene_loads": 4,
+        "cache_hits": 3,
+        "cached_scenes": 1
+      }
+    },
+    {
+      "lane": "r2r",
+      "id": "ep3070-group1-start-0",
+      "request_id": "d1f0613dd70f97e10a55f2255c80402efc9a17eac9531a6aeb4316e5c97832f5",
+      "folder": "/data/nav_storage/nav-train/collections/concurrent-e2e-20261114-9357fe50243b/r2r/attempt/candidates/ep3070-group1-start-0",
+      "status": "completed_audit",
+      "server_status": "completed_audit",
+      "receipt_sha256": "a916f5b03b2d1450c34bce72ac81aec686edd91e88378c61cf4df665a6894bb1",
+      "model_profile": "fp4-0",
+      "model_needs_review": false,
+      "instruction": "Turn right to face the hallway and proceed forward.",
+      "movement_attempted": true,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.0699227824807167,
+        "steps": 43,
+        "source": "expert_not_vla"
+      },
+      "frames": 44,
+      "recording_complete": true,
+      "goal_recorded_before_movement": true,
+      "selected_goal": [
+        7.48360013961792,
+        0.007922172546386719,
+        -2.137239933013916
+      ],
+      "cache": {
+        "scene_loads": 1,
+        "cache_hits": 3,
+        "cached_scenes": 1
+      }
+    },
+    {
+      "lane": "r2r",
+      "id": "ep3070-group1-start-1",
+      "request_id": "c48bc19310813455c99aa7d76aec01630a1f5672794785cb139de3be944ad7bc",
+      "folder": "/data/nav_storage/nav-train/collections/concurrent-e2e-20261114-9357fe50243b/r2r/attempt/candidates/ep3070-group1-start-1",
+      "status": "completed_audit",
+      "server_status": "completed_audit",
+      "receipt_sha256": "20d4c395bc64c9555fd157a643234fdc817dc53bc3ab783fac416734df8a17c3",
+      "model_profile": "fp4-1",
+      "model_needs_review": false,
+      "instruction": "Move forward and turn right to enter the hallway.",
+      "movement_attempted": true,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.0707840770483017,
+        "steps": 41,
+        "source": "expert_not_vla"
+      },
+      "frames": 42,
+      "recording_complete": true,
+      "goal_recorded_before_movement": true,
+      "selected_goal": [
+        7.48360013961792,
+        0.007922172546386719,
+        -2.137239933013916
+      ],
+      "cache": {
+        "scene_loads": 1,
+        "cache_hits": 3,
+        "cached_scenes": 1
+      }
+    },
+    {
+      "lane": "r2r",
+      "id": "ep3070-group1-mid-0",
+      "request_id": "dc245708362e9d0454f97e5a69a939f3244f5a2777209e1996f83f42a22a9920",
+      "folder": "/data/nav_storage/nav-train/collections/concurrent-e2e-20261114-9357fe50243b/r2r/attempt/candidates/ep3070-group1-mid-0",
+      "status": "completed_audit",
+      "server_status": "completed_audit",
+      "receipt_sha256": "1c488f7500ba9a3d1c3360fdd3d03e26ce22db070dba90308f53f4e72e41acf2",
+      "model_profile": "fp4-1",
+      "model_needs_review": false,
+      "instruction": "Move forward and turn right into the hallway opening on the right side of the display case.",
+      "movement_attempted": true,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.07127527892589569,
+        "steps": 21,
+        "source": "expert_not_vla"
+      },
+      "frames": 22,
+      "recording_complete": true,
+      "goal_recorded_before_movement": true,
+      "selected_goal": [
+        7.48360013961792,
+        0.007922172546386719,
+        -2.137239933013916
+      ],
+      "cache": {
+        "scene_loads": 1,
+        "cache_hits": 3,
+        "cached_scenes": 1
+      }
+    },
+    {
+      "lane": "r2r",
+      "id": "ep3070-group1-mid-1",
+      "request_id": "ecb6edd56bc4a0cfdfd07b95f10a6c7312cb1781d4c0d8b2849bad0b5da8276c",
+      "folder": "/data/nav_storage/nav-train/collections/concurrent-e2e-20261114-9357fe50243b/r2r/attempt/candidates/ep3070-group1-mid-1",
+      "status": "completed_audit",
+      "server_status": "completed_audit",
+      "receipt_sha256": "649d19ef0e2df5bbd234e5c4859e799f05bd13bc45378a09ae76cd7e6463794f",
+      "model_profile": "fp4-2",
+      "model_needs_review": false,
+      "instruction": "Move forward down the hallway and turn left into the first open doorway on the left.",
+      "movement_attempted": true,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.09676655381917953,
+        "steps": 20,
+        "source": "expert_not_vla"
+      },
+      "frames": 21,
+      "recording_complete": true,
+      "goal_recorded_before_movement": true,
+      "selected_goal": [
+        7.48360013961792,
+        0.007922172546386719,
+        -2.137239933013916
+      ],
+      "cache": {
+        "scene_loads": 2,
+        "cache_hits": 2,
+        "cached_scenes": 1
+      }
+    },
+    {
+      "lane": "r2r",
+      "id": "ep2461-group0-start-0",
+      "request_id": "a0869d531e353a3c05427a516455519d391a5c01eb4bf0e35705d4bb42e361d1",
+      "folder": "/data/nav_storage/nav-train/collections/concurrent-e2e-20261114-9357fe50243b/r2r/attempt/candidates/ep2461-group0-start-0",
+      "status": "completed_audit",
+      "server_status": "completed_audit",
+      "receipt_sha256": "75bd9e04568fc1fc20e481fed630bb359d1444b776eddf5a912c6fb154dce8bd",
+      "model_profile": "fp4-2",
+      "model_needs_review": false,
+      "instruction": "Move forward and slightly to the right to walk past the kitchen island and stools.",
+      "movement_attempted": true,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.005665456410497427,
+        "steps": 55,
+        "source": "expert_not_vla"
+      },
+      "frames": 56,
+      "recording_complete": true,
+      "goal_recorded_before_movement": true,
+      "selected_goal": [
+        -6.453609943389893,
+        0.08632707595825195,
+        -2.8661000728607178
+      ],
+      "cache": {
+        "scene_loads": 2,
+        "cache_hits": 3,
+        "cached_scenes": 1
+      }
+    },
+    {
+      "lane": "r2r",
+      "id": "ep2461-group0-start-1",
+      "request_id": "1ec4ff96d134e879b1956ce2e916b5ecbc695c949747d73e7034170abab43800",
+      "folder": "/data/nav_storage/nav-train/collections/concurrent-e2e-20261114-9357fe50243b/r2r/attempt/candidates/ep2461-group0-start-1",
+      "status": "completed_audit",
+      "server_status": "completed_audit",
+      "receipt_sha256": "de4edb934395c936f70e3e6470a8b30a2a8e541540df131ffc5b6b72e6548ee1",
+      "model_profile": "fp4-2",
+      "model_needs_review": false,
+      "instruction": "Move forward along the open floor, keeping the kitchen bar on your left, and continue straight past the kitchen area toward the staircase and living room.",
+      "movement_attempted": true,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.005653268191963434,
+        "steps": 62,
+        "source": "expert_not_vla"
+      },
+      "frames": 63,
+      "recording_complete": true,
+      "goal_recorded_before_movement": true,
+      "selected_goal": [
+        -6.453609943389893,
+        0.08632707595825195,
+        -2.8661000728607178
+      ],
+      "cache": {
+        "scene_loads": 1,
+        "cache_hits": 4,
+        "cached_scenes": 1
+      }
+    },
+    {
+      "lane": "r2r",
+      "id": "ep2461-group0-mid-0",
+      "request_id": "c186d5dc7bb9faaa78287d96f1349b60a6df5c705cfcc6aad0ff018088b36995",
+      "folder": "/data/nav_storage/nav-train/collections/concurrent-e2e-20261114-9357fe50243b/r2r/attempt/candidates/ep2461-group0-mid-0",
+      "status": "completed_audit",
+      "server_status": "completed_audit",
+      "receipt_sha256": "cce4f186d9873ff3e20c8f81f0a91fe81e8248bbd4283fc0de6d458aa5afc844",
+      "model_profile": "fp4-1",
+      "model_needs_review": false,
+      "instruction": "Move forward and slightly left to walk past the kitchen area, keeping the kitchen counter on your right and the spiral staircase on your left.",
+      "movement_attempted": true,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.012873384170234203,
+        "steps": 31,
+        "source": "expert_not_vla"
+      },
+      "frames": 32,
+      "recording_complete": true,
+      "goal_recorded_before_movement": true,
+      "selected_goal": [
+        -6.453609943389893,
+        0.08632707595825195,
+        -2.8661000728607178
+      ],
+      "cache": {
+        "scene_loads": 1,
+        "cache_hits": 4,
+        "cached_scenes": 1
+      }
+    },
+    {
+      "lane": "r2r",
+      "id": "ep2461-group0-mid-1",
+      "request_id": "a34884ae25f6d548a3704e50e79f242041d8313dc9a234ad96586b6f2598245e",
+      "folder": "/data/nav_storage/nav-train/collections/concurrent-e2e-20261114-9357fe50243b/r2r/attempt/candidates/ep2461-group0-mid-1",
+      "status": "completed_audit",
+      "server_status": "completed_audit",
+      "receipt_sha256": "5b824e396336f5d4bc9a61df256d661272a0d4f1be33690a7e49e1c720f207a8",
+      "model_profile": "fp4-1",
+      "model_needs_review": false,
+      "instruction": "Move forward and slightly left, passing the spiral staircase on your left and the TV area on your right, to continue past the kitchen area.",
+      "movement_attempted": true,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.0477738194167614,
+        "steps": 26,
+        "source": "expert_not_vla"
+      },
+      "frames": 27,
+      "recording_complete": true,
+      "goal_recorded_before_movement": true,
+      "selected_goal": [
+        -6.453609943389893,
+        0.08632707595825195,
+        -2.8661000728607178
+      ],
+      "cache": {
+        "scene_loads": 1,
+        "cache_hits": 4,
+        "cached_scenes": 1
+      }
+    },
+    {
+      "lane": "r2r",
+      "id": "ep6318-group2-start-0",
+      "request_id": "e0a31cc3e2cadc94a2c83fbad4996de21493e5825ff44426b0c54fdad265672e",
+      "folder": "/data/nav_storage/nav-train/collections/concurrent-e2e-20261114-9357fe50243b/r2r/attempt/candidates/ep6318-group2-start-0",
+      "status": "completed_audit",
+      "server_status": "completed_audit",
+      "receipt_sha256": "39c6c7eb3fcdbf58517bef7b1d14e68a049acad035c921d45d6919efecc47b6b",
+      "model_profile": "fp4-3",
+      "model_needs_review": false,
+      "instruction": "Move forward along the hallway, keeping the decorative metal railing on your right, until you reach the end of the railing section.",
+      "movement_attempted": true,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.0004663477302528918,
+        "steps": 15,
+        "source": "expert_not_vla"
+      },
+      "frames": 16,
+      "recording_complete": true,
+      "goal_recorded_before_movement": true,
+      "selected_goal": [
+        9.423680305480957,
+        3.598568916320801,
+        10.681599617004395
+      ],
+      "cache": {
+        "scene_loads": 2,
+        "cache_hits": 4,
+        "cached_scenes": 1
+      }
+    },
+    {
+      "lane": "r2r",
+      "id": "ep6318-group2-start-1",
+      "request_id": "cad99170066e93ed4166b0c652a230d906f36e36f4350445f66bbf65cd272d53",
+      "folder": "/data/nav_storage/nav-train/collections/concurrent-e2e-20261114-9357fe50243b/r2r/attempt/candidates/ep6318-group2-start-1",
+      "status": "completed_audit",
+      "server_status": "completed_audit",
+      "receipt_sha256": "f97d4a565290fe583a8030b7312ee9836aa1053fe14687a68f4985ab74f4fb2c",
+      "model_profile": "fp4-3",
+      "model_needs_review": false,
+      "instruction": "Turn right to face the hallway with the decorative railing, then move forward and stop on the left side next to the railing.",
+      "movement_attempted": true,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.0681455135345459,
+        "steps": 25,
+        "source": "expert_not_vla"
+      },
+      "frames": 26,
+      "recording_complete": true,
+      "goal_recorded_before_movement": true,
+      "selected_goal": [
+        9.423680305480957,
+        3.598568916320801,
+        10.681599617004395
+      ],
+      "cache": {
+        "scene_loads": 2,
+        "cache_hits": 4,
+        "cached_scenes": 1
+      }
+    },
+    {
+      "lane": "r2r",
+      "id": "ep6318-group2-mid-0",
+      "request_id": "750ecd3b9582d7136ced6b5586e6fbabc0f5f058b335970e5766a839abb94a3d",
+      "folder": "/data/nav_storage/nav-train/collections/concurrent-e2e-20261114-9357fe50243b/r2r/attempt/candidates/ep6318-group2-mid-0",
+      "status": "completed_audit",
+      "server_status": "completed_audit",
+      "receipt_sha256": "1e1c95be9179b78b01d581f243230727661d4a5afdeaba74d5c57d0cdd8b285f",
+      "model_profile": "fp4-3",
+      "model_needs_review": false,
+      "instruction": "Move forward along the hallway, keeping the decorative metal railing on your right, until you reach the end of the railing section. Stop on the left side of the hallway, adjacent to the railing.",
+      "movement_attempted": true,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.04730172082781792,
+        "steps": 10,
+        "source": "expert_not_vla"
+      },
+      "frames": 11,
+      "recording_complete": true,
+      "goal_recorded_before_movement": true,
+      "selected_goal": [
+        9.423680305480957,
+        3.598568916320801,
+        10.681599617004395
+      ],
+      "cache": {
+        "scene_loads": 2,
+        "cache_hits": 5,
+        "cached_scenes": 1
+      }
+    },
+    {
+      "lane": "r2r",
+      "id": "ep6318-group2-mid-1",
+      "request_id": "5e7dd54b534e18487089605ef83c0379620428da71661b1fb6cbebeaeb8f7c3a",
+      "folder": "/data/nav_storage/nav-train/collections/concurrent-e2e-20261114-9357fe50243b/r2r/attempt/candidates/ep6318-group2-mid-1",
+      "status": "completed_audit",
+      "server_status": "completed_audit",
+      "receipt_sha256": "66cde1c05d7239441a2d9a8197705db11252a9fcb712b7b455b699b867788642",
+      "model_profile": "fp4-3",
+      "model_needs_review": false,
+      "instruction": "Move forward and turn right to follow the hallway along the railing, then stop on the left side next to the rail.",
+      "movement_attempted": true,
+      "geometry": {
+        "passed": true,
+        "termination": "expert_stop",
+        "collision_steps": 0,
+        "final_distance_m": 0.02144661359488964,
+        "steps": 10,
+        "source": "expert_not_vla"
+      },
+      "frames": 11,
+      "recording_complete": true,
+      "goal_recorded_before_movement": true,
+      "selected_goal": [
+        9.423680305480957,
+        3.598568916320801,
+        10.681599617004395
+      ],
+      "cache": {
+        "scene_loads": 3,
+        "cache_hits": 2,
+        "cached_scenes": 1
+      }
+    }
+  ],
+  "model_intervals": [
+    {
+      "lane": "free",
+      "id": "loc01-front",
+      "profile": "fp4-0",
+      "interval_unix": [
+        1794643523.5896628,
+        1794643528.756663
+      ],
+      "wall_s": 5.388873239047825,
+      "needs_review": false
+    },
+    {
+      "lane": "free",
+      "id": "loc01-right",
+      "profile": "fp4-0",
+      "interval_unix": [
+        1794643523.436663,
+        1794643529.036663
+      ],
+      "wall_s": 5.658449606969953,
+      "needs_review": false
+    },
+    {
+      "lane": "free",
+      "id": "loc01-back",
+      "profile": "fp4-0",
+      "interval_unix": [
+        1794643523.558663,
+        1794643528.928663
+      ],
+      "wall_s": 5.550633216742426,
+      "needs_review": false
+    },
+    {
+      "lane": "free",
+      "id": "loc01-left",
+      "profile": "fp4-2",
+      "interval_unix": [
+        1794643529.227663,
+        1794643534.5136635
+      ],
+      "wall_s": 5.323991388082504,
+      "needs_review": false
+    },
+    {
+      "lane": "free",
+      "id": "loc02-front",
+      "profile": "fp4-0",
+      "interval_unix": [
+        1794643523.4866629,
+        1794643528.671663
+      ],
+      "wall_s": 5.303077241871506,
+      "needs_review": false
+    },
+    {
+      "lane": "free",
+      "id": "loc02-right",
+      "profile": "fp4-1",
+      "interval_unix": [
+        1794643523.5596628,
+        1794643529.565663
+      ],
+      "wall_s": 6.192439171951264,
+      "needs_review": false
+    },
+    {
+      "lane": "free",
+      "id": "loc02-back",
+      "profile": "fp4-1",
+      "interval_unix": [
+        1794643523.528663,
+        1794643529.677663
+      ],
+      "wall_s": 6.304973603691906,
+      "needs_review": false
+    },
+    {
+      "lane": "free",
+      "id": "loc02-left",
+      "profile": "fp4-2",
+      "interval_unix": [
+        1794643527.529663,
+        1794643533.4566634
+      ],
+      "wall_s": 6.812565237749368,
+      "needs_review": false
+    },
+    {
+      "lane": "free",
+      "id": "loc03-front",
+      "profile": "fp4-2",
+      "interval_unix": [
+        1794643531.5026634,
+        1794643535.3256636
+      ],
+      "wall_s": 3.886956120841205,
+      "needs_review": false
+    },
+    {
+      "lane": "free",
+      "id": "loc03-right",
+      "profile": "fp4-2",
+      "interval_unix": [
+        1794643531.7076633,
+        1794643535.2936635
+      ],
+      "wall_s": 3.645608268212527,
+      "needs_review": false
+    },
+    {
+      "lane": "free",
+      "id": "loc03-back",
+      "profile": "fp4-3",
+      "interval_unix": [
+        1794643532.9086633,
+        1794643538.6836636
+      ],
+      "wall_s": 5.829023968894035,
+      "needs_review": false
+    },
+    {
+      "lane": "free",
+      "id": "loc03-left",
+      "profile": "fp4-3",
+      "interval_unix": [
+        1794643533.0306633,
+        1794643538.6306636
+      ],
+      "wall_s": 5.667426114436239,
+      "needs_review": false
+    },
+    {
+      "lane": "free",
+      "id": "extra01-right",
+      "profile": "fp4-1",
+      "interval_unix": [
+        1794643523.7286627,
+        1794643529.4166632
+      ],
+      "wall_s": 5.772744887042791,
+      "needs_review": false
+    },
+    {
+      "lane": "free",
+      "id": "extra02-left",
+      "profile": "fp4-1",
+      "interval_unix": [
+        1794643523.7476628,
+        1794643529.4986632
+      ],
+      "wall_s": 5.852676914073527,
+      "needs_review": false
+    },
+    {
+      "lane": "free",
+      "id": "extra03-right",
+      "profile": "fp4-3",
+      "interval_unix": [
+        1794643547.9716642,
+        1794643551.0756643
+      ],
+      "wall_s": 3.1541385538876057,
+      "needs_review": false
+    },
+    {
+      "lane": "free",
+      "id": "extra04-front",
+      "profile": "fp4-3",
+      "interval_unix": [
+        1794643536.7106636,
+        1794643540.8646638
+      ],
+      "wall_s": 4.208813622128218,
+      "needs_review": false
+    },
+    {
+      "lane": "r2r",
+      "id": "ep2862-group2-start-0",
+      "profile": "fp4-0",
+      "interval_unix": [
+        1794643523.758663,
+        1794643527.796663
+      ],
+      "wall_s": 4.075004066806287,
+      "needs_review": false
+    },
+    {
+      "lane": "r2r",
+      "id": "ep2862-group2-start-1",
+      "profile": "fp4-0",
+      "interval_unix": [
+        1794643523.9016628,
+        1794643527.651663
+      ],
+      "wall_s": 3.946162376087159,
+      "needs_review": false
+    },
+    {
+      "lane": "r2r",
+      "id": "ep2862-group2-mid-0",
+      "profile": "fp4-0",
+      "interval_unix": [
+        1794643523.870663,
+        1794643528.020663
+      ],
+      "wall_s": 4.1886694161221385,
+      "needs_review": false
+    },
+    {
+      "lane": "r2r",
+      "id": "ep2862-group2-mid-1",
+      "profile": "fp4-2",
+      "interval_unix": [
+        1794643529.9976633,
+        1794643533.7456634
+      ],
+      "wall_s": 4.337671564891934,
+      "needs_review": false
+    },
+    {
+      "lane": "r2r",
+      "id": "ep3070-group1-start-0",
+      "profile": "fp4-0",
+      "interval_unix": [
+        1794643524.8556628,
+        1794643528.020663
+      ],
+      "wall_s": 3.23595663998276,
+      "needs_review": false
+    },
+    {
+      "lane": "r2r",
+      "id": "ep3070-group1-start-1",
+      "profile": "fp4-1",
+      "interval_unix": [
+        1794643524.9276628,
+        1794643528.3186631
+      ],
+      "wall_s": 3.4326850660145283,
+      "needs_review": false
+    },
+    {
+      "lane": "r2r",
+      "id": "ep3070-group1-mid-0",
+      "profile": "fp4-1",
+      "interval_unix": [
+        1794643524.823663,
+        1794643528.842663
+      ],
+      "wall_s": 4.057655876968056,
+      "needs_review": false
+    },
+    {
+      "lane": "r2r",
+      "id": "ep3070-group1-mid-1",
+      "profile": "fp4-2",
+      "interval_unix": [
+        1794643532.4506633,
+        1794643535.1406634
+      ],
+      "wall_s": 2.742382851894945,
+      "needs_review": false
+    },
+    {
+      "lane": "r2r",
+      "id": "ep2461-group0-start-0",
+      "profile": "fp4-2",
+      "interval_unix": [
+        1794643529.4796631,
+        1794643533.5006633
+      ],
+      "wall_s": 4.853486279956996,
+      "needs_review": false
+    },
+    {
+      "lane": "r2r",
+      "id": "ep2461-group0-start-1",
+      "profile": "fp4-2",
+      "interval_unix": [
+        1794643525.3516629,
+        1794643528.3376632
+      ],
+      "wall_s": 3.016472599003464,
+      "needs_review": false
+    },
+    {
+      "lane": "r2r",
+      "id": "ep2461-group0-mid-0",
+      "profile": "fp4-1",
+      "interval_unix": [
+        1794643525.185663,
+        1794643528.898663
+      ],
+      "wall_s": 3.791692951694131,
+      "needs_review": false
+    },
+    {
+      "lane": "r2r",
+      "id": "ep2461-group0-mid-1",
+      "profile": "fp4-1",
+      "interval_unix": [
+        1794643525.185663,
+        1794643528.723663
+      ],
+      "wall_s": 3.6161654330790043,
+      "needs_review": false
+    },
+    {
+      "lane": "r2r",
+      "id": "ep6318-group2-start-0",
+      "profile": "fp4-3",
+      "interval_unix": [
+        1794643535.4506636,
+        1794643540.2906637
+      ],
+      "wall_s": 4.886139341630042,
+      "needs_review": false
+    },
+    {
+      "lane": "r2r",
+      "id": "ep6318-group2-start-1",
+      "profile": "fp4-3",
+      "interval_unix": [
+        1794643535.8426635,
+        1794643540.0066638
+      ],
+      "wall_s": 4.192145603708923,
+      "needs_review": false
+    },
+    {
+      "lane": "r2r",
+      "id": "ep6318-group2-mid-0",
+      "profile": "fp4-3",
+      "interval_unix": [
+        1794643536.6866636,
+        1794643540.7466638
+      ],
+      "wall_s": 4.0938923340290785,
+      "needs_review": false
+    },
+    {
+      "lane": "r2r",
+      "id": "ep6318-group2-mid-1",
+      "profile": "fp4-3",
+      "interval_unix": [
+        1794643537.0116637,
+        1794643540.4266639
+      ],
+      "wall_s": 3.456051681190729,
+      "needs_review": false
+    }
+  ],
+  "source_inputs": {
+    "owner": "9357fe50243b445a8c7dc5262603a7c9",
+    "free_owner": "fe41a6ef06bf4152a709dd84f9ab37b1",
+    "r2r_owner": "170da0db16ad4b70a61686df29dc5cb9",
+    "free_cases": 16,
+    "r2r_candidates": 16,
+    "free_config_sha256": "c03cabee0ee5371ee679fcee251f51c15171b4d95e74eb1cf14469ca593227da",
+    "r2r_manifest_sha256": "af247f2b09e2d94445219a8052978b0c638ec62584018ec1608e20160dcabe3a",
+    "server_owner": "ddf3f404c6b64875822dbcfbfd110e67",
+    "source_hash_checks": "passed",
+    "status": "prepared_not_launched"
+  },
+  "source_test_code": {
+    "owner": "9357fe50243b445a8c7dc5262603a7c9",
+    "script_sha256": {
+      "runner.py": "9ccb731e785bdbf53a3c9d0524c9cee26668f4883a774a9fdbf79ed8cfcdc411",
+      "controller.py": "d7d6f8ca0f09d93c4ed7b727495fb79eb629e28b4ca7084afe3d52d2ba222bfa"
+    },
+    "client_source_provenance_sha256": "490460b922fa8f9ac8d45459050892dfc0fb489234f3e5e37e564ca2ee2390a3",
+    "scope": "training_dev_concurrent_end_to_end_validation"
+  },
+  "server_after": {
+    "status": "ok",
+    "service_owner": "ddf3f404c6b64875822dbcfbfd110e67",
+    "workers": 16,
+    "live_workers": 16,
+    "active": 0,
+    "root": "/data/nav_storage/sim-engine/collections/train-v1"
+  }
+}

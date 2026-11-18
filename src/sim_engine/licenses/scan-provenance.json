@@ -1,0 +1,14 @@
+{
+  "source": "open-nav-harness-tools",
+  "files": [
+    "navgpt/environment/scan_assets.py",
+    "navgpt/environment/scan_probe.py"
+  ],
+  "license": "Apache-2.0",
+  "changes": "Standalone importer, bake entry point and runtime fingerprint adapted to sim-engine",
+  "source_revision": "923bb8cf24792c11dd7188e9bab1c2b1eed283d4",
+  "source_sha256": {
+    "navgpt/environment/scan_assets.py": "9f8534df6688aa82bef5741452a0613ea52c2770ad2e22216dad41d7dfc4fa4a",
+    "navgpt/environment/scan_probe.py": "5c616e49d04e98925b5183c725d7b8ab870a19ee17094a919029e3a4cd2c3148"
+  }
+}

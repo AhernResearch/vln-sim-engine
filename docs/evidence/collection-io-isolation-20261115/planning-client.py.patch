@@ -1,0 +1,11 @@
+--- previous/planning/client.py
++++ fixed/planning/client.py
+@@ -37,7 +37,7 @@
+         return await self.service.submit(job)
+ 
+     async def status(self, attempt_id):
+-        return self.service.status(attempt_id)
++        return await self.service.status(attempt_id)
+ 
+     async def cancel(self, attempt_id):
+         return await self.service.cancel(attempt_id)

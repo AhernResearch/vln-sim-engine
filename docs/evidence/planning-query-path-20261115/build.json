@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "g++",
+    "-shared",
+    "-fPIC",
+    "-O3",
+    "-std=c++17",
+    "-ffp-contract=off",
+    "-fno-fast-math",
+    "-DPy_LIMITED_API=0x030A0000",
+    "-I/usr/include/python3.10",
+    "/data/nav_storage/sim-engine/diagnostics/planning-query-path-0ef5079977d7/frozen/src/sim_engine/planning/_astar.cpp",
+    "/data/nav_storage/sim-engine/diagnostics/planning-query-path-0ef5079977d7/frozen/src/sim_engine/planning/_queries.cpp",
+    "/data/nav_storage/sim-engine/diagnostics/planning-query-path-0ef5079977d7/frozen/src/sim_engine/planning/_path.cpp",
+    "-o",
+    "/data/nav_storage/sim-engine/diagnostics/planning-query-path-0ef5079977d7/frozen/src/sim_engine/planning/_astar.abi3.so"
+  ],
+  "compiler": "g++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0\nCopyright (C) 2021 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+  "binary_sha256": "461236d494f50bb27806f5ab26051a5d1bb82e9361e48012731fc2ffc993611f"
+}

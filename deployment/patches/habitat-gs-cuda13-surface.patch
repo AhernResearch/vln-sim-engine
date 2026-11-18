@@ -1,0 +1,10 @@
+--- a/src/esp/gfx/gaussian_cuda_rasterizer/flip_kernels.cu
++++ b/src/esp/gfx/gaussian_cuda_rasterizer/flip_kernels.cu
+@@ -1,6 +1,6 @@
+ #include "flip_kernels.h"
+ #include <cuda_runtime.h>
+-#include <surface_functions.h>
++#include <surface_indirect_functions.h>
+ #include <cstring>
+ 
+ // CUDA kernel to convert planar RGB to interleaved RGBA and write directly to

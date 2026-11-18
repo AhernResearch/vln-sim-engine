@@ -1,0 +1,86 @@
+{
+  "schema": "open_nav_scan_v1",
+  "backend": "habitat_gs",
+  "purpose": "development",
+  "scene_id": "zhiyuan",
+  "lod": 3,
+  "units": "metre",
+  "scan_to_habitat": [
+    [
+      1,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      1,
+      0
+    ],
+    [
+      0,
+      -1,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      1
+    ]
+  ],
+  "upstream": {
+    "repository": "https://github.com/zju3dv/habitat-gs",
+    "commit": "cb01b2fdf850ce3cab28ad00461a68ac7719f23f"
+  },
+  "source": {
+    "archive": "zhiyuan-selected.zip",
+    "sha256": "2c714b8c2f1474e58af133baf26d085b53246f0318bb473c9ae1e431b2251b00",
+    "directory": "/home/holo/智元-output",
+    "selected_files": {
+      "ply-result/point_cloud/iteration_100/point_cloud_3.ply": {
+        "sha256": "9a0b3d9a729a1f7dad8126d5bb3cad0f885220fb7117f1d400c863ba2e236911",
+        "bytes": 76414545
+      },
+      "mesh/mesh.ply": {
+        "sha256": "de030720409a224b70b90a85feefced4d12137c5c3ed08d4cc294751dd3fc61e",
+        "bytes": 6186594
+      },
+      "render/assets/poses.json": {
+        "sha256": "4397c28861864ed8a70a33b9f00b32b29b1fb619a04e82091fa9950a807e661c",
+        "bytes": 1246877
+      }
+    }
+  },
+  "assets": {
+    "render": {
+      "path": "stages/m_floor.gs.ply",
+      "sha256": "1a9ab25d7f7bc6b0bc9fcb206d0eb79635bda913bc17f99bd95965fc72c83310",
+      "source_member": "智元-output/ply-result/point_cloud/iteration_100/point_cloud_3.ply",
+      "vertices": 1123730
+    },
+    "mesh": {
+      "path": "stages/m_floor.mesh.ply",
+      "sha256": "5ac1a59e5da0df94eff314fbab366be93ef238faa9dd4fd6e0a28a512f27e922",
+      "source_member": "智元-output/mesh/mesh.ply",
+      "vertices": 183495
+    },
+    "scan_poses": {
+      "path": "scan_positions.json",
+      "sha256": "a6b582f4068b8e30c841c5e432cfddf9658faad2f72310fcadd04c6b19f85499",
+      "source_member": "智元-output/render/assets/poses.json"
+    },
+    "stage": {
+      "path": "stage.stage_config.json",
+      "sha256": "9dc09277d61f86b788fb49e54431b70ac7374df020f52284e8634d27432b9f6f"
+    },
+    "geometry_stage": {
+      "path": "geometry_stage.stage_config.json",
+      "sha256": "f76747cbae04a619f96732f5d96dd134480806c126547307495f817f0f0c14ef"
+    }
+  },
+  "geometry_review": "required",
+  "evaluation_available": false
+}

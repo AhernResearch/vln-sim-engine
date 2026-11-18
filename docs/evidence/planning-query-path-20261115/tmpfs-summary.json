@@ -1,0 +1,175 @@
+{
+  "owner": "f6acd80c0ea441099daa671fb3a828d4",
+  "status": "passed",
+  "cases": [
+    {
+      "label": "ordinary_success",
+      "baseline_s": 0.5024157259613276,
+      "optimized_s": 0.5249265972524881,
+      "speedup": 0.9571161541271018,
+      "baseline_outcome": "feasible",
+      "optimized_outcome": "feasible",
+      "equal": {
+        "prepared": true,
+        "region-candidates.json_digest": true,
+        "region-selection.json_digest": true,
+        "in_box_mask_digest": true,
+        "in_box_navmesh_points_digest": true,
+        "in_box_clearance_m_digest": true
+      },
+      "passed": true
+    },
+    {
+      "label": "slow_success",
+      "baseline_s": 7.264114842750132,
+      "optimized_s": 3.9690622482448816,
+      "speedup": 1.8301841564622279,
+      "baseline_outcome": "feasible",
+      "optimized_outcome": "feasible",
+      "equal": {
+        "prepared": true,
+        "region-candidates.json_digest": true,
+        "region-selection.json_digest": true,
+        "in_box_mask_digest": true,
+        "in_box_navmesh_points_digest": true,
+        "in_box_clearance_m_digest": true
+      },
+      "passed": true
+    },
+    {
+      "label": "slow_rejection",
+      "baseline_s": 5.554125047288835,
+      "optimized_s": 2.484839570708573,
+      "speedup": 2.2352046839406334,
+      "baseline_outcome": "infeasible",
+      "optimized_outcome": "infeasible",
+      "equal": {
+        "prepared": true,
+        "region-candidates.json_digest": true,
+        "region-selection.json_digest": true,
+        "in_box_mask_digest": true,
+        "in_box_navmesh_points_digest": true,
+        "in_box_clearance_m_digest": true
+      },
+      "passed": true
+    },
+    {
+      "label": "budget_exhaustion",
+      "baseline_s": 14.725185303017497,
+      "optimized_s": 8.355441540013999,
+      "speedup": 1.7623467571999585,
+      "baseline_outcome": "budget_exhausted",
+      "optimized_outcome": "budget_exhausted",
+      "equal": {
+        "prepared": true,
+        "region-candidates.json_digest": true,
+        "in_box_mask_digest": true,
+        "in_box_navmesh_points_digest": true,
+        "in_box_clearance_m_digest": true
+      },
+      "passed": true
+    },
+    {
+      "label": "additional_s01-p00034",
+      "baseline_s": 1.2121979659423232,
+      "optimized_s": 0.8047275575809181,
+      "speedup": 1.5063457868726369,
+      "baseline_outcome": "feasible",
+      "optimized_outcome": "feasible",
+      "equal": {
+        "prepared": true,
+        "region-candidates.json_digest": true,
+        "region-selection.json_digest": true,
+        "in_box_mask_digest": true,
+        "in_box_navmesh_points_digest": true,
+        "in_box_clearance_m_digest": true
+      },
+      "passed": true
+    },
+    {
+      "label": "additional_s02-p00111",
+      "baseline_s": 0.6718865530565381,
+      "optimized_s": 0.647064970806241,
+      "speedup": 1.0383602626786759,
+      "baseline_outcome": "feasible",
+      "optimized_outcome": "feasible",
+      "equal": {
+        "prepared": true,
+        "region-candidates.json_digest": true,
+        "region-selection.json_digest": true,
+        "in_box_mask_digest": true,
+        "in_box_navmesh_points_digest": true,
+        "in_box_clearance_m_digest": true
+      },
+      "passed": true
+    },
+    {
+      "label": "additional_s04-p00116",
+      "baseline_s": 0.522140939719975,
+      "optimized_s": 0.48613516986370087,
+      "speedup": 1.0740653466120733,
+      "baseline_outcome": "feasible",
+      "optimized_outcome": "feasible",
+      "equal": {
+        "prepared": true,
+        "region-candidates.json_digest": true,
+        "region-selection.json_digest": true,
+        "in_box_mask_digest": true,
+        "in_box_navmesh_points_digest": true,
+        "in_box_clearance_m_digest": true
+      },
+      "passed": true
+    },
+    {
+      "label": "additional_s05-p00082",
+      "baseline_s": 1.1210497976280749,
+      "optimized_s": 0.7922321762889624,
+      "speedup": 1.4150520910162807,
+      "baseline_outcome": "feasible",
+      "optimized_outcome": "feasible",
+      "equal": {
+        "prepared": true,
+        "region-candidates.json_digest": true,
+        "region-selection.json_digest": true,
+        "in_box_mask_digest": true,
+        "in_box_navmesh_points_digest": true,
+        "in_box_clearance_m_digest": true
+      },
+      "passed": true
+    },
+    {
+      "label": "visible_goal_30m_geodesic",
+      "baseline_s": 22.971193930134177,
+      "optimized_s": 16.561457560863346,
+      "speedup": 1.3870273099885717,
+      "baseline_outcome": "budget_exhausted",
+      "optimized_outcome": "budget_exhausted",
+      "equal": {
+        "prepared": true,
+        "region-candidates.json_digest": true,
+        "in_box_mask_digest": true,
+        "in_box_navmesh_points_digest": true,
+        "in_box_clearance_m_digest": true
+      },
+      "passed": true
+    },
+    {
+      "label": "r2r_preflight",
+      "baseline_s": 0.1305809230543673,
+      "optimized_s": 0.2618183773010969,
+      "speedup": 0.4987462087284895,
+      "baseline_outcome": "feasible",
+      "optimized_outcome": "feasible",
+      "equal": {
+        "prepared": true
+      },
+      "passed": true
+    }
+  ],
+  "source_baseline": "/data/nav_storage/sim-engine/diagnostics/planning-native-search-26d0b461a2e7/paired-06de65ce1c39/frozen/src",
+  "source_optimized": "/data/nav_storage/sim-engine/diagnostics/planning-query-path-0ef5079977d7/frozen/src",
+  "model_calls": 0,
+  "movement_commands": 0,
+  "simulator_instances": 0,
+  "note": "paired sequential CPU plans under active host load; alternating variant order; no end-to-end throughput claim; frozen collection-v4 versus query/path collection-v5; tmpfs staging excludes persistent artifact write waits"
+}

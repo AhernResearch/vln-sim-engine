@@ -36,8 +36,10 @@ class AsyncWorkQueue:
 
     def start(self):
         if not self.workers and not self.closed:
-            self.workers = [asyncio.create_task(self._worker(), name=self.name + str(i))
-                            for i in range(self.concurrency)]
+            self.workers = [
+                asyncio.create_task(self._worker(), name=self.name + str(i))
+                for i in range(self.concurrency)
+            ]
 
     async def submit(self, value):
         if self.closed:
@@ -81,12 +83,20 @@ class AsyncWorkQueue:
                 self.queue.task_done()
 
     def snapshot(self):
-        return {"name": self.name, "capacity": self.queue.maxsize,
-                "concurrency": self.concurrency, "queued": self.queue.qsize(),
-                "active": self.active, "completed": self.completed, "failed": self.failed,
-                "rejected": self.rejected, "peak_active": self.peak_active,
-                "peak_queued": self.peak_queued, "queue_seconds": self.queue_seconds,
-                "service_seconds": self.service_seconds}
+        return {
+            "name": self.name,
+            "capacity": self.queue.maxsize,
+            "concurrency": self.concurrency,
+            "queued": self.queue.qsize(),
+            "active": self.active,
+            "completed": self.completed,
+            "failed": self.failed,
+            "rejected": self.rejected,
+            "peak_active": self.peak_active,
+            "peak_queued": self.peak_queued,
+            "queue_seconds": self.queue_seconds,
+            "service_seconds": self.service_seconds,
+        }
 
     async def close(self):
         self.closed = True
