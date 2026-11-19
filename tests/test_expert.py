@@ -5,6 +5,7 @@ import pytest
 from fastapi.testclient import TestClient
 from helpers import ExpertTestEnvironment, settings
 
+from sim_engine.backends.contracts import Capture
 from sim_engine.expert import ExpertRollout, PathPlanner
 from sim_engine.navigation.pose import Pose
 from sim_engine.navigation.tracking import ControllerProfile, Polyline, UnicycleTracker
@@ -53,6 +54,9 @@ class Environment:
 
     def distance(self, start, end):
         return float(np.hypot(end[0] - start[0], end[2] - start[2]))
+
+    def capture(self):
+        return Capture({"rgb": self.image()}, self.position(), [0, 0, 0, 1], {}, {})
 
     def velocity_step(self, linear_mps, angular_rps, dt, allow_sliding):
         self.x += linear_mps * dt * np.cos(self.yaw)

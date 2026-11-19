@@ -38,14 +38,14 @@ def test_ndtw_uses_explicit_locations_instead_of_sparse_route_waypoints(tmp_path
     from types import SimpleNamespace
 
     from sim_engine.metrics import navigation_metrics
-    from sim_engine.tasks import metrics
+    from sim_engine.tasks import NavigationTask
     sparse = [[0., 0., 0.], [2., 0., 0.]]
     dense = [[i*.25, 0., 0.] for i in range(9)]
     episode_value = {'reference_path': sparse, 'goals': [{'position': dense[-1]}]}
     fake = SimpleNamespace(distance=math.dist)
-    result = metrics(fake, episode_value, dense, stopped=True)
+    result = NavigationTask().metrics(fake, episode_value, dense, stopped=True)
     assert result['success'] == 1 and 'ndtw' not in result
     episode_value['_metric_reference_path'] = dense
-    result = metrics(fake, episode_value, dense, stopped=True)
+    result = NavigationTask().metrics(fake, episode_value, dense, stopped=True)
     assert result['ndtw'] == 1
     assert navigation_metrics(dense, sparse, dense[-1], math.dist)['ndtw'] < 1

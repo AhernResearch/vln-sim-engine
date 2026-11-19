@@ -16,7 +16,7 @@ from sim_engine.pool import SessionPool
 from sim_engine.scenes import resolve_scene
 from sim_engine.session import Session
 from sim_engine.sim_server import create_app
-from sim_engine.tasks import metrics
+from sim_engine.tasks import DevelopmentTask
 
 
 class RGBDEnvironment(TestEnvironment):
@@ -56,7 +56,7 @@ def test_http_depth_is_frozen_and_unknown_sensor_keeps_session(tmp_path):
 
 
 def test_development_metrics_do_not_require_goals(tmp_path):
-    result = metrics(TestEnvironment(settings(tmp_path)), {'_task': 'development'}, [], stopped=True)
+    result = DevelopmentTask().metrics(TestEnvironment(settings(tmp_path)), {}, [], stopped=True)
     assert result['evaluation_available'] is False
     assert result['success'] is result['distance_to_goal'] is None
 
@@ -84,7 +84,7 @@ def test_goal_reward_validation(tmp_path):
         EpisodeStore(cfg)
     ep.pop('goals')
     data.write_text(json.dumps({'episodes': [ep]}))
-    assert EpisodeStore(cfg).get('dev', 'a')['_task'] == 'development'
+    assert '_task' not in EpisodeStore(cfg).get('dev', 'a')
     cfg.simulation.reward_mode = 'progress_v1'
     with pytest.raises(ValueError, match='goal rewards'):
         EpisodeStore(cfg)

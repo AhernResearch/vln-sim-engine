@@ -8,6 +8,7 @@ from dataclasses import asdict
 
 from .controllers import CONTROLLERS
 from .protocol import StepRequest
+from .tasks import task_of
 
 STOP_REASONS = ("policy_stop", "forced_stop")
 
@@ -20,6 +21,7 @@ class Session:
     def __init__(self, session_id, environment, episode, camera_name, camera, settings):
         self.id, self.env, self.episode = session_id, environment, episode
         self.camera_name, self.camera, self.settings = camera_name, camera, settings
+        self.task = task_of(settings, episode)
         self.physics = environment.physics
         self.frames, self.actions, self.positions, self.predictions = [], [], [], []
         self.collisions = self.stalled = 0
@@ -42,7 +44,7 @@ class Session:
         # Immutable snapshot, independent of renderer buffer reuse.
         raw = image.tobytes()
         self.frames.append((raw, hashlib.sha256(raw).hexdigest()))
-        if snapshot is None and hasattr(self.env, "capture"):
+        if snapshot is None:
             snapshot = self.env.capture()
         self.sensor_frames.append(snapshot)
 
@@ -140,13 +142,8 @@ class Session:
         return reply
 
     def metrics(self):
-        from .tasks import metrics
-
-        # Retain injected legacy test/integration adapters during migration.
-        evaluator = getattr(self.env, "metrics", None)
-        result = (evaluator(self.episode, self.positions, stopped=self.termination in STOP_REASONS)
-                  if evaluator else metrics(self.env, self.episode, self.positions,
-                                            stopped=self.termination in STOP_REASONS))
+        result = self.task.metrics(self.env, self.episode, self.positions,
+                                   stopped=self.termination in STOP_REASONS)
         result["collisions"] = self.collisions
         return {
             "episode_id": str(self.episode["episode_id"]),

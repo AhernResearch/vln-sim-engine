@@ -80,6 +80,8 @@ def test_rejected_commands_leave_the_session_unchanged(tmp_path):
 def test_forced_stop_is_scored_at_the_stopped_pose_but_kept_distinct(tmp_path):
     session = open_session(tmp_path, Physics(velocity=VelocityLimits()))
     session.step(velocity("v1", 0, 1.0, 0.0))
+    session.episode["goals"] = [{"position": session.positions[-1]}]
+    assert session.metrics()["metrics"]["success"] == 0.0  # Not stopped yet.
     session.termination = "forced_stop"
     metrics = session.metrics()
     assert metrics["termination"] == "forced_stop"

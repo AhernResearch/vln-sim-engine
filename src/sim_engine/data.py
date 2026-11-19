@@ -5,6 +5,7 @@ from pathlib import Path
 from .config import Dataset, Settings
 from .core.io import file_sha256, read_json
 from .scenes import scene_source
+from .tasks import TASKS
 
 
 def dataset_rows(dataset: Dataset) -> list[dict]:
@@ -48,11 +49,7 @@ class EpisodeStore:
                         scene_hashes[row["scene_id"]] = identity
                     else:
                         scene_hashes.update(identity)
-                row["_task"] = dataset.task
-                if dataset.task == "development" and row.get("goals"):
-                    raise ValueError("development episodes must not contain scoring goals")
-                if dataset.task == "development" and settings.simulation.reward_mode != "none":
-                    raise ValueError("development tasks cannot enable goal rewards")
+                TASKS[dataset.task].validate(row, settings.simulation.reward_mode)
                 records[key] = row
             self.rows[name] = records
             self.metadata[name] = {

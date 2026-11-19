@@ -4,6 +4,7 @@ import math
 
 import numpy as np
 
+from sim_engine.backends.contracts import Capture
 from sim_engine.config import Physics, Settings, VelocityLimits
 from sim_engine.navigation.pose import Pose
 
@@ -53,8 +54,10 @@ class TestEnvironment:
     def identity(self):
         return {"backend": "test"}
 
-    def metrics(self, episode, positions, stopped=False):
-        return {"success": float(stopped), "path_length": len(positions) * 0.25}
+    def capture(self):
+        """RGB-only sensor snapshot, as from a runtime without depth sensors."""
+        return Capture({"rgb": self.image()}, self.position(), [0, 0, 0, 1],
+                       {"rgb": {"position": self.position()}}, {})
 
     def close(self):
         pass
