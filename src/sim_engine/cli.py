@@ -41,6 +41,12 @@ def main(argv=None):
     bake.add_argument("--manifest", type=Path, required=True)
     bake.add_argument("--agent-radius-m", type=float, default=0.18)
     bake.add_argument("--agent-height-m", type=float, default=1.5)
+    depth = commands.add_parser("validate-depth")
+    depth.add_argument("--output", type=Path, required=True)
+    depth.add_argument("--gpu", type=int, required=True)
+    probe = commands.add_parser("probe-backend")
+    probe.add_argument("--config", type=Path, required=True)
+    probe.add_argument("--output", type=Path, required=True)
     pool = commands.add_parser("build-start-pool")
     pool.add_argument("--config", type=Path, required=True)
     pool.add_argument("--dataset", required=True)
@@ -53,12 +59,20 @@ def main(argv=None):
     pool.add_argument("--seed", type=int, default=20261126)
     args = parser.parse_args(argv)
     if args.command == "prepare-scan":
-        from .scan_assets import prepare
+        from .scenes.prepare import prepare
         print(prepare(args.archive, args.output, args.lod))
         return
     if args.command == "bake-scan":
-        from .scan_bake import bake
+        from .scenes.bake import bake
         print(json.dumps(bake(args.manifest, args.agent_radius_m, args.agent_height_m), indent=2))
+        return
+    if args.command == "validate-depth":
+        from .acceptance.depth import validate_depth
+
+        report = validate_depth(args.output, args.gpu)
+        print(json.dumps(report, indent=2))
+        if not report["passed"]:
+            raise SystemExit(2)
         return
     if args.command == "rollout":
         from .client import rollout
@@ -90,6 +104,11 @@ def main(argv=None):
     from .config import Settings
 
     settings = Settings.read(args.config)
+    if args.command == "probe-backend":
+        from .acceptance.probe import probe_backend
+
+        print(json.dumps(probe_backend(settings, args.output), indent=2))
+        return
     if args.command == "build-start-pool":
         from sim_engine.core.io import file_sha256
 

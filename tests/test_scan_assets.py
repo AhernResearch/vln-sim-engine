@@ -7,14 +7,8 @@ import zipfile
 import pytest
 
 from sim_engine.core.io import create_json, file_sha256
-from sim_engine.scan_assets import (
-    HABITAT_GS_COMMIT,
-    asset_path,
-    load_scan_package,
-    prepare,
-    transform_ply,
-    verify_manifest,
-)
+from sim_engine.scenes.package import HABITAT_GS_COMMIT, asset_path, load_scan_package, verify_manifest
+from sim_engine.scenes.prepare import prepare, transform_ply
 
 FIELDS = ["x", "y", "z", "nx", "ny", "nz", "f_dc_0", "f_dc_1", "f_dc_2",
           "opacity", "scale_0", "scale_1", "scale_2", "rot_0", "rot_1", "rot_2", "rot_3"]
@@ -137,7 +131,7 @@ def test_scene_registry_resolves_manifest_and_exports_navmesh(prepared, tmp_path
     assets = registered_assets(cfg, store)
     assert len(assets) == 1 and assets[0].path == scene.navmesh
     cfg.simulation.backend = 'habitat'
-    with pytest.raises(ValueError, match='backend'):
+    with pytest.raises(ValueError, match='runtime'):
         resolve_scene(cfg, 'scan', 'm_floor')
 
 

@@ -1,28 +1,29 @@
-"""Pinned Habitat backend; constructed and used only inside its worker process."""
+"""Habitat environment for every pinned runtime; constructed only inside its worker process.
+
+Runtime differences (version, CUDA, physics, depth trust) come from ``RuntimeProfile``.
+"""
 
 from __future__ import annotations
 
-import json
 import math
 from pathlib import Path
 
 from sim_engine.config import Camera, Physics, Settings
+from sim_engine.core.io import file_sha256
 from sim_engine.navigation.pose import Pose
 from sim_engine.scenes import resolve_scene
 
 from .contracts import Capture
-
-HABITAT_VERSION = "0.3.1"
-GS_VERSION = "0.3.3"
+from .depth import depth_contract
+from .runtime import RuntimeProfile, runtime
 
 
 class HabitatEnvironment:
-    depth_source = "mesh"
-
-    def __init__(self, settings: Settings):
+    def __init__(self, settings: Settings, profile: RuntimeProfile | None = None):
         import habitat_sim as hs
 
-        self.validate_runtime(hs)
+        self.runtime = profile or runtime(settings.simulation.backend)
+        self.runtime.validate(hs)
         self.hs, self.settings, self.sim = hs, settings, None
         self.cache_key = None
         self.scene_loads = self.resets = 0
@@ -86,7 +87,7 @@ class HabitatEnvironment:
                 ("TURN_RIGHT", "turn_right", self.physics.turn_degrees),
             ]
         }
-        self.configure(config)
+        self.runtime.configure(config)
         self.sim = hs.Simulator(hs.Configuration(config, [agent]))
         if not self.sim.pathfinder.load_nav_mesh(str(self.scene.navmesh)):
             raise RuntimeError("cannot load pinned navigation mesh")
@@ -176,29 +177,16 @@ class HabitatEnvironment:
             self.sim = None
         self.cache_key = None
 
-    @staticmethod
-    def validate_runtime(hs):
-        if hs.__version__ != HABITAT_VERSION:
-            raise RuntimeError(f"habitat-sim {HABITAT_VERSION} is required")
-
-    def configure(self, config):
-        pass
-
     def identity(self):
         if not hasattr(self, "_identity"):
             from habitat_sim._ext import habitat_sim_bindings
 
-            from sim_engine.core.io import file_sha256
-
             bindings = file_sha256(Path(habitat_sim_bindings.__file__))
-            self._identity = {"backend": self.settings.simulation.backend,
-                              "habitat_version": self.hs.__version__,
-                              "bindings_sha256": bindings, "depth_source": self.depth_source,
-                              **self.depth_contract(bindings)}
+            self._identity = {
+                "backend": self.runtime.name, "habitat_version": self.hs.__version__,
+                "bindings_sha256": bindings, "depth_source": self.runtime.depth_source,
+                **depth_contract(self.runtime, self.settings.simulation.depth_validation, bindings)}
         return self._identity
-
-    def depth_contract(self, bindings_sha256):
-        return {"depth_convention": "axial_minus_camera_z"}
 
     def _add_sensor(self, name, depth=False, yaw=0):
         import magnum as mn
@@ -275,34 +263,3 @@ class HabitatEnvironment:
                 kind: captured.calibration["projections"][f"{label}_{kind}"]
                 for kind in ("rgb", "depth")}})
             for label in ("front", "right", "back", "left")}
-
-
-class GaussianEnvironment(HabitatEnvironment):
-    depth_source = "gaussian_unvalidated"
-
-    @staticmethod
-    def validate_runtime(hs):
-        if hs.__version__ != GS_VERSION or not hs.cuda_enabled:
-            raise RuntimeError(f"Habitat-GS {GS_VERSION} with CUDA is required")
-        if not hasattr(hs.SimulatorConfiguration(), "gaussian_time"):
-            raise RuntimeError("pinned Habitat-GS bindings are required")
-
-    def configure(self, config):
-        config.enable_physics = False
-        config.navmesh_settings = None
-
-    def depth_contract(self, bindings_sha256):
-        """Metric depth is admitted only with a passed report for this exact binding."""
-        from sim_engine.core.io import file_sha256
-
-        path = self.settings.simulation.depth_validation
-        if path is None:
-            return {"depth_convention": "unvalidated"}
-        report = json.loads(path.read_text())
-        if (report.get("bindings_sha256") != bindings_sha256
-                or report.get("passed") is not True
-                or report.get("depth_convention") != "axial_minus_camera_z"
-                or report.get("depth_units") != "meters"):
-            raise ValueError("depth validation does not match this runtime")
-        return {"depth_convention": report["depth_convention"],
-                "depth_validation_sha256": file_sha256(path)}

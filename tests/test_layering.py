@@ -13,8 +13,8 @@ ALLOWED = {
     # Evaluation serving (sessions, policy, backends, scenes) at the package root.
     "base": {"core", "navigation"},
 }
-# The command line is the composition root that wires every service together.
-COMPOSITION_ROOTS = {"cli.py"}
+# Composition roots wire every service together: the command line and native acceptance.
+COMPOSITION_ROOTS = {"cli.py", "acceptance"}
 
 
 def imported_modules(path):
@@ -42,7 +42,7 @@ def test_packages_only_import_lower_layers():
         root = ROOT / package
         paths = (root.rglob("*.py") if package != "base" else
                  (p for p in ROOT.rglob("*.py") if layer(p.relative_to(ROOT).parts[0]) == "base"
-                  and p.name not in COMPOSITION_ROOTS))
+                  and not COMPOSITION_ROOTS & {p.name, p.relative_to(ROOT).parts[0]}))
         for path in sorted(paths):
             for module in imported_modules(path):
                 target = layer(module)

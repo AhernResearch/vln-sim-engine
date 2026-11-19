@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from sim_engine.scan_bake import select_start
+from sim_engine.scenes.bake import select_start
 
 
 class ScanPathfinder:

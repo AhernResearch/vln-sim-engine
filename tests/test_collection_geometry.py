@@ -37,7 +37,8 @@ def test_scene_cache_reuses_entries_and_closes_only_the_lru_on_eviction(tmp_path
         return instance
 
     monkeypatch.setattr(module, "SceneBackend", construct)
-    monkeypatch.setattr(module, "scene_path", lambda root, name: tmp_path / name)
+    monkeypatch.setattr(module, "resolve_scene",
+                        lambda settings, dataset, name: SimpleNamespace(render=tmp_path / name))
     actor = module.CollectionActor(config, 0)
 
     def request(scene, cid):
@@ -250,8 +251,8 @@ def test_executor_restores_prefetched_start_and_persists_intended_goal_before_mo
 def test_native_environment_reuses_only_compatible_scene_camera_and_physics(tmp_path, monkeypatch):
     from helpers import settings
 
+    from sim_engine.backends.habitat import HabitatEnvironment
     from sim_engine.config import Camera
-    from sim_engine.habitat import HabitatEnvironment
 
     instances = []
 
@@ -298,9 +299,14 @@ def test_native_environment_reuses_only_compatible_scene_camera_and_physics(tmp_
         sys.modules, "habitat_sim.utils.common", SimpleNamespace(quat_from_coeffs=lambda q: q)
     )
     monkeypatch.setitem(sys.modules, "magnum", SimpleNamespace(Vector3=lambda *args: args))
-    env = HabitatEnvironment(settings(tmp_path))
+    from sim_engine.config import Dataset
+
+    config = settings(tmp_path)
+    config.simulation.datasets["room"] = Dataset(episodes=tmp_path / "episodes.json")
+    env = HabitatEnvironment(config)
     camera = Camera(width=32, height=32)
-    episode = {"scene_id": "room.glb", "start_position": [0, 0, 0], "start_rotation": [0, 0, 0, 1]}
+    episode = {"_dataset": "room", "scene_id": "room.glb", "start_position": [0, 0, 0],
+               "start_rotation": [0, 0, 0, 1]}
     env.reset(episode, camera, 1)
     env.reset(dict(episode, start_position=[2, 0, 0]), camera, 2)
     assert len(instances) == 1 and instances[0].resets == 1 and instances[0].last_seed == 2

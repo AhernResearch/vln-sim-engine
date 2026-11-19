@@ -10,7 +10,6 @@ import numpy as np
 from PIL import Image
 
 from sim_engine.core.io import create_json, file_sha256, read_json
-from sim_engine.data import scene_path
 from sim_engine.navigation.clearance import ClearanceProfile
 from sim_engine.planning.contracts import PlanningProfile
 from sim_engine.scenes import resolve_scene
@@ -35,8 +34,7 @@ class CollectionActor:
     def _backend(self, request):
         dataset = self.settings.simulation.datasets[request["dataset"]]
         root = dataset.scenes_root or self.settings.simulation.scenes_root
-        scene = str(resolve_scene(self.settings, request["dataset"], request["scene_id"]).render
-                    if dataset.scenes else scene_path(root, request["scene_id"]))
+        scene = str(resolve_scene(self.settings, request["dataset"], request["scene_id"]).render)
         key = (request["dataset"], scene, request["camera"])
         if key in self.cache:
             backend = self.cache.pop(key)

@@ -87,6 +87,19 @@ class Simulation(StrictModel):
     expert_root: Path | None = None
     expert_timeout_seconds: float = Field(default=900, gt=0)
 
+    @model_validator(mode="after")
+    def runtime_scene_sources(self):
+        """Each runtime loads exactly one kind of scene source; reject mismatches at load."""
+        from .backends.runtime import SCAN_PACKAGES, runtime
+
+        packages = runtime(self.backend).scene_source == SCAN_PACKAGES
+        for name, dataset in self.datasets.items():
+            if packages != bool(dataset.scenes):
+                raise ValueError(f"dataset {name} scene source does not match runtime {self.backend}")
+        if self.depth_validation is not None and runtime(self.backend).depth_source == "mesh":
+            raise ValueError("depth_validation applies only to runtimes with unvalidated depth")
+        return self
+
 
 class Policy(StrictModel):
     model: Path

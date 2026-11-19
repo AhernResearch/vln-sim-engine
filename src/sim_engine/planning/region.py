@@ -4,6 +4,7 @@ import math
 
 import numpy as np
 
+from sim_engine.backends.depth import AXIAL
 from sim_engine.core.io import create_json
 from sim_engine.navigation.guidance import plan_with_preferences
 from sim_engine.navigation.limits import execution_budget
@@ -38,7 +39,7 @@ def preview_target(backend, config, episode, goal, path):
 
 
 def ground_region(backend, task, depth, camera, views, start, folder, config, episode):
-    if camera.get("depth_convention", "axial_minus_camera_z") != "axial_minus_camera_z":
+    if camera.get("depth_convention", AXIAL) != AXIAL:
         raise ValueError("depth projection convention must be validated before region planning")
     mask = None
     target_valid = None

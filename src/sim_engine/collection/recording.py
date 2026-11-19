@@ -4,6 +4,7 @@ import json
 import math
 from pathlib import Path
 
+from sim_engine.backends.depth import AXIAL
 from sim_engine.core.io import file_sha256, read_json
 
 
@@ -28,7 +29,7 @@ def calibration(camera, projections, near, far, dt=0.25):
         "resolution_wh": [width, height],
         "depth_near_far": [near, far],
         "depth_units": "meters",
-        "depth_convention": "axial_minus_camera_z",
+        "depth_convention": AXIAL,
         "depth_unknown_value": 0.0,
         "control_dt_s": dt,
         "video_fps": 1 / dt,

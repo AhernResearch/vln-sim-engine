@@ -4,9 +4,10 @@ import math
 import uuid
 from pathlib import Path
 
+from sim_engine.backends.runtime import HABITAT_GS
 from sim_engine.core.io import create_json, file_sha256
 
-from .scan_assets import asset_path, verify_manifest
+from .package import asset_path, verify_manifest
 
 # Fixed Recast resolution and climb limits; agent geometry is a bake argument.
 NAVMESH_SETTINGS = {"agent_max_climb": 0.2, "agent_max_slope": 45.0,
@@ -48,8 +49,7 @@ def select_start(pathfinder, poses):
 def bake(manifest_path, agent_radius_m=0.18, agent_height_m=1.5):
     import habitat_sim
 
-    from .backends.habitat import GaussianEnvironment
-    GaussianEnvironment.validate_runtime(habitat_sim)
+    HABITAT_GS.validate(habitat_sim)
 
     path = Path(manifest_path).resolve()
     manifest = verify_manifest(path)

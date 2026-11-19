@@ -77,7 +77,7 @@ GS depth is labeled `gaussian_unvalidated`. Before using it to select metric
 visible-region targets, validate its units and axial projection convention:
 
 ```bash
-python deployment/validate_gs_depth.py --output /evidence/depth-contract-v1 --gpu 2
+python -m sim_engine validate-depth --output /evidence/depth-contract-v1 --gpu 2
 ```
 
 Set `simulation.depth_validation` to the generated `receipt.json`. The service
@@ -90,10 +90,10 @@ visible-region planning rejects unvalidated depth.
 ## Verification
 
 Run unit/HTTP regressions with `.venv/bin/python -m pytest -q` and
-`.venv/bin/ruff check src tests deployment`. Native verification is explicit:
+`.venv/bin/ruff check src tests`. Native verification is explicit:
 
 ```bash
-python deployment/probe_backend.py --config examples/server.gs.json --output /evidence/gs-probe-v1
+python -m sim_engine probe-backend --config examples/server.gs.json --output /evidence/gs-probe-v1
 ```
 
 The probe uses a new output directory, renders actual GS RGB-D, checks fixed-state

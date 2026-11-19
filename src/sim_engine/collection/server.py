@@ -21,7 +21,7 @@ from sim_engine.core.disk import AsyncDisk
 from sim_engine.core.http import service_app
 from sim_engine.core.io import create_json, implementation_sources, read_json, replace_json
 from sim_engine.core.process import ProcessWorker, WorkerError
-from sim_engine.data import EpisodeStore, scene_path
+from sim_engine.data import EpisodeStore
 from sim_engine.navigation.native import require_native
 from sim_engine.planning.client import (
     HTTPPlanningClient,
@@ -355,8 +355,6 @@ class CollectionService:
                 raise WorkerError(422, "scene/camera is outside this fixed scene window")
             if not any(w.alive and self._supports(w, value) for w in self.workers):
                 raise WorkerError(503, "no live worker for this scene; no automatic replay")
-            dataset = self.settings.simulation.datasets[value["dataset"]]
-            await self.disk.run(scene_path, dataset.scenes_root or self.settings.simulation.scenes_root, value["scene_id"])
             state = {"request": value, "folder": folder, "status": "claiming"}
             self.active[cid] = state
             try:

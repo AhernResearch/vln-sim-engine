@@ -8,7 +8,8 @@ from fastapi.testclient import TestClient
 from helpers import TestEnvironment, episode, request, settings
 
 from sim_engine.backends.contracts import Capture
-from sim_engine.backends.habitat import GaussianEnvironment
+from sim_engine.backends.depth import depth_contract
+from sim_engine.backends.runtime import HABITAT, HABITAT_GS
 from sim_engine.config import Dataset
 from sim_engine.data import EpisodeStore
 from sim_engine.pool import SessionPool
@@ -66,7 +67,9 @@ def test_gs_rejects_vanilla_or_cpu_runtime():
                     SimpleNamespace(__version__='0.3.3', cuda_enabled=True,
                                     SimulatorConfiguration=SimpleNamespace)):
         with pytest.raises(RuntimeError):
-            GaussianEnvironment.validate_runtime(runtime)
+            HABITAT_GS.validate(runtime)
+    with pytest.raises(RuntimeError):
+        HABITAT.validate(SimpleNamespace(__version__='0.3.3'))
 
 
 def test_goal_reward_validation(tmp_path):
@@ -90,26 +93,33 @@ def test_goal_reward_validation(tmp_path):
         resolve_scene(cfg, 'dev', 'room.glb')
 
 
-def test_depth_evidence_mismatch_cannot_be_cached_as_valid(tmp_path, monkeypatch):
-    import hashlib
-    import sys
-
-    binary = tmp_path / 'bindings.so'
-    binary.write_bytes(b'pinned binding')
-    monkeypatch.setitem(sys.modules, 'habitat_sim._ext', SimpleNamespace(
-        habitat_sim_bindings=SimpleNamespace(__file__=str(binary))))
-    env = GaussianEnvironment.__new__(GaussianEnvironment)
-    env.hs = SimpleNamespace(__version__='0.3.3')
-    env.settings = settings(tmp_path)
-    env.settings.simulation.backend = 'habitat_gs'
+def test_depth_is_metric_only_for_mesh_or_a_matching_passed_report(tmp_path):
+    assert depth_contract(HABITAT, None, 'any')['depth_convention'] == 'axial_minus_camera_z'
+    assert depth_contract(HABITAT_GS, None, 'binding')['depth_convention'] == 'unvalidated'
     report = tmp_path / 'validation.json'
-    env.settings.simulation.depth_validation = report
-    value = {'passed': True, 'bindings_sha256': 'wrong', 'depth_units': 'meters',
+    value = {'passed': True, 'bindings_sha256': 'other', 'depth_units': 'meters',
              'depth_convention': 'axial_minus_camera_z'}
-    report.write_text(json.dumps(value))
-    for _ in range(2):
+    for change in ({}, {'passed': False, 'bindings_sha256': 'binding'},
+                   {'bindings_sha256': 'binding', 'depth_units': 'millimeters'}):
+        report.write_text(json.dumps(dict(value, **change)))
         with pytest.raises(ValueError, match='does not match'):
-            env.identity()
-    value['bindings_sha256'] = hashlib.sha256(binary.read_bytes()).hexdigest()
-    report.write_text(json.dumps(value))
-    assert env.identity()['depth_convention'] == 'axial_minus_camera_z'
+            depth_contract(HABITAT_GS, report, 'binding')
+    report.write_text(json.dumps(dict(value, bindings_sha256='binding')))
+    contract = depth_contract(HABITAT_GS, report, 'binding')
+    assert contract['depth_convention'] == 'axial_minus_camera_z'
+    assert len(contract['depth_validation_sha256']) == 64
+
+
+def test_runtime_and_scene_source_must_agree_at_load(tmp_path):
+    from sim_engine.config import Simulation
+
+    mesh = settings(tmp_path).simulation.model_dump()
+    mesh['datasets'] = {'test': {'episodes': tmp_path / 'episodes.json'}}
+    packages = dict(mesh, datasets={'test': dict(mesh['datasets']['test'],
+                                                 scenes={'m_floor': tmp_path / 'scene.json'})})
+    for value, backend in ((mesh, 'habitat_gs'), (packages, 'habitat')):
+        with pytest.raises(ValueError, match='does not match runtime'):
+            Simulation.model_validate(dict(value, backend=backend))
+    assert Simulation.model_validate(dict(packages, backend='habitat_gs')).backend == 'habitat_gs'
+    with pytest.raises(ValueError, match='depth_validation'):
+        Simulation.model_validate(dict(mesh, depth_validation=tmp_path / 'report.json'))

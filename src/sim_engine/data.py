@@ -4,6 +4,7 @@ from pathlib import Path
 
 from .config import Dataset, Settings
 from .core.io import file_sha256, read_json
+from .scenes import scene_source
 
 
 def dataset_rows(dataset: Dataset) -> list[dict]:
@@ -20,16 +21,6 @@ def dataset_rows(dataset: Dataset) -> list[dict]:
     return rows
 
 
-def scene_path(root: Path, relative: str) -> Path:
-    path = Path(relative)
-    if path.is_absolute() or ".." in path.parts:
-        raise ValueError("scene must be relative to configured scenes_root")
-    resolved = (root / path).resolve()
-    if not resolved.is_relative_to(root.resolve()):
-        raise ValueError("scene escapes configured scenes_root")
-    return resolved
-
-
 class EpisodeStore:
     def __init__(self, settings: Settings):
         self.rows = {}
@@ -37,6 +28,7 @@ class EpisodeStore:
         self.scene_hashes = {}
         for name, dataset in settings.simulation.datasets.items():
             scene_hashes = self.scene_hashes[name] = {}
+            source = scene_source(settings, name)
             references = read_json(dataset.reference_paths) if dataset.reference_paths else None
             records = {}
             for row in dataset_rows(dataset):
@@ -48,16 +40,14 @@ class EpisodeStore:
                 if references is not None:
                     row["reference_path"] = references[key]["locations"]
                     row["_metric_reference_path"] = references[key]["locations"]
-                from .scenes import resolve_scene
-
                 if row["scene_id"] not in scene_hashes:
-                    scene = resolve_scene(settings, name, row["scene_id"])
-                    if scene.manifest:
-                        scene_hashes[row["scene_id"]] = scene.assets
+                    scene = source.resolve(row["scene_id"])
+                    identity = scene.identity(row["scene_id"])
+                    # Scan packages report a nested asset identity; mesh scenes are flat.
+                    if scene.assets:
+                        scene_hashes[row["scene_id"]] = identity
                     else:
-                        scene_hashes.update({row["scene_id"]: file_sha256(scene.render),
-                                             str(Path(row["scene_id"]).with_suffix(".navmesh")):
-                                             file_sha256(scene.navmesh)})
+                        scene_hashes.update(identity)
                 row["_task"] = dataset.task
                 if dataset.task == "development" and row.get("goals"):
                     raise ValueError("development episodes must not contain scoring goals")

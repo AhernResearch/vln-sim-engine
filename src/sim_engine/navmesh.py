@@ -8,13 +8,15 @@ from pathlib import Path
 
 from sim_engine.core.io import file_sha256, replace_json
 
-from .data import dataset_rows, scene_path
-from .habitat import HABITAT_VERSION, HabitatEnvironment
+from .backends.habitat import HabitatEnvironment
+from .backends.runtime import HABITAT
+from .data import dataset_rows
+from .scenes import resolve_scene, scene_path
 
 
 def prepare_navmeshes(settings, name, source_root: Path, output: Path):
-    if settings.simulation.backend != "habitat":
-        raise ValueError("GS packages use bake-scan into a new immutable package")
+    if settings.simulation.backend != HABITAT.name:
+        raise ValueError("scan packages use bake-scan into a new immutable package")
     if source_root.resolve() == output.resolve() or (output.exists() and any(output.iterdir())):
         raise ValueError("derived navmesh output must be a separate empty directory")
     output.mkdir(parents=True, exist_ok=True)
@@ -24,9 +26,9 @@ def prepare_navmeshes(settings, name, source_root: Path, output: Path):
     physics = dataset.physics
     rows = dataset_rows(dataset)
     examples = {r["scene_id"]: dict(r, _dataset=name) for r in rows}
-    env = HabitatEnvironment(config)
+    env = HabitatEnvironment(config, HABITAT)
     evidence = {
-        "habitat_version": HABITAT_VERSION,
+        "habitat_version": HABITAT.version,
         "dataset": name,
         "annotations_sha256": file_sha256(dataset.episodes),
         "physics": physics.model_dump(),
@@ -70,11 +72,8 @@ def prepare_navmeshes(settings, name, source_root: Path, output: Path):
 def audit_connectivity(settings, name):
     import habitat_sim as hs
 
-    from .backends import create_environment
-    from .scenes import resolve_scene
-
-    adapter = create_environment(settings)
-    adapter.close()
+    # Constructing the environment validates the pinned runtime before any NavMesh is read.
+    HabitatEnvironment(settings).close()
     dataset = settings.simulation.datasets[name]
     rows = dataset_rows(dataset)
     grouped = {}
