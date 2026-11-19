@@ -6,6 +6,7 @@ from fastapi.testclient import TestClient
 from helpers import ExpertTestEnvironment, settings
 
 from sim_engine.backends.contracts import Capture
+from sim_engine.config import Camera, Physics, VelocityLimits
 from sim_engine.expert import ExpertRollout, PathPlanner
 from sim_engine.navigation.pose import Pose
 from sim_engine.navigation.tracking import ControllerProfile, Polyline, UnicycleTracker
@@ -33,8 +34,6 @@ class Planner:
 
 class Environment:
     def __init__(self, physics, collisions=0):
-        from sim_engine.config import Physics, VelocityLimits
-
         self.physics = physics or Physics(velocity=VelocityLimits(time_step_s=PROFILE.dt_s))
         self.x = self.y = self.yaw = 0.0
         self.collisions, self.camera = collisions, None
@@ -72,8 +71,6 @@ def episode():
 
 
 def camera():
-    from sim_engine.config import Camera
-
     return Camera(width=32, height=32)
 
 
@@ -179,15 +176,11 @@ def test_rollout_writes_frames_states_and_receipt(tmp_path):
 
 
 def test_rollout_rejects_missing_velocity_physics(tmp_path):
-    from sim_engine.config import Physics
-
     with pytest.raises(ValueError, match="velocity physics"):
         run(tmp_path, physics=Physics(velocity=None), max_steps=1)
 
 
 def test_rollout_rejects_profile_physics_mismatch(tmp_path):
-    from sim_engine.config import Physics, VelocityLimits
-
     with pytest.raises(ValueError, match="does not match profile dt"):
         run(tmp_path, physics=Physics(velocity=VelocityLimits(time_step_s=0.1)), max_steps=1)
 

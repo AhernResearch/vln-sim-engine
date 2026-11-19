@@ -3,9 +3,12 @@
 import struct
 from pathlib import Path
 
+import numpy as np
+
 from sim_engine.backends.depth import AXIAL
 from sim_engine.backends.runtime import HABITAT_GS
 from sim_engine.core.io import create_json, file_sha256
+from sim_engine.core.optional import optional_module
 
 PLANE_DISTANCES_M = (2.0, 4.0)
 MAX_ERROR_M = 0.08
@@ -14,8 +17,6 @@ FIELDS = ["x", "y", "z", "nx", "ny", "nz", "f_dc_0", "f_dc_1", "f_dc_2",
 
 
 def _plane(output: Path, distance: float) -> Path:
-    import numpy as np
-
     cloud = output / f"plane-{distance}.gs.ply"
     points = [(x, y) for x in np.linspace(-5, 5, 101) for y in np.linspace(-5, 5, 101)]
     with cloud.open("xb") as stream:
@@ -31,8 +32,7 @@ def _plane(output: Path, distance: float) -> Path:
 
 
 def _measure(hs, stage: Path, distance: float, gpu: int, output: Path) -> dict:
-    import magnum as mn
-    import numpy as np
+    mn = optional_module("magnum")
 
     config = hs.SimulatorConfiguration()
     config.scene_id, config.gpu_device_id = str(stage), gpu
@@ -59,8 +59,8 @@ def _measure(hs, stage: Path, distance: float, gpu: int, output: Path) -> dict:
 
 def validate_depth(output: Path, gpu: int) -> dict:
     """Write ``receipt.json`` for ``simulation.depth_validation`` into a new directory."""
-    import habitat_sim as hs
-    from habitat_sim._ext import habitat_sim_bindings
+    hs = optional_module("habitat_sim")
+    habitat_sim_bindings = optional_module("habitat_sim._ext").habitat_sim_bindings
 
     HABITAT_GS.validate(hs)
     output.mkdir(parents=True, exist_ok=False)

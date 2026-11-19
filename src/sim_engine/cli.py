@@ -4,6 +4,27 @@ import json
 import os
 from pathlib import Path
 
+import uvicorn
+
+from . import policy_server, sim_server
+from .acceptance.depth import validate_depth
+from .acceptance.probe import probe_backend
+from .client import rollout
+from .collection import server as collection_server
+from .collection.start_pool import build_pool
+from .config import Settings
+from .core.io import file_sha256, replace_json
+from .navmesh import audit_connectivity, prepare_navmeshes
+from .planning import service as planning_service
+from .planning.assets import export_assets
+from .planning.contracts import PlannerSettings
+
+# Spawned simulation, planning and collection workers inherit these before importing NumPy,
+# so small geometry operations do not start a BLAS thread pool per CPU core.
+SINGLE_THREAD_NUMERICS = dict(
+    OPENBLAS_NUM_THREADS="1", OMP_NUM_THREADS="1", MKL_NUM_THREADS="1", NUMEXPR_NUM_THREADS="1"
+)
+
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Stateful Habitat and asynchronous vLLM services")
@@ -59,24 +80,18 @@ def main(argv=None):
     pool.add_argument("--seed", type=int, default=20261126)
     args = parser.parse_args(argv)
     if args.command == "prepare-scan":
-        from .scenes.prepare import prepare
         print(prepare(args.archive, args.output, args.lod))
         return
     if args.command == "bake-scan":
-        from .scenes.bake import bake
         print(json.dumps(bake(args.manifest, args.agent_radius_m, args.agent_height_m), indent=2))
         return
     if args.command == "validate-depth":
-        from .acceptance.depth import validate_depth
-
         report = validate_depth(args.output, args.gpu)
         print(json.dumps(report, indent=2))
         if not report["passed"]:
             raise SystemExit(2)
         return
     if args.command == "rollout":
-        from .client import rollout
-
         result = asyncio.run(
             rollout(
                 args.sim_url,
@@ -93,41 +108,24 @@ def main(argv=None):
         print(json.dumps(result, indent=2))
         return
     if args.command == "serve-planner":
-        os.environ.update(OPENBLAS_NUM_THREADS="1", OMP_NUM_THREADS="1", MKL_NUM_THREADS="1")
-        import uvicorn
-
-        from .planning.contracts import PlannerSettings
-        from .planning.service import create_app
-        config = PlannerSettings.read(args.config)
-        uvicorn.run(create_app(config), host=args.host, port=args.port, workers=1)
+        os.environ.update(SINGLE_THREAD_NUMERICS)
+        app = planning_service.create_app(PlannerSettings.read(args.config))
+        uvicorn.run(app, host=args.host, port=args.port, workers=1)
         return
-    from .config import Settings
-
     settings = Settings.read(args.config)
     if args.command == "probe-backend":
-        from .acceptance.probe import probe_backend
-
         print(json.dumps(probe_backend(settings, args.output), indent=2))
         return
     if args.command == "build-start-pool":
-        from sim_engine.core.io import file_sha256
-
-        from .collection.start_pool import build_pool
-
         print(json.dumps(build_pool(
             settings, file_sha256(args.config), args.dataset, args.camera, args.output, args.owner,
             successes=args.successes, minimum_per_scene=args.minimum_per_scene,
             attempt_factor=args.attempt_factor, seed=args.seed), indent=2))
         return
     if args.command == "export-planner-assets":
-        from .planning.assets import export_assets
         print(json.dumps(export_assets(settings, args.output), indent=2))
         return
     if args.command in ("prepare-navmeshes", "audit-navmesh"):
-        from sim_engine.core.io import replace_json
-
-        from .navmesh import audit_connectivity, prepare_navmeshes
-
         if args.command == "prepare-navmeshes":
             prepare_navmeshes(settings, args.dataset, args.source_root, args.output)
         else:
@@ -138,6 +136,7 @@ def main(argv=None):
                 raise SystemExit(2)
         return
     if args.command == "serve-policy":
+        # vLLM is imported lazily inside the policy engine, after the device mask is set.
         os.environ.update(
             CUDA_VISIBLE_DEVICES=str(args.gpu),
             HF_HUB_OFFLINE="1",
@@ -145,19 +144,10 @@ def main(argv=None):
             VLLM_WORKER_MULTIPROC_METHOD="spawn",
             TOKENIZERS_PARALLELISM="false",
         )
-        from .policy_server import create_app
+        app = policy_server.create_app(settings)
     elif args.command == "serve-collection":
-        # Spawned collection workers inherit this before importing NumPy. Small
-        # geometry operations should not create a BLAS thread pool per CPU core.
-        os.environ.update(
-            OPENBLAS_NUM_THREADS="1",
-            OMP_NUM_THREADS="1",
-            MKL_NUM_THREADS="1",
-            NUMEXPR_NUM_THREADS="1",
-        )
-        from .collection.server import create_app
+        os.environ.update(SINGLE_THREAD_NUMERICS)
+        app = collection_server.create_app(settings)
     else:
-        from .sim_server import create_app
-    import uvicorn
-
-    uvicorn.run(create_app(settings), host=args.host, port=args.port, workers=1)
+        app = sim_server.create_app(settings)
+    uvicorn.run(app, host=args.host, port=args.port, workers=1)

@@ -11,7 +11,11 @@ import hashlib
 import shutil
 import uuid
 from dataclasses import asdict, dataclass
+from io import BytesIO
 from pathlib import Path
+
+import numpy as np
+from PIL import Image
 
 from sim_engine.core.io import replace_json
 
@@ -51,10 +55,6 @@ class RolloutResult:
 
 def jpeg_encoder(quality=95):
     """Payload encoder for the writer: RGB8 array -> JPEG bytes."""
-    from io import BytesIO
-
-    import numpy as np
-    from PIL import Image
 
     def encode(image):
         buffer = BytesIO()

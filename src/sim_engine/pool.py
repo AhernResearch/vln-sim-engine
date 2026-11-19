@@ -10,7 +10,7 @@ import uuid
 
 import numpy as np
 
-from .backends import create_environment
+from .backends.habitat import HabitatEnvironment
 from .controllers import CommandRejected
 from .core.process import ProcessWorker, WorkerError
 from .core.queue import AsyncWorkQueue, QueueBusy
@@ -163,7 +163,7 @@ class Worker(ProcessWorker):
 
 
 class SessionPool:
-    def __init__(self, settings, factory=create_environment):
+    def __init__(self, settings, factory=HabitatEnvironment):
         self.settings = settings
         self.workers = [Worker(settings, factory) for _ in range(settings.simulation.workers)]
         self.sessions = {}

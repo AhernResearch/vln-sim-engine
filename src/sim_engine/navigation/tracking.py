@@ -9,6 +9,10 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass, replace
 
+import numpy as np
+
+from sim_engine.core.optional import optional_module
+
 from .budget import checkpoint
 from .pose import Pose, wrap
 
@@ -146,9 +150,8 @@ class EndpointTracker:
 
 
 def preview(pf, episode, world_path, profile, max_steps):
-    import habitat_sim as hs
-    import magnum as mn
-    import numpy as np
+    hs = optional_module("habitat_sim")
+    mn = optional_module("magnum")
 
     tracker = make_tracker(world_path, profile)
     rotation = mn.Quaternion(mn.Vector3(*episode["start_rotation"][:3]), episode["start_rotation"][3])

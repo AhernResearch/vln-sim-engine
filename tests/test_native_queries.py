@@ -2,17 +2,20 @@
 
 import math
 from threading import Event
+from types import SimpleNamespace
 
 import numpy as np
 import pytest
 from reference_planner import ReferencePlanner
 from test_native_astar import Mesh as ObstacleMesh
 
+from sim_engine.navigation import native as native_module
 from sim_engine.navigation.budget import PlanningContext, PlanningStopped
 from sim_engine.navigation.clearance import ClearancePlanner, ClearanceProfile
 from sim_engine.navigation.native import native_search, require_native
 from sim_engine.navigation.queries import NavMeshQueries
 from sim_engine.planning.contracts import PlanningBudget
+from sim_engine.planning.geometry import NavMeshContext
 
 
 @pytest.fixture(autouse=True)
@@ -111,9 +114,6 @@ def test_cache_lru_and_task_clear_release_all_query_kinds():
 
 
 def test_navmesh_context_releases_shared_arena_between_tasks():
-    from types import SimpleNamespace
-
-    from sim_engine.planning.geometry import NavMeshContext
 
     mesh = Mesh()
     q = NavMeshQueries(mesh)
@@ -252,10 +252,7 @@ def test_searches_share_exact_snap_queries_without_sharing_corridor_or_budget():
 
 
 def test_stale_compiled_kernel_is_rejected(monkeypatch):
-    from types import SimpleNamespace
 
-    from sim_engine.navigation import native
-
-    monkeypatch.setattr(native.importlib, "import_module", lambda name: SimpleNamespace(KERNEL_API=1))
+    monkeypatch.setattr(native_module.importlib, "import_module", lambda name: SimpleNamespace(KERNEL_API=1))
     with pytest.raises(RuntimeError, match="kernel API 2"):
-        native.require_native()
+        native_module.require_native()

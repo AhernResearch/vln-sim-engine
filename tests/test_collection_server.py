@@ -18,6 +18,7 @@ from helpers import settings
 from PIL import Image
 from planning_fakes import fake_audit, fake_local_client
 
+from sim_engine.collection import service
 from sim_engine.collection.server import create_app
 from sim_engine.collection.service import CollectionService
 from sim_engine.config import (
@@ -29,11 +30,11 @@ from sim_engine.config import (
     VelocityLimits,
 )
 from sim_engine.core.io import create_json, file_sha256, read_json
+from sim_engine.planning.tasks import TaskRequest
 
 
 @pytest.fixture(autouse=True)
 def planning_backend(monkeypatch):
-    from sim_engine.collection import service
     monkeypatch.setattr(service, "LocalPlanningClient", fake_local_client)
     monkeypatch.setattr(service, "audit_recording", fake_audit)
 
@@ -163,8 +164,6 @@ TARGET = {"target_view": "front", "bbox": [400, 600, 600, 800]}
 
 
 def test_inode_reserve_rejects_before_creating_a_task_claim(tmp_path, monkeypatch):
-    from sim_engine.collection import service
-
     cfg = config(tmp_path)
     cfg.collection.minimum_free_inodes = 100
     request = task("inode-reserve")
@@ -179,8 +178,6 @@ def test_inode_reserve_rejects_before_creating_a_task_claim(tmp_path, monkeypatc
 
 
 def test_blocked_claim_keeps_health_responsive_and_duplicate_does_not_replay(tmp_path, monkeypatch):
-    from sim_engine.collection import service
-
     cfg = config(tmp_path)
     request = task("blocked-claim")
     entered, release = Event(), Event()
@@ -216,8 +213,6 @@ def test_blocked_claim_keeps_health_responsive_and_duplicate_does_not_replay(tmp
 
 
 def test_blocked_terminal_receipt_does_not_publish_success_before_durable_write(tmp_path, monkeypatch):
-    from sim_engine.collection import service
-
     cfg = config(tmp_path)
     request = task("blocked-receipt")
     entered, release = Event(), Event()
@@ -626,7 +621,6 @@ def test_restart_never_replays_an_unsettled_claim(tmp_path):
     request = task("abandoned")
     cid = request["request_id"]
     folder = cfg.collection.root / "tasks" / cid
-    from sim_engine.planning.tasks import TaskRequest
 
     create_json(folder / "request.json", TaskRequest.model_validate(request).model_dump(mode="json"))
     create_json(folder / "status.json", {"status": "executing"})

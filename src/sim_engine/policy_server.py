@@ -1,3 +1,5 @@
+import importlib.metadata
+
 from fastapi import HTTPException
 
 from .core.http import service_app
@@ -19,8 +21,6 @@ def create_app(settings, *, backend_factory=VllmPolicy):
 
     @app.get("/v1/health")
     async def health():
-        import importlib.metadata
-
         return {
             "status": "ok",
             "backend": "vllm",

@@ -6,8 +6,11 @@ import uuid
 from pathlib import Path
 
 import numpy as np
+from fastapi.testclient import TestClient
 
-from sim_engine.backends import create_environment
+from sim_engine.backends.habitat import HabitatEnvironment
+from sim_engine.collection.backend import CollectionActor
+from sim_engine.collection.recording import validate_recording
 from sim_engine.config import CollectionSettings
 from sim_engine.core.io import create_json
 from sim_engine.data import EpisodeStore
@@ -17,6 +20,7 @@ from sim_engine.navigation.tracking import preview
 from sim_engine.planning.contracts import PlanningProfile
 from sim_engine.planning.geometry import NavMeshContext
 from sim_engine.scenes import resolve_scene
+from sim_engine.sim_server import create_app
 
 
 class _NeverStop:
@@ -27,7 +31,7 @@ class _NeverStop:
 
 def _environment(settings, dataset, episode, camera):
     """Rendering, depth, fixed-chassis panorama, warm reset and the native NavMesh kernels."""
-    env = create_environment(settings)
+    env = HabitatEnvironment(settings)
     try:
         rgb = env.reset(episode, settings.cameras[camera], 0)
         env.enable_depth()
@@ -55,9 +59,6 @@ def _environment(settings, dataset, episode, camera):
 
 def _collection(settings, dataset, episode, camera, output):
     """Observe, then execute and record a sampled short route with the shared expert."""
-    from sim_engine.collection.backend import CollectionActor
-    from sim_engine.collection.recording import validate_recording
-
     settings = settings.model_copy(deep=True)
     settings.collection = CollectionSettings(root=output / "collection", training_datasets=[dataset])
     actor = CollectionActor(settings, settings.simulation.gpu)
@@ -100,9 +101,6 @@ def _collection(settings, dataset, episode, camera, output):
 
 def _http(settings, dataset, episode, camera):
     """A spawned EGL worker behind the real session handlers: depth, idempotent step, STOP."""
-    from fastapi.testclient import TestClient
-
-    from sim_engine.sim_server import create_app
 
     with TestClient(create_app(settings)) as client:
         health = client.get("/v1/health").json()

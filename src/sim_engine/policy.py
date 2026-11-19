@@ -5,6 +5,7 @@ from __future__ import annotations
 import asyncio
 import base64
 import hashlib
+import importlib.metadata
 import io
 import json
 import time
@@ -15,6 +16,7 @@ import httpx
 from PIL import Image
 
 from sim_engine.core.io import file_sha256
+from sim_engine.core.optional import optional_module
 
 from .core.queue import AsyncWorkQueue, QueueBusy
 from .data import model_identity
@@ -53,9 +55,9 @@ class VllmPolicy:
         self.engine = self.http = None
 
     async def start(self):
-        from transformers import AutoProcessor
-        from vllm.engine.arg_utils import AsyncEngineArgs
-        from vllm.v1.engine.async_llm import AsyncLLM
+        AutoProcessor = optional_module("transformers").AutoProcessor
+        AsyncEngineArgs = optional_module("vllm.engine.arg_utils").AsyncEngineArgs
+        AsyncLLM = optional_module("vllm.v1.engine.async_llm").AsyncLLM
 
         config = self.settings.policy
         self.model_identity = model_identity(config.model)
@@ -84,7 +86,7 @@ class VllmPolicy:
         self.engine = AsyncLLM.from_engine_args(arguments)
         self.adapter = None
         if config.lora_adapter is not None:
-            from vllm.lora.request import LoRARequest
+            LoRARequest = optional_module("vllm.lora.request").LoRARequest
 
             self.adapter = LoRARequest("navigation", 1, str(config.lora_adapter))
         self.image_token_id = self.processor.tokenizer.convert_tokens_to_ids("<|image_pad|>")
@@ -184,8 +186,6 @@ class VllmPolicy:
         return images, prompt, [value.sha256 for value in request.images]
 
     def identity(self):
-        import importlib.metadata
-
         return {
             "model_identity": self.model_identity,
             "prompt_profile": self.builder.profile,
@@ -245,7 +245,7 @@ class VllmPolicy:
         return await self._live_inputs(request)
 
     async def _generate(self, request):
-        from vllm import SamplingParams
+        SamplingParams = optional_module("vllm").SamplingParams
 
         arrival = time.monotonic()
         images, prompt, image_ids = await self._inputs(request)

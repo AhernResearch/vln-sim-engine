@@ -2,11 +2,11 @@
 
 import math
 
+import numpy as np
+
 
 def backproject(u, v, depth, intrinsics, sensor):
     """Normalized RGB pixel + axial -Z depth -> Habitat world XYZ, with xyzw quaternion."""
-    import numpy as np
-
     if not all(isinstance(x, (int, float)) and math.isfinite(x) and 0 <= x <= 1000 for x in (u, v)):
         raise ValueError("normalized point outside image")
     if depth.ndim != 2:
@@ -45,8 +45,6 @@ def backproject(u, v, depth, intrinsics, sensor):
 
 def validate_floor_target(point, snapped, start, *, horizontal_limit=0.05, vertical_limit=0.20):
     """Allow NavMesh voxel-height offset without moving a selected point across a doorway/wall."""
-    import numpy as np
-
     point, snapped, start = (np.asarray(p, dtype=float) for p in (point, snapped, start))
     if any(p.shape != (3,) or not np.isfinite(p).all() for p in (point, snapped, start)):
         raise ValueError("invalid grounded target")

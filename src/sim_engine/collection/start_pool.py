@@ -8,6 +8,7 @@ import uuid
 from pathlib import Path
 
 from sim_engine.core.io import create_json, file_sha256
+from sim_engine.core.optional import optional_module
 from sim_engine.data import EpisodeStore
 from sim_engine.scenes import resolve_scene
 
@@ -76,7 +77,7 @@ def eligible_area(pathfinder):
 def build_pool(settings, config_sha256, dataset, camera, output: Path, owner, *, successes,
                minimum_per_scene, attempt_factor, seed):
     """Freeze per-scene start pools and their allocation into a new, empty directory."""
-    import habitat_sim as hs
+    hs = optional_module("habitat_sim")
 
     uuid.UUID(hex=owner)
     if settings.collection is None or dataset not in settings.collection.training_datasets:

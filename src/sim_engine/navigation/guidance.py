@@ -2,14 +2,14 @@
 
 import math
 
+import numpy as np
+
 from sim_engine.navigation.budget import checkpoint
 
 from .errors import RejectedCandidate
 
 
 def surface_point(mesh, point, *, horizontal_limit=0.03, vertical_limit=0.25):
-    import numpy as np
-
     point = np.asarray(point, dtype=float)
     snapped = np.asarray(mesh.snap_point(point.astype(np.float32)), dtype=float)
     if (
@@ -27,8 +27,6 @@ def surface_segment(mesh, a, b, profile, spacing=0.025):
     A virtual guide on the boundary may be relocated inward. The final planned
     path, rather than this virtual displacement, must meet execution clearance.
     """
-    import numpy as np
-
     a, b = np.asarray(a), np.asarray(b)
     count = max(1, math.ceil(float(np.linalg.norm(b - a)) / spacing))
     previous = a
@@ -53,8 +51,6 @@ def surface_segment(mesh, a, b, profile, spacing=0.025):
 
 def dense_surface_path(planner, points):
     """Densify only an already planned/smoothed route, retaining surface height."""
-    import numpy as np
-
     profile = planner.profile
     output, mapping = [surface_point(planner.navmesh, points[0])], [0]
     for a, b in zip(points, points[1:]):
@@ -70,8 +66,6 @@ def dense_surface_path(planner, points):
 
 
 def adjust_guide(planner, original, radius, label):
-    import numpy as np
-
     mesh, profile = planner.navmesh, planner.profile
     original = np.asarray(original, dtype=float)
     snapped = surface_point(mesh, original, vertical_limit=profile.max_anchor_snap_m)
@@ -116,8 +110,6 @@ def adjust_guide(planner, original, radius, label):
 
 
 def prepare_guidance(planner, guard, guides, goal, radius, goal_adjustment_radius=0.0):
-    import numpy as np
-
     mesh, profile = planner.navmesh, planner.profile
     records, adjusted = [], []
     for index, original in enumerate(guides):

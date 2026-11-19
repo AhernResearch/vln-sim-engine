@@ -4,6 +4,9 @@ import json
 import math
 from pathlib import Path
 
+import numpy as np
+from PIL import Image
+
 from sim_engine.backends.depth import AXIAL
 from sim_engine.core.io import file_sha256, read_json
 
@@ -44,9 +47,6 @@ def calibration(camera, projections, near, far, dt=0.25):
 
 def validate_recording(folder):
     """Post-production conversion-readiness check, not training admission."""
-    import numpy as np
-    from PIL import Image
-
     folder = Path(folder)
     camera = read_json(folder / "camera.json")
     rows = [json.loads(line) for line in (folder / "world_states.jsonl").read_text().splitlines()]

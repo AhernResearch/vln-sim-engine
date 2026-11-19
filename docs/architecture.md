@@ -2,7 +2,7 @@
 
 ```mermaid
 flowchart BT
-    core[core: io, process workers, HTTP shell, queues, disk]
+    core[core: io, process workers, HTTP shell, queues, disk, optional runtimes]
     navigation[navigation: NavMesh queries, native A*, clearance, tracking]
     base[root: config, scenes, backends, tasks, sessions, policy, rollout]
     planning[planning: collection-v5 planning engine and service]

@@ -8,8 +8,11 @@ from __future__ import annotations
 import math
 from pathlib import Path
 
+import numpy as np
+
 from sim_engine.config import Camera, Physics, Settings
 from sim_engine.core.io import file_sha256
+from sim_engine.core.optional import optional_module
 from sim_engine.navigation.pose import Pose
 from sim_engine.scenes import resolve_scene
 
@@ -20,7 +23,7 @@ from .runtime import RuntimeProfile, runtime
 
 class HabitatEnvironment:
     def __init__(self, settings: Settings, profile: RuntimeProfile | None = None):
-        import habitat_sim as hs
+        hs = optional_module("habitat_sim")
 
         self.runtime = profile or runtime(settings.simulation.backend)
         self.runtime.validate(hs)
@@ -30,9 +33,8 @@ class HabitatEnvironment:
         self._scenes = {}
 
     def reset(self, episode: dict, camera: Camera, seed: int):
-        import magnum as mn
-        import numpy as np
-        from habitat_sim.utils.common import quat_from_coeffs
+        mn = optional_module("magnum")
+        quat_from_coeffs = optional_module("habitat_sim.utils.common").quat_from_coeffs
 
         hs = self.hs
         dataset = self.settings.simulation.datasets.get(episode.get("_dataset"))
@@ -110,8 +112,7 @@ class HabitatEnvironment:
         return self.sim.get_sensor_observations()["rgb"][:, :, :3]
 
     def pose(self):
-        import numpy as np
-        from habitat_sim.utils.common import quat_rotate_vector
+        quat_rotate_vector = optional_module("habitat_sim.utils.common").quat_rotate_vector
 
         state = self.sim.get_agent(0).get_state()
         forward = quat_rotate_vector(state.rotation, np.array([0, 0, -1]))
@@ -128,8 +129,7 @@ class HabitatEnvironment:
 
     def velocity_step(self, linear_mps, angular_rps, dt, allow_sliding):
         """Integrate a body velocity and snap it to the navmesh (habitat-lab VelocityAction)."""
-        import magnum as mn
-        import numpy as np
+        mn = optional_module("magnum")
 
         hs = self.hs
         control = hs.physics.VelocityControl()
@@ -179,7 +179,7 @@ class HabitatEnvironment:
 
     def identity(self):
         if not hasattr(self, "_identity"):
-            from habitat_sim._ext import habitat_sim_bindings
+            habitat_sim_bindings = optional_module("habitat_sim._ext").habitat_sim_bindings
 
             bindings = file_sha256(Path(habitat_sim_bindings.__file__))
             self._identity = {
@@ -189,7 +189,7 @@ class HabitatEnvironment:
         return self._identity
 
     def _add_sensor(self, name, depth=False, yaw=0):
-        import magnum as mn
+        mn = optional_module("magnum")
 
         spec = self.hs.CameraSensorSpec()
         spec.uuid = name
@@ -216,8 +216,7 @@ class HabitatEnvironment:
             self._panorama_enabled = True
 
     def capture(self):
-        import numpy as np
-        from habitat_sim.utils.common import quat_to_coeffs
+        quat_to_coeffs = optional_module("habitat_sim.utils.common").quat_to_coeffs
 
         state = self.sim.get_agent(0).get_state()
         observations = self.sim.get_sensor_observations()
@@ -240,7 +239,7 @@ class HabitatEnvironment:
                        calibration)
 
     def observe_views(self, yaw):
-        import magnum as mn
+        mn = optional_module("magnum")
 
         self.enable_panorama()
         # Rotate the camera rig relative to the chassis, never the robot state.

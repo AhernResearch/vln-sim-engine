@@ -5,14 +5,21 @@ from threading import Event
 
 import numpy as np
 import pytest
+from helpers import settings
 from reference_planner import ReferencePlanner
 
+from sim_engine.collection import service as collection
+from sim_engine.collection.service import CollectionService
+from sim_engine.config import CURRENT_PLANNING_PROFILE, CollectionSettings
 from sim_engine.core.io import implementation_sources
+from sim_engine.navigation import native as native_module
 from sim_engine.navigation.budget import PlanningContext, PlanningStopped
 from sim_engine.navigation.clearance import ClearancePlanner, ClearanceProfile
 from sim_engine.navigation.errors import ClearanceError
 from sim_engine.navigation.native import native_search
+from sim_engine.planning import service
 from sim_engine.planning.contracts import PlanningBudget, PlanningProfile
+from sim_engine.planning.service import PlanningService
 
 
 class Mesh:
@@ -94,9 +101,6 @@ def test_native_per_search_limit_and_callback_errors_do_not_retry(native, monkey
 
 
 def test_mainline_defaults_match_and_missing_extension_fails_before_search(monkeypatch, tmp_path):
-    from sim_engine.config import CURRENT_PLANNING_PROFILE, CollectionSettings
-    from sim_engine.navigation import native as module
-
     assert PlanningProfile().version == CURRENT_PLANNING_PROFILE == "collection-v5"
     assert CollectionSettings(root=tmp_path, training_datasets=["train"]).planning_profile_version == (
         CURRENT_PLANNING_PROFILE)
@@ -106,19 +110,12 @@ def test_mainline_defaults_match_and_missing_extension_fails_before_search(monke
     def unavailable(name):
         raise ImportError(name)
 
-    monkeypatch.setattr(module.importlib, "import_module", unavailable)
+    monkeypatch.setattr(native_module.importlib, "import_module", unavailable)
     with pytest.raises(RuntimeError, match="requires the compiled"):
         make_planner()
 
 
 def test_collection_startup_rejects_missing_native_before_creating_attempts(tmp_path, monkeypatch):
-    from helpers import settings
-
-    from sim_engine.collection import service as collection
-    from sim_engine.collection.service import CollectionService
-    from sim_engine.config import CollectionSettings
-    from sim_engine.planning import service
-    from sim_engine.planning.service import PlanningService
 
     def unavailable():
         raise RuntimeError("native unavailable")

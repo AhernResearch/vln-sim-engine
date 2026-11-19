@@ -230,9 +230,14 @@ free-instruction cases; the frozen case list itself is a nav-data artifact.
 ## 7. Validation
 
 ```bash
-.venv/bin/ruff check src tests
+.venv/bin/ruff check src tests      # includes PLC0415: every import at module top level
 .venv/bin/python -m pytest -q
 ```
+
+The only deferred imports are the per-environment native runtimes (habitat_sim, magnum, vLLM,
+transformers, qwen-vl-utils), loaded through `sim_engine.core.optional.optional_module`. The
+dev environment can then import every module, and `serve-policy` can set
+`CUDA_VISIBLE_DEVICES` before vLLM loads.
 
 Unit tests cover session isolation, idempotency, stale requests, causal history, strict
 schemas, exclusion of privileged inputs, collection queue/claim/cancel/no-replay and layering.

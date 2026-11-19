@@ -3,10 +3,17 @@ import json
 import math
 import struct
 import zipfile
+from pathlib import Path
 
 import pytest
+from helpers import settings
 
+from sim_engine.config import CollectionSettings, Dataset
 from sim_engine.core.io import create_json, file_sha256
+from sim_engine.data import EpisodeStore
+from sim_engine.planning.assets import registered_assets
+from sim_engine.planning.client import build_job
+from sim_engine.scenes import resolve_scene
 from sim_engine.scenes.package import HABITAT_GS_COMMIT, asset_path, load_scan_package, verify_manifest
 from sim_engine.scenes.prepare import prepare, transform_ply
 
@@ -111,12 +118,6 @@ def test_scene_paths_cannot_escape_package(tmp_path):
 
 
 def test_scene_registry_resolves_manifest_and_exports_navmesh(prepared, tmp_path):
-    from helpers import settings
-
-    from sim_engine.config import CollectionSettings, Dataset
-    from sim_engine.data import EpisodeStore
-    from sim_engine.planning.assets import registered_assets
-    from sim_engine.scenes import resolve_scene
 
     navigation = add_navigation(prepared)
     cfg = settings(tmp_path)
@@ -136,10 +137,6 @@ def test_scene_registry_resolves_manifest_and_exports_navmesh(prepared, tmp_path
 
 
 def test_planning_job_uses_manifest_navmesh_instead_of_scene_id_filename(prepared, tmp_path):
-    from helpers import settings
-
-    from sim_engine.config import CollectionSettings, Dataset
-    from sim_engine.planning.client import build_job
 
     navigation = add_navigation(prepared)
     cfg = settings(tmp_path)
@@ -164,7 +161,5 @@ def test_planning_job_uses_manifest_navmesh_instead_of_scene_id_filename(prepare
 
 
 def test_pinned_commit_matches_deployment_lock():
-    from pathlib import Path
-
     lock = Path(__file__).resolve().parents[1] / 'deployment/habitat-gs.lock.json'
     assert json.loads(lock.read_text())['commit'] == HABITAT_GS_COMMIT

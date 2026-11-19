@@ -10,7 +10,7 @@ from helpers import TestEnvironment, episode, request, settings
 from sim_engine.backends.contracts import Capture
 from sim_engine.backends.depth import depth_contract
 from sim_engine.backends.runtime import HABITAT, HABITAT_GS
-from sim_engine.config import Dataset
+from sim_engine.config import Dataset, Simulation
 from sim_engine.data import EpisodeStore
 from sim_engine.pool import SessionPool
 from sim_engine.scenes import resolve_scene
@@ -111,8 +111,6 @@ def test_depth_is_metric_only_for_mesh_or_a_matching_passed_report(tmp_path):
 
 
 def test_runtime_and_scene_source_must_agree_at_load(tmp_path):
-    from sim_engine.config import Simulation
-
     mesh = settings(tmp_path).simulation.model_dump()
     mesh['datasets'] = {'test': {'episodes': tmp_path / 'episodes.json'}}
     packages = dict(mesh, datasets={'test': dict(mesh['datasets']['test'],

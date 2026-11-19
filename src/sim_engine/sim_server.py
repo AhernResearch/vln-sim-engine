@@ -1,3 +1,4 @@
+import json
 import uuid
 
 from fastapi import HTTPException, Response
@@ -78,8 +79,6 @@ def create_app(settings, *, store=None, pool_factory=SessionPool):
     @app.get("/v1/sessions/{session_id}/frames/{event_index}")
     async def frame(session_id: str, event_index: int, sensor: str = "rgb"):
         if sensor != "rgb":
-            import json
-
             data = await app.state.pool.call(session_id, "sensor", event_index=event_index, sensor=sensor)
             return Response(data["raw"], media_type="application/octet-stream", headers={
                 "X-Content-SHA256": data["sha256"], "X-Encoding": data["encoding"],

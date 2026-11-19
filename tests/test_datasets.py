@@ -1,11 +1,15 @@
 import gzip
 import json
+import math
+from types import SimpleNamespace
 
 from helpers import episode, settings
 
 from sim_engine.config import Dataset, Physics
 from sim_engine.core.io import file_sha256
 from sim_engine.data import EpisodeStore
+from sim_engine.metrics import navigation_metrics
+from sim_engine.tasks import NavigationTask
 
 
 def test_dataset_specific_geometry_and_physics_are_kept_separate(tmp_path):
@@ -34,11 +38,6 @@ def test_dataset_specific_geometry_and_physics_are_kept_separate(tmp_path):
 
 
 def test_ndtw_uses_explicit_locations_instead_of_sparse_route_waypoints(tmp_path):
-    import math
-    from types import SimpleNamespace
-
-    from sim_engine.metrics import navigation_metrics
-    from sim_engine.tasks import NavigationTask
     sparse = [[0., 0., 0.], [2., 0., 0.]]
     dense = [[i*.25, 0., 0.] for i in range(9)]
     episode_value = {'reference_path': sparse, 'goals': [{'position': dense[-1]}]}

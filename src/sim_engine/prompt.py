@@ -7,6 +7,8 @@ from pathlib import Path
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 from PIL import Image
 
+from sim_engine.core.optional import optional_module
+
 
 def rescale_training_image(image, max_pixels):
     """Match Swift 4.5.3's pre-processor torchvision Resize on PIL RGB images."""
@@ -18,7 +20,7 @@ def rescale_training_image(image, max_pixels):
 
 
 def prepare_training_image(image, max_pixels, patch_size=16):
-    from qwen_vl_utils import fetch_image
+    fetch_image = optional_module("qwen_vl_utils").fetch_image
 
     resized = rescale_training_image(image, max_pixels)
     return fetch_image(

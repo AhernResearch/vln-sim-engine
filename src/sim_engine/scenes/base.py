@@ -12,6 +12,8 @@ from pathlib import Path
 from sim_engine.backends.runtime import MESH_SCENES, SCAN_PACKAGES, runtime
 from sim_engine.core.io import file_sha256
 
+from .package import asset_path, load_scan_package
+
 
 @dataclass(frozen=True)
 class Scene:
@@ -60,8 +62,6 @@ class ScanPackageSource:
         self.root, self.manifests = root, manifests
 
     def resolve(self, scene_id: str) -> Scene:
-        from .package import asset_path, load_scan_package
-
         if scene_id not in self.manifests:
             raise ValueError("scan scene is not registered for this dataset: " + scene_id)
         manifest_path = self.manifests[scene_id]

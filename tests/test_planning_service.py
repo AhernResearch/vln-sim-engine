@@ -1,18 +1,24 @@
 """Real spawned CPU workers and HTTP contracts, with deterministic fault injection."""
 
 import hashlib
+import shutil
 import time
 import uuid
 from concurrent.futures import ThreadPoolExecutor
 from threading import Event
+from types import SimpleNamespace
 
 import httpx
 import pytest
 from fastapi.testclient import TestClient
+from helpers import settings
 from planning_fakes import FakePlanningEngine
 
-from sim_engine.core.io import file_sha256, fingerprint
+from sim_engine.config import CollectionSettings, Dataset
+from sim_engine.core.io import file_sha256, fingerprint, read_json
 from sim_engine.navigation.budget import PlanningContext, PlanningStopped, checkpoint
+from sim_engine.planning import service
+from sim_engine.planning.assets import export_assets
 from sim_engine.planning.client import HTTPPlanningClient, wait_for_plan
 from sim_engine.planning.contracts import Blob, PlannerSettings, PlanningBudget, PlanRequest
 from sim_engine.planning.service import create_app
@@ -48,8 +54,6 @@ def wait(client, cid):
 
 
 def test_blocked_plan_claim_keeps_health_responsive_and_duplicate_claim_unique(tmp_path, monkeypatch):
-    from sim_engine.planning import service
-
     cfg = config(tmp_path)
     value = job(cfg)
     entered, release = Event(), Event()
@@ -122,7 +126,6 @@ def test_queue_bounds_cancellation_digest_and_restart_preserve_attempts(tmp_path
 
 
 def test_budget_is_shared_across_candidate_scopes_and_not_swallowed_as_valueerror():
-    from threading import Event
     context = PlanningContext(PlanningBudget(max_expansions=2), Event())
     with context.bind():
         checkpoint(expansion=1)
@@ -196,7 +199,6 @@ async def test_remote_shutdown_cancels_only_bound_attempts_and_keeps_endpoint_ev
     await client.submit(value)
     evidence = list((tmp_path / "collection-task/planning-endpoints").glob("*.json"))
     assert len(evidence) == 1
-    from sim_engine.core.io import read_json
     assert read_json(evidence[0])["attempt_id"] == value.attempt_id
     assert read_json(evidence[0])["endpoint"] == "http://planner"
     await client.close()
@@ -205,13 +207,7 @@ async def test_remote_shutdown_cancels_only_bound_attempts_and_keeps_endpoint_ev
 
 
 def test_exported_navmesh_bundle_moves_without_glbs_or_episode_store(tmp_path):
-    import shutil
-    from types import SimpleNamespace
 
-    from helpers import settings
-
-    from sim_engine.config import CollectionSettings, Dataset
-    from sim_engine.planning.assets import export_assets
     source = settings(tmp_path)
     source.simulation.datasets = {"train": Dataset(episodes=tmp_path / "not-present.json")}
     source.collection = CollectionSettings(root=tmp_path / "unused", training_datasets=["train"])

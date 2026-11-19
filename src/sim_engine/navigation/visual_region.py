@@ -3,6 +3,8 @@
 import math
 from collections import Counter
 
+import numpy as np
+
 from sim_engine.navigation.budget import checkpoint
 
 from .limits import distance_allowed, validate_distance_limits
@@ -23,8 +25,6 @@ def validate_bbox(bbox):
 
 
 def project_world(point, intrinsics, sensor, width, height):
-    import numpy as np
-
     q = np.asarray(sensor["rotation_xyzw"], dtype=float)
     q = q.copy()
     q[:3] *= -1
@@ -49,8 +49,6 @@ def _region_samples(bbox, shape, grid_size, safe_mask):
     Pixel selection is vectorized. Expensive NavMesh/geodesic checks remain
     bounded by the original grid_size**2 sample budget.
     """
-    import numpy as np
-
     x0, y0, x1, y1 = bbox
     budget = grid_size**2
     if safe_mask is None:
@@ -114,8 +112,6 @@ def sample_region(
     safe_mask=None,
 ):
     """Return center-ranked safe candidates strictly inside the model's original box."""
-    import numpy as np
-
     bbox = validate_bbox(bbox)
     x0, y0, x1, y1 = bbox
     h, w = depth.shape

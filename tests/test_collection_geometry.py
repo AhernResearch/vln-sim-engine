@@ -6,17 +6,21 @@ from types import SimpleNamespace
 
 import numpy as np
 import pytest
+from helpers import settings
 from PIL import Image
 
+from sim_engine.backends.contracts import Capture
+from sim_engine.backends.habitat import HabitatEnvironment
+from sim_engine.collection import backend as module
+from sim_engine.collection.backend import CollectionActor
+from sim_engine.collection.simulation import SceneBackend
+from sim_engine.config import Camera, CollectionSettings, Dataset
 from sim_engine.core.io import create_json, file_sha256, read_json
+from sim_engine.planning import region
 from sim_engine.planning.region import preview_target
 
 
 def test_scene_cache_reuses_entries_and_closes_only_the_lru_on_eviction(tmp_path, monkeypatch):
-    from helpers import settings
-
-    from sim_engine.collection import backend as module
-    from sim_engine.config import CollectionSettings, Dataset
 
     config = settings(tmp_path)
     config.simulation.datasets["train_pilot"] = Dataset(episodes=tmp_path / "train.json")
@@ -67,8 +71,6 @@ def test_scene_cache_reuses_entries_and_closes_only_the_lru_on_eviction(tmp_path
 
 
 def test_production_observe_captures_rgb_depth_once_per_view_and_restores_heading(tmp_path, monkeypatch):
-    from sim_engine.collection.simulation import SceneBackend
-
     rotations = []
     renders = []
 
@@ -85,7 +87,6 @@ def test_production_observe_captures_rgb_depth_once_per_view_and_restores_headin
         SimpleNamespace(quat_from_coeffs=lambda q: q, quat_to_coeffs=lambda q: np.asarray(q)),
     )
     backend = SceneBackend.__new__(SceneBackend)
-    from sim_engine.backends.contracts import Capture
 
     def captured():
         obs = observe()
@@ -122,8 +123,6 @@ def test_production_observe_captures_rgb_depth_once_per_view_and_restores_headin
 
 
 def test_preview_keeps_the_same_path_scaled_budget():
-    from sim_engine.planning import region
-
     calls = []
 
     def fake_preview(pf, episode, path, profile, max_steps):
@@ -152,8 +151,6 @@ def test_preview_keeps_the_same_path_scaled_budget():
 def test_executor_restores_prefetched_start_and_persists_intended_goal_before_movement(
     tmp_path, monkeypatch, corrupt_front
 ):
-    from sim_engine.collection.backend import CollectionActor
-
     goal = [0.0, 0.0, -1.0]
     prepared = {
         "episode": {
@@ -249,10 +246,6 @@ def test_executor_restores_prefetched_start_and_persists_intended_goal_before_mo
 
 
 def test_native_environment_reuses_only_compatible_scene_camera_and_physics(tmp_path, monkeypatch):
-    from helpers import settings
-
-    from sim_engine.backends.habitat import HabitatEnvironment
-    from sim_engine.config import Camera
 
     instances = []
 
@@ -299,7 +292,6 @@ def test_native_environment_reuses_only_compatible_scene_camera_and_physics(tmp_
         sys.modules, "habitat_sim.utils.common", SimpleNamespace(quat_from_coeffs=lambda q: q)
     )
     monkeypatch.setitem(sys.modules, "magnum", SimpleNamespace(Vector3=lambda *args: args))
-    from sim_engine.config import Dataset
 
     config = settings(tmp_path)
     config.simulation.datasets["room"] = Dataset(episodes=tmp_path / "episodes.json")

@@ -1,6 +1,7 @@
 """Identical job interface for an embedded pool and one or more remote services."""
 
 import asyncio
+import re
 import time
 import uuid
 from urllib.parse import urlsplit
@@ -198,7 +199,6 @@ async def wait_for_plan(client, job, cancel_requested):
 
 
 def install_result(folder, job, result):
-    import re
 
 
     blobs = {name: Blob.model_validate(value) for name, value in result.get("artifacts", {}).items()}

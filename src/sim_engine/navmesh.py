@@ -7,6 +7,7 @@ import shutil
 from pathlib import Path
 
 from sim_engine.core.io import file_sha256, replace_json
+from sim_engine.core.optional import optional_module
 
 from .backends.habitat import HabitatEnvironment
 from .backends.runtime import HABITAT
@@ -70,7 +71,7 @@ def prepare_navmeshes(settings, name, source_root: Path, output: Path):
 
 
 def audit_connectivity(settings, name):
-    import habitat_sim as hs
+    hs = optional_module("habitat_sim")
 
     # Constructing the environment validates the pinned runtime before any NavMesh is read.
     HabitatEnvironment(settings).close()

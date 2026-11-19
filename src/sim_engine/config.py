@@ -8,6 +8,8 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from .backends.runtime import SCAN_PACKAGES, runtime
+
 # The only supported planning implementation; recorded in every plan for identity.
 PlanningVersion = Literal["collection-v5"]
 CURRENT_PLANNING_PROFILE: PlanningVersion = "collection-v5"
@@ -90,8 +92,6 @@ class Simulation(StrictModel):
     @model_validator(mode="after")
     def runtime_scene_sources(self):
         """Each runtime loads exactly one kind of scene source; reject mismatches at load."""
-        from .backends.runtime import SCAN_PACKAGES, runtime
-
         packages = runtime(self.backend).scene_source == SCAN_PACKAGES
         for name, dataset in self.datasets.items():
             if packages != bool(dataset.scenes):

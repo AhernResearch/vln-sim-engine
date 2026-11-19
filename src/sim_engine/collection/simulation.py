@@ -1,10 +1,14 @@
 """Pinned Habitat adapter: one Simulator per scene batch, fresh state per candidate."""
 
 import copy
+import json
+import os
 import time
 from pathlib import Path
 
-from sim_engine.backends import create_environment
+from PIL import Image
+
+from sim_engine.backends.habitat import HabitatEnvironment
 from sim_engine.config import Camera, Settings
 from sim_engine.core.io import create_json, file_sha256
 from sim_engine.navigation.clearance import ClearanceProfile
@@ -50,7 +54,7 @@ class SceneBackend(NavMeshContext):
     def reset_candidate(self, ep):
 
         if self.env is None:
-            self.env = create_environment(self.settings)
+            self.env = HabitatEnvironment(self.settings)
         before = self.env.scene_loads
         self.env.reset(ep, self.camera, self.config["seed"])
         self.env.enable_depth()
@@ -60,8 +64,6 @@ class SceneBackend(NavMeshContext):
         self.depth_near_far = captured.calibration["depth_near_far"]
 
     def observe(self, candidate, prepared, folder, *, capture_depth=False):
-        from PIL import Image
-
         started = time.perf_counter()
         self.reset_candidate(prepared["episode"])
         reset_s = time.perf_counter() - started
@@ -99,10 +101,7 @@ class SceneBackend(NavMeshContext):
         return {"instruction": self.tasks[candidate["task_id"]]["instruction"], "images": images}
 
     def rollout(self, candidate, prepared, folder, stop):
-        import json
-        import os
 
-        from PIL import Image
 
 
         # A new tracker uses the same frozen profile as the preflight.

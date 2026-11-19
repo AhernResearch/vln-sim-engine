@@ -4,8 +4,11 @@ import math
 import uuid
 from pathlib import Path
 
+import numpy as np
+
 from sim_engine.backends.runtime import HABITAT_GS
 from sim_engine.core.io import create_json, file_sha256
+from sim_engine.core.optional import optional_module
 
 from .package import asset_path, verify_manifest
 
@@ -16,8 +19,6 @@ NAVMESH_SETTINGS = {"agent_max_climb": 0.2, "agent_max_slope": 45.0,
 
 def select_start(pathfinder, poses):
     """Choose a scan-supported start with the most NavMesh boundary clearance."""
-    import numpy as np
-
     candidates, distances = [], []
     sampled = poses[::10]
     for position in sampled:
@@ -47,7 +48,7 @@ def select_start(pathfinder, poses):
 
 
 def bake(manifest_path, agent_radius_m=0.18, agent_height_m=1.5):
-    import habitat_sim
+    habitat_sim = optional_module("habitat_sim")
 
     HABITAT_GS.validate(habitat_sim)
 

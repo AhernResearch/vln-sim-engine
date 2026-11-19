@@ -1,8 +1,12 @@
 """NavMesh-only geometry context. Never constructs a Simulator or requires a GLB."""
 
 import math
+from dataclasses import asdict, replace
+
+import numpy as np
 
 from sim_engine.core.io import create_json
+from sim_engine.core.optional import optional_module
 from sim_engine.navigation.budget import checkpoint
 from sim_engine.navigation.clearance import ClearancePlanner, ClearanceProfile
 from sim_engine.navigation.errors import RejectedCandidate
@@ -15,10 +19,7 @@ from sim_engine.planning.sampling import ReferenceCache, select_pose
 
 class NavMeshContext:
     def __init__(self, navmesh, scene_id, camera, config, profile=None):
-        from dataclasses import replace
-
-        import habitat_sim as hs
-        import numpy as np
+        hs = optional_module("habitat_sim")
 
 
         self.hs, self.np = hs, np
@@ -113,7 +114,6 @@ class NavMeshContext:
         if reference["status"] != "feasible":
             raise RejectedCandidate("reference_path_infeasible: " + reference["reason"])
         planner = self.planners[reference["planner_index"]]
-        from dataclasses import asdict
 
         create_json(folder / "expert-profile.json", asdict(self.expert_profile))
         if "reference_guides" in task:

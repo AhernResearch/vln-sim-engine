@@ -4,7 +4,8 @@ import os
 import time
 
 from sim_engine.core.io import create_json, read_json
-from sim_engine.navigation.budget import PlanningContext, checkpoint
+from sim_engine.navigation.budget import PlanningContext, PlanningStopped, checkpoint
+from sim_engine.planning.client import LocalPlanningClient
 from sim_engine.planning.contracts import Blob
 
 
@@ -19,7 +20,6 @@ class FakePlanningEngine:
         if instruction == "planner-hang":
             time.sleep(60)
         if instruction == "planner-slow":
-            from sim_engine.navigation.budget import PlanningStopped
             context = PlanningContext(job.budget, stop, progress)
             try:
                 with context.bind():
@@ -50,7 +50,6 @@ class FakePlanningEngine:
 
 
 def fake_local_client(settings, store, root):
-    from sim_engine.planning.client import LocalPlanningClient
     return LocalPlanningClient(settings, store, root, engine_factory=FakePlanningEngine)
 
 
