@@ -1,3 +1,41 @@
+# Package layout
+
+```mermaid
+flowchart BT
+    core[core: io, process workers, HTTP shell, queues, disk]
+    navigation[navigation: NavMesh queries, native A*, clearance, tracking]
+    base[root: config, scenes, backends, tasks, sessions, policy, rollout]
+    planning[planning: collection-v5 planning engine and service]
+    collection[collection: scheduler, workers, recording, audit]
+    navigation --> core
+    base --> navigation
+    planning --> base
+    collection --> planning
+```
+
+Each layer imports only itself and the layers below; `tests/test_layering.py` enforces
+this. `cli.py` and `acceptance/` are composition roots and may import every layer.
+
+- `core.process.ProcessWorker` is the one spawned-child abstraction: a keyed
+  request/reply pipe, a ready handshake, deadlines, cooperative cancellation and
+  terminate→kill escalation. Simulator sessions, collection actors and planners are
+  hosts behind it; work is never replayed after a child dies.
+- `core.http.service_app` is the shared FastAPI lifespan and `WorkerError` → HTTP
+  status mapping used by all four services.
+- `backends.runtime.RuntimeProfile` names a Habitat build (`habitat` 0.3.1 mesh,
+  `habitat_gs` 0.3.3 CUDA Gaussian splatting) and the scene source it requires. One
+  `HabitatEnvironment` serves both; the depth contract comes from
+  `backends.depth.depth_contract`.
+- `scenes` resolves a dataset's scene ID through `MeshSource` or `ScanPackageSource`;
+  configuration load rejects a dataset whose scenes do not match the runtime.
+- `tasks` holds task semantics (`NavigationTask`, `DevelopmentTask`): episode
+  validation and metrics, independent of rendering.
+- Planning is native-only (`sim_engine.navigation._astar`, built by `setup.py`). The
+  Python reference planner used for parity lives in `tests/reference_planner.py`.
+- `collection.service.CollectionService` schedules task phases; `collection.schedule`
+  owns the frozen rolling scene window, `collection.workers` the actor processes and
+  `collection.server` only the HTTP routes.
+
 # Service boundaries
 
 ```mermaid

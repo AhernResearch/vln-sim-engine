@@ -18,6 +18,14 @@ sessions because each observation depends on executed actions.
 - `rollout`: multiple episodes run concurrently; each episode retains causal order.
   Completed episodes are written atomically and can be resumed with the same
   model, assets, camera and concurrency configuration.
+- `serve-collection` / `serve-planner`: privileged expert data collection with
+  native `collection-v5` planning ([collection service](docs/collection-service.md),
+  [planning service](docs/planning-service.md)).
+
+Asset and acceptance commands: `prepare-navmeshes`, `audit-navmesh`,
+`export-planner-assets`, `build-start-pool`, `prepare-scan`, `bake-scan`,
+`validate-depth` and `probe-backend` (see `python -m sim_engine --help`). The package
+layout and layering rules are in [architecture](docs/architecture.md).
 
 The model request contract contains instruction, camera profile and causal
 observations only. Scene goals, global positions, reference paths and rewards stay
@@ -33,6 +41,9 @@ built headless with Bullet for Python 3.10 (`setup.py bdist_wheel --headless --w
 Discrete replay parity with the earlier 0.2.4 build and velocity-control acceptance are in
 [`docs/evidence/habitat-031-velocity-acceptance.json`](docs/evidence/habitat-031-velocity-acceptance.json);
 rendered pixels differ slightly, so 0.3.1 scores are a new evaluation identity.
+
+Planning and collection require the compiled `sim_engine.navigation._astar`
+extension, which `pip install` builds from `navigation/*.cpp`.
 
 ```bash
 python3.10 -m venv .venv
@@ -140,5 +151,7 @@ record both a successful model-generated STOP and an out-of-range STOP correctly
 counted as failure. These examples validate the interface and do not constitute
 an aggregate checkpoint-quality score.
 
-See [Habitat-GS backend](docs/gs-backend.md) for independent GS deployments, scene
-packages, RGB-D observation, planning and pending-review expert collection.
+See [Habitat-GS backend](docs/gs-backend.md) for the `habitat_gs` runtime: scan
+packages, RGB-D observation, planning and pending-review expert collection. It uses the
+same services, session API and collection path as the mesh runtime; only the runtime
+profile and scene source differ.
