@@ -56,12 +56,6 @@ class PlanningProfile(StrictModel):
             "goal_tolerance_m": 0.12 if task["kind"] == "short_instructions" else 0.3,
             "pose_sampling_attempts": 32, "start_radius_m": 0.5, "yaw_degrees": 45.0,
         }
-        if self.version in {"collection-v3", "collection-v4", "collection-v5"}:
-            config["planning_optimizations"] = True
-        if self.version in {"collection-v4", "collection-v5"}:
-            config["search_backend"] = "native"
-        if self.version == "collection-v5":
-            config.update(query_optimizations=True, native_path_optimizations=True)
         return config
 
 

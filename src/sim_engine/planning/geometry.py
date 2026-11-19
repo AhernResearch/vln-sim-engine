@@ -28,30 +28,19 @@ class NavMeshContext:
         if not self.pf.load_nav_mesh(str(navmesh)):
             raise ValueError("cannot load pinned NavMesh")
         profile = profile or ClearanceProfile()
-        optimize = config.get("planning_optimizations", False)
-        search_backend = config.get("search_backend", "python")
-        self.queries = None
-        if config.get("query_optimizations", False):
+        # One exact query cache per NavMesh, shared by every planner of the current task.
+        self.queries = NavMeshQueries(self.pf)
 
-            self.queries = NavMeshQueries(self.pf)
-        native_path = config.get("native_path_optimizations", False)
-        self.planner = ClearancePlanner(self.pf, self.shortest, profile, optimize=optimize,
-                                        search_backend=search_backend, query_cache=self.queries,
-                                        native_path=native_path)
+        def planner(value):
+            return ClearancePlanner(self.pf, self.shortest, value, queries=self.queries)
+
+        self.planner = planner(profile)
         minimum = config["minimum_planning_clearance_m"]
         self.planners = [self.planner]
         if minimum < profile.clearance_m:
-            self.planners.append(ClearancePlanner(
-                self.pf, self.shortest,
-                replace(profile, clearance_m=minimum, grid_m=min(profile.grid_m, 0.05)),
-                optimize=optimize, search_backend=search_backend, query_cache=self.queries,
-                native_path=native_path,
-            ))
-        self.guard = ClearancePlanner(
-            self.pf, self.shortest, replace(profile, clearance_m=minimum, edge_sample_m=0.0125),
-            optimize=optimize, search_backend=search_backend, query_cache=self.queries,
-            native_path=native_path,
-        )
+            self.planners.append(planner(
+                replace(profile, clearance_m=minimum, grid_m=min(profile.grid_m, 0.05))))
+        self.guard = planner(replace(profile, clearance_m=minimum, edge_sample_m=0.0125))
         self.expert_profile = expert_profile(config)
         self.references = ReferenceCache()
 
@@ -59,8 +48,7 @@ class NavMeshContext:
         # Share queries between a task's candidate searches, never across tasks.
         for planner in [*self.planners, self.guard]:
             planner.clear_queries()
-        if self.queries is not None:
-            self.queries.clear()
+        self.queries.clear()
         self.references.values.clear()
         self.tasks.clear()
 

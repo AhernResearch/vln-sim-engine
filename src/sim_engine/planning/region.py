@@ -56,7 +56,7 @@ def ground_region(backend, task, depth, camera, views, start, folder, config, ep
             horizontal_limit=floor_policy.get("horizontal_limit", 0.01),
             vertical_limit=floor_policy.get("vertical_limit", 0.2),
             slope_degrees=floor_policy.get("slope_degrees", 25.0),
-            bbox=task["bbox"] if floor_policy.get("mask_scope", "full") == "target_bbox" else None,
+            bbox=task["bbox"],
         )
         extra = {}
         if "computed_pixel_bounds_xyxy" in stats:

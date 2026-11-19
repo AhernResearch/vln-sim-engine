@@ -8,7 +8,8 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-PlanningVersion = Literal["collection-v2", "collection-v3", "collection-v4", "collection-v5"]
+# The only supported planning implementation; recorded in every plan for identity.
+PlanningVersion = Literal["collection-v5"]
 CURRENT_PLANNING_PROFILE: PlanningVersion = "collection-v5"
 
 

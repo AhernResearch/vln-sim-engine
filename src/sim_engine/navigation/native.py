@@ -1,4 +1,4 @@
-"""Explicit native backend selection; never retry a failed search in Python."""
+"""Adapters from ClearancePlanner to the compiled geometry kernel; failures never fall back."""
 
 import importlib
 import math
@@ -17,7 +17,6 @@ def as_point(value):
     return point
 
 
-
 def require_native():
     try:
         kernel = importlib.import_module("sim_engine.navigation._astar")
@@ -29,23 +28,16 @@ def require_native():
 
 
 def native_search(planner, start, goal, seed):
-
-    kernel = require_native()
-    profile = planner.profile
-
-    def snap(point):
-        return planner.navmesh.snap_point(np.asarray(point, dtype=np.float32))
+    q, profile = planner.queries, planner.profile
 
     def check(queries, expansions):
         checkpoint(query=queries, expansion=expansions, phase="astar" if expansions else None)
 
     try:
-        optional = () if planner.query_cache is None else (planner.query_cache.arena,)
-        path, expanded = kernel.search(
+        path, expanded = q.kernel.search(
             start, goal, seed, profile.grid_m, profile.max_height_step_m,
             profile.floor_bin_m, profile.corridor_m, profile.max_expansions,
-            snap if planner.query_cache is None else planner.query_cache._snap,
-            planner.edge_clear, check, *optional,
+            q._snap, planner.edge_clear, check, q.arena,
         )
     except ValueError as error:
         raise ClearanceError(str(error)) from error
@@ -57,8 +49,7 @@ def _norm_beyond(delta, threshold):
 
 
 def native_swept_edge(planner, a, b):
-
-    q, p = planner.query_cache, planner.profile
+    q, p = planner.queries, planner.profile
     # NumPy computes the old sample count, including integer-distance boundaries.
     count = max(1, math.ceil(float(np.linalg.norm(b-a)) / p.edge_sample_m))
     try:
@@ -73,13 +64,12 @@ def _path_check(queries=0, expansions=0):
     checkpoint(query=queries, expansion=expansions)
 
 
-def native_fair(planner, points, seed):
-
-    q, p = planner.query_cache, planner.profile
+def native_fair(planner, points, corridor):
+    q, p = planner.queries, planner.profile
     try:
         result = q.kernel.fair_path(
             points, p.smoothing_passes, p.max_height_step_m, q.arena, q._snap,
-            lambda point: planner._in_corridor(point, seed), planner.edge_clear,
+            lambda point: planner._in_corridor(point, corridor), planner.edge_clear,
             _path_check, _norm_beyond,
         )
     except ValueError as error:

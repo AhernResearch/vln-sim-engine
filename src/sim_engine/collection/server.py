@@ -122,9 +122,7 @@ class CollectionService:
     def __init__(self, settings, store, factory=CollectionActor):
         if settings.collection is None:
             raise ValueError("collection service requires an explicit collection configuration")
-        if settings.collection.planning_profile_version in {"collection-v4", "collection-v5"}:
-
-            require_native()
+        require_native()
         self.settings, self.store = settings, store
         self.owner = uuid.uuid4().hex
         self.root = settings.collection.root.resolve()

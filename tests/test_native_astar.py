@@ -5,11 +5,11 @@ from threading import Event
 
 import numpy as np
 import pytest
+from reference_planner import ReferencePlanner
 
 from sim_engine.core.io import implementation_sources
 from sim_engine.navigation.budget import PlanningContext, PlanningStopped
 from sim_engine.navigation.clearance import ClearancePlanner, ClearanceProfile
-from sim_engine.navigation.corridor import CorridorGeometry
 from sim_engine.navigation.errors import ClearanceError
 from sim_engine.navigation.native import native_search
 from sim_engine.planning.contracts import PlanningBudget, PlanningProfile
@@ -29,8 +29,8 @@ class Mesh:
                         for t in np.linspace(0, 1, 21)) else b
 
 
-def make_planner(**kw):
-    return ClearancePlanner(Mesh(), lambda a, b: [a, b], ClearanceProfile(clearance_m=.05), **kw)
+def make_planner(kind=ClearancePlanner):
+    return kind(Mesh(), lambda a, b: [a, b], ClearanceProfile(clearance_m=.05))
 
 
 @pytest.fixture
@@ -43,12 +43,11 @@ def test_native_matches_python_path_expansions_queries_and_order(height, native)
     a, b = np.asarray([0., height, 0]), np.asarray([1., height, 0])
     seed = np.asarray([a, b])
     results = []
-    for implementation in ["python", "native"]:
-        p = make_planner()
+    for kind in [ReferencePlanner, ClearancePlanner]:
+        p = make_planner(kind)
         context = PlanningContext(PlanningBudget(), Event())
         with context.bind():
-            path, count = (p._search(a, b, CorridorGeometry(seed)) if implementation == "python"
-                           else native_search(p, a, b, seed))
+            path, count = p._search(a, b, seed, p._corridor(seed))
         results.append((np.asarray(path).tolist(), count, context.queries, context.expansions))
     assert results[0] == results[1]
 
@@ -59,7 +58,7 @@ def test_native_matches_python_path_expansions_queries_and_order(height, native)
     [[0, 0, 0], [1, 0, 0], [0, 0, 0]],
 ])
 def test_native_full_preparation_preserves_ordered_and_repeated_anchors(anchors, native):
-    assert make_planner(search_backend="native").prepare(anchors) == make_planner().prepare(anchors)
+    assert make_planner().prepare(anchors) == make_planner(ReferencePlanner).prepare(anchors)
 
 
 @pytest.mark.parametrize("budget", [PlanningBudget(max_queries=3), PlanningBudget(max_expansions=1)])
@@ -82,6 +81,7 @@ def test_native_per_search_limit_and_callback_errors_do_not_retry(native, monkey
     with pytest.raises(ClearanceError, match="expansion budget exhausted"):
         native_search(p, [0, 0, 0], [1, 0, 0], [[0, 0, 0], [1, 0, 0]])
     calls = []
+    p = make_planner()  # A fresh task cache: the first search already cached its snaps.
 
     def fail(point):
         calls.append(point)
@@ -100,17 +100,15 @@ def test_mainline_defaults_match_and_missing_extension_fails_before_search(monke
     assert PlanningProfile().version == CURRENT_PLANNING_PROFILE == "collection-v5"
     assert CollectionSettings(root=tmp_path, training_datasets=["train"]).planning_profile_version == (
         CURRENT_PLANNING_PROFILE)
-    assert "search_backend" not in PlanningProfile(version="collection-v3").geometry(
-        {"seed": 1, "kind": "short_instructions"})
-    assert PlanningProfile(version="collection-v4").geometry(
-        {"seed": 1, "kind": "short_instructions"})["search_backend"] == "native"
+    with pytest.raises(ValueError):
+        PlanningProfile(version="collection-v4")
 
     def unavailable(name):
         raise ImportError(name)
 
     monkeypatch.setattr(module.importlib, "import_module", unavailable)
     with pytest.raises(RuntimeError, match="requires the compiled"):
-        make_planner(search_backend="native")
+        make_planner()
 
 
 def test_collection_startup_rejects_missing_native_before_creating_attempts(tmp_path, monkeypatch):

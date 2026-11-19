@@ -6,6 +6,7 @@ from types import SimpleNamespace
 
 import numpy as np
 import pytest
+from reference_planner import ReferencePlanner
 
 from sim_engine.core.cache import MISSING, BoundedMemo
 from sim_engine.navigation.budget import PlanningContext, PlanningStopped
@@ -39,10 +40,9 @@ class Mesh:
         return 0
 
 
-def planner(mesh, optimize=True):
-    return ClearancePlanner(
-        mesh, lambda a, b: [a, b], ClearanceProfile(clearance_m=0.05), optimize=optimize
-    )
+def planner(mesh, native=True):
+    kind = ClearancePlanner if native else ReferencePlanner
+    return kind(mesh, lambda a, b: [a, b], ClearanceProfile(clearance_m=0.05))
 
 
 def test_directed_edge_cache_preserves_false_and_profile_boundaries():
@@ -85,7 +85,7 @@ def test_query_clear_releases_task_certificates():
     assert p.edge_clear([0, 0, 0], [0.1, 0, 0])
     assert p.edge_memo.stats()["entries"] == 1
     p.clear_queries()
-    assert not p._clearance_cache and not p.edge_memo.values
+    assert not p.edge_memo.values
     mesh.block_forward = True
     assert p.edge_clear([0, 0, 0], [0.1, 0, 0]) is False
 
@@ -112,7 +112,7 @@ def test_matrix_corridor_matches_scalar_at_boundaries_and_degenerate_segments(ma
     # Include points exactly on, one ULP below and one ULP above a simple corridor boundary.
     straight = np.asarray([[0.0, 0, 0], [2.0, 0, 0]])
     edge = np.asarray([[1.0, y, 0] for y in [0.75, np.nextafter(0.75, 0), np.nextafter(0.75, 1)]])
-    reference = planner(Mesh(), optimize=False)
+    reference = planner(Mesh(), native=False)
     for path, samples in [(seed, points), (straight, edge)]:
         corridor = CorridorGeometry(path, max_pairs=max_pairs, capacity=16)
         expected = [reference._in_corridor(p, path) for p in samples]
@@ -190,10 +190,10 @@ def test_roi_retains_exact_in_box_mask_world_mapping_and_candidate_order(bbox):
     assert 0 <= left < right <= 101 and 0 <= top < bottom <= 101
 
 
-def test_profiles_pin_optimization_and_legacy_input_remains_available():
-    task = {"seed": 1, "kind": "short_instructions"}
-    assert "planning_optimizations" not in PlanningProfile(version="collection-v2").geometry(task)
-    assert PlanningProfile().geometry(task)["planning_optimizations"] is True
+@pytest.mark.parametrize("version", ["collection-v2", "collection-v3", "collection-v4"])
+def test_retired_planning_versions_are_rejected(version):
+    with pytest.raises(ValueError):
+        PlanningProfile(version=version)
 
 
 @pytest.mark.parametrize(
@@ -217,8 +217,8 @@ def test_search_smoothing_and_ordered_anchors_match_legacy_around_obstacle(ancho
         def try_step_no_sliding(self, a, b):
             return a if any(self.blocked(a + (b - a) * t) for t in np.linspace(0, 1, 21)) else b
 
-    old = planner(BlockMesh(), optimize=False).prepare(anchors)
-    new = planner(BlockMesh(), optimize=True).prepare(anchors)
+    old = planner(BlockMesh(), native=False).prepare(anchors)
+    new = planner(BlockMesh(), native=True).prepare(anchors)
     assert old == new
     assert new["world_points"][0] == anchors[0]
     assert new["world_points"][-1] == anchors[-1]

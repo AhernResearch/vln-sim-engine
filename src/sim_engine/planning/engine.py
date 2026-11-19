@@ -111,7 +111,6 @@ class PlanningEngine:
                     "region_grid_size": 13, "region_plan_candidates": 12,
                     "visible_floor_policy": {
                         "enabled": True, "horizontal_limit": 0.01, "vertical_limit": 0.2,
-                        "mask_scope": "full" if job.profile.version == "collection-v2" else "target_bbox",
                         "slope_degrees": 25.0, "adjustment_support_tolerance_m": 0.025,
                     },
                 }, episode,

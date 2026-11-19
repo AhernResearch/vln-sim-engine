@@ -5,13 +5,14 @@ from threading import Event
 
 import numpy as np
 import pytest
+from reference_planner import ReferencePlanner
 from test_native_astar import Mesh as ObstacleMesh
 
 from sim_engine.navigation.budget import PlanningContext, PlanningStopped
 from sim_engine.navigation.clearance import ClearancePlanner, ClearanceProfile
 from sim_engine.navigation.native import native_search, require_native
 from sim_engine.navigation.queries import NavMeshQueries
-from sim_engine.planning.contracts import PlanningBudget, PlanningProfile
+from sim_engine.planning.contracts import PlanningBudget
 
 
 @pytest.fixture(autouse=True)
@@ -45,11 +46,8 @@ class Mesh:
 
 
 def planner(mesh, native):
-    return ClearancePlanner(
-        mesh, lambda a, b: [a, b], ClearanceProfile(clearance_m=.05),
-        search_backend="native", query_cache=NavMeshQueries(mesh) if native else None,
-        native_path=native,
-    )
+    kind = ClearancePlanner if native else ReferencePlanner
+    return kind(mesh, lambda a, b: [a, b], ClearanceProfile(clearance_m=.05))
 
 
 def test_batch_order_float32_identity_copy_and_signed_zero():
@@ -76,7 +74,7 @@ def test_shared_radius_identity_zero_island_and_no_cross_mesh_certificates():
     np.testing.assert_array_equal(q.island_many([[0, 0, 0]]*3), [0, 0, 0])
     assert mesh.islands == 1
     with pytest.raises(ValueError, match="different NavMesh"):
-        ClearancePlanner(Mesh(), lambda a, b: [a, b], query_cache=q)
+        ClearancePlanner(Mesh(), lambda a, b: [a, b], queries=q)
 
 
 def test_geometric_failure_is_cached_but_runtime_exception_is_not():
@@ -122,8 +120,8 @@ def test_navmesh_context_releases_shared_arena_between_tasks():
     q.snap_many([[0, 0, 0]])
     context = NavMeshContext.__new__(NavMeshContext)
     context.queries = q
-    context.planners = [ClearancePlanner(mesh, lambda a, b: [a, b], query_cache=q)]
-    context.guard = ClearancePlanner(mesh, lambda a, b: [a, b], query_cache=q)
+    context.planners = [ClearancePlanner(mesh, lambda a, b: [a, b], queries=q)]
+    context.guard = ClearancePlanner(mesh, lambda a, b: [a, b], queries=q)
     context.references = SimpleNamespace(values={"old": True})
     context.tasks = {"old": True}
     context.clear_task()
@@ -213,10 +211,10 @@ def test_native_horizontal_boundary_uses_original_numpy_decision(offset):
     [[0, 0, 0], [.2, 0, .5], [.8, 0, .5], [1, 0, 0]],
     [[0, 0, 0], [1, 0, 0], [0, 0, 0]],
 ])
-def test_native_full_preparation_queries_and_sequential_fairing_match_v4(anchors):
+def test_native_full_preparation_queries_and_sequential_fairing_match_reference(anchors):
     results = []
-    for optimized in [False, True]:
-        p = planner(ObstacleMesh(), optimized)
+    for native in [False, True]:
+        p = planner(ObstacleMesh(), native)
         context = PlanningContext(PlanningBudget(), Event())
         with context.bind():
             result = p.prepare(anchors)
@@ -245,21 +243,12 @@ def test_searches_share_exact_snap_queries_without_sharing_corridor_or_budget():
     with context.bind():
         first = native_search(p, seed[0], seed[-1], seed)
         first_queries, first_expansions = context.queries, context.expansions
-        count = p.query_cache.stats()["snap"]["misses"]
+        count = p.queries.stats()["snap"]["misses"]
         second = native_search(p, seed[0], seed[-1], seed)
     assert np.asarray(first[0]).tolist() == np.asarray(second[0]).tolist()
     assert first[1] == second[1] and context.queries == 2*first_queries
     assert context.expansions == 2*first_expansions
-    assert p.query_cache.stats()["snap"]["misses"] == count
-
-
-def test_v5_keeps_legacy_v4_flags_and_explicit_new_processing():
-    task = {"seed": 1, "kind": "short_instructions"}
-    old = PlanningProfile(version="collection-v4").geometry(task)
-    new = PlanningProfile(version="collection-v5").geometry(task)
-    assert "query_optimizations" not in old
-    assert new.pop("query_optimizations") and new.pop("native_path_optimizations")
-    assert old == new
+    assert p.queries.stats()["snap"]["misses"] == count
 
 
 def test_stale_compiled_kernel_is_rejected(monkeypatch):

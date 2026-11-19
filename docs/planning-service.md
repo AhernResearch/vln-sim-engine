@@ -129,11 +129,11 @@ Ubuntu 的依赖安装、实际资源预算与跨机吞吐尚未验证；本次�
 
 ## 验证
 
-新任务默认使用 `collection.planning_profile_version: collection-v5`，共用 C++ 受约束
-A*、任务级精确几何查询缓存、批量查询接口、原生边检查与顺序 fairing。
-框内地面检查、有向边证书和有界走廊矩阵计算继续保留。采集配置与规划请求共用
-`CURRENT_PLANNING_PROFILE`，C++ 扩展为构建必需项，服务启动检查内核。
-`collection-v2` / `collection-v3` / `collection-v4` 的显式请求继续保留。
+规划只有一个实现 `collection-v5`（仍记录在请求与回执中作为身份）：C++ 受约束 A*、
+任务级精确几何查询缓存、批量查询接口、原生边检查与顺序 fairing，框内地面检查、
+有向边证书和有界走廊矩阵计算。C++ 扩展为构建必需项，服务启动检查内核。
+`collection-v2` / `v3` / `v4` 已移除，请求会被拒绝；复现其历史结果需使用旧提交。
+原 Python 实现保留为 `tests/reference_planner.py`，仅作为原生内核逐项等价测试的对照。
 ROI 掩码需结合 `computed_mask` 读取，框外未计算区域不代表障碍。
 v5 内核分工：`navigation/queries.py::NavMeshQueries` 绑定一个不可变 NavMesh，持有任务级
 snap / clearance / island 精确缓存（float32 坐标字节为键，各 65,536 项 LRU，统计随回执保存为
