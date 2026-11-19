@@ -38,7 +38,7 @@ R2R chunk：规划与预演 → 观测 → 执行 → 审计；训练侧模型�
 | `planning/service.py` 的 PlanningService / PlanningWorker | 有界在途任务、CPU spawn 进程、独立尝试、硬超时、状态与回执 |
 | `planning/client.py` | 本机/HTTP 两种客户端；部署位置不改变业务输入输出；验证和安装产物 |
 | `planning/assets.py` | 从显式训练注册表导出独立 NavMesh 资产包，按内容去重 |
-| `collection/server.py` 的 CollectionService | 场景窗口、任务阶段、反压、取消、一次性执行准入与审计调度 |
+| `collection/service.py` 的 CollectionService（`schedule.py` 场景窗口，`workers.py` 采集进程，`server.py` HTTP 路由） | 场景窗口、任务阶段、反压、取消、一次性执行准入与审计调度 |
 | `collection/backend.py` 的 CollectionActor | 观测、恢复状态、执行已冻结路径与实际录制；不进行候选搜索或全局规划 |
 | `collection/audit.py` | 仿真 worker 释放后检查录制与原框终点；独立有界线程池 |
 

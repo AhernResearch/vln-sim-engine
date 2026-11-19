@@ -114,8 +114,8 @@ def test_mainline_defaults_match_and_missing_extension_fails_before_search(monke
 def test_collection_startup_rejects_missing_native_before_creating_attempts(tmp_path, monkeypatch):
     from helpers import settings
 
-    from sim_engine.collection import server
-    from sim_engine.collection.server import CollectionService
+    from sim_engine.collection import service as collection
+    from sim_engine.collection.service import CollectionService
     from sim_engine.config import CollectionSettings
     from sim_engine.planning import service
     from sim_engine.planning.service import PlanningService
@@ -123,7 +123,7 @@ def test_collection_startup_rejects_missing_native_before_creating_attempts(tmp_
     def unavailable():
         raise RuntimeError("native unavailable")
 
-    for module in (server, service):
+    for module in (collection, service):
         monkeypatch.setattr(module, "require_native", unavailable)
     config = settings(tmp_path)
     config.collection = CollectionSettings(root=tmp_path/"records", training_datasets=["train"])

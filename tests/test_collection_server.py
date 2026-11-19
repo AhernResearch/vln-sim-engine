@@ -18,7 +18,8 @@ from helpers import settings
 from PIL import Image
 from planning_fakes import fake_audit, fake_local_client
 
-from sim_engine.collection.server import CollectionService, create_app
+from sim_engine.collection.server import create_app
+from sim_engine.collection.service import CollectionService
 from sim_engine.config import (
     CollectionScene,
     CollectionSceneBudget,
@@ -32,9 +33,9 @@ from sim_engine.core.io import create_json, file_sha256, read_json
 
 @pytest.fixture(autouse=True)
 def planning_backend(monkeypatch):
-    from sim_engine.collection import server
-    monkeypatch.setattr(server, "LocalPlanningClient", fake_local_client)
-    monkeypatch.setattr(server, "audit_recording", fake_audit)
+    from sim_engine.collection import service
+    monkeypatch.setattr(service, "LocalPlanningClient", fake_local_client)
+    monkeypatch.setattr(service, "audit_recording", fake_audit)
 
 
 class FakeActor:
@@ -162,28 +163,28 @@ TARGET = {"target_view": "front", "bbox": [400, 600, 600, 800]}
 
 
 def test_inode_reserve_rejects_before_creating_a_task_claim(tmp_path, monkeypatch):
-    from sim_engine.collection import server
+    from sim_engine.collection import service
 
     cfg = config(tmp_path)
     cfg.collection.minimum_free_inodes = 100
     request = task("inode-reserve")
     with TestClient(app(cfg)) as client:
-        current = server.os.statvfs(cfg.collection.root)
+        current = service.os.statvfs(cfg.collection.root)
         values = {name: getattr(current, name) for name in dir(current) if name.startswith("f_")}
         values["f_favail"] = 99
-        monkeypatch.setattr(server.os, "statvfs", lambda path: SimpleNamespace(**values))
+        monkeypatch.setattr(service.os, "statvfs", lambda path: SimpleNamespace(**values))
         response = client.post("/v1/collections", json=request)
         assert response.status_code == 507 and "inode reserve" in response.text
         assert not (cfg.collection.root / "tasks" / request["request_id"]).exists()
 
 
 def test_blocked_claim_keeps_health_responsive_and_duplicate_does_not_replay(tmp_path, monkeypatch):
-    from sim_engine.collection import server
+    from sim_engine.collection import service
 
     cfg = config(tmp_path)
     request = task("blocked-claim")
     entered, release = Event(), Event()
-    original = server.create_json
+    original = service.create_json
     writes = []
 
     def blocked(path, value):
@@ -194,7 +195,7 @@ def test_blocked_claim_keeps_health_responsive_and_duplicate_does_not_replay(tmp
         original(path, value)
 
     with TestClient(app(cfg)) as client, ThreadPoolExecutor(max_workers=3) as calls:
-        monkeypatch.setattr(server, "create_json", blocked)
+        monkeypatch.setattr(service, "create_json", blocked)
         first = calls.submit(client.post, "/v1/collections", json=request)
         try:
             assert entered.wait(2)
@@ -215,12 +216,12 @@ def test_blocked_claim_keeps_health_responsive_and_duplicate_does_not_replay(tmp
 
 
 def test_blocked_terminal_receipt_does_not_publish_success_before_durable_write(tmp_path, monkeypatch):
-    from sim_engine.collection import server
+    from sim_engine.collection import service
 
     cfg = config(tmp_path)
     request = task("blocked-receipt")
     entered, release = Event(), Event()
-    original = server.create_json
+    original = service.create_json
 
     def blocked(path, value):
         if path.name == "receipt.json":
@@ -229,7 +230,7 @@ def test_blocked_terminal_receipt_does_not_publish_success_before_durable_write(
         original(path, value)
 
     with TestClient(app(cfg)) as client, ThreadPoolExecutor(max_workers=1) as calls:
-        monkeypatch.setattr(server, "create_json", blocked)
+        monkeypatch.setattr(service, "create_json", blocked)
         client.post("/v1/collections", json=request)
         wait(client, request["request_id"], {"observation_ready"})
         client.post("/v1/collections/" + request["request_id"] + "/target", json=TARGET)
