@@ -52,11 +52,14 @@ def safe_floor_mask(
     vertical_limit=0.2,
     slope_degrees=25.0,
     bbox=None,
+    same_level=True,
 ):
     """Keep a per-pixel mapping to NavMesh, using actual visible depth surfaces.
 
     Connectivity is the start island; geodesic distance and controller feasibility
     remain selected-point checks. NavMesh height may differ from rendered floor.
+    ``same_level=False`` drops the start-height clause so connected stairs and other
+    levels remain candidates; the surface-to-NavMesh projection limit still applies.
     """
     start = np.asarray(start, dtype=float)
     validate_distance_limits(min_distance, max_distance)
@@ -82,11 +85,9 @@ def safe_floor_mask(
         & (np.abs(normals[:, :, 1]) / np.maximum(length, 1e-10) >= math.cos(math.radians(slope_degrees)))
     )
     horizontal = np.linalg.norm((world - start)[:, :, [0, 2]], axis=-1)
-    floor &= (
-        (np.abs(world[:, :, 1] - start[1]) <= vertical_limit)
-        & (horizontal > 0)
-        & (horizontal >= min_distance)
-    )
+    floor &= (horizontal > 0) & (horizontal >= min_distance)
+    if same_level:
+        floor &= np.abs(world[:, :, 1] - start[1]) <= vertical_limit
     if max_distance is not None:
         floor &= horizontal <= max_distance
     scope = {}
@@ -123,7 +124,9 @@ def safe_floor_mask(
                 raise ValueError("not navigable")
             if np.linalg.norm((goal - point)[[0, 2]]) > horizontal_limit:
                 raise ValueError("horizontal projection outside tolerance")
-            if abs(goal[1] - point[1]) > vertical_limit or abs(goal[1] - start[1]) > vertical_limit:
+            if abs(goal[1] - point[1]) > vertical_limit or (
+                same_level and abs(goal[1] - start[1]) > vertical_limit
+            ):
                 raise ValueError("surface height outside tolerance")
             if mesh.get_island(goal.astype(np.float32)) != island:
                 raise ValueError("not connected to start")
@@ -156,6 +159,7 @@ def safe_floor_mask(
             "min_euclidean_local_distance_m": min_distance,
             "max_euclidean_local_distance_m": max_distance,
             "connectivity": "same_start_navmesh_island",
+            "same_level": same_level,
             "visible_surface_source": "observed_depth_with_floor_normal_filter",
             "selected_point_geodesic_and_controller_checks_required": True,
         },

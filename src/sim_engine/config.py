@@ -74,6 +74,22 @@ class Dataset(StrictModel):
     task: Literal["navigation", "development"] = "navigation"
 
 
+class Legs(StrictModel):
+    """Geometry of planner-delegated legs (``point_goal`` and ``retrace`` commands)."""
+
+    snap_radius: float = Field(default=0.02, ge=0, le=0.1)  # fraction of image width
+    horizontal_limit_m: float = Field(default=0.05, gt=0, le=0.05)
+    vertical_limit_m: float = Field(default=0.2, gt=0, le=0.2)
+    slope_degrees: float = Field(default=25.0, gt=0, le=30)
+    same_level: bool = False
+    minimum_clearance_m: float = Field(default=0.05, gt=0)
+    start_adjustment_m: float = Field(default=0.25, ge=0, le=0.5)
+    goal_radius_m: float = Field(default=0.08, gt=0)
+    reached_tolerance_m: float = Field(default=0.15, gt=0)
+    planning_wall_s: float = Field(default=20, gt=0, le=60)
+    planning_max_expansions: int = Field(default=80000, ge=1, le=1000000)
+
+
 class Simulation(StrictModel):
     backend: Literal["habitat", "habitat_gs"] = "habitat"
     sensors: Literal["rgb", "rgbd", "panorama"] = "rgb"
@@ -88,6 +104,7 @@ class Simulation(StrictModel):
     reward_mode: str = Field(default="none", pattern="^(none|progress_v1)$")
     expert_root: Path | None = None
     expert_timeout_seconds: float = Field(default=900, gt=0)
+    legs: Legs = Field(default_factory=Legs)
 
     @model_validator(mode="after")
     def runtime_scene_sources(self):

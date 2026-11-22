@@ -96,6 +96,63 @@ Execution returns actual actions, per-action observation handles, collision coun
 new event index and termination. Waypoint actions are native action names; velocity
 actions are the executed (clipped) `linear_mps`/`angular_rps`.
 
+### Planner-delegated legs
+
+`POST /v1/sessions/{id}/observe` with `{"request_id": "..."}` captures the four-view
+panorama (front, right, back, left) of the session camera at the current pose. It never
+moves the robot or advances the event index, and a repeated `request_id` returns the same
+reply:
+
+```json
+{"observation_id":"obs-1","event_index":41,
+ "views":{"front":{"sha256":"...","width":480,"height":270}, "right":{}, "back":{}, "left":{}}}
+```
+
+`GET /v1/sessions/{id}/observations/{observation_id}/{view}` returns that view as PNG.
+Depth and sensor poses stay in the worker; only grounding reads them.
+
+Two commands run a whole leg with the 4 Hz path tracker and `velocity_step`. Every control
+step is recorded as an action and observation, exactly like `velocity`:
+
+```json
+{"kind":"point_goal","observation_id":"obs-1","view":"left","point":[412,760],"max_actions":200}
+{"kind":"retrace","leg_id":2,"max_actions":200}
+```
+
+- `point_goal` grounds the pixel (0–1000, origin top left) on the observation's depth. It
+  uses the nearest safe floor pixel within `simulation.legs.snap_radius` × image width,
+  connected to the start's NavMesh island. Another level is allowed unless
+  `legs.same_level` is set. The goal is then planned with the clearance planners and driven.
+  The observation must belong to the current event index; otherwise 409.
+- `retrace` drives back along the session's own executed positions to where leg `leg_id`
+  ended.
+
+The step reply gains a public `leg` object:
+
+```json
+{"leg_id":3,"kind":"point_goal","status":"reached","reason":null,"start_event_index":41,
+ "end_event_index":59,"distance_m":1.74,"net_displacement_m":1.70,"collision_steps":0}
+```
+
+`status` is one of:
+
+| Status | Meaning |
+|---|---|
+| `reached` | Arrived within `legs.reached_tolerance_m` of the goal |
+| `stopped_short` | The tracker stopped farther from the goal than that |
+| `blocked` | The tracker stalled or left the path |
+| `leg_budget` | The leg used its `max_actions` |
+| `episode_budget` | The session reached `max_actions` |
+| `invalid_target` | Grounding rejected the pixel |
+| `unreachable` | No clearance path was found |
+
+For `invalid_target` and `unreachable`, `reason` is a short sentence that is safe to show a
+model. Those two statuses execute nothing and do not count toward the `stalled`
+termination.
+
+Grounded goals, planned paths and internal planner errors are kept in the session leg log
+and appear only in `metrics()["legs"]`, never in a step reply.
+
 `finish` reasons are `policy_stop`, `forced_stop`, `invalid_output` and `cancelled`.
 `forced_stop` is a STOP imposed by the caller at its own decision budget (for example,
 reproducing a protocol that stops on the last allowed step); like `policy_stop` it is

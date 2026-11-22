@@ -1,0 +1,123 @@
+{
+  "episode_id": "908",
+  "scene_id": "mp3d/b8cTxDM8gDG/b8cTxDM8gDG.glb",
+  "reset_s": 2.59822406899184,
+  "calls": [
+    {
+      "call": "observe",
+      "s": 0.04650305490940809
+    },
+    {
+      "call": "point_goal",
+      "view": "right",
+      "point": [
+        365,
+        796
+      ],
+      "s": 0.3904754128307104,
+      "s_per_action": 0.0244047133019194,
+      "leg": {
+        "leg_id": 2,
+        "kind": "point_goal",
+        "status": "reached",
+        "reason": null,
+        "start_event_index": 0,
+        "end_event_index": 16,
+        "distance_m": 2.057,
+        "net_displacement_m": 2.027,
+        "collision_steps": 0
+      },
+      "reply_keys": [
+        "collisions",
+        "done",
+        "event_index",
+        "executed_actions",
+        "leg",
+        "observations",
+        "request_id",
+        "session_id",
+        "termination"
+      ],
+      "start_matches_previous_end": true,
+      "snap_px": 0.0,
+      "final_goal_distance_m": 0.008107436795274018
+    },
+    {
+      "call": "observe",
+      "s": 0.07766056386753917
+    },
+    {
+      "call": "point_goal",
+      "view": "front",
+      "point": [
+        749,
+        888
+      ],
+      "s": 0.32477713422849774,
+      "s_per_action": 0.02498285647911521,
+      "leg": {
+        "leg_id": 3,
+        "kind": "point_goal",
+        "status": "reached",
+        "reason": null,
+        "start_event_index": 16,
+        "end_event_index": 29,
+        "distance_m": 1.776,
+        "net_displacement_m": 1.757,
+        "collision_steps": 0
+      },
+      "reply_keys": [
+        "collisions",
+        "done",
+        "event_index",
+        "executed_actions",
+        "leg",
+        "observations",
+        "request_id",
+        "session_id",
+        "termination"
+      ],
+      "start_matches_previous_end": true,
+      "snap_px": 0.0,
+      "final_goal_distance_m": 0.059763190029762756
+    },
+    {
+      "call": "retrace",
+      "s": 0.6642357939854264,
+      "leg": {
+        "leg_id": 4,
+        "kind": "retrace",
+        "status": "reached",
+        "reason": null,
+        "start_event_index": 29,
+        "end_event_index": 63,
+        "distance_m": 3.818,
+        "net_displacement_m": 3.588,
+        "collision_steps": 0
+      },
+      "error_to_leg1_end_m": 0.056056429877591796
+    }
+  ],
+  "probes": {
+    "other_level_safe_pixels": {
+      "front": 0,
+      "right": 0,
+      "back": 0,
+      "left": 0
+    },
+    "sky": {
+      "status": "invalid_target",
+      "reason": "that spot is not visible floor"
+    }
+  },
+  "metrics": {
+    "distance_to_goal": 10.038768768310547,
+    "oracle_success": 0.0,
+    "success": 0.0,
+    "spl": 0.0,
+    "path_length": 7.650297446406185,
+    "collisions": 0
+  },
+  "actions": 63,
+  "private_fields_only_in_metrics": true
+}

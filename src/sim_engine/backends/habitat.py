@@ -123,6 +123,11 @@ class HabitatEnvironment:
     def position(self):
         return self.sim.get_agent(0).get_state().position.tolist()
 
+    @property
+    def pathfinder(self):
+        """The loaded NavMesh; replaced whenever a scene change recreates the simulator."""
+        return self.sim.pathfinder
+
     def step(self, action):
         result = self.sim.step(action)
         return result["rgb"][:, :, :3], bool(result["collided"])

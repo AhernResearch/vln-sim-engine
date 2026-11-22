@@ -1,0 +1,123 @@
+{
+  "episode_id": "4324",
+  "scene_id": "mp3d/gTV8FGcVJC9/gTV8FGcVJC9.glb",
+  "reset_s": 19.91205549892038,
+  "calls": [
+    {
+      "call": "observe",
+      "s": 0.22902983194217086
+    },
+    {
+      "call": "point_goal",
+      "view": "right",
+      "point": [
+        960,
+        881
+      ],
+      "s": 1.3105849670246243,
+      "s_per_action": 1.3105849670246243,
+      "leg": {
+        "leg_id": 2,
+        "kind": "point_goal",
+        "status": "unreachable",
+        "reason": "no path with enough clearance to that spot",
+        "start_event_index": 0,
+        "end_event_index": 0,
+        "distance_m": null,
+        "net_displacement_m": null,
+        "collision_steps": null
+      },
+      "reply_keys": [
+        "collisions",
+        "done",
+        "event_index",
+        "executed_actions",
+        "leg",
+        "observations",
+        "request_id",
+        "session_id",
+        "termination"
+      ],
+      "start_matches_previous_end": true,
+      "snap_px": null,
+      "final_goal_distance_m": null
+    },
+    {
+      "call": "observe",
+      "s": 0.22807444166392088
+    },
+    {
+      "call": "point_goal",
+      "view": "right",
+      "point": [
+        960,
+        881
+      ],
+      "s": 1.3011983600445092,
+      "s_per_action": 1.3011983600445092,
+      "leg": {
+        "leg_id": 3,
+        "kind": "point_goal",
+        "status": "unreachable",
+        "reason": "no path with enough clearance to that spot",
+        "start_event_index": 0,
+        "end_event_index": 0,
+        "distance_m": null,
+        "net_displacement_m": null,
+        "collision_steps": null
+      },
+      "reply_keys": [
+        "collisions",
+        "done",
+        "event_index",
+        "executed_actions",
+        "leg",
+        "observations",
+        "request_id",
+        "session_id",
+        "termination"
+      ],
+      "start_matches_previous_end": true,
+      "snap_px": null,
+      "final_goal_distance_m": null
+    },
+    {
+      "call": "retrace",
+      "s": 0.0005410900339484215,
+      "leg": {
+        "leg_id": 4,
+        "kind": "retrace",
+        "status": "invalid_target",
+        "reason": "the robot is already where that leg ended",
+        "start_event_index": 0,
+        "end_event_index": 0,
+        "distance_m": null,
+        "net_displacement_m": null,
+        "collision_steps": null
+      },
+      "error_to_leg1_end_m": 0.0
+    }
+  ],
+  "probes": {
+    "other_level_safe_pixels": {
+      "front": 0,
+      "right": 0,
+      "back": 186,
+      "left": 1053
+    },
+    "sky": {
+      "status": "invalid_target",
+      "reason": "that spot is not visible floor"
+    }
+  },
+  "metrics": {
+    "distance_to_goal": 13.223816871643066,
+    "oracle_success": 0.0,
+    "success": 0.0,
+    "spl": 0.0,
+    "path_length": 0,
+    "collisions": 0
+  },
+  "actions": 0,
+  "private_fields_only_in_metrics": true
+}

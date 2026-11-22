@@ -15,6 +15,7 @@ from .controllers import CommandRejected
 from .core.process import ProcessWorker, WorkerError
 from .core.queue import AsyncWorkQueue, QueueBusy
 from .expert import expert_job
+from .navigation.planners import NavMeshPlanners
 from .session import Conflict, Session
 
 
@@ -27,6 +28,7 @@ class SessionHost:
         self.settings, self.factory = settings, factory
         self.environment = None
         self.session = None
+        self.planners = None
 
     def handle(self, payload):
         method, data = payload
@@ -51,7 +53,8 @@ class SessionHost:
         if method in ("reset", "expert") and self.session is not None:
             raise Conflict("worker already owns an active session")
         if method == "reset":
-            self.session = Session.open(environment=self._env(), settings=self.settings, **data)
+            self.session = Session.open(environment=self._env(), settings=self.settings,
+                                        geometry=self._planners, **data)
             return self.session.reset_reply()
         if method == "expert":
             return self._expert(data["episode"], data["camera"])
@@ -63,6 +66,14 @@ class SessionHost:
         if handler is None:
             raise ValueError("unknown worker operation")
         return handler(self.session, data)
+
+    def _planners(self):
+        """One planner set per loaded NavMesh; a scene change replaces the pathfinder."""
+        pathfinder = self._env().pathfinder
+        if self.planners is None or self.planners.pf is not pathfinder:
+            self.planners = NavMeshPlanners(
+                pathfinder, self.settings.simulation.legs.minimum_clearance_m)
+        return self.planners
 
     def _expert(self, episode, camera):
         if not episode.get("goals"):
@@ -82,6 +93,14 @@ class SessionHost:
     @staticmethod
     def _step(session, data):
         return session.step(data["request"])
+
+    @staticmethod
+    def _observe(session, data):
+        return session.observe(data["request_id"])
+
+    @staticmethod
+    def _observation(session, data):
+        return session.observation_image(data["observation_id"], data["view"])
 
     @staticmethod
     def _frame(session, data):

@@ -9,6 +9,7 @@ from PIL import Image
 
 from sim_engine.backends.depth import AXIAL
 from sim_engine.core.io import file_sha256, read_json
+from sim_engine.navigation.point_goal import intrinsics
 
 
 def calibration(camera, projections, near, far, dt=0.25):
@@ -16,14 +17,7 @@ def calibration(camera, projections, near, far, dt=0.25):
     sensors = {}
     for key in ("rgb", "depth"):
         p = projections[key]
-        sensors[key] = {
-            "projection_matrix": p,
-            "intrinsics_K": [
-                [p[0][0] * width / 2, 0.0, (width - 1) / 2],
-                [0.0, p[1][1] * height / 2, (height - 1) / 2],
-                [0.0, 0.0, 1.0],
-            ],
-        }
+        sensors[key] = {"projection_matrix": p, "intrinsics_K": intrinsics(p, width, height)}
     return {
         "schema_version": 2,
         "camera": camera,

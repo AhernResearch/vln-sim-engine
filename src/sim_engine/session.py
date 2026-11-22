@@ -3,14 +3,30 @@
 from __future__ import annotations
 
 import hashlib
+import io
 import json
-from dataclasses import asdict
+from dataclasses import asdict, dataclass
 
-from .controllers import CONTROLLERS
+from PIL import Image
+
+from .controllers import CONTROLLERS, CommandRejected
 from .protocol import StepRequest
 from .tasks import task_of
 
 STOP_REASONS = ("policy_stop", "forced_stop")
+# A leg that never started moving is a planner reselection, not a stalled policy.
+UNSTARTED_LEGS = ("invalid_target", "unreachable")
+PUBLIC_LEG = ("leg_id", "kind", "status", "reason", "start_event_index", "end_event_index",
+              "distance_m", "net_displacement_m", "collision_steps")
+
+
+@dataclass
+class Snapshot:
+    """Four RGB-D views at one event index; depth never leaves the worker."""
+
+    event_index: int
+    views: dict
+    images: dict  # view -> (png bytes, sha256)
 
 
 class Conflict(ValueError):
@@ -28,15 +44,64 @@ class Session:
         self.termination = None
         self.replies = {}
         self.sensor_frames = []
+        self.legs, self.snapshots, self.observed = [], {}, {}
+        self._geometry = None
 
     @classmethod
-    def open(cls, session_id, environment, episode, camera_name, camera, seed, settings):
-        """Reset the episode, then capture the initial frame and position."""
+    def open(cls, session_id, environment, episode, camera_name, camera, seed, settings,
+             geometry=None):
+        """Reset the episode, then capture the initial frame and position.
+
+        ``geometry`` lazily provides the NavMesh planners used by leg commands.
+        """
         image = environment.reset(episode, camera, seed)
         session = cls(session_id, environment, episode, camera_name, camera, settings)
+        session._geometry = geometry
         session._store(image)
         session.positions.append(environment.position())
         return session
+
+    def observe(self, request_id):
+        """Capture the panorama at the current pose. Never moves; repeats return the same reply."""
+        if request_id in self.observed:
+            return self.observed[request_id]
+        if self.termination:
+            raise Conflict("episode has already ended")
+        index = len(self.actions)
+        views = self.env.observe_views(self.env.pose().yaw)
+        images = {}
+        for name, capture in views.items():
+            stream = io.BytesIO()
+            Image.fromarray(capture.images["rgb"]).save(stream, format="PNG")
+            images[name] = (stream.getvalue(), hashlib.sha256(stream.getvalue()).hexdigest())
+        observation_id = f"obs-{len(self.observed) + 1}"
+        # Only the current pose can be grounded; older snapshots are dropped with their depth.
+        self.snapshots = {oid: s for oid, s in self.snapshots.items() if s.event_index == index}
+        self.snapshots[observation_id] = Snapshot(index, views, images)
+        reply = {"observation_id": observation_id, "event_index": index, "views": {
+            name: {"sha256": digest, "width": views[name].images["rgb"].shape[1],
+                   "height": views[name].images["rgb"].shape[0]}
+            for name, (_, digest) in images.items()}}
+        self.observed[request_id] = reply
+        return reply
+
+    def geometry(self):
+        """NavMesh planners of the current scene, built once per scene by the worker."""
+        if self._geometry is None:
+            raise CommandRejected("this simulator has no leg planning geometry")
+        return self._geometry()
+
+    def snapshot(self, observation_id):
+        snapshot = self.snapshots.get(observation_id)
+        if snapshot is None or snapshot.event_index != len(self.actions):
+            raise Conflict("observation is stale; observe the current pose again")
+        return snapshot
+
+    def observation_image(self, observation_id, view):
+        snapshot = self.snapshots.get(observation_id)
+        if snapshot is None or view not in snapshot.images:
+            raise KeyError("observation is not available")
+        return snapshot.images[view]
 
     def _store(self, image, snapshot=None):
         if image.shape != (self.camera.height, self.camera.width, 3):
@@ -91,16 +156,22 @@ class Session:
         )
         old_collisions = self.collisions
         command = request.command
-        executed = CONTROLLERS[command.kind].execute(
-            self.env, self.physics, command, self.settings.simulation.max_actions - start
+        outcome = CONTROLLERS[command.kind].execute(
+            self.env, self.physics, command, self.settings.simulation.max_actions - start, self
         )
-        for item in executed:
+        for item in outcome.executed:
             self._store(item.image, item.snapshot)
             self.actions.append(item.action)
             self.positions.append(item.position or self.env.position())
             self.collisions += int(item.collided)
         end = len(self.actions)
-        self.stalled = self.stalled + 1 if start == end else 0
+        leg = None
+        if outcome.leg is not None:
+            leg = dict(outcome.leg, leg_id=len(self.legs) + 1, request_id=request.request_id,
+                       start_event_index=start, end_event_index=end)
+            self.legs.append(leg)
+        if not (leg and leg["status"] in UNSTARTED_LEGS):
+            self.stalled = self.stalled + 1 if start == end else 0
         if end >= self.settings.simulation.max_actions:
             self.termination = "timeout"
         elif self.stalled >= 3:
@@ -126,6 +197,8 @@ class Session:
             "done": self.termination is not None,
             "termination": self.termination,
         }
+        if leg is not None:
+            reply["leg"] = {key: leg.get(key) for key in PUBLIC_LEG}
         if before is not None:
             after = self.env.distance(self.positions[-1], self.episode["goals"][0]["position"])
             components = {
@@ -155,4 +228,5 @@ class Session:
             "positions": self.positions,
             "actions": self.actions,
             "predictions": self.predictions,
+            "legs": self.legs,
         }

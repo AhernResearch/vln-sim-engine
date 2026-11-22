@@ -8,7 +8,7 @@ from .core.http import service_app
 from .core.io import implementation_sources
 from .data import EpisodeStore
 from .pool import SessionPool
-from .protocol import ExpertRequest, FinishRequest, ResetRequest, StepRequest
+from .protocol import ExpertRequest, FinishRequest, ObserveRequest, ResetRequest, StepRequest
 
 
 def create_app(settings, *, store=None, pool_factory=SessionPool):
@@ -41,7 +41,8 @@ def create_app(settings, *, store=None, pool_factory=SessionPool):
             "habitat_version": runtimes[0].get("habitat_version"),
             "worker_runtimes": runtimes,
             "capabilities": {"sensors": settings.simulation.sensors,
-                             "commands": ["waypoints", "velocity"],
+                             "commands": ["waypoints", "velocity", "point_goal", "retrace"],
+                             "observe": True,
                              "task_types": ["navigation", "development"]},
             "version": __version__,
             "startup_id": startup_id,
@@ -75,6 +76,16 @@ def create_app(settings, *, store=None, pool_factory=SessionPool):
     @app.post("/v1/sessions/{session_id}/step")
     async def step(session_id: str, request: StepRequest):
         return await app.state.pool.call(session_id, "step", request=request.model_dump())
+
+    @app.post("/v1/sessions/{session_id}/observe")
+    async def observe(session_id: str, request: ObserveRequest):
+        return await app.state.pool.call(session_id, "observe", request_id=request.request_id)
+
+    @app.get("/v1/sessions/{session_id}/observations/{observation_id}/{view}")
+    async def observation(session_id: str, observation_id: str, view: str):
+        png, digest = await app.state.pool.call(
+            session_id, "observation", observation_id=observation_id, view=view)
+        return Response(png, media_type="image/png", headers={"X-Content-SHA256": digest})
 
     @app.get("/v1/sessions/{session_id}/frames/{event_index}")
     async def frame(session_id: str, event_index: int, sensor: str = "rgb"):

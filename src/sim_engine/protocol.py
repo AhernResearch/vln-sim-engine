@@ -54,11 +54,42 @@ class VelocityCommand(StrictModel):
     angular_rps: FiniteFloat
 
 
+Normalized = Annotated[StrictInt, Field(ge=0, le=1000)]
+LegActions = Annotated[StrictInt, Field(ge=1, le=400)]
+
+
+class PointGoalCommand(StrictModel):
+    """Walk to the floor at one pixel of a current observation (0..1000, origin top left)."""
+
+    kind: Literal["point_goal"]
+    observation_id: Identifier
+    view: Literal["front", "right", "back", "left"]
+    point: tuple[Normalized, Normalized]
+    max_actions: LegActions = 200
+
+
+class RetraceCommand(StrictModel):
+    """Drive back along the session's own executed path to where an earlier leg ended."""
+
+    kind: Literal["retrace"]
+    leg_id: Annotated[StrictInt, Field(ge=1)]
+    max_actions: LegActions = 200
+
+
 class StepRequest(StrictModel):
     request_id: Identifier
     expected_event_index: Annotated[StrictInt, Field(ge=0)]
-    command: Annotated[WaypointCommand | VelocityCommand, Field(discriminator="kind")]
+    command: Annotated[
+        WaypointCommand | VelocityCommand | PointGoalCommand | RetraceCommand,
+        Field(discriminator="kind"),
+    ]
     policy_version: str = ""
+
+
+class ObserveRequest(StrictModel):
+    """Capture the four-view panorama at the current pose; never moves the robot."""
+
+    request_id: Identifier
 
 
 class FinishRequest(StrictModel):

@@ -1,17 +1,15 @@
 """NavMesh-only geometry context. Never constructs a Simulator or requires a GLB."""
 
 import math
-from dataclasses import asdict, replace
+from dataclasses import asdict
 
 import numpy as np
 
 from sim_engine.core.io import create_json
 from sim_engine.core.optional import optional_module
-from sim_engine.navigation.budget import checkpoint
-from sim_engine.navigation.clearance import ClearancePlanner, ClearanceProfile
 from sim_engine.navigation.errors import RejectedCandidate
 from sim_engine.navigation.guidance import dense_surface_path, plan_with_preferences
-from sim_engine.navigation.queries import NavMeshQueries
+from sim_engine.navigation.planners import NavMeshPlanners
 from sim_engine.navigation.reference import reference_state
 from sim_engine.navigation.tracking import expert_profile, preview
 from sim_engine.planning.sampling import ReferenceCache, select_pose
@@ -28,38 +26,20 @@ class NavMeshContext:
         self.pf = hs.PathFinder()
         if not self.pf.load_nav_mesh(str(navmesh)):
             raise ValueError("cannot load pinned NavMesh")
-        profile = profile or ClearanceProfile()
-        # One exact query cache per NavMesh, shared by every planner of the current task.
-        self.queries = NavMeshQueries(self.pf)
-
-        def planner(value):
-            return ClearancePlanner(self.pf, self.shortest, value, queries=self.queries)
-
-        self.planner = planner(profile)
-        minimum = config["minimum_planning_clearance_m"]
-        self.planners = [self.planner]
-        if minimum < profile.clearance_m:
-            self.planners.append(planner(
-                replace(profile, clearance_m=minimum, grid_m=min(profile.grid_m, 0.05))))
-        self.guard = planner(replace(profile, clearance_m=minimum, edge_sample_m=0.0125))
+        geometry = NavMeshPlanners(self.pf, config["minimum_planning_clearance_m"], profile)
+        self.geometry = geometry
+        self.queries, self.planner, self.planners, self.guard = (
+            geometry.queries, geometry.planner, geometry.planners, geometry.guard)
         self.expert_profile = expert_profile(config)
         self.references = ReferenceCache()
 
     def clear_task(self):
-        # Share queries between a task's candidate searches, never across tasks.
-        for planner in [*self.planners, self.guard]:
-            planner.clear_queries()
-        self.queries.clear()
+        self.geometry.clear()
         self.references.values.clear()
         self.tasks.clear()
 
     def shortest(self, a, b):
-        checkpoint(query=1)
-        path = self.hs.ShortestPath()
-        path.requested_start, path.requested_end = a, b
-        if not self.pf.find_path(path):
-            raise RejectedCandidate("anchors disconnected")
-        return [self.np.asarray(p) for p in path.points]
+        return self.geometry.shortest(a, b)
 
     def reference(self, task, index):
         """Source samples guide the route; only the task goal is fixed."""

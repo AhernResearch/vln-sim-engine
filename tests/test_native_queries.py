@@ -13,6 +13,7 @@ from sim_engine.navigation import native as native_module
 from sim_engine.navigation.budget import PlanningContext, PlanningStopped
 from sim_engine.navigation.clearance import ClearancePlanner, ClearanceProfile
 from sim_engine.navigation.native import native_search, require_native
+from sim_engine.navigation.planners import NavMeshPlanners
 from sim_engine.navigation.queries import NavMeshQueries
 from sim_engine.planning.contracts import PlanningBudget
 from sim_engine.planning.geometry import NavMeshContext
@@ -118,10 +119,12 @@ def test_navmesh_context_releases_shared_arena_between_tasks():
     mesh = Mesh()
     q = NavMeshQueries(mesh)
     q.snap_many([[0, 0, 0]])
+    geometry = NavMeshPlanners.__new__(NavMeshPlanners)
+    geometry.queries = q
+    geometry.planners = [ClearancePlanner(mesh, lambda a, b: [a, b], queries=q)]
+    geometry.guard = ClearancePlanner(mesh, lambda a, b: [a, b], queries=q)
     context = NavMeshContext.__new__(NavMeshContext)
-    context.queries = q
-    context.planners = [ClearancePlanner(mesh, lambda a, b: [a, b], queries=q)]
-    context.guard = ClearancePlanner(mesh, lambda a, b: [a, b], queries=q)
+    context.geometry = geometry
     context.references = SimpleNamespace(values={"old": True})
     context.tasks = {"old": True}
     context.clear_task()

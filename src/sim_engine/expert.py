@@ -135,8 +135,8 @@ class ExpertRollout:
                 return RolloutResult("expert_stop", step - 1, self._stats(tracker, collisions, goal))
             try:
                 executed = controller.execute(
-                    self.env, self.env.physics, VelocityCommand(kind="velocity", **command), 1
-                )
+                    self.env, self.env.physics, VelocityCommand(kind="velocity", **command), 1, None
+                ).executed
             except Exception as error:  # sub-threshold or missing physics
                 raise ValueError(f"command rejected: {error}") from error
             if not executed:
