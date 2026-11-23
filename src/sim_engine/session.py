@@ -103,6 +103,13 @@ class Session:
             raise KeyError("observation is not available")
         return snapshot.images[view]
 
+    def observation_capture(self, observation_id, view):
+        """The raw RGB-D capture of one view, with its calibration and sensor poses."""
+        snapshot = self.snapshots.get(observation_id)
+        if snapshot is None or view not in snapshot.views:
+            raise KeyError("observation is not available")
+        return snapshot.views[view]
+
     def _store(self, image, snapshot=None):
         if image.shape != (self.camera.height, self.camera.width, 3):
             raise RuntimeError("renderer returned unexpected image shape")
@@ -229,4 +236,5 @@ class Session:
             "actions": self.actions,
             "predictions": self.predictions,
             "legs": self.legs,
+            "reference": self.task.reference(self.episode),
         }

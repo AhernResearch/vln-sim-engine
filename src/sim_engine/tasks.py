@@ -20,6 +20,10 @@ class NavigationTask:
         return navigation_metrics(positions, episode.get("_metric_reference_path", []),
                                   episode["goals"][0]["position"], env.distance, stopped=stopped)
 
+    def reference(self, episode: dict) -> dict:
+        """The scored goal and the dataset route, for evaluation artifacts only."""
+        return {"goal": episode["goals"][0]["position"], "path": episode.get("reference_path")}
+
 
 class DevelopmentTask:
     """A start and an instruction only; nothing is scored and no goal may be fabricated."""
@@ -35,6 +39,9 @@ class DevelopmentTask:
     def metrics(self, env, episode: dict, positions: list, stopped: bool) -> dict:
         return {"evaluation_available": False, "success": None, "spl": None, "ndtw": None,
                 "distance_to_goal": None}
+
+    def reference(self, episode: dict) -> dict:
+        return {"goal": None, "path": None}
 
 
 TASKS = {task.name: task for task in (NavigationTask(), DevelopmentTask())}

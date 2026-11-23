@@ -1,5 +1,6 @@
 import asyncio
 import hashlib
+import json
 from types import SimpleNamespace
 
 import pytest
@@ -28,6 +29,7 @@ def test_http_frame_contract_and_retry_conflicts(tmp_path):
         sid = value["session_id"]
         original = client.get(f"/v1/sessions/{sid}/frames/0")
         assert hashlib.sha256(original.content).hexdigest() == original.headers["X-Content-SHA256"]
+        assert len(json.loads(original.headers["X-Pose"])["position"]) == 3
         result = client.post(f"/v1/sessions/{sid}/step", json=request())
         assert result.status_code == 200
         assert client.post(f"/v1/sessions/{sid}/step", json=request()).json() == result.json()

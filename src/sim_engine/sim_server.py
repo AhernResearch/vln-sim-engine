@@ -11,6 +11,14 @@ from .pool import SessionPool
 from .protocol import ExpertRequest, FinishRequest, ObserveRequest, ResetRequest, StepRequest
 
 
+def sensor_response(data):
+    """A raw sensor payload; calibration and world pose travel in one metadata header."""
+    return Response(data["raw"], media_type="application/octet-stream", headers={
+        "X-Content-SHA256": data["sha256"], "X-Encoding": data["encoding"],
+        "X-Sensor-Metadata": json.dumps({"calibration": data["calibration"], "pose": data["pose"]}),
+    })
+
+
 def create_app(settings, *, store=None, pool_factory=SessionPool):
     store = store or EpisodeStore(settings)
 
@@ -82,7 +90,11 @@ def create_app(settings, *, store=None, pool_factory=SessionPool):
         return await app.state.pool.call(session_id, "observe", request_id=request.request_id)
 
     @app.get("/v1/sessions/{session_id}/observations/{observation_id}/{view}")
-    async def observation(session_id: str, observation_id: str, view: str):
+    async def observation(session_id: str, observation_id: str, view: str, sensor: str = "rgb"):
+        if sensor != "rgb":
+            data = await app.state.pool.call(session_id, "observation", observation_id=observation_id,
+                                             view=view, sensor=sensor)
+            return sensor_response(data)
         png, digest = await app.state.pool.call(
             session_id, "observation", observation_id=observation_id, view=view)
         return Response(png, media_type="image/png", headers={"X-Content-SHA256": digest})
@@ -91,12 +103,8 @@ def create_app(settings, *, store=None, pool_factory=SessionPool):
     async def frame(session_id: str, event_index: int, sensor: str = "rgb"):
         if sensor != "rgb":
             data = await app.state.pool.call(session_id, "sensor", event_index=event_index, sensor=sensor)
-            return Response(data["raw"], media_type="application/octet-stream", headers={
-                "X-Content-SHA256": data["sha256"], "X-Encoding": data["encoding"],
-                "X-Sensor-Metadata": json.dumps({"calibration": data["calibration"],
-                                                 "pose": data["pose"]}),
-            })
-        raw, digest, camera, width, height = await app.state.pool.call(
+            return sensor_response(data)
+        raw, digest, camera, width, height, pose = await app.state.pool.call(
             session_id, "frame", event_index=event_index
         )
         return Response(
@@ -107,6 +115,8 @@ def create_app(settings, *, store=None, pool_factory=SessionPool):
                 "X-Camera-Profile": camera,
                 "X-Width": str(width),
                 "X-Height": str(height),
+                # Chassis pose at this event, for the caller's records only, never for a model.
+                "X-Pose": json.dumps(pose),
             },
         )
 

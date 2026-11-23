@@ -1,5 +1,7 @@
 """Planner-delegated legs: observe snapshots, point goals and retrace on one continuous session."""
 
+import io
+import json
 from types import SimpleNamespace
 
 import numpy as np
@@ -132,6 +134,11 @@ async def test_worker_serves_observe_and_view_images(tmp_path):
         png, digest = await pool.call(opened["session_id"], "observation",
                                       observation_id=reply["observation_id"], view="back")
         assert png.startswith(b"\x89PNG") and digest == reply["views"]["back"]["sha256"]
+        depth = await pool.call(opened["session_id"], "observation", sensor="depth",
+                                observation_id=reply["observation_id"], view="back")
+        assert depth["encoding"] == "depth_npz" and "position" in json.dumps(depth["pose"])
+        with np.load(io.BytesIO(depth["raw"])) as stored:
+            assert stored["depth_m"].ndim == 2
         with pytest.raises(WorkerError) as error:
             await pool.call(opened["session_id"], "observation", observation_id="obs-9", view="back")
         assert error.value.status == 404
@@ -157,3 +164,9 @@ def test_ground_point_snaps_within_radius_and_names_the_rejection(monkeypatch):
     with pytest.raises(TargetRejected, match="not reachable"):
         point_goal.ground_point(depth, None, None, [0, 0, 0], None, None, (500, 500),
                                 Legs(snap_radius=0))
+
+
+def test_metrics_carry_the_goal_and_reference_route_for_evaluation(session):
+    reference = session.metrics()["reference"]
+    assert reference["goal"] == session.episode["goals"][0]["position"]
+    assert reference["path"] == session.episode.get("reference_path")

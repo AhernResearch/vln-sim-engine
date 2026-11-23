@@ -12,8 +12,8 @@ whole-task API, shared-storage contract and lifecycle are documented in
 | GET | `/v1/datasets` | Registered annotation identities and episode counts |
 | POST | `/v1/sessions` | Reserve a worker and reset an episode |
 | POST | `/v1/sessions/{id}/step` | Execute a short local trajectory prefix |
-| GET | `/v1/sessions/{id}/frames/{event}` | Immutable packed RGB8 bytes and hash headers |
-| GET | `/v1/sessions/{id}/metrics` | Privileged metrics and execution trace |
+| GET | `/v1/sessions/{id}/frames/{event}` | Immutable packed RGB8 bytes, hash headers and `X-Pose` (chassis pose; caller records only) |
+| GET | `/v1/sessions/{id}/metrics` | Privileged metrics, execution trace and `reference` (goal, dataset route) |
 | POST | `/v1/sessions/{id}/finish` | Explicit stop, model failure or cancellation |
 | DELETE | `/v1/sessions/{id}` | Release the episode and worker |
 | POST | `/v1/experts` | Run the simulator-side expert on one episode (data generation) |
@@ -109,6 +109,10 @@ reply:
 ```
 
 `GET /v1/sessions/{id}/observations/{observation_id}/{view}` returns that view as PNG.
+With `?sensor=depth` it returns the view's depth in metres as `depth_npz`, with the same
+`X-Sensor-Metadata` (calibration and world sensor pose) as `/frames/{index}?sensor=depth`.
+Depth and poses are for the caller's own records (for example a top-down map); like every
+pose they must never be forwarded into a model request.
 Depth and sensor poses stay in the worker; only grounding reads them.
 
 Two commands run a whole leg with the 4 Hz path tracker and `velocity_step`. Every control

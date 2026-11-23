@@ -19,6 +19,21 @@ from .navigation.planners import NavMeshPlanners
 from .session import Conflict, Session
 
 
+def encode_sensor(capture, sensor):
+    """One captured sensor with its calibration and world pose; depth is metres in an npz."""
+    if sensor not in capture.images:
+        raise KeyError("sensor was not captured at this event")
+    value = capture.images[sensor]
+    if "depth" in sensor:
+        stream = io.BytesIO()
+        np.savez_compressed(stream, depth_m=np.asarray(value, dtype=np.float32))
+        raw, encoding = stream.getvalue(), "depth_npz"
+    else:
+        raw, encoding = value.tobytes(), "rgb8"
+    return {"raw": raw, "sha256": hashlib.sha256(raw).hexdigest(), "encoding": encoding,
+            "calibration": capture.calibration, "pose": capture.sensors[sensor]}
+
+
 class SessionHost:
     """Child-side owner of one environment and at most one active session."""
 
@@ -100,15 +115,20 @@ class SessionHost:
 
     @staticmethod
     def _observation(session, data):
-        return session.observation_image(data["observation_id"], data["view"])
+        if data.get("sensor", "rgb") == "rgb":
+            return session.observation_image(data["observation_id"], data["view"])
+        capture = session.observation_capture(data["observation_id"], data["view"])
+        return encode_sensor(capture, data["sensor"])
 
     @staticmethod
     def _frame(session, data):
         index = data["event_index"]
         if not 0 <= index < len(session.frames):
             raise KeyError("observation is not available")
+        capture = session.sensor_frames[index]
+        pose = capture and {"position": list(capture.position), "rotation_xyzw": list(capture.rotation_xyzw)}
         return (*session.frames[index], session.camera_name, session.camera.width,
-                session.camera.height)
+                session.camera.height, pose)
 
     @staticmethod
     def _sensor(session, data):
@@ -116,17 +136,9 @@ class SessionHost:
         if not 0 <= index < len(session.sensor_frames):
             raise KeyError("observation is not available")
         snapshot = session.sensor_frames[index]
-        if snapshot is None or sensor not in snapshot.images:
+        if snapshot is None:
             raise KeyError("sensor was not captured at this event")
-        value = snapshot.images[sensor]
-        if "depth" in sensor:
-            stream = io.BytesIO()
-            np.savez_compressed(stream, depth_m=np.asarray(value, dtype=np.float32))
-            raw, encoding = stream.getvalue(), "depth_npz"
-        else:
-            raw, encoding = value.tobytes(), "rgb8"
-        return {"raw": raw, "sha256": hashlib.sha256(raw).hexdigest(), "encoding": encoding,
-                "calibration": snapshot.calibration, "pose": snapshot.sensors[sensor]}
+        return encode_sensor(snapshot, sensor)
 
     @staticmethod
     def _metrics(session, data):
