@@ -1,0 +1,276 @@
+{
+  "sim_url": "http://127.0.0.1:18931",
+  "health": {
+    "status": "ok",
+    "backend": "habitat_gs",
+    "runtime": {
+      "backend": "habitat_gs",
+      "habitat_version": "0.3.3",
+      "bindings_sha256": "03f2ae21f82c45abb0d667a41ac5cf486ba5f8feb34be8e53d00f89c8c3b9030",
+      "depth_source": "gaussian_unvalidated",
+      "depth_convention": "unvalidated"
+    },
+    "habitat_version": "0.3.3",
+    "worker_runtimes": [
+      {
+        "backend": "habitat_gs",
+        "habitat_version": "0.3.3",
+        "bindings_sha256": "03f2ae21f82c45abb0d667a41ac5cf486ba5f8feb34be8e53d00f89c8c3b9030",
+        "depth_source": "gaussian_unvalidated",
+        "depth_convention": "unvalidated"
+      }
+    ],
+    "capabilities": {
+      "sensors": "rgbd",
+      "commands": [
+        "waypoints",
+        "velocity",
+        "point_goal",
+        "retrace"
+      ],
+      "observe": true,
+      "retrace_targets": [
+        "leg_id",
+        "event_index"
+      ],
+      "task_types": [
+        "navigation",
+        "development"
+      ]
+    },
+    "version": "0.1.0",
+    "startup_id": "3c80b9602fe34e4dab1df23389e2e798",
+    "workers": 1,
+    "live_workers": 1,
+    "protocol": {
+      "max_actions": 600,
+      "dataset_max_actions": {
+        "m_floor_open_tasks": 600
+      },
+      "dataset_physics": {
+        "m_floor_open_tasks": {
+          "agent_height_m": 1.5,
+          "agent_radius_m": 0.18,
+          "forward_m": 0.25,
+          "turn_degrees": 15,
+          "allow_sliding": true,
+          "velocity": {
+            "linear_mps": [
+              0.0,
+              2.5
+            ],
+            "angular_dps": [
+              -300.0,
+              300.0
+            ],
+            "min_abs_linear_mps": 0.01,
+            "min_abs_angular_dps": 0.5,
+            "time_step_s": 0.25
+          }
+        }
+      },
+      "reward_mode": "none",
+      "cameras": {
+        "m_floor_480x270": {
+          "height_m": 0.88,
+          "pitch_down_rad": 0.0,
+          "view": "88cm_level_hfov120",
+          "width": 480,
+          "height": 270,
+          "hfov": 120.0
+        }
+      },
+      "scene_hashes": {
+        "m_floor_open_tasks": {
+          "m_floor": {
+            "manifest": "c8a3865ec4def0b0ffa594c5887af0094ac61a491855ab65de52bc0f1242e6ee",
+            "navigation": "76913737540fc8e13b6adc905a5711c8931deb28f65cb3dbd8f420b0affe2f5a",
+            "render": "f2dc6d93556cbc1e57ba6ad69b3511c6d2ec0b28b770c6bb68ea1c498eb575a8",
+            "mesh": "ec0647bdc762b7f01bdd24501958a61058231abf41915191294c9ac92eaf4d12",
+            "scan_poses": "173296bd9596b7cc9ea52b8422414311e3c0d3958df48829168a1ae4b76949ca",
+            "stage": "9dc09277d61f86b788fb49e54431b70ac7374df020f52284e8634d27432b9f6f",
+            "geometry_stage": "f76747cbae04a619f96732f5d96dd134480806c126547307495f817f0f0c14ef",
+            "navmesh": "fce46f5392f326b41bce569b3bd9af4e28bc1643344ebae80757d81ede3756f9"
+          }
+        }
+      },
+      "implementation_sha256": {
+        "__init__.py": "a57fb5f8ad6c8f2afbf12af2890228321b1f790496c3aef3e92a67fb911e1508",
+        "__main__.py": "3129adff95e0f38b87ab34cddfc27082c7892bcaec267ff5d40f160fdf55b44a",
+        "acceptance/__init__.py": "9f0bd166c96df72e39ba2b14c4a50c01a7f6117698962b60ebdcffba78b10742",
+        "acceptance/depth.py": "57d7a03eb224a40343a743d0eaee46327e9a64722eecd650932cc808be48edef",
+        "acceptance/probe.py": "2c4f5af12938d9f46babceb21411c40709aeadaf5b3c4f02b8138acf842b3abf",
+        "acceptance/session_flow.py": "ef23a9b4a16aa3dc6821677e2cbd8e5b7c634fb0f8f0593a33f7f9b706499489",
+        "backends/__init__.py": "a504f4230c9f84f82cef34759d3ef925625f0590198ea834af36613aee2e9107",
+        "backends/contracts.py": "3589f6cf418bae76e3fa70070170566f82085667e57687397dc81642e269b79b",
+        "backends/depth.py": "e95d0a98c255711601b645747160e82b6fbd45b0bba202b9525b016d110d46fe",
+        "backends/habitat.py": "7a449fc4dc44504a5f259064512fd81bd4539e1e6060eee3faa21877541736f6",
+        "backends/runtime.py": "945399014f53b0250d2d61478b8c3f73dc49573d3ff778ec8bfd834bb7d38169",
+        "cli.py": "a34e5cc232cbb079948ef823e1d211592ae0912c9ed179b40e5b22786655f421",
+        "client.py": "a6449c6d205c1ac00ae27396091e732ade9ac6d1ddd3be71d0c42c0dd9a27a33",
+        "collection/__init__.py": "94ed720ce825fd7a1cb9866ed01b9d2a34c91f0256e0a8a152422511e6650577",
+        "collection/audit.py": "6176c072a76983c3036181a9b688547c23f31274faa9717d1829a5e7c085f88f",
+        "collection/backend.py": "8a9e9248cc777cf1b60e2800ea3887ff08db7ea331c28074bcc327271d5a6504",
+        "collection/protocol.py": "3bbdf8c2fc0b27f8635e74a306ec368f779347cefdd7d26308378b4df8b367d7",
+        "collection/recording.py": "83895fc0dee946265417a9a8aea70cfee7ffd38418cd9dde6409ae7abd3c52ed",
+        "collection/scene_reset.py": "0f237484408d2ff9d1c7562b86778e460e8506b0d9bfc1c7c228f554cc6bd9e5",
+        "collection/schedule.py": "ad27f85af144e578bb22ec004ac8dc04cd2640682a7b9a4da566fdcee847ae61",
+        "collection/server.py": "b00bf4b64482fc4bb2bf0b00f4640445b6160c97e22cc1616cfa9395985db880",
+        "collection/service.py": "f8a498c8b2f7490ccfa5fed4fbc892ac0609d60e1e36d3598a6213033ea0d344",
+        "collection/simulation.py": "f8cde0c33db6c74cac21967dd594dd5acec0f8f6ace38d3a79639233aa637ff3",
+        "collection/start_pool.py": "668bb2ee76bcbb3184a4261fece9d915174524d11ee462e29b157fc1633b2c86",
+        "collection/workers.py": "0017869bbfee72a235d15b80ae0b0e80a208ed4f0c5c5c8b364b2497003dbac5",
+        "config.py": "29ff24cff53ffad2f6e4882a264a1ccefb5b7e60136574ab89ea1da166de67f0",
+        "controllers.py": "7ad83e9066401d65221ba0f314f892372b13e665b828d1a9ba28e0b8512a10e9",
+        "core/__init__.py": "29bbbae645178d784ef5cd9b7d75859a94b72622aafb1b1ff99c1ec49aab7af2",
+        "core/cache.py": "2f1e84a4e2c785cd0656aa7bd51e477fd414d6dc14e32a53d99e7604b7b74299",
+        "core/disk.py": "f5410dde685faaedc41a0f8c8fe343b17a745f8d1ddaf3c665451632f513408e",
+        "core/http.py": "806b39f1b84a0cba0687e8f00df3db85120ff8f677b1f4b1ced2e1baaa1b7528",
+        "core/io.py": "8ff27a20ddc8e77002b6989889f695bd2f4f156f0e24c134621918e11ed6fd70",
+        "core/optional.py": "216c5d92dbf3b252ce5c4f13ea69d13d1f782e6bcf472511802b3558539d13e9",
+        "core/process.py": "30372a256e26eafe975b5c1fc302a4a9751a60310cbdcb48ab606a8c5d5549ba",
+        "core/queue.py": "a95b0e63645e9d8e67b8a053fd7edcdda9bd6a07fb64634d7012cdb298293751",
+        "data.py": "3e45c594eeb48722b543f596c4ec7a8dd1ae6f2e4df983da86cdca90ced2511c",
+        "expert.py": "c321861d0f3571757f7b579249c59989663d70662848f9fcf81812a784956d21",
+        "metrics.py": "b4c1cdc53b99bcdf2ae88349a90f88cbee1bd728678a0fa0bc929d6d86c7bb85",
+        "navigation/__init__.py": "e41f428043053e6255f7aeed418270b141d6bb6da4a1586d309b66c58e82f7a3",
+        "navigation/_astar.abi3.so": "dc46fcada5e82bfae03d6e434ced88333770f91a72291f947c7738c4c2c98cd5",
+        "navigation/_astar.cpp": "6d43621186f7dddea1833d96f02dd3fbb911868837336fe831dfc85e54e41128",
+        "navigation/_geometry.h": "80f7ce818ba5d0820519d2f6d448693890d3c5d701ef80760c843b0188414e3c",
+        "navigation/_path.cpp": "2477f947da95563c2c1c40a99a7a4828d10258d94eb27c2739222232f54c88b3",
+        "navigation/_queries.cpp": "6f70ea89d7cc888caaf51d07f74c404dad545459549d2ac62f24a6c994e23780",
+        "navigation/budget.py": "79ced66777751cec4a6de8056235fb17b7f1546c8f3ba3cd2f9cc2f44a56ea79",
+        "navigation/clearance.py": "034f419532c844f58554dd93c69421616b0a94df5f7c67a3e744475d49e2e60b",
+        "navigation/corridor.py": "07bb119c03dc77cdcba060718ecc10e733e5432c935bdaf8e757064fa79c98b6",
+        "navigation/determinism.py": "953ad060a1275ca85a7855fda387c6a0dc9d97f5f8cfc8cf72041e446121ff14",
+        "navigation/errors.py": "360e699129fc49311d9197bca4a9fd752680d4cd5d24d0896e01fe3ebbb643c6",
+        "navigation/guidance.py": "3c3d1ccd95287555fff10b1417d2a05e1665964caeb26ceb8ea56228428223ce",
+        "navigation/limits.py": "78b3a3dab000c9cfa2a8b50388be3bea8ebbfd84116d93fcb057fd9b5c820623",
+        "navigation/native.py": "5aca10fa36e5b63ce1f1e4f7add6a62093e57788c82787a089679d23017a1f5a",
+        "navigation/planners.py": "a7f3fed22b8fc90d9faa38090fc453a1065f3d8625050cb4c095d798c73b4a23",
+        "navigation/point_goal.py": "a6cdbac259246b9643582af2c320e6ce4fa9794d9533cb6cd181380775b32ac2",
+        "navigation/pose.py": "8965587b1f91a1ab883346395468fd8474b7f33a1edd6c72dc8a1c925e4b73fa",
+        "navigation/queries.py": "3404b98bd3850c0dfc3648f97143e3d4db6028cdde9e9975225bf25b909b9346",
+        "navigation/reference.py": "d4bc49eef1a9a5f90d595557183c8aaae2b40a9d100f04e3525334d54b154cf9",
+        "navigation/region_selection.py": "85243d82c1a229db6b29e26384a4033cbb30602196d1411e7030d9829e74dd30",
+        "navigation/safe_image.py": "11627bc76290e2a9dc7dda6019a4e89a3cc45c99026b941c49551b22f1067224",
+        "navigation/tracking.py": "94a4c375fae2c4f4c2aec91bdafd584f56232345f947dcbcc329170db1abb394",
+        "navigation/visual_geometry.py": "9944aab0251a39b09718a6a050f15271daaf2b9d9ebdd0f96b6ebe382bfb6d15",
+        "navigation/visual_region.py": "6e8171f9cdbbd4af70a5a623161cc6377be9b40aaeaca588b041317f4e95a041",
+        "navmesh.py": "0fb10ad2d5411755ae2759419fb251bc927c4266b95ce3084ae67552d9ae95c8",
+        "outputs.py": "b7d1d9062d649832413960af554a3eb35464f06f5ef15a550b8eee91b399014e",
+        "planning/__init__.py": "cfa4c8ab3c04b3dcef236b34e5f84dc2998f9f3330688838a7752fecf047d9c4",
+        "planning/assets.py": "ff132be659b2331abfe8a2d84c2820ad8b8acb5a001f34afa12dab6f1b2ef9bb",
+        "planning/client.py": "af28898beff4ee6c67e5f922ecfb782984cc6f96e8b797db77bd64dbd040cbec",
+        "planning/contracts.py": "852c21ec5dc9a6a5d2aa362e3130fb4115230993b6ed02fd96d5379dc2926623",
+        "planning/engine.py": "f914e8bc5fdb3dbed0d70c1a7c76bd6cca450f656f8943ebaf43e6b079471c8d",
+        "planning/geometry.py": "524e0a62b39298a35ce2626f479360ae59afc6574e7acbcb4280d965b443d71d",
+        "planning/region.py": "8015eec2a3a558c50b122b974d434192d2260e7ecd8c249926d8ce594a47e3e2",
+        "planning/sampling.py": "a6ff8f92787f63c57b7ce61d654967bbbe45760e2b524ae73fccf4a244d24128",
+        "planning/service.py": "ee49ab806092a5f9d3fb1071c8d57b3dd554802761e5a0e9b5d3e7ce6755e57d",
+        "planning/tasks.py": "1791060a319b1328c74dba569a120677e751d638873485fe3b4823d18f1588f3",
+        "policy.py": "24e0218bf42db0b01bc50618923c9f0ed3f366d68b8e8cc1cf937c247607b94b",
+        "policy_server.py": "dd02af5d21076b4f1c6ebb64fbff437b4815a1ae05c114039fced0bf84bd1d52",
+        "pool.py": "5ab8b2245bdd643ca7a9eebc2a3e712b51c9ab3b0e9683376e84f09c7f226c8f",
+        "prompt.py": "daa087f1dac0e54909cc54ac0fc200f09ed208067d88f3888ae399d914b1133e",
+        "protocol.py": "bd6bf690c148d96dc7334f1a7f64ccd82af2a3060ec597ad0936fc4746364792",
+        "scenes/__init__.py": "e17fc02fa0caeb06340ce1975b05d933ca050fb755ab3fc3be3637eaf8b218c7",
+        "scenes/bake.py": "0a4e7619f1a181d7bc863c75dd658fcc4c57b9a84c74d6bcaa1a44fc96384d43",
+        "scenes/base.py": "0f778e35c528bffc2b00dfd274ba1b3302d617780400923deb7fcaf356b952ee",
+        "scenes/package.py": "c8e06cfe4b8e36854ba77fbcaabd3a608e7deab3e0a39bd0bb9a0a6e6edc1554",
+        "scenes/prepare.py": "9c28982e3ee1c0d006c5386d81e754dada3cfec873981b9a4df3198aa3797bfe",
+        "session.py": "7558fc054f18a49ccadaf7098d9b314074199ba7dbd18d19339b14f1dbe0d57a",
+        "sim_server.py": "8823b13207f6ba5303492099bc9722d1e23346db1ebfd54bff2325ab65820695",
+        "tasks.py": "73b142ae8a8889d0ff6fbd2ac55e6fde08d518786ec4e3292644efd3a337c141"
+      }
+    },
+    "active_sessions": 0,
+    "queues": [
+      {
+        "name": "simulation",
+        "capacity": 32,
+        "concurrency": 1,
+        "queued": 0,
+        "active": 0,
+        "completed": 1,
+        "failed": 0,
+        "rejected": 0,
+        "peak_active": 1,
+        "peak_queued": 1,
+        "queue_seconds": 2.1084211766719818e-05,
+        "service_seconds": 1.2730822339653969
+      }
+    ]
+  },
+  "passed": true,
+  "dataset": "m_floor_open_tasks",
+  "camera": "m_floor_480x270",
+  "episode_id": "m-floor-reception-001",
+  "goal_pixel": [
+    500,
+    800
+  ],
+  "legs": {
+    "point_goal": {
+      "leg_id": 1,
+      "kind": "point_goal",
+      "status": "reached",
+      "reason": null,
+      "start_event_index": 0,
+      "end_event_index": 11,
+      "distance_m": 1.653,
+      "net_displacement_m": 1.652,
+      "collision_steps": 0
+    },
+    "retrace": {
+      "leg_id": 2,
+      "kind": "retrace",
+      "status": "reached",
+      "reason": null,
+      "start_event_index": 11,
+      "end_event_index": 26,
+      "distance_m": 0.884,
+      "net_displacement_m": 0.874,
+      "collision_steps": 0
+    }
+  },
+  "retrace_event_index": 5,
+  "events": {
+    "start": 0,
+    "after_point_goal": 11,
+    "after_retrace": 26,
+    "after_velocity": 27
+  },
+  "velocity_actions": [
+    {
+      "linear_mps": 0.2,
+      "angular_rps": 0.0
+    }
+  ],
+  "replies_scanned": [
+    "observe_after_goal",
+    "observe_start",
+    "point_goal",
+    "reset",
+    "retrace",
+    "velocity"
+  ],
+  "privileged_keys": [
+    "geodesic_distance",
+    "global_pose",
+    "goal",
+    "goal_distance",
+    "goals",
+    "pose",
+    "poses",
+    "position",
+    "positions",
+    "reference",
+    "reference_path",
+    "rotation_xyzw",
+    "start_position"
+  ],
+  "finish": "forced_stop",
+  "model_inference": false,
+  "active_sessions_after": 0
+}
