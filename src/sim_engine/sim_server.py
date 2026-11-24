@@ -51,6 +51,7 @@ def create_app(settings, *, store=None, pool_factory=SessionPool):
             "capabilities": {"sensors": settings.simulation.sensors,
                              "commands": ["waypoints", "velocity", "point_goal", "retrace"],
                              "observe": True,
+                             "retrace_targets": ["leg_id", "event_index"],
                              "task_types": ["navigation", "development"]},
             "version": __version__,
             "startup_id": startup_id,

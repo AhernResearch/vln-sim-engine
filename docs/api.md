@@ -115,12 +115,14 @@ Depth and poses are for the caller's own records (for example a top-down map); l
 pose they must never be forwarded into a model request.
 Depth and sensor poses stay in the worker; only grounding reads them.
 
-Two commands run a whole leg with the 4 Hz path tracker and `velocity_step`. Every control
-step is recorded as an action and observation, exactly like `velocity`:
+Two commands run a whole leg with the path tracker and `velocity_step`, at the dataset's
+`physics.velocity.time_step_s` (speeds are in m/s, the stall window is 4 s of control time).
+Every control step is recorded as an action and observation, exactly like `velocity`:
 
 ```json
 {"kind":"point_goal","observation_id":"obs-1","view":"left","point":[412,760],"max_actions":200}
 {"kind":"retrace","leg_id":2,"max_actions":200}
+{"kind":"retrace","event_index":57,"max_actions":200}
 ```
 
 - `point_goal` grounds the pixel (0–1000, origin top left) on the observation's depth. It
@@ -128,8 +130,11 @@ step is recorded as an action and observation, exactly like `velocity`:
   connected to the start's NavMesh island. Another level is allowed unless
   `legs.same_level` is set. The goal is then planned with the clearance planners and driven.
   The observation must belong to the current event index; otherwise 409.
-- `retrace` drives back along the session's own executed positions to where leg `leg_id`
-  ended.
+- `retrace` drives back along the session's own executed positions. Exactly one target is
+  given (422 otherwise): `leg_id`, where that leg ended, or `event_index`, the pose after
+  that many events (0 is the start). The event form works for motion the simulator does not
+  group into legs, such as a caller's own `velocity` steps. An event that has not happened
+  yet, or the current pose, is `invalid_target`.
 
 The step reply gains a public `leg` object:
 

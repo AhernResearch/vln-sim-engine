@@ -10,11 +10,12 @@ from helpers import ExpertTestEnvironment, episode, settings
 
 from sim_engine import controllers
 from sim_engine.backends.contracts import Capture
-from sim_engine.config import Legs
+from sim_engine.config import Legs, Physics, VelocityLimits
 from sim_engine.core.process import WorkerError
 from sim_engine.navigation import point_goal
 from sim_engine.navigation.point_goal import TargetRejected
 from sim_engine.pool import SessionPool
+from sim_engine.protocol import StepRequest
 from sim_engine.session import Conflict, Session
 
 VIEWS = ("front", "right", "back", "left")
@@ -116,6 +117,47 @@ def test_retrace_returns_along_the_executed_path_to_an_earlier_leg(session):
     assert leg["kind"] == "retrace" and leg["leg_id"] == 3
     assert session.env.position()[2] == pytest.approx(-1.0, abs=0.15)
     assert step(session, "r2", {"kind": "retrace", "leg_id": 9})["leg"]["status"] == "invalid_target"
+
+
+def velocity(session, key, linear=0.5, angular=0.0):
+    return step(session, key, {"kind": "velocity", "linear_mps": linear, "angular_rps": angular})
+
+
+def test_retrace_to_an_event_follows_the_recorded_trajectory_of_any_motion(session):
+    for index in range(4):
+        velocity(session, f"v{index}")
+    session.targets[(500, 800)] = [0.0, 0.0, -4.0]
+    point(session, "p1", (500, 800))
+    leg = step(session, "r1", {"kind": "retrace", "event_index": 2})["leg"]
+    assert leg["kind"] == "retrace" and leg["status"] == "reached" and leg["leg_id"] == 2
+    assert session.env.position()[2] == pytest.approx(session.positions[2][2], abs=0.15)
+    assert session.metrics()["legs"][1]["private"]["retrace_to_event"] == 2
+
+
+def test_retrace_to_an_event_rejects_future_events_and_the_current_pose_without_moving(session):
+    velocity(session, "v0")
+    for key, event in (("future", 9), ("here", 1)):
+        leg = step(session, key, {"kind": "retrace", "event_index": event})["leg"]
+        assert leg["status"] == "invalid_target"
+    assert len(session.actions) == 1
+
+
+def test_retrace_names_exactly_one_target():
+    for command in ({"kind": "retrace"}, {"kind": "retrace", "leg_id": 1, "event_index": 0}):
+        with pytest.raises(ValueError, match="exactly one"):
+            StepRequest.model_validate({"request_id": "r", "expected_event_index": 0,
+                                        "command": command})
+
+
+def test_legs_follow_the_dataset_time_step_instead_of_assuming_four_hertz(session):
+    session.targets[(500, 800)] = [0.0, 0.0, -1.0]
+    session.env.physics = session.physics = Physics(velocity=VelocityLimits(time_step_s=0.1))
+    leg = point(session, "p1", (500, 800))["leg"]
+    assert leg["status"] == "reached" and leg["end_event_index"] > 15
+    assert controllers.at_time_step(controllers.expert_profile({"expert_goal_radius_m": 0.08}),
+                                    0.1).stall_steps == 40  # a 180-degree turn is 25 steps
+    back = step(session, "r1", {"kind": "retrace", "event_index": 0})["leg"]
+    assert back["status"] == "reached" and session.env.position()[2] == pytest.approx(0, abs=0.15)
 
 
 def test_leg_budget_is_reported_separately_from_the_episode_budget(session):

@@ -130,6 +130,12 @@ def expert_profile(config):
     )
 
 
+def at_time_step(profile, dt_s):
+    """The profile at another control period: speeds stay in m/s, the stall window in seconds."""
+    return replace(profile, dt_s=dt_s,
+                   stall_steps=math.ceil(profile.stall_steps * profile.dt_s / dt_s - 1e-9))
+
+
 def make_tracker(world_path, profile):
     path = Polyline([(-p[2], -p[0], 0) for p in world_path]).resample(profile.resample_m)
     return EndpointTracker(UnicycleTracker(path, profile), profile.dt_s)

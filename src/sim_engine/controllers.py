@@ -17,7 +17,7 @@ from sim_engine.navigation.budget import PlanningContext, PlanningStopped
 from sim_engine.navigation.guidance import plan_with_preferences
 from sim_engine.navigation.point_goal import TargetRejected, Unreachable, ground_point, intrinsics
 from sim_engine.navigation.pose import next_action, reached, to_world
-from sim_engine.navigation.tracking import expert_profile, make_tracker
+from sim_engine.navigation.tracking import at_time_step, expert_profile, make_tracker
 
 
 class CommandRejected(ValueError):
@@ -114,10 +114,11 @@ class LegController(Controller):
 
     def execute(self, env, physics, command, remaining, session):
         legs = session.settings.simulation.legs
-        profile = expert_profile({"expert_goal_radius_m": legs.goal_radius_m})
         limits = physics.velocity
-        if limits is None or not math.isclose(limits.time_step_s, profile.dt_s):
-            raise CommandRejected("legs need velocity physics at the tracker time step")
+        if limits is None:
+            raise CommandRejected("legs need velocity physics")
+        profile = at_time_step(expert_profile({"expert_goal_radius_m": legs.goal_radius_m}),
+                               limits.time_step_s)
         origin = env.position()
         try:
             path, goal, private = self.plan(env, command, session)
@@ -202,16 +203,22 @@ class RetraceController(LegController):
     kind = "retrace"
 
     def plan(self, env, command, session):
-        if not 1 <= command.leg_id <= len(session.legs):
-            raise TargetRejected("there is no leg with that id")
-        end = session.legs[command.leg_id - 1]["end_event_index"]
+        if command.event_index is not None:
+            if command.event_index > len(session.actions):
+                raise TargetRejected("that event has not happened yet")
+            end, private = command.event_index, {"retrace_to_event": command.event_index}
+        else:
+            if not 1 <= command.leg_id <= len(session.legs):
+                raise TargetRejected("there is no leg with that id")
+            end = session.legs[command.leg_id - 1]["end_event_index"]
+            private = {"retrace_of_leg": command.leg_id}
         path = []
         for point in reversed(session.positions[end:]):
             if not path or math.dist(point, path[-1]) >= 0.05:
                 path.append(list(point))
         if len(path) < 2:
-            raise TargetRejected("the robot is already where that leg ended")
-        return path, path[-1], {"retrace_of_leg": command.leg_id}
+            raise TargetRejected("the robot is already where that was")
+        return path, path[-1], private
 
 
 CONTROLLERS: dict[str, Controller] = {

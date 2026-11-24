@@ -69,11 +69,22 @@ class PointGoalCommand(StrictModel):
 
 
 class RetraceCommand(StrictModel):
-    """Drive back along the session's own executed path to where an earlier leg ended."""
+    """Drive back along the session's own executed path.
+
+    The target is where leg ``leg_id`` ended, or the pose at ``event_index`` (0 is the
+    start). Exactly one of the two is given.
+    """
 
     kind: Literal["retrace"]
-    leg_id: Annotated[StrictInt, Field(ge=1)]
+    leg_id: Annotated[StrictInt, Field(ge=1)] | None = None
+    event_index: Annotated[StrictInt, Field(ge=0)] | None = None
     max_actions: LegActions = 200
+
+    @model_validator(mode="after")
+    def one_target(self):
+        if (self.leg_id is None) == (self.event_index is None):
+            raise ValueError("retrace needs exactly one of leg_id and event_index")
+        return self
 
 
 class StepRequest(StrictModel):
