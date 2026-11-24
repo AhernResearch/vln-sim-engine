@@ -14,6 +14,7 @@ from types import SimpleNamespace
 from typing import Any
 
 from sim_engine.navigation.budget import PlanningContext, PlanningStopped
+from sim_engine.navigation.driving import StepHooks, follow
 from sim_engine.navigation.guidance import plan_with_preferences
 from sim_engine.navigation.point_goal import TargetRejected, Unreachable, ground_point, intrinsics
 from sim_engine.navigation.pose import next_action, reached, to_world
@@ -145,22 +146,21 @@ class LegController(Controller):
         })
 
 
+class _RecordExecuted(StepHooks):
+    def __init__(self, env):
+        self.env, self.steps = env, []
+
+    def executed(self, step, command, image, collided, cross_track):
+        action = {"linear_mps": command["linear_mps"], "angular_rps": command["angular_rps"]}
+        self.steps.append(Executed(action, image, collided, self.env.capture(), self.env.position()))
+
+
 def drive(env, physics, path, profile, budget):
     """Track ``path`` for at most ``budget`` control steps; slides are counted, not fatal."""
-    tracker = make_tracker(path, profile)
-    executed = []
-    while len(executed) < budget:
-        try:
-            command, _ = tracker.command(env.pose())
-        except ValueError as error:
-            return executed, "blocked", str(error)
-        if command is None:
-            return executed, "arrived", None
-        image, collided = env.velocity_step(
-            command["linear_mps"], command["angular_rps"], profile.dt_s, physics.allow_sliding)
-        action = {"linear_mps": command["linear_mps"], "angular_rps": command["angular_rps"]}
-        executed.append(Executed(action, image, collided, env.capture(), env.position()))
-    return executed, "budget", None
+    record = _RecordExecuted(env)
+    walk = follow(env, make_tracker(path, profile), lambda c: env.velocity_step(
+        c["linear_mps"], c["angular_rps"], profile.dt_s, physics.allow_sliding), budget, record)
+    return record.steps, walk.status, walk.detail
 
 
 class PointGoalController(LegController):

@@ -20,6 +20,7 @@ from PIL import Image
 from sim_engine.core.io import replace_json
 
 from .controllers import CONTROLLERS
+from .navigation.driving import StepHooks, follow
 from .navigation.tracking import ControllerProfile, Polyline, UnicycleTracker
 from .protocol import VelocityCommand
 
@@ -99,6 +100,17 @@ class RolloutWriter:
         )
 
 
+class _WriteRows(StepHooks):
+    """One state row and frame per executed step, with the pose the step ended at."""
+
+    def __init__(self, env, writer, tracker):
+        self.env, self.writer, self.tracker, self.collisions = env, writer, tracker, 0
+
+    def executed(self, step, command, image, collided, cross_track):
+        self.collisions += int(collided)
+        self.writer.add(image, self.env.pose(), command, collided, cross_track, self.tracker.max_progress)
+
+
 class ExpertRollout:
     """Drives one episode along its reference path; never reads a policy output."""
 
@@ -123,30 +135,27 @@ class ExpertRollout:
             raise ValueError(f"path planning failed: {error}") from error
         path = Polyline(points).resample(self.profile.resample_m)
         tracker = UnicycleTracker(path, self.profile)
-        controller = CONTROLLERS["velocity"]
         writer = RolloutWriter(writer_root, camera, self.profile, encode)
         writer.add(image, pose, None, False, 0.0, 0.0)
-        collisions = 0
+        hooks = _WriteRows(self.env, writer, tracker)
+        walk = follow(self.env, tracker, self._execute, max_steps, hooks)
+        if walk.status == "blocked":
+            raise ValueError(walk.detail)
+        termination = "expert_stop" if walk.status == "arrived" else "budget_exhausted"
+        writer.seal(self._receipt(episode, termination, walk.steps))
         goal = episode["goals"][0]["position"]
-        for step in range(1, max_steps + 1):
-            command, cross_track = tracker.command(pose)
-            if command is None:
-                writer.seal(self._receipt(episode, "expert_stop", step - 1))
-                return RolloutResult("expert_stop", step - 1, self._stats(tracker, collisions, goal))
-            try:
-                executed = controller.execute(
-                    self.env, self.env.physics, VelocityCommand(kind="velocity", **command), 1, None
-                ).executed
-            except Exception as error:  # sub-threshold or missing physics
-                raise ValueError(f"command rejected: {error}") from error
-            if not executed:
-                raise ValueError("controller executed nothing")
-            pose, collisions = self.env.pose(), collisions + int(executed[0].collided)
-            writer.add(
-                executed[0].image, pose, command, executed[0].collided, cross_track, tracker.max_progress
-            )
-        writer.seal(self._receipt(episode, "budget_exhausted", max_steps))
-        return RolloutResult("budget_exhausted", max_steps, self._stats(tracker, collisions, goal))
+        return RolloutResult(termination, walk.steps, self._stats(tracker, hooks.collisions, goal))
+
+    def _execute(self, command):
+        try:
+            executed = CONTROLLERS["velocity"].execute(
+                self.env, self.env.physics, VelocityCommand(kind="velocity", **command), 1, None
+            ).executed
+        except Exception as error:  # sub-threshold or missing physics
+            raise ValueError(f"command rejected: {error}") from error
+        if not executed:
+            raise ValueError("controller executed nothing")
+        return executed[0].image, executed[0].collided
 
     def _check_physics(self):
         """The recorded dt must be the dt the controller integrates, or rows lie."""
