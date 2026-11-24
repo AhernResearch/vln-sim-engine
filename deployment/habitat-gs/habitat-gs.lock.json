@@ -3,9 +3,9 @@
   "commit": "cb01b2fdf850ce3cab28ad00461a68ac7719f23f",
   "imath_commit": "d690a3fcff4e877ead5ae56c7e964595ade8a35e",
   "patches": [
-    "deployment/patches/habitat-gs-cuda-architectures.patch",
-    "deployment/patches/habitat-gs-cuda13-properties.patch",
-    "deployment/patches/habitat-gs-cuda13-surface.patch"
+    "deployment/habitat-gs/patches/habitat-gs-cuda-architectures.patch",
+    "deployment/habitat-gs/patches/habitat-gs-cuda13-properties.patch",
+    "deployment/habitat-gs/patches/habitat-gs-cuda13-surface.patch"
   ],
   "runtime": "independent virtual environment; Python 3.11",
   "build": {

@@ -5,9 +5,11 @@ import io
 import uuid
 from pathlib import Path
 
+import httpx
 import numpy as np
 from fastapi.testclient import TestClient
 
+from sim_engine.acceptance.session_flow import SessionFlow
 from sim_engine.backends.habitat import HabitatEnvironment
 from sim_engine.collection.backend import CollectionActor
 from sim_engine.collection.recording import validate_recording
@@ -100,8 +102,8 @@ def _collection(settings, dataset, episode, camera, output):
 
 
 def _http(settings, dataset, episode, camera):
-    """A spawned EGL worker behind the real session handlers: depth, idempotent step, STOP."""
-
+    """A spawned EGL worker behind the real session handlers: depth, idempotent step, STOP, then
+the observe / point goal / retrace / velocity session flow."""
     with TestClient(create_app(settings)) as client:
         health = client.get("/v1/health").json()
         assert health["backend"] == settings.simulation.backend
@@ -125,7 +127,9 @@ def _http(settings, dataset, episode, camera):
         assert stop.status_code == 200, stop.text
         assert client.delete(f"/v1/sessions/{sid}").status_code == 200
         assert client.get("/v1/health").json()["active_sessions"] == 0
-    return health, stop.json(), float((depth > 0).mean())
+        flow = SessionFlow(client, dataset, camera, episode["episode_id"]).run()
+        assert client.get("/v1/health").json()["active_sessions"] == 0
+    return health, stop.json(), float((depth > 0).mean()), flow
 
 
 def probe_backend(settings, output: Path) -> dict:
@@ -137,8 +141,21 @@ def probe_backend(settings, output: Path) -> dict:
     camera = next(iter(settings.cameras))
     identity = _environment(settings, dataset, episode, camera)
     execution = _collection(settings, dataset, episode, camera, output)
-    health, stop, valid_depth = _http(settings, dataset, episode, camera)
+    health, stop, valid_depth, flow = _http(settings, dataset, episode, camera)
     report = {"passed": True, "runtime": identity, "health": health, "stop": stop,
-              "depth_valid_fraction": valid_depth, "model_inference": False, "collection": execution}
+              "depth_valid_fraction": valid_depth, "session_flow": flow, "model_inference": False, "collection": execution}
+    create_json(output / "receipt.json", report)
+    return report
+
+
+def probe_session(sim_url: str, dataset: str, camera: str, episode_id: str, output: Path) -> dict:
+    """Run the session flow once against a running simulator; write ``receipt.json`` into a new
+    directory. A failed check raises and leaves no receipt: motion is never retried."""
+    output.mkdir(parents=True, exist_ok=False)
+    with httpx.Client(base_url=sim_url, timeout=600) as client:
+        health = client.get("/v1/health").json()
+        report = {"sim_url": sim_url, "health": health,
+                  **SessionFlow(client, dataset, camera, episode_id).run()}
+        report["active_sessions_after"] = client.get("/v1/health").json()["active_sessions"]
     create_json(output / "receipt.json", report)
     return report

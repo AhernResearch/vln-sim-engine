@@ -161,5 +161,5 @@ def test_planning_job_uses_manifest_navmesh_instead_of_scene_id_filename(prepare
 
 
 def test_pinned_commit_matches_deployment_lock():
-    lock = Path(__file__).resolve().parents[1] / 'deployment/habitat-gs.lock.json'
+    lock = Path(__file__).resolve().parents[1] / 'deployment/habitat-gs/habitat-gs.lock.json'
     assert json.loads(lock.read_text())['commit'] == HABITAT_GS_COMMIT

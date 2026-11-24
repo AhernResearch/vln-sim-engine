@@ -34,7 +34,7 @@ Python 3.10. Use **separate environments**; their native stacks conflict.
 |---|---|---|
 | dev (`.venv`) | `.[dev]` (ruff, pytest) | tests, `rollout` |
 | habitat | `.[habitat]` + habitat-sim 0.3.1 headless with Bullet, `numpy<2` | `serve-sim`, `serve-collection`, `serve-planner`, asset commands |
-| habitat-gs | `.[habitat]` + pinned CUDA Habitat-GS 0.3.3 ([lock](deployment/habitat-gs.lock.json)) | Gaussian-scan runtime ([GS backend](docs/gs-backend.md)) |
+| habitat-gs | `.[habitat]` + pinned CUDA Habitat-GS 0.3.3 ([lock](deployment/habitat-gs/habitat-gs.lock.json)) | Gaussian-scan runtime ([GS backend](docs/gs-backend.md)) |
 | policy | `.[policy]` + GPU-compatible PyTorch / vLLM | `serve-policy` |
 
 ```bash

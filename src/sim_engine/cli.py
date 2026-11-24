@@ -8,7 +8,7 @@ import uvicorn
 
 from . import policy_server, sim_server
 from .acceptance.depth import validate_depth
-from .acceptance.probe import probe_backend
+from .acceptance.probe import probe_backend, probe_session
 from .client import rollout
 from .collection import server as collection_server
 from .collection.start_pool import build_pool
@@ -68,6 +68,12 @@ def main(argv=None):
     probe = commands.add_parser("probe-backend")
     probe.add_argument("--config", type=Path, required=True)
     probe.add_argument("--output", type=Path, required=True)
+    session = commands.add_parser("probe-session")
+    session.add_argument("--sim-url", required=True)
+    session.add_argument("--dataset", required=True)
+    session.add_argument("--camera", required=True)
+    session.add_argument("--episode-id", required=True)
+    session.add_argument("--output", type=Path, required=True)
     pool = commands.add_parser("build-start-pool")
     pool.add_argument("--config", type=Path, required=True)
     pool.add_argument("--dataset", required=True)
@@ -90,6 +96,10 @@ def main(argv=None):
         print(json.dumps(report, indent=2))
         if not report["passed"]:
             raise SystemExit(2)
+        return
+    if args.command == "probe-session":
+        print(json.dumps(probe_session(args.sim_url, args.dataset, args.camera, args.episode_id,
+                                       args.output), indent=2))
         return
     if args.command == "rollout":
         result = asyncio.run(

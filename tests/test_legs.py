@@ -9,6 +9,7 @@ import pytest
 from helpers import ExpertTestEnvironment, episode, settings
 
 from sim_engine import controllers
+from sim_engine.acceptance.session_flow import SessionFlow
 from sim_engine.backends.contracts import Capture
 from sim_engine.config import Dataset, Legs, Physics, VelocityLimits
 from sim_engine.core.process import WorkerError
@@ -226,3 +227,54 @@ def test_a_dataset_budget_overrides_the_simulation_default(tmp_path):
     other = Session.open("other", LegEnvironment(config), episode(), "trained_ce30",
                          config.cameras["trained_ce30"], 0, config, geometry=lambda: geometry)
     assert own.max_actions == 1250 and other.max_actions == config.simulation.max_actions
+
+
+class SessionClient:
+    """Routes the public session endpoints onto one in-process session."""
+
+    def __init__(self, session, leak=False):
+        self.session, self.leak, self.closed = session, leak, False
+
+    @staticmethod
+    def reply(value, status=200):
+        return SimpleNamespace(status_code=status, text=json.dumps(value), json=lambda: value)
+
+    def post(self, path, json=None):
+        if path == "/v1/sessions":
+            value = self.session.reset_reply()
+            return self.reply(dict(value, goal=[0, 0, 1]) if self.leak else value)
+        if path.endswith("/observe"):
+            return self.reply(self.session.observe(json["request_id"]))
+        if path.endswith("/step"):
+            return self.reply(self.session.step(json))
+        return self.reply({"termination": "forced_stop"})
+
+    def delete(self, path):
+        self.closed = True
+        return self.reply({})
+
+
+def flow_report(session, **options):
+    return SessionFlow(SessionClient(session, **options), "test", "trained_ce30", "a").run()
+
+
+def test_session_flow_runs_observe_point_goal_retrace_and_velocity_without_privileged_fields(session):
+    session.targets[(500, 700)] = [0.0, 0.0, -1.0]
+    report = flow_report(session)
+    events = report["events"]
+    assert report["passed"] and report["goal_pixel"] == [500, 700]
+    assert events["after_point_goal"] > 0 and events["after_retrace"] > events["after_point_goal"]
+    assert events["after_velocity"] == events["after_retrace"] + 1
+    assert report["legs"]["point_goal"]["status"] == "reached"
+    assert report["legs"]["retrace"]["kind"] == "retrace"
+
+
+def test_session_flow_fails_when_no_pixel_grounds_and_does_not_move(session):
+    with pytest.raises(AssertionError, match="no candidate pixel"):
+        flow_report(session)
+    assert session.actions == []
+
+
+def test_session_flow_rejects_privileged_fields_in_replies(session):
+    with pytest.raises(AssertionError, match=r"privileged fields: \['\$\.goal'\]"):
+        flow_report(session, leak=True)
