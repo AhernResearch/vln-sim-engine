@@ -38,6 +38,7 @@ class Session:
         self.id, self.env, self.episode = session_id, environment, episode
         self.camera_name, self.camera, self.settings = camera_name, camera, settings
         self.task = task_of(settings, episode)
+        self.max_actions = settings.simulation.max_actions_of(episode.get("_dataset"))
         self.physics = environment.physics
         self.frames, self.actions, self.positions, self.predictions = [], [], [], []
         self.collisions = self.stalled = 0
@@ -164,7 +165,7 @@ class Session:
         old_collisions = self.collisions
         command = request.command
         outcome = CONTROLLERS[command.kind].execute(
-            self.env, self.physics, command, self.settings.simulation.max_actions - start, self
+            self.env, self.physics, command, self.max_actions - start, self
         )
         for item in outcome.executed:
             self._store(item.image, item.snapshot)
@@ -179,7 +180,7 @@ class Session:
             self.legs.append(leg)
         if not (leg and leg["status"] in UNSTARTED_LEGS):
             self.stalled = self.stalled + 1 if start == end else 0
-        if end >= self.settings.simulation.max_actions:
+        if end >= self.max_actions:
             self.termination = "timeout"
         elif self.stalled >= 3:
             self.termination = "stalled"

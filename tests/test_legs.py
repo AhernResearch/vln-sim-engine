@@ -10,7 +10,7 @@ from helpers import ExpertTestEnvironment, episode, settings
 
 from sim_engine import controllers
 from sim_engine.backends.contracts import Capture
-from sim_engine.config import Legs, Physics, VelocityLimits
+from sim_engine.config import Dataset, Legs, Physics, VelocityLimits
 from sim_engine.core.process import WorkerError
 from sim_engine.navigation import point_goal
 from sim_engine.navigation.point_goal import TargetRejected
@@ -212,3 +212,17 @@ def test_metrics_carry_the_goal_and_reference_route_for_evaluation(session):
     reference = session.metrics()["reference"]
     assert reference["goal"] == session.episode["goals"][0]["position"]
     assert reference["path"] == session.episode.get("reference_path")
+
+
+def test_a_dataset_budget_overrides_the_simulation_default(tmp_path):
+    config = settings(tmp_path)
+    name = "r2r_train_vla"
+    config.simulation.datasets[name] = Dataset(episodes=tmp_path / "episodes.json.gz", max_actions=1250)
+    assert config.simulation.max_actions_of(name) == 1250
+    assert config.simulation.max_actions_of(None) == config.simulation.max_actions
+    geometry = SimpleNamespace(pf=None, guard=None, planners=[], clear=lambda: None)
+    own = Session.open("own", LegEnvironment(config), {**episode(), "_dataset": name}, "trained_ce30",
+                       config.cameras["trained_ce30"], 0, config, geometry=lambda: geometry)
+    other = Session.open("other", LegEnvironment(config), episode(), "trained_ce30",
+                         config.cameras["trained_ce30"], 0, config, geometry=lambda: geometry)
+    assert own.max_actions == 1250 and other.max_actions == config.simulation.max_actions

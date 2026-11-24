@@ -72,6 +72,8 @@ class Dataset(StrictModel):
     physics: Physics = Field(default_factory=Physics)
     scenes: dict[str, Path] = Field(default_factory=dict)
     task: Literal["navigation", "development"] = "navigation"
+    # Episode action budget; overrides the simulation default, e.g. for a shorter time step.
+    max_actions: int | None = Field(default=None, ge=1, le=5000)
 
 
 class Legs(StrictModel):
@@ -105,6 +107,10 @@ class Simulation(StrictModel):
     expert_root: Path | None = None
     expert_timeout_seconds: float = Field(default=900, gt=0)
     legs: Legs = Field(default_factory=Legs)
+
+    def max_actions_of(self, dataset: str | None) -> int:
+        entry = self.datasets.get(dataset) if dataset else None
+        return entry.max_actions if entry and entry.max_actions else self.max_actions
 
     @model_validator(mode="after")
     def runtime_scene_sources(self):

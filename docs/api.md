@@ -214,3 +214,8 @@ Physics and asset identities are dataset-specific: simulator health exposes
 `protocol.dataset_physics[dataset]` and `protocol.scene_hashes[dataset]`. This
 permits different agent dimensions, turn angles and navmeshes on the same worker
 pool. Dataset identity and physics must be checked before comparing runs.
+
+The session action budget is `simulation.max_actions` unless the dataset sets its own
+`max_actions`, for example to keep the same simulated time with a shorter
+`time_step_s`. Health reports the effective budget per dataset in
+`protocol.dataset_max_actions[dataset]`; `protocol.max_actions` stays the default.

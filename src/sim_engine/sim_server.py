@@ -29,6 +29,9 @@ def create_app(settings, *, store=None, pool_factory=SessionPool):
     startup_id = uuid.uuid4().hex
     protocol = {
         "max_actions": settings.simulation.max_actions,
+        "dataset_max_actions": {
+            name: settings.simulation.max_actions_of(name) for name in settings.simulation.datasets
+        },
         "dataset_physics": {
             name: data.physics.model_dump() for name, data in settings.simulation.datasets.items()
         },

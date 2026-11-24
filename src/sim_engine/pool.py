@@ -98,7 +98,7 @@ class SessionHost:
         environment = self._env()
         try:
             return expert_job(environment, episode, camera, self.settings.simulation.expert_root,
-                              self.settings.simulation.max_actions)
+                              self.settings.simulation.max_actions_of(episode.get("_dataset")))
         except FileExistsError as error:
             raise Conflict(str(error)) from error
         except ValueError as error:
